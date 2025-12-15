@@ -345,6 +345,18 @@
                 margin: 10px auto 0;
             }
         }
+
+        /* Success Message */
+        .success-message {
+            display: none;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 20px;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -435,17 +447,50 @@
             <p class="section-subtitle">Join us on Saturday, January 10, 2026 at 6:00 PM - 7:00 PM Cairo Time - Limited to 30 participants</p>
             
             <div class="form-container">
-                <div style="width: 100%; max-width: 100%; overflow: hidden;">
-                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdBxs8UN0KTIPIxD4okRGJafPIXMXgknIIkcpH3lXkGpRDvOw/viewform?embedded=true" 
-                            width="100%" 
-                            height="1200" 
-                            frameborder="0" 
-                            marginheight="0" 
-                            marginwidth="0"
-                            style="border: none; border-radius: 10px; min-height: 600px;">
-                        Loading…
-                    </iframe>
-                </div>
+                <form id="registration-form" action="https://formspree.io/f/xvgozbpv" method="POST">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="background">Your Background *</label>
+                        <select id="background" name="background" required>
+                            <option value="">Select your background</option>
+                            <option value="complete-beginner">Complete Beginner</option>
+                            <option value="biology-background">Biology Background</option>
+                            <option value="pharmacy-graduate">Pharmacy Graduate</option>
+                            <option value="dentistry-background">Dentistry Background</option>
+                            <option value="computer-science">Computer Science Background</option>
+                            <option value="undergraduate-student">Undergraduate Student</option>
+                            <option value="graduate-student">Graduate Student</option>
+                            <option value="professional">Working Professional</option>
+                            <option value="career-changer">Career Changer</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="goals">What do you hope to learn from this session? *</label>
+                        <textarea id="goals" name="goals" placeholder="Tell us what brought you here and what you're most curious about..." required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="hear-about">How did you hear about BioNexus?</label>
+                        <input type="text" id="hear-about" name="hear_about" placeholder="Facebook, friend, LinkedIn, etc.">
+                    </div>
+
+                    <button type="submit" class="submit-button">Register for Free Session</button>
+                    
+                    <div class="success-message" id="success-message">
+                        🎉 Registration successful! Check your email (mennahbassiouny8@gmail.com) for the submission.
+                    </div>
+                </form>
                     
                 <div style="margin-top: 30px; padding: 20px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; text-align: center;">
                     <p style="color: var(--text-gray); margin-bottom: 10px; font-size: 0.95rem;">Already registered? Join the session here:</p>
@@ -499,6 +544,20 @@
                 }
             });
         });
+
+        // Form submission handling
+        const form = document.getElementById('registration-form');
+        const successMessage = document.getElementById('success-message');
+
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                // Let Formspree handle the submission, then show success message
+                setTimeout(() => {
+                    successMessage.style.display = 'block';
+                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 1000);
+            });
+        }
     </script>
 </body>
 </html>
