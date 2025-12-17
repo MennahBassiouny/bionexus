@@ -459,20 +459,50 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="background">Your Background *</label>
-                        <select id="background" name="background" required>
-                            <option value="">Select your background</option>
-                            <option value="complete-beginner">Complete Beginner</option>
-                            <option value="biology-background">Biology Background</option>
-                            <option value="pharmacy-graduate">Pharmacy Graduate</option>
-                            <option value="dentistry-background">Dentistry Background</option>
-                            <option value="computer-science">Computer Science Background</option>
-                            <option value="undergraduate-student">Undergraduate Student</option>
-                            <option value="graduate-student">Graduate Student</option>
-                            <option value="professional">Working Professional</option>
-                            <option value="career-changer">Career Changer</option>
-                            <option value="other">Other</option>
-                        </select>
+                        <label for="background">Your Background * <span style="font-size: 0.85rem; color: var(--text-gray); font-weight: 400;">(Select all that apply)</span></label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="background" value="Complete Beginner">
+                                <span>Complete Beginner</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="background" value="Biology Background">
+                                <span>Biology Background</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="background" value="Pharmacy Graduate">
+                                <span>Pharmacy Graduate</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="background" value="Dentistry Background">
+                                <span>Dentistry Background</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="background" value="Computer Science Background">
+                                <span>Computer Science Background</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="background" value="Undergraduate Student">
+                                <span>Undergraduate Student</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="background" value="Graduate Student">
+                                <span>Graduate Student</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="background" value="Working Professional">
+                                <span>Working Professional</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="background" value="Career Changer">
+                                <span>Career Changer</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="background" value="Other">
+                                <span>Other</span>
+                            </label>
+                        </div>
+                        <div class="error-message" id="background-error">Please select at least one background option</div>
                     </div>
 
                     <div class="form-group">
