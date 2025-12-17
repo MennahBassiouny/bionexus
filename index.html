@@ -368,6 +368,31 @@
             overflow-y: auto;
         }
 
+        /* Scrollbar Styling - Webkit (Chrome, Safari, Edge) */
+        .checkbox-group::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .checkbox-group::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.3);
+            border-radius: 5px;
+        }
+
+        .checkbox-group::-webkit-scrollbar-thumb {
+            background: var(--primary-purple);
+            border-radius: 5px;
+        }
+
+        .checkbox-group::-webkit-scrollbar-thumb:hover {
+            background: var(--light-purple);
+        }
+
+        /* Scrollbar Styling - Firefox */
+        .checkbox-group {
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-purple) rgba(15, 23, 42, 0.3);
+        }
+
         .checkbox-item {
             display: flex;
             align-items: center;
