@@ -516,84 +516,26 @@
             <p class="section-subtitle">Join us on Saturday, January 10, 2026 at 6:00 PM - 7:00 PM Cairo Time - Limited to 30 participants</p>
             
             <div class="form-container">
-                <form id="registration-form" action="https://formspree.io/f/xnneyzaa" method="POST">
-                    <div class="form-group">
-                        <label for="name">Full Name *</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email Address *</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="background">Your Background * <span style="font-size: 0.85rem; color: var(--text-gray); font-weight: 400;">(Select all that apply)</span></label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="background" value="Complete Beginner">
-                                <span>Complete Beginner</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="background" value="Biology Background">
-                                <span>Biology Background</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="background" value="Pharmacy Graduate">
-                                <span>Pharmacy Graduate</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="background" value="Dentistry Background">
-                                <span>Dentistry Background</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="background" value="Computer Science Background">
-                                <span>Computer Science Background</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="background" value="Undergraduate Student">
-                                <span>Undergraduate Student</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="background" value="Graduate Student">
-                                <span>Graduate Student</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="background" value="Working Professional">
-                                <span>Working Professional</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="background" value="Career Changer">
-                                <span>Career Changer</span>
-                            </label>
-                            <label class="checkbox-item">
-                                <input type="checkbox" name="background" value="Other">
-                                <span>Other</span>
-                            </label>
-                        </div>
-                        <div class="error-message" id="background-error">Please select at least one background option</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="goals">What do you hope to learn from this session? *</label>
-                        <textarea id="goals" name="goals" placeholder="Tell us what brought you here and what you're most curious about..." required></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="hear-about">How did you hear about BioNexus?</label>
-                        <input type="text" id="hear-about" name="hear_about" placeholder="Facebook, friend, LinkedIn, etc.">
-                    </div>
-
-                    <button type="submit" class="submit-button">Register for Free Session</button>
-                    
-                    <div class="success-message" id="success-message">
-                        🎉 Registration successful! Check your email (<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="137e767d7d727b717260607a7c667d6a2b53747e727a7f3d707c7e">[email&#160;protected]</a>) for the submission.
-                    </div>
-                </form>
+                <!-- Microsoft Forms Embed -->
+                <div style="max-width: 800px; margin: 0 auto;">
+                    <iframe 
+                        src="https://forms.office.com/Pages/ResponsePage.aspx?id=ky6c7Ifqc0SCSJa_dg0BeMmGgTffXlVMpZ2oqB0FKtRUM0Y2OTA2VEo5UklPVTBQM1VIVTFJVkRQNC4u&embed=true"
+                        width="100%" 
+                        height="900px" 
+                        frameborder="0" 
+                        marginwidth="0" 
+                        marginheight="0" 
+                        style="border: none; border-radius: 10px; background: var(--card-bg);"
+                        allowfullscreen 
+                        webkitallowfullscreen 
+                        mozallowfullscreen 
+                        msallowfullscreen>
+                    </iframe>
+                </div>
                     
                 <div style="margin-top: 30px; padding: 20px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; text-align: center;">
                     <p style="color: var(--text-gray); margin-bottom: 10px; font-size: 0.95rem;">Already registered? Join the session here:</p>
-                    <a href="https://teams.live.com/meet/9351555011249?p=zTnIMtUCpL34HrG60I" target="_blank" style="color: var(--light-purple); font-weight: 600; text-decoration: none; word-break: break-all;">Microsoft Teams Meeting Link →</a>
+                    <a href="https://teams.microsoft.com/l/meetup-join/19%3ameeting_YTZhMzVlNTgtNTE5MS00NGM1LTlkZjQtODcxY2NmOTliMGU4%40thread.v2/0?context=%7b%22Tid%22%3a%22ec9c2e93-ea87-4473-8248-96bf760d0178%22%2c%22Oid%22%3a%22378186c9-5edf-4c55-a59d-a8a81d052ad4%22%7d" target="_blank" style="color: var(--light-purple); font-weight: 600; text-decoration: none; word-break: break-all;">Microsoft Teams Meeting Link →</a>
                 </div>
             </div>
         </div>
@@ -643,47 +585,6 @@
                 }
             });
         });
-
-        // Form submission handling
-        const form = document.getElementById('registration-form');
-        const successMessage = document.getElementById('success-message');
-        const backgroundError = document.getElementById('background-error');
-
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                // Check if at least one checkbox is selected
-                const checkboxes = document.querySelectorAll('input[name="background"]:checked');
-                
-                if (checkboxes.length === 0) {
-                    e.preventDefault();
-                    backgroundError.style.display = 'block';
-                    // Scroll to the error
-                    backgroundError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    return false;
-                } else {
-                    backgroundError.style.display = 'none';
-                }
-
-                // Show success message (form will still submit to Formspree)
-                successMessage.style.display = 'block';
-                
-                // Scroll to success message
-                setTimeout(() => {
-                    successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 100);
-            });
-
-            // Hide error message when user selects a checkbox
-            const backgroundCheckboxes = document.querySelectorAll('input[name="background"]');
-            backgroundCheckboxes.forEach(checkbox => {
-                checkbox.addEventListener('change', function() {
-                    const checkedBoxes = document.querySelectorAll('input[name="background"]:checked');
-                    if (checkedBoxes.length > 0) {
-                        backgroundError.style.display = 'none';
-                    }
-                });
-            });
-        }
     </script>
 </body>
 </html>
