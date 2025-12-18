@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - BioNexus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-purple: #6366f1;
+            --dark-purple: #4f46e5;
+            --light-purple: #818cf8;
+            --accent: #a78bfa;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-light: #f1f5f9;
+            --text-gray: #cbd5e1;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-light);
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            flex: 1;
+        }
+
+        /* Header */
+        header {
+            padding: 20px 0;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-purple), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.95rem;
+        }
+
+        .back-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Main Content */
+        .contact-section {
+            padding: 80px 0;
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+            background: linear-gradient(135deg, #fff, var(--light-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 1.1rem;
+            margin-bottom: 50px;
+        }
+
+        .form-container {
+            background: var(--card-bg);
+            padding: 50px;
+            border-radius: 15px;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(15, 23, 42, 0.8);
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+            margin-top: auto;
+        }
+
+        footer p {
+            color: var(--text-gray);
+            margin-bottom: 10px;
+        }
+
+        footer a {
+            color: var(--light-purple);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+
+        /* Contact Button Hover Effect */
+        .contact-button {
+            background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple));
+            color: white;
+            padding: 18px 50px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .contact-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a href="index.html" class="logo">BioNexus</a>
+            <a href="index.html" class="back-button">← Back to Home</a>
+        </div>
+    </header>
+
+    <!-- Contact Section -->
+    <section class="contact-section">
+        <div class="container">
+            <h1 class="section-title">Get in Touch</h1>
+            <p class="section-subtitle">Have questions? We'd love to hear from you!</p>
+            
+            <div class="form-container">
+                <!-- Contact Button - Opens Microsoft Form in New Tab -->
+                <div style="text-align: center; padding: 60px 40px;">
+                    <div style="margin-bottom: 30px;">
+                        <div style="font-size: 3rem; margin-bottom: 20px;">✉️</div>
+                        <h3 style="font-size: 1.8rem; color: var(--light-purple); margin-bottom: 15px;">We'd Love to Hear From You!</h3>
+                        <p style="color: var(--text-gray); font-size: 1.1rem; margin-bottom: 30px;">Have questions, feedback, or just want to say hi? Click below to send us a message!</p>
+                    </div>
+                    
+                    <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=ky6c7Ifqc0SCSJa_dg0BeMmGgTffXlVMpZ2oqB0FKtRUM0s2MUg3QVc1UTFKT0tDMFRPVUMxSDFPVi4u" 
+                       target="_blank" 
+                       style="background: linear-gradient(135deg, var(--primary-purple), var(--dark-purple)); 
+                              color: white; 
+                              padding: 18px 50px; 
+                              border: none; 
+                              border-radius: 12px; 
+                              font-weight: 700; 
+                              font-size: 1.2rem;
+                              cursor: pointer; 
+                              text-decoration: none; 
+                              display: inline-block;
+                              transition: transform 0.3s ease, box-shadow 0.3s ease;
+                              box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);">
+                        Open Contact Form →
+                    </a>
+                    
+                    <p style="color: var(--text-gray); font-size: 0.9rem; margin-top: 20px;">
+                        ⏱️ Quick and easy to fill out
+                    </p>
+                </div>
+
+                <div style="margin-top: 30px; padding: 20px; background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 8px; text-align: center;">
+                    <p style="color: var(--text-gray); font-size: 0.95rem;">📧 Prefer email? Reach us directly at <a href="mailto:info@bionexushub.com" style="color: var(--light-purple); font-weight: 600; text-decoration: none;">mennahbassiouny@gmail.com</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus. Building a community for bioinformatics learners.</p>
+        </div>
+    </footer>
+</body>
+</html>
