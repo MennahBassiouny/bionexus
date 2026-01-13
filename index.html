@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioNexus Hub - Making Bioinformatics Learning Simple, Practical, and Accessible</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #5b9cf8;
+            --dark-blue: #4c7ed9;
+            --light-blue: #7db4ff;
+            --primary-purple: #a855f7;
+            --dark-purple: #8b5cf6;
+            --deep-navy: #0f172a;
+            --navy-blue: #1e293b;
+            --soft-white: #f8fafc;
+            --text-dark: #1e293b;
+            --text-gray: #64748b;
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            line-height: 1.7;
+            color: var(--text-dark);
+            background: var(--soft-white);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header Navigation */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(248, 250, 252, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(91, 156, 248, 0.2);
+            animation: slideDown 0.6s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+            align-items: center;
+        }
+
+        nav a {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple));
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary-blue);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .cta-nav {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white !important;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .cta-nav::after {
+            display: none;
+        }
+
+        .cta-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            padding: 120px 0 100px;
+            background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 20%, rgba(91, 156, 248, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--deep-navy);
+            margin-bottom: 24px;
+            letter-spacing: -2px;
+        }
+
+        .hero .tagline {
+            font-size: 1.5rem;
+            color: var(--text-gray);
+            margin-bottom: 16px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .hero .description {
+            font-size: 1.1rem;
+            color: var(--text-gray);
+            margin-bottom: 40px;
+            line-height: 1.8;
+            max-width: 680px;
+        }
+
+        .hero-cta-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            padding: 16px 36px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(91, 156, 248, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(91, 156, 248, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--primary-blue);
+            padding: 16px 36px;
+            border: 2px solid var(--primary-blue);
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple));
+            color: white;
+            border-color: var(--primary-blue);
+            transform: translateY(-3px);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 100px 0;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 70px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section-title {
+            font-family: 'Crimson Pro', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--deep-navy);
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .offerings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .offering-card {
+            background: white;
+            padding: 48px 36px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-blue);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .offering-card:nth-child(1) { animation-delay: 0.1s; }
+        .offering-card:nth-child(2) { animation-delay: 0.2s; }
+        .offering-card:nth-child(3) { animation-delay: 0.3s; }
+
+        .offering-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+            border-left-color: var(--primary-purple);
+        }
+
+        .offering-icon {
+            font-size: 3rem;
+            margin-bottom: 24px;
+            display: block;
+        }
+
+        .offering-card h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--deep-navy);
+            margin-bottom: 16px;
+        }
+
+        .offering-card p {
+            color: var(--text-gray);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* Features Section */
+        .features-section {
+            background: var(--deep-navy);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .features-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 60%;
+            height: 150%;
+            background: radial-gradient(ellipse at center, rgba(91, 156, 248, 0.15) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-item {
+            animation: fadeInUp 0.8s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .feature-item:nth-child(1) { animation-delay: 0.1s; }
+        .feature-item:nth-child(2) { animation-delay: 0.2s; }
+        .feature-item:nth-child(3) { animation-delay: 0.3s; }
+        .feature-item:nth-child(4) { animation-delay: 0.4s; }
+
+        .feature-item h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            color: var(--light-blue);
+        }
+
+        .feature-item p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.7;
+        }
+
+        .features-section .section-title {
+            color: white;
+        }
+
+        .features-section .section-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 0;
+            background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%);
+            color: white;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -20%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(50px, 30px) rotate(5deg); }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cta-section h2 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .cta-section p {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            opacity: 0.95;
+            line-height: 1.7;
+        }
+
+        .btn-white {
+            background: white;
+            color: var(--primary-blue);
+            padding: 18px 40px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-white:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Social Links Section */
+        .social-section {
+            padding: 80px 0;
+            background: white;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 50px;
+        }
+
+        .social-card {
+            background: var(--soft-white);
+            padding: 32px;
+            border-radius: 12px;
+            border: 2px solid rgba(91, 156, 248, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .social-card:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(91, 156, 248, 0.2);
+        }
+
+        .social-card h3 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.3rem;
+            color: var(--deep-navy);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .social-card p {
+            color: var(--text-gray);
+            margin-bottom: 16px;
+            line-height: 1.7;
+        }
+
+        .social-link {
+            color: var(--primary-blue);
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: gap 0.3s ease;
+        }
+
+        .social-link:hover {
+            gap: 12px;
+            color: var(--primary-purple);
+        }
+
+        .coming-soon-badge {
+            display: inline-block;
+            background: rgba(168, 85, 247, 0.1);
+            color: var(--primary-purple);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--deep-navy);
+            color: white;
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 48px;
+            margin-bottom: 48px;
+        }
+
+        .footer-section h4 {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--light-blue);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 12px;
+        }
+
+        .footer-section a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--light-blue);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 30px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Mobile Menu Toggle */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .hero .tagline {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2.2rem;
+            }
+
+            .offerings-grid,
+            .features-grid,
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-cta-group {
+                flex-direction: column;
+            }
+
+            .btn-primary,
+            .btn-secondary,
+            .btn-white {
+                width: 100%;
+                text-align: center;
+            }
+
+            .logo-img {
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .hero .tagline {
+                font-size: 1.1rem;
+            }
+
+            .offering-card,
+            .social-card {
+                padding: 28px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Your Journey into Bioinformatics Starts Here</h1>
+                <p class="tagline">Making bioinformatics learning simple, practical, and accessible to everyone</p>
+                <p class="description">
+                    An educational initiative designed to make bioinformatics clear, approachable, and accessible no matter where you're starting from. Whether you're transitioning from another field or completely new to bioinformatics, we're here to support your learning journey every step of the way.
+                </p>
+                <div class="hero-cta-group">
+                    <a href="learn.html" class="btn-primary">Explore Learning Paths</a>
+                    <a href="about.html" class="btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What We Offer Section -->
+    <section class="section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">What We Offer</h2>
+                <p class="section-subtitle">Building a supportive learning environment for bioinformatics enthusiasts at every level</p>
+            </div>
+            <div class="offerings-grid">
+                <div class="offering-card">
+                    <span class="offering-icon">🎓</span>
+                    <h3>Engaging Educational Sessions</h3>
+                    <p>Covering bioinformatics fundamentals and selected advanced topics through interactive sessions designed to build your understanding from the ground up.</p>
+                </div>
+                <div class="offering-card">
+                    <span class="offering-icon">🛠️</span>
+                    <h3>Practical Learning Resources</h3>
+                    <p>Focused on building real-world skills with hands-on guides, tutorials, and exercises that prepare you for actual bioinformatics work.</p>
+                </div>
+                <div class="offering-card">
+                    <span class="offering-icon">👥</span>
+                    <h3>Supportive Community</h3>
+                    <p>Join fellow learners exploring bioinformatics together. Share experiences, ask questions, and grow alongside others on the same journey.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Follow Us For Section -->
+    <section class="section features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Follow Us For</h2>
+                <p class="section-subtitle">Stay connected and never miss an opportunity to advance your bioinformatics knowledge</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <h3>✨ Session Updates</h3>
+                    <p>Get notified about upcoming sessions, workshops, and events so you can plan your learning schedule in advance.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>📚 Curated Resources</h3>
+                    <p>Access carefully selected learning resources and educational guides that complement your journey through bioinformatics.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>💡 Field Insights</h3>
+                    <p>Receive practical insights and tips for navigating the bioinformatics field, from career advice to technical best practices.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>🌱 Growing with You</h3>
+                    <p>The platform continuously evolves based on your learning needs and feedback, ensuring content that truly serves the community.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Begin Your Learning Journey?</h2>
+            <p>Join our community of learners and start exploring bioinformatics today. No matter where you're starting from, we're here to support you.</p>
+            <a href="learn.html" class="btn-white">Get Started Now</a>
+        </div>
+    </section>
+
+    <!-- Social Links Section -->
+    <section class="social-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Connect With Us</h2>
+                <p class="section-subtitle">Join our growing community across platforms</p>
+            </div>
+            <div class="social-grid">
+                <div class="social-card">
+                    <h3>📘 Facebook</h3>
+                    <p>Follow our Facebook page for daily updates, learning tips, and community discussions.</p>
+                    <a href="https://www.facebook.com/bionexushub" target="_blank" class="social-link">
+                        Visit Our Page →
+                    </a>
+                </div>
+                <div class="social-card">
+                    <h3>📧 Newsletter <span class="coming-soon-badge">Coming Soon</span></h3>
+                    <p>Get exclusive content, session announcements, and resources delivered to your inbox.</p>
+                    <span class="social-link" style="color: var(--text-gray); cursor: default;">
+                        Coming Soon
+                    </span>
+                </div>
+                <div class="social-card">
+                    <h3>💬 Community Forum <span class="coming-soon-badge">Coming Soon</span></h3>
+                    <p>Connect with fellow learners, ask questions, and share your bioinformatics journey.</p>
+                    <span class="social-link" style="color: var(--text-gray); cursor: default;">
+                        Coming Soon
+                    </span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>BioNexus Hub</h4>
+                    <p style="color: rgba(255, 255, 255, 0.7); line-height: 1.7;">
+                        Making bioinformatics learning simple, practical, and accessible to everyone.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About</a></li>
+                        <li><a href="learn.html">Learn</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <ul>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="https://www.facebook.com/bionexushub" target="_blank">Facebook</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            const menu = document.getElementById('nav-menu');
+            menu.classList.toggle('active');
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animation triggers
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.offering-card, .feature-item').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

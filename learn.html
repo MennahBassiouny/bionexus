@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learn - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+        .page-header { padding: 80px 0 60px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); text-align: center; }
+        .page-header h1 { font-family: 'Crimson Pro', serif; font-size: 3.5rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 20px; }
+        .page-header p { font-size: 1.3rem; color: var(--text-gray); max-width: 700px; margin: 0 auto; }
+        main { flex: 1; padding: 80px 0; }
+        .section { margin-bottom: 60px; }
+        .section-title { font-family: 'Crimson Pro', serif; font-size: 2.5rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; }
+        .section-subtitle { font-size: 1.15rem; color: var(--text-gray); margin-bottom: 40px; }
+        .path-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border: 2px solid var(--primary-blue); max-width: 600px; margin: 0 auto; }
+        .path-header { padding: 32px; background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%); color: white; }
+        .path-header h3 { font-family: 'Crimson Pro', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
+        .path-level { display: inline-block; background: rgba(255, 255, 255, 0.2); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-top: 8px; }
+        .path-body { padding: 32px; }
+        .path-body p { color: var(--text-gray); margin-bottom: 24px; line-height: 1.7; }
+        .path-features { list-style: none; margin-bottom: 24px; }
+        .path-features li { color: var(--text-gray); margin-bottom: 10px; padding-left: 24px; position: relative; }
+        .path-features li::before { content: '✓'; position: absolute; left: 0; color: var(--primary-blue); font-weight: bold; }
+        .path-cta { background: var(--text-gray); color: white; padding: 14px 28px; border-radius: 6px; font-weight: 600; text-decoration: none; display: inline-block; width: 100%; text-align: center; cursor: default; opacity: 0.7; }
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .page-header h1 { font-size: 2.5rem; }
+            .path-card { margin: 0 20px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Start Your Learning Journey</h1>
+            <p>Join our introductory session to begin building your bioinformatics knowledge</p>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <section class="section">
+                <h2 class="section-title" style="text-align: center;">Educational Session</h2>
+                <p class="section-subtitle" style="text-align: center;">Begin your bioinformatics journey with our foundational session</p>
+
+                <div class="path-card">
+                    <div class="path-header">
+                        <h3>🎯 Bioinformatics 101</h3>
+                        <span class="path-level">Beginner Friendly</span>
+                    </div>
+                    <div class="path-body">
+                        <p>Perfect for complete beginners. Start with the fundamentals of bioinformatics and understand what the field is all about.</p>
+                        <ul class="path-features">
+                            <li>Introduction to bioinformatics concepts</li>
+                            <li>Real-world applications and use cases</li>
+                            <li>Career paths and opportunities</li>
+                            <li>Getting started with essential tools</li>
+                        </ul>
+                        <span class="path-cta">Coming Soon</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+</body>
+</html>
