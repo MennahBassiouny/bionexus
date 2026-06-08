@@ -119,7 +119,7 @@
             <h2>Pick your workspace (a neutral comparison)</h2>
             <div class="compare"><table>
                 <tr><td>Colab</td><td>Browser-based, zero install, great for learning and sharing. Needs internet; best for notebooks.</td></tr>
-                <tr><td>Jupyter</td><td>Local notebooks (came with your Miniconda install). Excellent for step-by-step, exploratory analysis.</td></tr>
+                <tr><td>Jupyter</td><td>Local notebooks (install with <code class="inline">pip install jupyter</code>). Excellent for step-by-step, exploratory analysis.</td></tr>
                 <tr><td>RStudio</td><td>The natural home for R. Tailored to R projects, plots, and packages.</td></tr>
                 <tr><td>VS Code</td><td>A general editor for scripts and projects in many languages, with a built-in terminal. This page sets it up.</td></tr>
             </table></div>
@@ -166,7 +166,7 @@
                 <li>Search <strong>"Python"</strong> and install the one published by <strong>Microsoft</strong>.</li>
                 <li>It pulls in helpful tools automatically (including support for Jupyter notebooks).</li>
             </ol>
-            <p>If you installed Python with Miniconda earlier, VS Code will detect your <code class="inline">bionexus</code> environment. Pick it via the environment selector at the bottom of the window or the command palette (<code class="inline">Ctrl/Cmd</code>+<code class="inline">Shift</code>+<code class="inline">P</code> → "Python: Select Interpreter").</p>
+            <p>If you created the <code class="inline">bionexus</code> virtual environment earlier, VS Code will detect it. Pick it via the environment selector at the bottom of the window or the command palette (<code class="inline">Ctrl/Cmd</code>+<code class="inline">Shift</code>+<code class="inline">P</code> → "Python: Select Interpreter").</p>
             <div class="why"><h4>Working in R instead?</h4><p>There's also an <strong>R extension</strong> for VS Code if you'd like to use it for R — though for R specifically, many people find <a href="r-install.html">RStudio</a> more comfortable out of the box. Use whichever you prefer.</p></div>
 
             <h2>Step 5 — Run your first file</h2>
@@ -189,7 +189,7 @@
             </div>
 
             <h2>Stuck? Common snags</h2>
-            <details><summary>"Run" doesn't use my conda environment</summary><p>Press <code class="inline">Ctrl/Cmd</code>+<code class="inline">Shift</code>+<code class="inline">P</code>, type "Python: Select Interpreter", and choose your <code class="inline">bionexus</code> environment. VS Code remembers it per folder.</p></details>
+            <details><summary>"Run" doesn't use my bionexus environment</summary><p>Press <code class="inline">Ctrl/Cmd</code>+<code class="inline">Shift</code>+<code class="inline">P</code>, type "Python: Select Interpreter", and choose your <code class="inline">bionexus</code> environment. VS Code remembers it per folder.</p></details>
             <details><summary>Typing <code class="inline">code</code> in the terminal does nothing (Mac)</summary><p>Open VS Code, press <code class="inline">Cmd</code>+<code class="inline">Shift</code>+<code class="inline">P</code>, run "Shell Command: Install 'code' command in PATH", then reopen your terminal.</p></details>
             <details><summary>It looks overwhelming with lots of panels</summary><p>That's normal at first. You really only need three things: the Explorer (files, left), the editor (middle), and the terminal (bottom). Ignore the rest until you need it.</p></details>
 
