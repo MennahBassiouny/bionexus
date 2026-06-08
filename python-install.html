@@ -182,4 +182,24 @@ conda activate bionexus</pre>
             </div>
 
             <h2>Stuck? Common snags</h2>
-            <details><summary>"conda is not recognized" on Windows</summary><p>You're probably in the regular Command Prompt. Close it and open <strong>Anaconda Prompt</strong> from 
+            <details><summary>"conda is not recognized" on Windows</summary><p>You're probably in the regular Command Prompt. Close it and open <strong>Anaconda Prompt</strong> from the Start menu (search for "Anaconda Prompt") and run your <code class="inline">conda</code> commands there instead.</p></details>
+            <details><summary>"conda: command not found" on macOS or Linux</summary><p>Close and reopen your terminal after installing — the installer updates your shell profile, but only new terminal sessions pick it up. If it still fails, run <code class="inline">source ~/miniconda3/bin/activate</code> once, then <code class="inline">conda init</code> and reopen the terminal.</p></details>
+            <details><summary>The installer download is very slow</summary><p>Miniconda is a few hundred MB, so it can take a while on a slow connection. Let it finish — you only install it once. If a step times out, just re-run it; conda resumes where it left off.</p></details>
+            <details><summary>I'm not sure it actually worked</summary><p>Open a fresh terminal and run <code class="inline">conda --version</code> and <code class="inline">python --version</code>. Two version numbers means you're set. Then run <code class="inline">conda activate bionexus</code> and check that your prompt shows <code class="inline">(bionexus)</code>.</p></details>
+
+            <a class="next-lesson" href="python-basics.html"><span>Next in the Python series</span><h3>Python basics with real biological data →</h3></a>
+        </div></div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+</body>
+</html> 
