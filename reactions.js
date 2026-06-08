@@ -1,6 +1,9 @@
 /* BioNexus Hub — lesson reactions (👍/👎) + site-wide feedback button.
    All config lives here so pages only need: <script src="reactions.js" defer></script> */
 (function () {
+  /* ---- Microsoft Clarity analytics (site-wide, project x42dr4bq40) ---- */
+  (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","x42dr4bq40");
+
   var SB = "https://wuyullrwhjrlackilxkx.supabase.co";
   var KEY = "sb_publishable_Ifknlm8w9rTfHISaaV4URQ_cpg-9lX9";
   var FORM = "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=ky6c7Ifqc0SCSJa_dg0BeMmGgTffXlVMpZ2oqB0FKtRUNllZMTU3MlVDRk81TkxaS0JBQ0JYVE9KNC4u";
