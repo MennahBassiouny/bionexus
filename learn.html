@@ -68,6 +68,16 @@
         .found-steps li a { color: var(--primary-blue); text-decoration: none; font-weight: 600; }
         .found-steps li a:hover { color: var(--primary-purple); }
         .found-steps li .t { font-size: 0.72rem; color: var(--text-gray); text-transform: uppercase; letter-spacing: 0.4px; margin-left: auto; white-space: nowrap; }
+        .lesson-search { max-width: 620px; margin: 0 auto 56px; position: relative; }
+        .lesson-search input { width: 100%; padding: 15px 20px; font-family: inherit; font-size: 1.05rem; border: 2px solid rgba(91,156,248,0.3); border-radius: 12px; background: white; color: var(--text-dark); box-shadow: 0 4px 18px rgba(0,0,0,0.05); transition: border-color 0.2s; }
+        .lesson-search input:focus { outline: none; border-color: var(--primary-blue); }
+        .search-results { list-style: none; position: absolute; left: 0; right: 0; top: calc(100% + 6px); background: white; border: 1px solid rgba(91,156,248,0.25); border-radius: 12px; box-shadow: 0 12px 32px rgba(0,0,0,0.12); overflow: hidden; z-index: 60; display: none; }
+        .search-results li { border-top: 1px solid #eef2f7; }
+        .search-results li:first-child { border-top: none; }
+        .search-results li a { display: block; padding: 12px 18px; color: var(--text-dark); text-decoration: none; font-weight: 600; }
+        .search-results li a:hover { background: rgba(91,156,248,0.08); color: var(--primary-blue); }
+        .search-results li a small { display: block; color: var(--text-gray); font-weight: 400; font-size: 0.78rem; margin-top: 2px; text-transform: uppercase; letter-spacing: 0.4px; }
+        .search-results .no-res { padding: 12px 18px; color: var(--text-gray); }
         .section-intro { text-align: center; max-width: 760px; margin: 0 auto 50px; }
         .section-intro h2 { font-family: 'Crimson Pro', serif; font-size: 2.5rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 14px; }
         .section-intro p { font-size: 1.1rem; color: var(--text-gray); }
@@ -152,6 +162,12 @@
 
     <main>
         <div class="container">
+
+            <!-- Lesson search -->
+            <div class="lesson-search">
+                <input type="text" id="lessonSearch" placeholder="🔍 Search lessons — try &quot;FASTQ&quot;, &quot;install R&quot;, or &quot;pandas&quot;…" autocomplete="off" aria-label="Search lessons">
+                <ul id="searchResults" class="search-results"></ul>
+            </div>
 
             <!-- Entry points -->
             <section>
@@ -394,6 +410,49 @@
 
     <script>
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+
+        // Lesson search
+        const LESSONS = [
+            {t:"What bioinformatics actually is", g:"Track 0", u:"intro-what-is-bioinformatics.html", k:"orientation beginner intro field what is"},
+            {t:"What you'll be able to do in 3 months", g:"Track 0", u:"intro-3-month-map.html", k:"roadmap timeline goals map"},
+            {t:"The biology a coder needs", g:"Track 0", u:"intro-biology-for-coders.html", k:"dna gene protein jargon central dogma rna mutation"},
+            {t:"The computing a biologist needs", g:"Track 0", u:"intro-computing-for-biologists.html", k:"code script terminal variable function jargon github"},
+            {t:"Your first 10 lines of Python", g:"Track 0", u:"intro-first-python.html", k:"python colab gc content dna beginner code first"},
+            {t:"Install Python", g:"Foundations", u:"python-install.html", k:"miniconda conda setup windows mac linux pip environment install"},
+            {t:"Python basics for bioinformatics", g:"Foundations", u:"python-basics.html", k:"variables lists dictionaries loops functions strings"},
+            {t:"Project: analyze a real DNA sequence", g:"Foundations · Python", u:"python-project.html", k:"biopython ncbi insulin gc content entrez project"},
+            {t:"Install R & RStudio", g:"Foundations", u:"r-install.html", k:"cran rstudio posit tidyverse setup install r"},
+            {t:"R basics: data frames & plotting", g:"Foundations", u:"r-basics.html", k:"tidyverse ggplot dplyr vector dataframe plot r"},
+            {t:"Project: explore a real dataset with R", g:"Foundations · R", u:"r-project.html", k:"palmer penguins ggplot tidyverse project r"},
+            {t:"Set up a terminal (Bash)", g:"Foundations", u:"bash-install.html", k:"command line wsl windows mac linux git bash terminal install"},
+            {t:"Command-line basics", g:"Foundations", u:"bash-basics.html", k:"bash grep wc pipe cd ls cat files command line"},
+            {t:"Project: wrangle a real data file (Bash)", g:"Foundations · Bash", u:"bash-project.html", k:"fasta grep command line ncbi gc project bash"},
+            {t:"Set up VS Code", g:"Foundations · Tools", u:"vscode-setup.html", k:"editor ide python extension terminal vscode visual studio code"},
+            {t:"Your First RNA-seq Analysis", g:"Track 3 · Flagship", u:"rna-seq-first-analysis.html", k:"deseq pydeseq differential expression volcano rnaseq transcriptomics counts project"},
+            {t:"Sequences, FASTA & FASTQ explained", g:"Track 1", u:"track1-sequences-fasta-fastq.html", k:"fasta fastq quality phred sequence reads format"},
+            {t:"The file-format alphabet soup", g:"Track 1", u:"track1-file-formats.html", k:"sam bam vcf gff gtf bed formats variants alignment annotation"},
+            {t:"Biopython basics", g:"Track 1", u:"track1-biopython-basics.html", k:"seq seqio seqrecord translate reverse complement biopython parse"},
+            {t:"Where the data lives: NCBI, Ensembl, GEO, SRA", g:"Track 1", u:"track1-where-data-lives.html", k:"ncbi ensembl geo sra uniprot entrez database accession fetch download"},
+            {t:"Pandas for biologists", g:"Track 1", u:"track1-pandas-for-biologists.html", k:"pandas dataframe merge groupby tabular data table project"},
+            {t:"Going further: GenBank, big files & joining tables", g:"Track 1", u:"track1-enrichment.html", k:"genbank gzip compressed merge join cds enrichment"},
+            {t:"Resources: datasets & tools", g:"Page", u:"resources.html", k:"datasets tools ncbi colab bioconductor biopython downloads geo"},
+            {t:"About BioNexus Hub", g:"Page", u:"about.html", k:"founder mission instructor story"},
+            {t:"Contact", g:"Page", u:"contact.html", k:"contact email form get in touch"}
+        ];
+        (function(){
+            var inp = document.getElementById('lessonSearch'), out = document.getElementById('searchResults');
+            if (!inp) return;
+            inp.addEventListener('input', function(){
+                var q = inp.value.trim().toLowerCase();
+                if (!q) { out.style.display='none'; out.innerHTML=''; return; }
+                var hits = LESSONS.filter(function(l){ return (l.t + ' ' + l.g + ' ' + l.k).toLowerCase().indexOf(q) !== -1; }).slice(0,8);
+                out.innerHTML = hits.length
+                    ? hits.map(function(l){ return '<li><a href="'+l.u+'">'+l.t+'<small>'+l.g+'</small></a></li>'; }).join('')
+                    : '<li class="no-res">No lessons match — try another word.</li>';
+                out.style.display = 'block';
+            });
+            document.addEventListener('click', function(e){ if (!e.target.closest('.lesson-search')) out.style.display='none'; });
+        })();
     </script>
 </body>
 </html>
