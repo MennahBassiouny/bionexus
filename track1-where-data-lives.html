@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A tour of the public biological databases — NCBI, Ensembl, GEO, SRA, UniProt — and how to fetch records programmatically with Biopython. A free BioNexus Hub lesson.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Where the Data Lives: NCBI, Ensembl, GEO, SRA — BioNexus Hub">
+    <meta property="og:description" content="The public databases professionals use every day, and how to pull data from them.">
+    <meta property="og:url" content="https://bionexushub.com/track1-where-data-lives.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Where the Data Lives — BioNexus Hub">
+    <meta name="twitter:description" content="The public databases professionals use every day, and how to pull data from them.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Where the Data Lives: NCBI, Ensembl, GEO, SRA - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; --amber:#f59e0b; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.88rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .k { color:#c084fc; } pre .s { color:#86efac; } pre .o { color:#7dd3fc; }
+        .db-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:18px; margin:24px 0; }
+        .db-card { background:white; border-radius:12px; padding:22px 24px; box-shadow:0 4px 18px rgba(0,0,0,0.06); border-left:4px solid var(--primary-blue); }
+        .db-card h3 { font-family:'Crimson Pro',serif; font-size:1.3rem; color:var(--deep-navy); margin-bottom:6px; }
+        .db-card p { font-size:0.98rem; color:var(--text-gray); margin-bottom:12px; }
+        .db-card a { color:var(--primary-blue); font-weight:600; text-decoration:none; font-size:0.92rem; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .colab-cta { display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; background:var(--deep-navy); color:white; border-radius:12px; padding:24px 30px; margin:24px 0; }
+        .colab-cta div p:first-child { font-weight:700; font-size:1.12rem; margin-bottom:4px; }
+        .colab-cta div p:last-child { color:rgba(255,255,255,0.7); font-size:0.95rem; margin:0; }
+        .colab-btn { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white; padding:13px 26px; border-radius:8px; font-weight:700; text-decoration:none; white-space:nowrap; }
+        .fallback { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:10px; padding:16px 22px; margin:18px 0; font-size:1rem; color:var(--text-gray); }
+        .fallback strong { color:#b45309; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (4 of 5)</div>
+            <h1>Where the Data Lives</h1>
+            <p class="promise">You rarely generate data from scratch — you download it. Meet the handful of public databases that hold the world's biology, and learn to pull from them in code.</p>
+            <div class="tags">
+                <span class="tag green">🟢 Beginner</span>
+                <span class="tag">⏱️ ~45 min</span>
+                <span class="tag">🐍 Python</span>
+                <span class="tag green">🌐 Mostly browser</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <p>One of the best things about bioinformatics is how much data is <strong>free and public</strong>. Decades of experiments from labs worldwide sit in a few major databases, waiting for you to analyze them. Knowing which database holds what is half the battle.</p>
+
+            <h2>The big five</h2>
+            <div class="db-grid">
+                <div class="db-card">
+                    <h3>NCBI</h3>
+                    <p>The U.S. hub for sequences, genes, and genomes. Home of GenBank and the Entrez search system — your first stop for a gene or a sequence.</p>
+                    <a href="https://www.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">ncbi.nlm.nih.gov →</a>
+                </div>
+                <div class="db-card">
+                    <h3>Ensembl</h3>
+                    <p>Beautifully annotated genomes for humans and many species, with a genome browser. Great for "what genes are near this position?"</p>
+                    <a href="https://www.ensembl.org/" target="_blank" rel="noopener">ensembl.org →</a>
+                </div>
+                <div class="db-card">
+                    <h3>GEO</h3>
+                    <p>Gene Expression Omnibus — a giant archive of expression experiments (including RNA-seq) you can re-analyze, like the dataset in our flagship project.</p>
+                    <a href="https://www.ncbi.nlm.nih.gov/geo/" target="_blank" rel="noopener">GEO →</a>
+                </div>
+                <div class="db-card">
+                    <h3>SRA</h3>
+                    <p>The Sequence Read Archive — the raw FASTQ reads behind published studies. This is where you go for the original sequencing data.</p>
+                    <a href="https://www.ncbi.nlm.nih.gov/sra/" target="_blank" rel="noopener">SRA →</a>
+                </div>
+                <div class="db-card">
+                    <h3>UniProt</h3>
+                    <p>The reference for protein sequences and what they do — function, structure links, and disease associations.</p>
+                    <a href="https://www.uniprot.org/" target="_blank" rel="noopener">uniprot.org →</a>
+                </div>
+            </div>
+
+            <div class="why"><h4>Decode the jargon: accession numbers</h4><p>Every record has a unique ID called an <strong>accession</strong> — like <code class="inline">NM_000207</code> (the insulin mRNA) or <code class="inline">GSE52778</code> (a GEO dataset). Accessions are how you (and your code) ask for one exact record. Collect the accession from a paper or a search, and you can fetch the data anywhere.</p></div>
+
+            <h2>Fetching data in code (not by clicking)</h2>
+            <p>You can download by hand from these websites, but the real power is pulling data <em>programmatically</em> so your analysis is reproducible. Biopython's <code class="inline">Entrez</code> module talks to NCBI for you. (NCBI just asks for an email so they can contact you about heavy usage.)</p>
+
+            <div class="colab-cta">
+                <div>
+                    <p>▶ Code along</p>
+                    <p>In Colab, run <code class="inline">!pip install biopython</code> first.</p>
+                </div>
+                <a class="colab-btn" href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener">Open a blank Colab →</a>
+            </div>
+
+            <pre><span class="k">from</span> Bio <span class="k">import</span> Entrez, SeqIO
+
+Entrez.email = <span class="s">"your.email@example.com"</span>   <span class="c"># any email works</span>
+
+<span class="c"># fetch the human beta-globin mRNA (the sickle-cell gene) by accession</span>
+handle = Entrez.efetch(db=<span class="s">"nucleotide"</span>, id=<span class="s">"NM_000518"</span>,
+                       rettype=<span class="s">"fasta"</span>, retmode=<span class="s">"text"</span>)
+record = SeqIO.read(handle, <span class="s">"fasta"</span>)
+handle.close()
+
+<span class="k">print</span>(record.description)
+<span class="k">print</span>(<span class="s">"Length:"</span>, <span class="k">len</span>(record.seq), <span class="s">"bases"</span>)</pre>
+            <p>That's the same pattern from the <a href="python-project.html">Python project</a> — and it works for any accession. Swap the <code class="inline">id</code> and you can fetch any gene, on demand, in two lines.</p>
+
+            <div class="fallback"><strong>Network blocked?</strong> Some school or work networks block NCBI. If the fetch fails, download the FASTA by hand from <code class="inline">ncbi.nlm.nih.gov/nuccore/NM_000518</code> (Send to → File → FASTA) and load it with <code class="inline">SeqIO.read("file.fasta", "fasta")</code>.</p></div>
+
+            <h2>Searching, not just fetching</h2>
+            <p>Don't have an accession yet? <code class="inline">Entrez.esearch</code> finds matching records first:</p>
+            <pre>search = Entrez.esearch(db=<span class="s">"nucleotide"</span>, term=<span class="s">"BRCA1 Homo sapiens mRNA"</span>, retmax=<span class="s">5</span>)
+results = Entrez.read(search)
+<span class="k">print</span>(results[<span class="s">"IdList"</span>])   <span class="c"># a list of matching record IDs</span></pre>
+            <p>Search to find IDs, then fetch those IDs — that two-step dance is the heart of programmatic data access.</p>
+
+            <h2>Check your understanding</h2>
+            <details><summary>You want the raw FASTQ reads from a published study. Which database?</summary><p>The SRA (Sequence Read Archive). GEO holds processed expression data; SRA holds the raw reads behind it.</p></details>
+            <details><summary>What's an accession number, and why does it matter?</summary><p>A unique ID for one record (e.g., <code class="inline">NM_000518</code>). It lets you — or your code — request that exact record reproducibly, from anywhere.</p></details>
+            <details><summary>Why fetch data in code rather than clicking download?</summary><p>Reproducibility. A script that fetches by accession can be re-run by anyone to get the identical data, and it scales to hundreds of records without manual clicking.</p></details>
+
+            <a class="next-lesson" href="track1-pandas-for-biologists.html">
+                <span>Last in Track 1 — the payoff</span>
+                <h3>Pandas for biologists + your Track 1 project →</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+</body>
+</html>

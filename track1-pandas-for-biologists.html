@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Pandas for biologists: load, filter, group, and summarize tabular data — then complete the Track 1 project by fetching and summarizing real genes. A free BioNexus Hub lesson.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Pandas for Biologists + Track 1 Project — BioNexus Hub">
+    <meta property="og:description" content="Tabular data without tears, ending in a real-data project: fetch and summarize genes from NCBI.">
+    <meta property="og:url" content="https://bionexushub.com/track1-pandas-for-biologists.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Pandas for Biologists + Track 1 Project — BioNexus Hub">
+    <meta name="twitter:description" content="Tabular data without tears, ending in a real-data project.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Pandas for Biologists - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; --amber:#f59e0b; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.88rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .k { color:#c084fc; } pre .s { color:#86efac; } pre .o { color:#7dd3fc; }
+        .prereq { background:white; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:20px 24px; margin-bottom:16px; }
+        .prereq h4 { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--primary-blue); margin-bottom:8px; }
+        .prereq p { font-size:1rem; color:var(--text-gray); margin:0; } .prereq a { color:var(--primary-blue); }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .colab-cta { display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; background:var(--deep-navy); color:white; border-radius:12px; padding:24px 30px; margin:24px 0; }
+        .colab-cta div p:first-child { font-weight:700; font-size:1.12rem; margin-bottom:4px; }
+        .colab-cta div p:last-child { color:rgba(255,255,255,0.7); font-size:0.95rem; margin:0; }
+        .colab-btn { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white; padding:13px 26px; border-radius:8px; font-weight:700; text-decoration:none; white-space:nowrap; }
+        .project { background:white; border:2px solid rgba(168,85,247,0.35); border-radius:16px; padding:30px 32px; margin:32px 0; box-shadow:0 6px 28px rgba(168,85,247,0.12); }
+        .project .label { font-size:0.78rem; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:var(--primary-purple); }
+        .project h2 { margin:6px 0 12px; }
+        .step-num { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white; font-weight:700; font-size:0.9rem; margin-right:10px; vertical-align:middle; }
+        .fallback { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:10px; padding:16px 22px; margin:18px 0; font-size:1rem; color:var(--text-gray); }
+        .fallback strong { color:#b45309; }
+        .celebrate { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white; border-radius:16px; padding:36px 32px; text-align:center; margin:36px 0; }
+        .celebrate h2 { font-family:'Crimson Pro',serif; color:white; margin:0 0 10px; font-size:2rem; }
+        .celebrate p { opacity:0.95; margin:0 auto; max-width:580px; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:24px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (5 of 5)</div>
+            <h1>Pandas for Biologists</h1>
+            <p class="promise">Most biological data is a table — samples, genes, measurements. Pandas is how you handle tables in Python without tears. Learn it, then use it to finish Track 1.</p>
+            <div class="tags">
+                <span class="tag green">🟢→🟡 Beginner</span>
+                <span class="tag">⏱️ ~1 hr</span>
+                <span class="tag">🐍 Python · pandas</span>
+                <span class="tag green">🧬 Real-data project</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="prereq">
+                <h4>Before you start</h4>
+                <p>You can fetch records from NCBI (<a href="track1-where-data-lives.html">lesson 4</a>) and run Python. In Colab, run <code class="inline">!pip install biopython pandas</code> first.</p>
+            </div>
+
+            <h2>The DataFrame: a spreadsheet in Python</h2>
+            <p>Pandas' core object is the <strong>DataFrame</strong> — a table with named columns and rows. If you've used Excel or the R lesson, this will feel familiar.</p>
+            <pre><span class="k">import</span> pandas <span class="k">as</span> pd
+
+genes = pd.DataFrame({
+    <span class="s">"gene"</span>:   [<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>, <span class="s">"MYC"</span>],
+    <span class="s">"length"</span>: [<span class="o">19149</span>, <span class="o">81189</span>, <span class="o">188307</span>, <span class="o">5318</span>],
+    <span class="s">"chrom"</span>:  [<span class="s">"17"</span>, <span class="s">"17"</span>, <span class="s">"7"</span>, <span class="s">"8"</span>],
+})
+genes.head()        <span class="c"># preview the first rows</span>
+genes[<span class="s">"length"</span>]      <span class="c"># pull out one column</span></pre>
+
+            <h2>The four moves you'll use constantly</h2>
+            <pre><span class="c"># 1. FILTER rows by a condition</span>
+big = genes[genes[<span class="s">"length"</span>] &gt; <span class="o">10000</span>]
+
+<span class="c"># 2. SORT</span>
+genes.sort_values(<span class="s">"length"</span>, ascending=<span class="k">False</span>)
+
+<span class="c"># 3. a new COLUMN computed from others</span>
+genes[<span class="s">"length_kb"</span>] = genes[<span class="s">"length"</span>] / <span class="o">1000</span>
+
+<span class="c"># 4. SUMMARIZE — overall and per group</span>
+<span class="k">print</span>(genes[<span class="s">"length"</span>].mean())
+genes.groupby(<span class="s">"chrom"</span>)[<span class="s">"length"</span>].mean()   <span class="c"># average length per chromosome</span></pre>
+            <div class="why"><h4>Why pandas is worth learning once</h4><p>Filter, sort, compute, group, summarize — these five verbs answer most questions you'll ever ask of a data table, whether it's 4 genes or 40,000. Learn them here and they pay off in every later track, including the RNA-seq results table.</p></div>
+
+            <h2>Reading real files</h2>
+            <p>Real data usually arrives as a CSV. One line loads it:</p>
+            <pre>df = pd.read_csv(<span class="s">"my_data.csv"</span>)
+df.info()       <span class="c"># columns, types, and missing values at a glance</span></pre>
+
+            <!-- PROJECT -->
+            <div class="project">
+                <span class="label">★ Track 1 project — the payoff</span>
+                <h2>Fetch &amp; summarize real genes</h2>
+                <p>Time to combine everything in Track 1: pull real gene sequences from NCBI, then use pandas to build a clean summary table comparing them. This is your portfolio-ready deliverable.</p>
+
+                <div class="colab-cta">
+                    <div>
+                        <p>▶ Build it in a notebook</p>
+                        <p>Run <code class="inline">!pip install biopython pandas</code> first.</p>
+                    </div>
+                    <a class="colab-btn" href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener">Open a blank Colab →</a>
+                </div>
+
+                <h3 style="font-family:'Crimson Pro',serif; color:var(--deep-navy); margin:18px 0 8px;"><span class="step-num">1</span>Fetch three real genes</h3>
+                <pre><span class="k">from</span> Bio <span class="k">import</span> Entrez, SeqIO
+<span class="k">import</span> pandas <span class="k">as</span> pd
+
+Entrez.email = <span class="s">"your.email@example.com"</span>
+
+accessions = {
+    <span class="s">"insulin"</span>:      <span class="s">"NM_000207"</span>,
+    <span class="s">"beta-globin"</span>:  <span class="s">"NM_000518"</span>,
+    <span class="s">"APP"</span>:          <span class="s">"NM_000484"</span>,
+}
+
+seqs = {}
+<span class="k">for</span> name, acc <span class="k">in</span> accessions.items():
+    h = Entrez.efetch(db=<span class="s">"nucleotide"</span>, id=acc, rettype=<span class="s">"fasta"</span>, retmode=<span class="s">"text"</span>)
+    seqs[name] = <span class="k">str</span>(SeqIO.read(h, <span class="s">"fasta"</span>).seq)
+    h.close()</pre>
+
+                <h3 style="font-family:'Crimson Pro',serif; color:var(--deep-navy); margin:18px 0 8px;"><span class="step-num">2</span>Summarize with pandas</h3>
+                <pre>rows = []
+<span class="k">for</span> name, seq <span class="k">in</span> seqs.items():
+    n = <span class="k">len</span>(seq)
+    gc = (seq.count(<span class="s">"G"</span>) + seq.count(<span class="s">"C"</span>)) / n * <span class="o">100</span>
+    rows.append({
+        <span class="s">"gene"</span>: name, <span class="s">"length"</span>: n, <span class="s">"GC_percent"</span>: <span class="k">round</span>(gc, <span class="o">1</span>),
+        <span class="s">"A"</span>: seq.count(<span class="s">"A"</span>), <span class="s">"C"</span>: seq.count(<span class="s">"C"</span>),
+        <span class="s">"G"</span>: seq.count(<span class="s">"G"</span>), <span class="s">"T"</span>: seq.count(<span class="s">"T"</span>),
+    })
+
+df = pd.DataFrame(rows)
+df</pre>
+
+                <h3 style="font-family:'Crimson Pro',serif; color:var(--deep-navy); margin:18px 0 8px;"><span class="step-num">3</span>Ask questions of your table</h3>
+                <pre>df.sort_values(<span class="s">"GC_percent"</span>, ascending=<span class="k">False</span>)        <span class="c"># most GC-rich first</span>
+<span class="k">print</span>(<span class="s">"Mean GC%:"</span>, <span class="k">round</span>(df[<span class="s">"GC_percent"</span>].mean(), <span class="o">1</span>))
+<span class="k">print</span>(<span class="s">"Longest gene:"</span>, df.loc[df[<span class="s">"length"</span>].idxmax(), <span class="s">"gene"</span>])
+
+<span class="c"># save your summary — your deliverable</span>
+df.to_csv(<span class="s">"gene_summary.csv"</span>, index=<span class="k">False</span>)</pre>
+
+                <h3 style="font-family:'Crimson Pro',serif; color:var(--deep-navy); margin:18px 0 8px;"><span class="step-num">4</span>Visualize it</h3>
+                <pre><span class="k">import</span> matplotlib.pyplot <span class="k">as</span> plt
+df.plot(x=<span class="s">"gene"</span>, y=<span class="s">"GC_percent"</span>, kind=<span class="s">"bar"</span>, legend=<span class="k">False</span>,
+        color=<span class="s">"#5b9cf8"</span>, title=<span class="s">"GC content by gene"</span>)
+plt.ylabel(<span class="s">"GC %"</span>); plt.tight_layout(); plt.show()</pre>
+
+                <div class="fallback"><strong>Network blocked?</strong> If NCBI is unreachable, paste any three sequences directly into the <code class="inline">seqs</code> dictionary instead of fetching — every step from #2 onward works identically.</div>
+            </div>
+
+            <div class="celebrate">
+                <h2>🎉 You've finished Track 1!</h2>
+                <p>You can now read sequence files, recognize every major format, manipulate sequences with Biopython, pull real data from public databases, and summarize it with pandas — and you built a portfolio-ready gene summary to prove it.</p>
+            </div>
+
+            <p><strong>Put it on your portfolio.</strong> Save the notebook and <code class="inline">gene_summary.csv</code> to a GitHub repo with a short README explaining what it does. That's a real, shareable piece of work — exactly what the reproducibility-and-career track will help you polish.</p>
+
+            <details><summary>The translate or fetch warned about something — did it fail?</summary><p>Warnings (like a sequence length not being a multiple of three) aren't errors — the code still produced your table. Read the message, but if you got a DataFrame, you succeeded.</p></details>
+
+            <a class="next-lesson" href="learn.html">
+                <span>You've completed the data-literacy track</span>
+                <h3>Back to the roadmap — pick your next track →</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+</body>
+</html>

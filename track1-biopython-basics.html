@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Learn Biopython: parse, manipulate, and write sequences — Seq, SeqRecord, SeqIO, transcription, translation, and reverse complement. A free BioNexus Hub lesson.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Biopython Basics: Parse, Manipulate, Write — BioNexus Hub">
+    <meta property="og:description" content="The Python toolkit for biological sequences, hands-on in your browser.">
+    <meta property="og:url" content="https://bionexushub.com/track1-biopython-basics.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Biopython Basics — BioNexus Hub">
+    <meta name="twitter:description" content="The Python toolkit for biological sequences, hands-on in your browser.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Biopython Basics: Parse, Manipulate, Write - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; --amber:#f59e0b; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.88rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .k { color:#c084fc; } pre .s { color:#86efac; } pre .o { color:#7dd3fc; }
+        .prereq { background:white; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:20px 24px; margin-bottom:16px; }
+        .prereq h4 { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--primary-blue); margin-bottom:8px; }
+        .prereq p { font-size:1rem; color:var(--text-gray); margin:0; } .prereq a { color:var(--primary-blue); }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .colab-cta { display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; background:var(--deep-navy); color:white; border-radius:12px; padding:24px 30px; margin:24px 0; }
+        .colab-cta div p:first-child { font-weight:700; font-size:1.12rem; margin-bottom:4px; }
+        .colab-cta div p:last-child { color:rgba(255,255,255,0.7); font-size:0.95rem; margin:0; }
+        .colab-btn { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white; padding:13px 26px; border-radius:8px; font-weight:700; text-decoration:none; white-space:nowrap; }
+        .challenge { background:white; border:2px solid rgba(168,85,247,0.3); border-radius:12px; padding:24px 28px; margin:28px 0; }
+        .challenge h3 { font-family:'Crimson Pro',serif; color:var(--primary-purple); margin-bottom:10px; }
+        .challenge ul { margin:0 0 0 22px; } .challenge li { margin-bottom:8px; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (3 of 5)</div>
+            <h1>Biopython Basics: Parse, Manipulate, Write</h1>
+            <p class="promise">Biopython is the Swiss-army knife for biological data in Python. Learn the few objects and methods that handle 90% of everyday sequence work.</p>
+            <div class="tags">
+                <span class="tag green">🟢→🟡 Beginner</span>
+                <span class="tag">⏱️ ~1 hr</span>
+                <span class="tag">🐍 Python · Biopython</span>
+                <span class="tag green">🌐 Runs in your browser</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="prereq">
+                <h4>Before you start</h4>
+                <p>You've met FASTA/FASTQ in <a href="track1-sequences-fasta-fastq.html">lesson 1</a> and can run Python. In Colab, start each notebook with <code class="inline">!pip install biopython</code>.</p>
+            </div>
+
+            <h2>The one import to remember</h2>
+            <p>Biopython gives you two workhorses: the <strong><code class="inline">Seq</code></strong> object (a sequence with biology-aware methods) and <strong><code class="inline">SeqIO</code></strong> (read/write sequence files). Almost everything starts with these.</p>
+            <pre><span class="k">from</span> Bio.Seq <span class="k">import</span> Seq
+<span class="k">from</span> Bio <span class="k">import</span> SeqIO</pre>
+
+            <h2>The Seq object: a sequence that knows biology</h2>
+            <p>A plain Python string can't transcribe or translate itself. A Biopython <code class="inline">Seq</code> can.</p>
+            <pre>dna = Seq(<span class="s">"ATGGCCCTGTGGATGCGCTAA"</span>)
+
+<span class="k">print</span>(<span class="k">len</span>(dna))                 <span class="c"># length</span>
+<span class="k">print</span>(dna.complement())        <span class="c"># pair each base (A↔T, G↔C)</span>
+<span class="k">print</span>(dna.reverse_complement()) <span class="c"># the other strand, read 5'→3'</span>
+<span class="k">print</span>(dna.transcribe())        <span class="c"># DNA → RNA (T becomes U)</span>
+<span class="k">print</span>(dna.translate())          <span class="c"># RNA/DNA → protein (amino acids)</span></pre>
+            <div class="why"><h4>Decode the jargon: reverse complement</h4><p>DNA is double-stranded. If one strand reads <code class="inline">ATGC</code>, the partner strand reads <code class="inline">GCAT</code> (complement each base, then reverse the order). You need the <strong>reverse complement</strong> constantly — for example, when a gene sits on the opposite strand. Biopython does it in one call.</p></div>
+
+            <h2>SeqIO: reading files (the pattern that scales)</h2>
+            <p>Two methods cover almost everything. <code class="inline">SeqIO.read()</code> for a file with <em>one</em> record; <code class="inline">SeqIO.parse()</code> for a file with <em>many</em>.</p>
+            <pre><span class="c"># make a multi-record FASTA to work with</span>
+<span class="k">with</span> <span class="k">open</span>(<span class="s">"genes.fasta"</span>, <span class="s">"w"</span>) <span class="k">as</span> f:
+    f.write(<span class="s">"&gt;insulin\nATGGCCCTGTGGATGCGCCTC\n"</span>)
+    f.write(<span class="s">"&gt;globin\nATGGTGCATCTGACTCCTGAG\n"</span>)
+    f.write(<span class="s">"&gt;short\nATGAAA\n"</span>)
+
+<span class="k">for</span> rec <span class="k">in</span> SeqIO.parse(<span class="s">"genes.fasta"</span>, <span class="s">"fasta"</span>):
+    <span class="k">print</span>(rec.id, <span class="k">len</span>(rec.seq), <span class="s">"bp"</span>)</pre>
+            <p>Each <code class="inline">rec</code> is a <strong>SeqRecord</strong> — a sequence plus its metadata: <code class="inline">rec.id</code> (the name), <code class="inline">rec.description</code>, and <code class="inline">rec.seq</code> (the <code class="inline">Seq</code> itself).</p>
+
+            <h2>Manipulate: filter records</h2>
+            <p>A real task: keep only the records longer than some cutoff. Just loop and test.</p>
+            <pre>keep = [rec <span class="k">for</span> rec <span class="k">in</span> SeqIO.parse(<span class="s">"genes.fasta"</span>, <span class="s">"fasta"</span>)
+        <span class="k">if</span> <span class="k">len</span>(rec.seq) &gt;= <span class="o">15</span>]
+
+<span class="k">print</span>(<span class="s">"Kept"</span>, <span class="k">len</span>(keep), <span class="s">"of 3 records"</span>)</pre>
+
+            <h2>Write: save your results</h2>
+            <p>Whatever records you've kept or changed, <code class="inline">SeqIO.write()</code> saves them back to a file in any format.</p>
+            <pre>SeqIO.write(keep, <span class="s">"filtered.fasta"</span>, <span class="s">"fasta"</span>)
+<span class="k">print</span>(<span class="s">"Saved filtered.fasta"</span>)</pre>
+            <p>That's the full cycle — <strong>read → manipulate → write</strong> — and it's the backbone of countless real scripts. You now have the tools to process a sequence file of any size.</p>
+
+            <div class="challenge">
+                <h3>🚀 Make it your own</h3>
+                <ul>
+                    <li>Print the <strong>reverse complement</strong> of each record in <code class="inline">genes.fasta</code>.</li>
+                    <li>Translate each sequence to protein and print the result (remember a clean coding sequence is a multiple of 3).</li>
+                    <li>Write only the records whose ID contains "globin" to a new file.</li>
+                    <li>Convert <code class="inline">genes.fasta</code> to a different format in one line: <code class="inline">SeqIO.convert("genes.fasta","fasta","genes.tab","tab")</code>.</li>
+                </ul>
+            </div>
+
+            <h2>Check your understanding</h2>
+            <details><summary>When do you use <code class="inline">SeqIO.read()</code> vs <code class="inline">SeqIO.parse()</code>?</summary><p><code class="inline">read()</code> for a file with exactly one record (it returns that single record); <code class="inline">parse()</code> for a file with one or many (it returns an iterator you loop over).</p></details>
+            <details><summary>What does a SeqRecord contain that a plain Seq doesn't?</summary><p>Metadata — the <code class="inline">.id</code>, <code class="inline">.description</code>, and other annotations — wrapped around the <code class="inline">.seq</code>. A <code class="inline">Seq</code> is just the letters; a <code class="inline">SeqRecord</code> is the letters plus their label.</p></details>
+            <details><summary>Why use a Seq object instead of a regular string?</summary><p>Because it carries biology-aware methods: <code class="inline">complement</code>, <code class="inline">reverse_complement</code>, <code class="inline">transcribe</code>, <code class="inline">translate</code>. A plain string can't do those.</p></details>
+
+            <a class="next-lesson" href="track1-where-data-lives.html">
+                <span>Next in Track 1</span>
+                <h3>Where the data lives: NCBI, Ensembl, GEO, SRA →</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+</body>
+</html>
