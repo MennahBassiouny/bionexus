@@ -106,6 +106,39 @@
 
             <p>Beyond FASTA and FASTQ, a handful of other text formats show up constantly in genomics. Each one exists to answer a single, specific question. Learn the question, and the format makes sense. Here's the whole family.</p>
 
+            <figure style="margin:24px 0;">
+                <svg viewBox="0 0 760 300" role="img" aria-label="A typical genomics pipeline: FASTQ reads are aligned to a reference genome to produce SAM/BAM, which is then used to call variants into a VCF; annotation comes from GFF/GTF and BED." style="width:100%; height:auto; background:#ffffff; border:1px solid rgba(91,156,248,0.25); border-radius:12px;">
+                    <defs>
+                        <marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#64748b"/></marker>
+                    </defs>
+                    <text x="28" y="34" font-family="Georgia,'Crimson Pro',serif" font-size="20" font-weight="700" fill="#0f172a">How the formats fit together</text>
+                    <!-- FASTQ -->
+                    <rect x="18" y="60" width="176" height="74" rx="10" fill="#eff5ff" stroke="#5b9cf8" stroke-width="2"/>
+                    <text x="106" y="92" text-anchor="middle" font-family="monospace" font-size="18" font-weight="700" fill="#0f172a">FASTQ</text>
+                    <text x="106" y="114" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#64748b">raw reads</text>
+                    <!-- SAM/BAM -->
+                    <rect x="292" y="60" width="176" height="74" rx="10" fill="#f6effe" stroke="#a855f7" stroke-width="2"/>
+                    <text x="380" y="92" text-anchor="middle" font-family="monospace" font-size="18" font-weight="700" fill="#0f172a">SAM / BAM</text>
+                    <text x="380" y="114" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#64748b">where reads mapped</text>
+                    <!-- VCF -->
+                    <rect x="566" y="60" width="176" height="74" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+                    <text x="654" y="92" text-anchor="middle" font-family="monospace" font-size="18" font-weight="700" fill="#0f172a">VCF</text>
+                    <text x="654" y="114" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" fill="#64748b">the differences</text>
+                    <!-- arrows -->
+                    <line x1="196" y1="97" x2="288" y2="97" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+                    <text x="242" y="86" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="600" fill="#475569">align</text>
+                    <line x1="470" y1="97" x2="562" y2="97" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+                    <text x="516" y="86" text-anchor="middle" font-family="Arial,sans-serif" font-size="12" font-weight="600" fill="#475569">call variants</text>
+                    <!-- reference / annotation -->
+                    <rect x="232" y="212" width="296" height="58" rx="10" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
+                    <text x="380" y="238" text-anchor="middle" font-family="Arial,sans-serif" font-size="14" font-weight="700" fill="#0f172a">Reference genome (FASTA)</text>
+                    <text x="380" y="257" text-anchor="middle" font-family="Arial,sans-serif" font-size="12.5" fill="#64748b">+ GFF / GTF annotation · BED regions</text>
+                    <line x1="380" y1="212" x2="380" y2="138" stroke="#64748b" stroke-width="2" marker-end="url(#arrow)"/>
+                    <text x="392" y="180" font-family="Arial,sans-serif" font-size="12" font-weight="600" fill="#475569">maps reads to positions</text>
+                </svg>
+                <figcaption style="text-align:center; color:#64748b; font-size:0.9rem; margin-top:8px;">A typical pipeline: reads → align against a reference → variants. Annotation (GFF/GTF, BED) says where the genes and regions are.</figcaption>
+            </figure>
+
             <h2>SAM / BAM <span class="badge">Where did each read map?</span></h2>
             <p>After you sequence a sample, you have millions of short reads. The next step is figuring out <em>where in the genome each read came from</em> — that's alignment. The result is stored as <strong>SAM</strong> (Sequence Alignment/Map), a text table with one row per read showing which chromosome and position it matched.</p>
             <pre><span class="c"># one read's row (simplified): name, position, sequence...</span>

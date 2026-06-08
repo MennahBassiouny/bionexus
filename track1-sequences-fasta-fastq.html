@@ -131,6 +131,32 @@ ATGCGTACGTTAGCCGTA             <span class="c"># 2. the sequence</span>
 IIIIIIIHHHHHGGGFFF             <span class="c"># 4. one quality score per base</span></pre>
             <p>Line 4 has one character for each base in line 2, encoding how confident the machine was about that base. Those symbols look cryptic, but they map to numbers.</p>
 
+            <figure style="margin:24px 0;">
+                <svg viewBox="0 0 720 250" role="img" aria-label="Anatomy of a FASTQ record: four lines — identifier, sequence, separator, and quality scores, one per base." style="width:100%; height:auto; background:#ffffff; border:1px solid rgba(91,156,248,0.25); border-radius:12px;">
+                    <text x="28" y="36" font-family="Georgia, 'Crimson Pro', serif" font-size="20" font-weight="700" fill="#0f172a">Anatomy of one FASTQ record</text>
+                    <!-- Row 1 -->
+                    <circle cx="44" cy="78" r="13" fill="#5b9cf8"/><text x="44" y="83" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">1</text>
+                    <text x="70" y="84" font-family="monospace" font-size="17" fill="#0f172a">@read1</text>
+                    <text x="430" y="84" font-family="Arial,sans-serif" font-size="14" font-weight="600" fill="#3b6fd4">Identifier — starts with @</text>
+                    <!-- Row 2 -->
+                    <circle cx="44" cy="123" r="13" fill="#a855f7"/><text x="44" y="128" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">2</text>
+                    <text x="70" y="129" font-family="monospace" font-size="17" fill="#0f172a">ATGCGTACGTTAGCCGTA</text>
+                    <text x="430" y="129" font-family="Arial,sans-serif" font-size="14" font-weight="600" fill="#8b3fd1">The DNA / RNA sequence</text>
+                    <!-- Row 3 -->
+                    <circle cx="44" cy="168" r="13" fill="#94a3b8"/><text x="44" y="173" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">3</text>
+                    <text x="70" y="174" font-family="monospace" font-size="17" fill="#0f172a">+</text>
+                    <text x="430" y="174" font-family="Arial,sans-serif" font-size="14" font-weight="600" fill="#64748b">Separator (just a +)</text>
+                    <!-- Row 4 -->
+                    <circle cx="44" cy="213" r="13" fill="#10b981"/><text x="44" y="218" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">4</text>
+                    <text x="70" y="219" font-family="monospace" font-size="17" fill="#0f172a">IIIIIIIHHHHHGGGFFF</text>
+                    <text x="430" y="219" font-family="Arial,sans-serif" font-size="14" font-weight="600" fill="#047857">Quality — one score per base</text>
+                    <!-- alignment guide between seq and quality -->
+                    <line x1="70" y1="137" x2="70" y2="205" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3 3"/>
+                    <line x1="280" y1="137" x2="280" y2="205" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3 3"/>
+                </svg>
+                <figcaption style="text-align:center; color:#64748b; font-size:0.9rem; margin-top:8px;">Four lines per record. Lines 2 and 4 are always the same length — one quality score for every base.</figcaption>
+            </figure>
+
             <div class="why"><h4>Decode the jargon: Phred quality scores</h4><p>Each quality character represents a <strong>Phred score</strong> — a number saying how likely the base is wrong. A score of 30 means a 1-in-1,000 chance of error (99.9% confident); 40 means 1-in-10,000. The characters are just those numbers shifted into printable symbols. You rarely read them by eye — tools like FastQC summarize them for you — but now you know what line 4 <em>is</em>.</p></div>
 
             <h2>Hands-on: read both formats</h2>
