@@ -128,7 +128,7 @@ GCCCTCTGGGGACCTGACCCAGCCGCAGCCTTTGTGAACCAA</pre>
             <pre><span class="h">@read1</span>                          <span class="c"># 1. ID line, starts with @</span>
 ATGCGTACGTTAGCCGTA             <span class="c"># 2. the sequence</span>
 +                              <span class="c"># 3. a separator (just a +)</span>
-IIIIIIIHHHHHGGGFFFE            <span class="c"># 4. a quality score per base</span></pre>
+IIIIIIIHHHHHGGGFFF             <span class="c"># 4. one quality score per base</span></pre>
             <p>Line 4 has one character for each base in line 2, encoding how confident the machine was about that base. Those symbols look cryptic, but they map to numbers.</p>
 
             <div class="why"><h4>Decode the jargon: Phred quality scores</h4><p>Each quality character represents a <strong>Phred score</strong> — a number saying how likely the base is wrong. A score of 30 means a 1-in-1,000 chance of error (99.9% confident); 40 means 1-in-10,000. The characters are just those numbers shifted into printable symbols. You rarely read them by eye — tools like FastQC summarize them for you — but now you know what line 4 <em>is</em>.</p></div>
