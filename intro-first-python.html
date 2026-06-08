@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your First 10 Lines of Python - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; --amber:#f59e0b; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.9rem; line-height:1.7; }
+        pre .c { color:#64748b; } pre .k { color:#c084fc; } pre .s { color:#86efac; } pre .o { color:#7dd3fc; }
+        .colab-cta { display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; background:var(--deep-navy); color:white; border-radius:12px; padding:24px 30px; margin:24px 0; }
+        .colab-cta div p:first-child { font-weight:700; font-size:1.12rem; margin-bottom:4px; }
+        .colab-cta div p:last-child { color:rgba(255,255,255,0.7); font-size:0.95rem; margin:0; }
+        .colab-btn { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white; padding:13px 26px; border-radius:8px; font-weight:700; text-decoration:none; white-space:nowrap; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .result { background:rgba(16,185,129,0.08); border-left:4px solid var(--green); border-radius:8px; padding:14px 20px; margin:14px 0; font-family:'JetBrains Mono',monospace; font-size:0.9rem; color:#065f46; white-space:pre-wrap; }
+        .celebrate { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white; border-radius:16px; padding:36px 32px; text-align:center; margin:36px 0; }
+        .celebrate h2 { font-family:'Crimson Pro',serif; color:white; margin:0 0 10px; font-size:2rem; }
+        .celebrate p { opacity:0.95; margin:0 auto; max-width:560px; }
+        .nextsteps { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:24px; }
+        .nextsteps a { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:20px 24px; text-decoration:none; transition:all 0.3s; }
+        .nextsteps a:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .nextsteps span { font-size:0.78rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .nextsteps h3 { font-family:'Crimson Pro',serif; font-size:1.2rem; color:var(--deep-navy); margin-top:4px; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} .nextsteps{grid-template-columns:1fr;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 0: Orientation (5 of 5)</div>
+            <h1>Your First 10 Lines of Python</h1>
+            <p class="promise">Right now, in your browser, with nothing to install — you'll write real code that reads a DNA sequence and analyzes it. This is the moment you stop reading about bioinformatics and start doing it.</p>
+            <div class="tags">
+                <span class="tag green">🟢 Beginner · hands-on</span>
+                <span class="tag">⏱️ ~45 min</span>
+                <span class="tag">🐍 Python</span>
+                <span class="tag green">🌐 No install</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <p>No setup, no installation, no excuses. We'll use <strong>Google Colab</strong> — a free coding notebook that runs in your browser. You just need a Google account. Let's go.</p>
+
+            <div class="colab-cta">
+                <div>
+                    <p>▶ Open your notebook</p>
+                    <p>Click below to open a blank Colab. You'll type code into the box, then press the ▶ button (or Shift+Enter) to run it.</p>
+                </div>
+                <a class="colab-btn" href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener">Open a blank Colab →</a>
+            </div>
+            <div class="why"><h4>How a notebook works</h4><p>A Colab notebook is made of <strong>cells</strong> — boxes you type code into. Run a cell and its output appears right underneath. Type each block below into a cell and run it before moving on. Making mistakes is free here, so experiment.</p></div>
+
+            <h2>Line 1–2: store and show a DNA sequence</h2>
+            <p>First, we put a DNA sequence into a <strong>variable</strong> — a named container — then print it to the screen.</p>
+            <pre>dna = <span class="s">"ATGCGTACGTTAGCCGTA"</span>
+<span class="k">print</span>(dna)</pre>
+            <p>Run it. The computer shows you back the sequence:</p>
+            <div class="result">ATGCGTACGTTAGCCGTA</div>
+            <p>That's it — you just ran code. <code class="inline">dna</code> is now a labelled box holding your sequence, and <code class="inline">print()</code> displays whatever you give it.</p>
+
+            <h2>Line 3: how long is it?</h2>
+            <pre><span class="k">print</span>(<span class="k">len</span>(dna))</pre>
+            <div class="result">18</div>
+            <p><code class="inline">len()</code> counts the characters — here, 18 bases. On a real genome this same command would count millions, instantly.</p>
+
+            <h2>Line 4–7: count each base</h2>
+            <p>Now something genuinely useful — count how many of each base the sequence contains.</p>
+            <pre><span class="k">print</span>(<span class="s">"A:"</span>, dna.count(<span class="s">"A"</span>))
+<span class="k">print</span>(<span class="s">"C:"</span>, dna.count(<span class="s">"C"</span>))
+<span class="k">print</span>(<span class="s">"G:"</span>, dna.count(<span class="s">"G"</span>))
+<span class="k">print</span>(<span class="s">"T:"</span>, dna.count(<span class="s">"T"</span>))</pre>
+            <div class="result">A: 4
+C: 4
+G: 5
+T: 5</div>
+            <p><code class="inline">.count("G")</code> asks the sequence "how many G's do you contain?" You're now extracting information from biological data with code.</p>
+
+            <h2>Line 8–10: compute GC content</h2>
+            <p>Finally, a real metric biologists actually use — the percentage of bases that are G or C.</p>
+            <pre>gc = (dna.count(<span class="s">"G"</span>) + dna.count(<span class="s">"C"</span>)) / <span class="k">len</span>(dna) * <span class="o">100</span>
+<span class="k">print</span>(<span class="s">"GC content:"</span>, <span class="k">round</span>(gc, <span class="o">1</span>), <span class="s">"%"</span>)</pre>
+            <div class="result">GC content: 50.0 %</div>
+            <div class="why"><h4>You just did real bioinformatics</h4><p>GC content is a genuine measure scientists use — it relates to how stable a stretch of DNA is and helps characterize genes and genomes. You computed it yourself, from scratch, in your first coding session. That's the entire field in miniature: take biological data, write a few lines, get a real answer.</p></div>
+
+            <div class="celebrate">
+                <h2>🎉 You finished Track 0!</h2>
+                <p>You understand what bioinformatics is, you've got the vocabulary, and you've written and run real code that analyzes DNA. You are no longer a complete beginner — you're someone who has done this.</p>
+            </div>
+
+            <h2>Make it yours (60-second challenge)</h2>
+            <p>Change the <code class="inline">dna</code> sequence on line 1 to something else — make it longer, or all A's and T's — and re-run everything. Watch the counts and GC content change. Tinkering like this is exactly how you learn.</p>
+            <details><summary>What GC content would "AAATTTAAA" have?</summary><p>0% — there are no G or C bases at all, so the GC count is zero. Try it and confirm!</p></details>
+
+            <h2>Where to go next</h2>
+            <p>You've got two great paths from here. Set up the tools properly on your own machine, or keep building data skills. Either works — pick what excites you.</p>
+            <div class="nextsteps">
+                <a href="python-install.html">
+                    <span>Set up your own machine</span>
+                    <h3>Install Python properly →</h3>
+                </a>
+                <a href="learn.html#track-1">
+                    <span>Keep learning</span>
+                    <h3>Track 1: Working with biological data →</h3>
+                </a>
+            </div>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+</body>
+</html>

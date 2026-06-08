@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Computing a Biologist Needs - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        .analogy { background:#0f172a; color:#e2e8f0; border-radius:12px; padding:24px 28px; margin:24px 0; }
+        .analogy h3 { color:#c084fc; font-family:'Crimson Pro',serif; font-size:1.3rem; margin-bottom:10px; }
+        .analogy p { font-size:1.05rem; margin:0; color:#cbd5e1; }
+        .analogy code { color:#86efac; font-family:'JetBrains Mono',monospace; }
+        .gloss { background:white; border:1px solid rgba(91,156,248,0.25); border-radius:10px; padding:8px 24px; margin:18px 0; }
+        .gloss table { width:100%; border-collapse:collapse; }
+        .gloss td { padding:12px 6px; border-bottom:1px solid #eef2f7; font-size:1rem; vertical-align:top; }
+        .gloss td:first-child { font-weight:700; color:var(--deep-navy); white-space:nowrap; width:150px; }
+        .gloss tr:last-child td { border-bottom:none; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} .gloss td:first-child{width:auto;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 0: Orientation (4 of 5)</div>
+            <h1>Decode the Jargon: The Computing a Biologist Needs</h1>
+            <p class="promise">Come from biology, pharmacy, or medicine? Here are the computing concepts that intimidate newcomers — demystified with analogies from the lab you already know.</p>
+            <div class="tags">
+                <span class="tag green">🟢 Beginner</span>
+                <span class="tag">⏱️ ~30 min</span>
+                <span class="tag green">🌐 Just reading</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <p>The computing side feels like a wall mostly because of unfamiliar words, not because the ideas are hard. If you can follow a lab protocol, you can follow code. Here's the whole mental model, built from one analogy you already live by.</p>
+
+            <div class="analogy">
+                <h3>A script is a lab protocol</h3>
+                <p>A <strong>script</strong> is just a list of precise steps, written down, that the computer follows exactly in order — exactly like a bench protocol. The difference: the computer never gets tired, never skips a step, and runs it on a million samples in seconds. <code># add reagent</code> in code is just "add reagent" in a protocol.</p>
+            </div>
+
+            <h2>The core vocabulary</h2>
+            <div class="gloss"><table>
+                <tr><td>Code / script</td><td>A written set of exact instructions for the computer — your protocol, in a language the machine follows.</td></tr>
+                <tr><td>Programming language</td><td>The language you write instructions in. <strong>Python</strong> and <strong>R</strong> are the two you'll use — pick like you'd pick a lab technique for a job.</td></tr>
+                <tr><td>Run / execute</td><td>Telling the computer to actually carry out your script — pressing "go" on the protocol.</td></tr>
+                <tr><td>Variable</td><td>A labelled container for a value, like a tube with a name on it. <code class="inline">gc = 41.2</code> stores 41.2 under the name <code class="inline">gc</code>.</td></tr>
+                <tr><td>Function</td><td>A reusable mini-protocol you can run any time with different inputs — like a standard assay you apply to any sample.</td></tr>
+                <tr><td>Loop</td><td>"Do this step for every item." Instead of pipetting 96 wells by hand, you write the instruction once and it repeats.</td></tr>
+            </table></div>
+
+            <div class="why"><h4>Why loops are the moment it clicks</h4><p>A genome has millions of letters; an experiment has thousands of genes. You will never process them by hand. A loop lets you describe an action <em>once</em> and have it applied to everything — the same leap as going from one manual reaction to a 384-well plate. This is where coding starts saving you real time.</p></div>
+
+            <h2>Where the work happens</h2>
+            <div class="gloss"><table>
+                <tr><td>Terminal / command line</td><td>A text-based way to give the computer direct instructions by typing. It looks bare, but it's just the "bench" most bioinformatics tools are operated from.</td></tr>
+                <tr><td>File / plain text</td><td>Your data lives in files. Most bioinformatics files are <strong>plain text</strong> — readable letters and numbers, not a locked format like a Word doc. You can open and inspect them directly.</td></tr>
+                <tr><td>File format</td><td>An agreed way of arranging data in a file (FASTA for sequences, CSV for tables). Like a standardized sample-labelling scheme everyone follows.</td></tr>
+                <tr><td>Notebook</td><td>A document (like Jupyter or Colab) that mixes code, results, and notes — your lab notebook, but the experiments are analyses that run right inside it.</td></tr>
+            </table></div>
+
+            <h2>The tools-and-setup words</h2>
+            <div class="gloss"><table>
+                <tr><td>Package / library</td><td>A pre-made toolkit someone else wrote that you install and reuse — like ordering a ready-made assay kit instead of making every reagent yourself.</td></tr>
+                <tr><td>Install</td><td>Adding a tool or package to your computer so you can use it. A one-time setup step.</td></tr>
+                <tr><td>Environment</td><td>A self-contained workspace holding a specific set of tools, so one project's setup never disturbs another's. Like keeping separate, labelled kits for separate experiments.</td></tr>
+                <tr><td>Bug / error</td><td>Something the computer couldn't do as written — usually a small mistake, not a disaster. The error message tells you where to look. Debugging is normal, constant, and not a sign of failure.</td></tr>
+                <tr><td>GitHub</td><td>An online home for code and projects — part backup, part portfolio, part shared lab notebook the world can see. Where you'll showcase finished work.</td></tr>
+            </table></div>
+
+            <div class="why"><h4>The mindset shift that helps most</h4><p>In the wet lab, a failed experiment can cost days and reagents. In code, "failure" is cheap — you run it, get an error, fix one line, run again, in seconds. So experiment freely. Breaking things costs nothing and teaches you fast. The red error text isn't judgment; it's just the computer telling you exactly what it needs.</p></div>
+
+            <h2>You're ready for the keyboard</h2>
+            <p>Scripts are protocols, functions are reusable assays, loops do a step to everything, the terminal is the bench, and packages are ready-made kits. That's the whole conceptual map. There's only one thing left to do in Track 0 — stop reading about code and write some. Next lesson, you'll run your very first lines of Python, right in your browser.</p>
+
+            <a class="next-lesson" href="intro-first-python.html">
+                <span>Last in Track 0 — hands on</span>
+                <h3>Your first 10 lines of Python in the browser →</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+</body>
+</html>

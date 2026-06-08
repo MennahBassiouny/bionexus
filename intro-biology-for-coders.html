@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Biology a Coder Needs - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        .analogy { background:#0f172a; color:#e2e8f0; border-radius:12px; padding:24px 28px; margin:24px 0; }
+        .analogy h3 { color:#c084fc; font-family:'Crimson Pro',serif; font-size:1.3rem; margin-bottom:10px; }
+        .analogy p { font-size:1.05rem; margin:0; color:#cbd5e1; }
+        .analogy code { color:#86efac; font-family:'JetBrains Mono',monospace; }
+        .dogma { display:flex; align-items:center; justify-content:center; gap:14px; flex-wrap:wrap; background:white; border-radius:12px; padding:24px; margin:24px 0; box-shadow:0 4px 18px rgba(0,0,0,0.06); text-align:center; }
+        .dogma .node { font-weight:700; color:var(--deep-navy); }
+        .dogma .node small { display:block; font-weight:400; color:var(--text-gray); font-size:0.82rem; }
+        .dogma .arrow { color:var(--primary-purple); font-weight:700; font-size:1.3rem; }
+        .gloss { background:white; border:1px solid rgba(91,156,248,0.25); border-radius:10px; padding:8px 24px; margin:18px 0; }
+        .gloss table { width:100%; border-collapse:collapse; }
+        .gloss td { padding:12px 6px; border-bottom:1px solid #eef2f7; font-size:1rem; vertical-align:top; }
+        .gloss td:first-child { font-weight:700; color:var(--deep-navy); white-space:nowrap; width:150px; }
+        .gloss tr:last-child td { border-bottom:none; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} .gloss td:first-child{width:auto;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 0: Orientation (3 of 5)</div>
+            <h1>Decode the Jargon: The Biology a Coder Needs</h1>
+            <p class="promise">Come from a computing or non-biology background? Here's the essential biology — explained through analogies a programmer will instantly recognize.</p>
+            <div class="tags">
+                <span class="tag green">🟢 Beginner</span>
+                <span class="tag">⏱️ ~30 min</span>
+                <span class="tag green">🌐 Just reading</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <p>If you're comfortable with code but fuzzy on biology, good news: the central ideas map astonishingly well onto things you already understand. Let's build the whole picture from one analogy.</p>
+
+            <div class="analogy">
+                <h3>DNA is source code</h3>
+                <p>Every cell carries a complete copy of an organism's instructions, written in a 4-letter alphabet: <code>A, C, G, T</code>. That's <strong>DNA</strong> — think of it as a giant read-only source file that every cell stores but only runs parts of.</p>
+            </div>
+
+            <h2>The core vocabulary</h2>
+            <div class="gloss"><table>
+                <tr><td>DNA</td><td>The instruction set, written in bases <code class="inline">A/C/G/T</code>. Like a program's source code — stored in every cell.</td></tr>
+                <tr><td>Base / nucleotide</td><td>A single letter (A, C, G, or T). The individual characters of the code.</td></tr>
+                <tr><td>Genome</td><td>The <em>entire</em> DNA of an organism — the whole codebase. The human genome is ~3 billion bases.</td></tr>
+                <tr><td>Chromosome</td><td>The genome split into big chunks for storage. Like separate files in a repo; humans have 23 pairs.</td></tr>
+                <tr><td>Gene</td><td>A meaningful segment of DNA with a specific job — most like a <strong>function</strong> in your codebase. Humans have ~20,000.</td></tr>
+                <tr><td>Protein</td><td>What a gene actually produces when "called" — the working machinery that does jobs in the cell. The function's <em>output</em>, and the thing that does real work.</td></tr>
+                <tr><td>RNA</td><td>A temporary working copy of a gene, made on demand. Like loading a function into memory to run it.</td></tr>
+                <tr><td>Mutation</td><td>A change in the DNA letters — a typo in the source. Some are harmless; some break things (cause disease).</td></tr>
+            </table></div>
+
+            <h2>The "central dogma" — biology's main function call</h2>
+            <p>There's one process so fundamental it has a grand name: the <strong>central dogma</strong>. It's just the pipeline by which a gene becomes a working protein:</p>
+            <div class="dogma">
+                <span class="node">DNA<small>the stored code</small></span>
+                <span class="arrow">→</span>
+                <span class="node">RNA<small>working copy (transcription)</small></span>
+                <span class="arrow">→</span>
+                <span class="node">Protein<small>the output (translation)</small></span>
+            </div>
+            <p>In programmer terms: <strong>transcription</strong> is copying a function's code out of the source file into memory (DNA → RNA), and <strong>translation</strong> is executing it to produce a result (RNA → protein). When biologists say a gene is "<strong>expressed</strong>," they mean it's currently being run — actively copied into RNA and made into protein.</p>
+
+            <div class="why"><h4>Why "gene expression" is the heart of so much bioinformatics</h4><p>Every cell has the same DNA, but a brain cell and a muscle cell are wildly different — because they <em>run different genes</em>. Measuring which genes are expressed, and how much, tells you what a cell is doing. That measurement (RNA-seq) is one of the most common analyses in the field, and it's the flagship project on this site.</p></div>
+
+            <h2>A few more terms you'll meet constantly</h2>
+            <div class="gloss"><table>
+                <tr><td>Sequencing</td><td>Reading the order of bases in DNA or RNA — turning a physical molecule into text you can analyze. The machines output millions of short "reads."</td></tr>
+                <tr><td>Read</td><td>One short stretch of sequence from the machine (e.g. 150 letters). You reassemble or map these to study the whole.</td></tr>
+                <tr><td>Reference genome</td><td>A standard, agreed-upon copy of a species' genome you compare your data against — like a baseline branch you diff against.</td></tr>
+                <tr><td>Expression level</td><td>How much RNA a gene is producing — i.e., how "active" it is right now. The main quantity in transcriptomics.</td></tr>
+            </table></div>
+
+            <h2>That's genuinely most of it</h2>
+            <p>DNA is code, genes are functions, proteins are the output they produce, and "expression" is which functions are running. Sequencing turns molecules into text, and bioinformatics analyzes that text. With just this mental model, the rest of the roadmap will make sense as you go — and we'll define anything new the moment it appears. Next, the mirror image: the computing concepts a biologist needs.</p>
+
+            <a class="next-lesson" href="intro-computing-for-biologists.html">
+                <span>Next in Track 0</span>
+                <h3>Decode the jargon: the computing a biologist needs →</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+</body>
+</html>
