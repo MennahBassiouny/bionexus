@@ -11,6 +11,7 @@
             --primary-blue: #5b9cf8; --primary-purple: #a855f7;
             --light-blue: #7db4ff; --deep-navy: #0f172a;
             --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b; --red: #ef4444;
         }
         body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
         .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
@@ -28,21 +29,73 @@
         .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
         .page-header { padding: 80px 0 60px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); text-align: center; }
         .page-header h1 { font-family: 'Crimson Pro', serif; font-size: 3.5rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 20px; }
-        .page-header p { font-size: 1.3rem; color: var(--text-gray); max-width: 700px; margin: 0 auto; }
-        main { flex: 1; padding: 80px 0; }
-        .section { margin-bottom: 60px; }
-        .section-title { font-family: 'Crimson Pro', serif; font-size: 2.5rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; }
-        .section-subtitle { font-size: 1.15rem; color: var(--text-gray); margin-bottom: 40px; }
-        .path-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); border: 2px solid var(--primary-blue); max-width: 600px; margin: 0 auto; }
-        .path-header { padding: 32px; background: linear-gradient(135deg, var(--primary-blue) 0%, var(--primary-purple) 100%); color: white; }
-        .path-header h3 { font-family: 'Crimson Pro', serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 8px; }
-        .path-level { display: inline-block; background: rgba(255, 255, 255, 0.2); padding: 6px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; margin-top: 8px; }
-        .path-body { padding: 32px; }
-        .path-body p { color: var(--text-gray); margin-bottom: 24px; line-height: 1.7; }
-        .path-features { list-style: none; margin-bottom: 24px; }
-        .path-features li { color: var(--text-gray); margin-bottom: 10px; padding-left: 24px; position: relative; }
-        .path-features li::before { content: '✓'; position: absolute; left: 0; color: var(--primary-blue); font-weight: bold; }
-        .path-cta { background: var(--text-gray); color: white; padding: 14px 28px; border-radius: 6px; font-weight: 600; text-decoration: none; display: inline-block; width: 100%; text-align: center; cursor: default; opacity: 0.7; }
+        .page-header p { font-size: 1.3rem; color: var(--text-gray); max-width: 720px; margin: 0 auto; }
+        main { flex: 1; padding: 70px 0; }
+
+        /* Entry-point chooser */
+        .entry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-bottom: 70px; }
+        .entry-card { background: white; border-radius: 12px; padding: 32px; border: 2px solid rgba(91, 156, 248, 0.2); transition: all 0.3s ease; }
+        .entry-card:hover { border-color: var(--primary-blue); transform: translateY(-4px); box-shadow: 0 8px 24px rgba(91, 156, 248, 0.15); }
+        .entry-card .emoji { font-size: 2.4rem; display: block; margin-bottom: 14px; }
+        .entry-card h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-bottom: 10px; }
+        .entry-card p { color: var(--text-gray); font-size: 1rem; margin-bottom: 16px; }
+        .entry-card a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+        .entry-card a:hover { color: var(--primary-purple); }
+
+        /* Foundations */
+        .found-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 30px; }
+        .found-card { background: white; border-radius: 12px; box-shadow: 0 4px 18px rgba(0,0,0,0.06); border-top: 4px solid var(--primary-purple); padding: 26px 26px 22px; }
+        .found-card .ico { font-size: 2rem; }
+        .found-card h3 { font-family: 'Crimson Pro', serif; font-size: 1.45rem; color: var(--deep-navy); margin: 8px 0 4px; }
+        .found-card .sub { color: var(--text-gray); font-size: 0.95rem; margin-bottom: 16px; }
+        .found-steps { list-style: none; }
+        .found-steps li { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-top: 1px solid #eef2f7; font-size: 0.98rem; }
+        .found-steps li .n { flex: none; width: 24px; height: 24px; border-radius: 50%; background: rgba(91,156,248,0.14); color: #3b6fd4; font-size: 0.8rem; font-weight: 700; display: flex; align-items: center; justify-content: center; }
+        .found-steps li a { color: var(--primary-blue); text-decoration: none; font-weight: 600; }
+        .found-steps li a:hover { color: var(--primary-purple); }
+        .found-steps li .t { font-size: 0.72rem; color: var(--text-gray); text-transform: uppercase; letter-spacing: 0.4px; margin-left: auto; white-space: nowrap; }
+        .section-intro { text-align: center; max-width: 760px; margin: 0 auto 50px; }
+        .section-intro h2 { font-family: 'Crimson Pro', serif; font-size: 2.5rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 14px; }
+        .section-intro p { font-size: 1.1rem; color: var(--text-gray); }
+
+        /* Legend */
+        .legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-bottom: 50px; }
+        .legend span { font-size: 0.85rem; color: var(--text-gray); background: white; border: 1px solid rgba(91,156,248,0.2); padding: 6px 14px; border-radius: 20px; }
+
+        /* Roadmap track */
+        .roadmap { position: relative; max-width: 980px; margin: 0 auto; }
+        .track { position: relative; padding-left: 56px; margin-bottom: 36px; }
+        .track::before { content: ''; position: absolute; left: 19px; top: 12px; bottom: -36px; width: 3px; background: linear-gradient(180deg, var(--primary-blue), var(--primary-purple)); opacity: 0.3; }
+        .track:last-child::before { display: none; }
+        .track-node { position: absolute; left: 0; top: 6px; width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.1rem; box-shadow: 0 4px 12px rgba(91,156,248,0.3); }
+        .track-card { background: white; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.06); overflow: hidden; border-left: 4px solid var(--primary-blue); }
+        .track-card.flagship { border-left-color: var(--primary-purple); box-shadow: 0 6px 28px rgba(168,85,247,0.18); }
+        .track-head { padding: 22px 28px 12px; }
+        .track-head h3 { font-family: 'Crimson Pro', serif; font-size: 1.5rem; color: var(--deep-navy); margin-bottom: 6px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .badge { font-size: 0.72rem; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.4px; }
+        .badge.green { background: rgba(16,185,129,0.12); color: var(--green); }
+        .badge.amber { background: rgba(245,158,11,0.14); color: #b45309; }
+        .badge.red { background: rgba(239,68,68,0.12); color: var(--red); }
+        .badge.flag { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; }
+        .track-head p { color: var(--text-gray); font-size: 1rem; }
+        .lessons { list-style: none; padding: 8px 28px 22px; }
+        .lessons li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 0; border-top: 1px solid #eef2f7; color: var(--text-dark); font-size: 0.98rem; }
+        .lessons li .meta { color: var(--text-gray); font-size: 0.82rem; white-space: nowrap; }
+        .lessons li a { color: var(--primary-blue); text-decoration: none; font-weight: 600; }
+        .lessons li a:hover { color: var(--primary-purple); }
+        .pill { display: inline-block; font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 12px; margin-left: 8px; }
+        .pill.live { background: rgba(16,185,129,0.14); color: var(--green); }
+        .pill.soon { background: rgba(100,116,139,0.12); color: var(--text-gray); }
+        .deliverable { padding: 0 28px 22px; }
+        .deliverable div { background: var(--soft-white); border: 1px dashed rgba(91,156,248,0.4); border-radius: 8px; padding: 12px 16px; font-size: 0.92rem; color: var(--text-gray); }
+        .deliverable strong { color: var(--deep-navy); }
+
+        .cta-band { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; border-radius: 16px; padding: 48px 32px; text-align: center; margin-top: 70px; }
+        .cta-band h2 { font-family: 'Crimson Pro', serif; font-size: 2.2rem; margin-bottom: 12px; }
+        .cta-band p { opacity: 0.95; margin-bottom: 26px; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .cta-band a { background: white; color: var(--primary-blue); padding: 15px 36px; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-block; transition: transform 0.3s ease; }
+        .cta-band a:hover { transform: translateY(-3px) scale(1.03); }
+
         footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
         footer p { color: rgba(255, 255, 255, 0.6); }
         .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
@@ -52,7 +105,7 @@
             nav ul.active { display: flex; }
             .logo-img { height: 40px; }
             .page-header h1 { font-size: 2.5rem; }
-            .path-card { margin: 0 20px; }
+            .lessons li { flex-direction: column; align-items: flex-start; gap: 4px; }
         }
     </style>
 </head>
@@ -78,34 +131,242 @@
 
     <div class="page-header">
         <div class="container">
-            <h1>Start Your Learning Journey</h1>
-            <p>Join our introductory session to begin building your bioinformatics knowledge</p>
+            <h1>Your Bioinformatics Roadmap</h1>
+            <p>A clear path from "I'm curious" to "I can analyze real biological data." No maze, no guesswork — just one step after another, with everything runnable in your browser.</p>
         </div>
     </div>
 
     <main>
         <div class="container">
-            <section class="section">
-                <h2 class="section-title" style="text-align: center;">Educational Session</h2>
-                <p class="section-subtitle" style="text-align: center;">Begin your bioinformatics journey with our foundational session</p>
 
-                <div class="path-card">
-                    <div class="path-header">
-                        <h3>🎯 Bioinformatics 101</h3>
-                        <span class="path-level">Beginner Friendly</span>
+            <!-- Entry points -->
+            <section>
+                <div class="section-intro">
+                    <h2>Where are you starting from?</h2>
+                    <p>There's more than one way in. Pick the door that sounds like you — the roadmap below works for all of them.</p>
+                </div>
+                <div class="entry-grid">
+                    <div class="entry-card">
+                        <span class="emoji">🌱</span>
+                        <h3>Total beginner</h3>
+                        <p>New to both biology and coding. Start at the very beginning and build up gently, one browser-based lesson at a time.</p>
+                        <a href="#track-0">Start at Track 0 →</a>
                     </div>
-                    <div class="path-body">
-                        <p>Perfect for complete beginners. Start with the fundamentals of bioinformatics and understand what the field is all about.</p>
-                        <ul class="path-features">
-                            <li>Introduction to bioinformatics concepts</li>
-                            <li>Real-world applications and use cases</li>
-                            <li>Career paths and opportunities</li>
-                            <li>Getting started with essential tools</li>
-                        </ul>
-                        <span class="path-cta">Coming Soon</span>
+                    <div class="entry-card">
+                        <span class="emoji">🔬</span>
+                        <h3>Coming from the bench or clinic</h3>
+                        <p>You know the biology — pharmacy, lab, or medicine — but the computational side feels like a wall. You can skip ahead to the data.</p>
+                        <a href="#track-1">Jump to working with data →</a>
+                    </div>
+                    <div class="entry-card">
+                        <span class="emoji">📈</span>
+                        <h3>Ready for a real project</h3>
+                        <p>Want to learn by doing? Dive straight into a complete, real-data RNA-seq analysis you can put on your portfolio.</p>
+                        <a href="rna-seq-first-analysis.html">Open the flagship project →</a>
                     </div>
                 </div>
             </section>
+
+            <!-- Foundations -->
+            <section id="foundations">
+                <div class="section-intro">
+                    <h2>Foundations: set up your toolkit</h2>
+                    <p>Before the science, get the tools running on your own machine. Three short series — each one takes you from <strong>install</strong> → <strong>basics</strong> → a <strong>real-data project</strong>, so every skill lands on something real.</p>
+                </div>
+                <div class="found-grid">
+                    <div class="found-card">
+                        <span class="ico">🐍</span>
+                        <h3>Python</h3>
+                        <p class="sub">The most widely used language in bioinformatics.</p>
+                        <ul class="found-steps">
+                            <li><span class="n">1</span><a href="python-install.html">Install Python</a><span class="t">Setup</span></li>
+                            <li><span class="n">2</span><a href="python-basics.html">Python basics</a><span class="t">Tutorial</span></li>
+                            <li><span class="n">3</span><a href="python-project.html">Analyze a real DNA sequence</a><span class="t">Project</span></li>
+                        </ul>
+                    </div>
+                    <div class="found-card">
+                        <span class="ico">📊</span>
+                        <h3>R</h3>
+                        <p class="sub">The language behind DESeq2 &amp; Bioconductor.</p>
+                        <ul class="found-steps">
+                            <li><span class="n">1</span><a href="r-install.html">Install R &amp; RStudio</a><span class="t">Setup</span></li>
+                            <li><span class="n">2</span><a href="r-basics.html">R basics &amp; plotting</a><span class="t">Tutorial</span></li>
+                            <li><span class="n">3</span><a href="r-project.html">Explore a real dataset</a><span class="t">Project</span></li>
+                        </ul>
+                    </div>
+                    <div class="found-card">
+                        <span class="ico">💻</span>
+                        <h3>Bash / command line</h3>
+                        <p class="sub">How nearly every bioinformatics tool is run.</p>
+                        <ul class="found-steps">
+                            <li><span class="n">1</span><a href="bash-install.html">Set up a terminal</a><span class="t">Setup</span></li>
+                            <li><span class="n">2</span><a href="bash-basics.html">Command-line basics</a><span class="t">Tutorial</span></li>
+                            <li><span class="n">3</span><a href="bash-project.html">Wrangle a real data file</a><span class="t">Project</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Roadmap -->
+            <section>
+                <div class="section-intro">
+                    <h2>The full roadmap</h2>
+                    <p>Seven tracks, sequenced so each one builds on the last. Start anywhere that fits you and follow the line.</p>
+                </div>
+
+                <div class="legend">
+                    <span>🟢 Beginner</span>
+                    <span>🟡 Intermediate</span>
+                    <span>🔴 Advanced</span>
+                    <span>🌐 No install needed</span>
+                    <span>🐍 Python · 📊 R · 💻 Command line</span>
+                </div>
+
+                <div class="roadmap">
+
+                    <!-- Track 0 -->
+                    <div class="track" id="track-0">
+                        <div class="track-node">0</div>
+                        <div class="track-card">
+                            <div class="track-head">
+                                <h3>Orientation: "Is this for me?" <span class="badge green">Beginner</span></h3>
+                                <p>The on-ramp. Finish feeling capable, not overwhelmed — and write your first 10 lines of code in the browser.</p>
+                            </div>
+                            <ul class="lessons">
+                                <li><span>What bioinformatics actually is (and isn't) <span class="pill soon">Soon</span></span><span class="meta">🌐 · 20 min</span></li>
+                                <li><span>The map: what you'll be able to do in 3 months <span class="pill soon">Soon</span></span><span class="meta">🌐 · 15 min</span></li>
+                                <li><span>Decode the jargon: the biology a coder needs <span class="pill soon">Soon</span></span><span class="meta">🌐 · 30 min</span></li>
+                                <li><span>Decode the jargon: the computing a biologist needs <span class="pill soon">Soon</span></span><span class="meta">🌐 · 30 min</span></li>
+                                <li><span>Your first 10 lines of Python in the browser <span class="pill soon">Soon</span></span><span class="meta">🐍🌐 · 45 min</span></li>
+                            </ul>
+                            <div class="deliverable"><div><strong>You'll build:</strong> a notebook that reads a DNA sequence and counts its bases.</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Track 1 -->
+                    <div class="track" id="track-1">
+                        <div class="track-node">1</div>
+                        <div class="track-card">
+                            <div class="track-head">
+                                <h3>Working with biological data <span class="badge green">Beginner</span> <span class="badge amber">→ Intermediate</span></h3>
+                                <p>The literacy layer: the file formats every bioinformatician lives in, and the tools to read them.</p>
+                            </div>
+                            <ul class="lessons">
+                                <li><span>Sequences, FASTA &amp; FASTQ explained <span class="pill soon">Soon</span></span><span class="meta">🐍🌐 · 45 min</span></li>
+                                <li><span>The file-format alphabet soup: SAM/BAM, VCF, GFF, BED <span class="pill soon">Soon</span></span><span class="meta">🌐 · 40 min</span></li>
+                                <li><span>Biopython basics: parse, manipulate, write <span class="pill soon">Soon</span></span><span class="meta">🐍🌐 · 1 hr</span></li>
+                                <li><span>Where the data lives: NCBI, Ensembl, GEO, SRA <span class="pill soon">Soon</span></span><span class="meta">🌐 · 45 min</span></li>
+                                <li><span>Pandas for biologists: tabular data without tears <span class="pill soon">Soon</span></span><span class="meta">🐍🌐 · 1 hr</span></li>
+                            </ul>
+                            <div class="deliverable"><div><strong>You'll build:</strong> pull a real gene record from NCBI and summarize it in a notebook.</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Track 2 -->
+                    <div class="track" id="track-2">
+                        <div class="track-node">2</div>
+                        <div class="track-card">
+                            <div class="track-head">
+                                <h3>Genomics &amp; next-gen sequencing <span class="badge amber">Intermediate</span> <span class="badge red">→ Advanced</span></h3>
+                                <p>The classic NGS workflow, demystified one step at a time — from raw reads to called variants.</p>
+                            </div>
+                            <ul class="lessons">
+                                <li><span>How NGS works — the 20-minute primer <span class="pill soon">Soon</span></span><span class="meta">🌐 · 20 min</span></li>
+                                <li><span>Quality control with FastQC <span class="pill soon">Soon</span></span><span class="meta">💻🌐 · 45 min</span></li>
+                                <li><span>Trimming &amp; filtering reads <span class="pill soon">Soon</span></span><span class="meta">💻 · 45 min</span></li>
+                                <li><span>Read alignment: BWA, HISAT2, STAR <span class="pill soon">Soon</span></span><span class="meta">💻 · 1.5 hr</span></li>
+                                <li><span>samtools survival kit <span class="pill soon">Soon</span></span><span class="meta">💻 · 1 hr</span></li>
+                                <li><span>Variant calling: FASTQ → VCF <span class="pill soon">Soon</span></span><span class="meta">💻 · 2 hr</span></li>
+                            </ul>
+                            <div class="deliverable"><div><strong>You'll build:</strong> a documented variant-calling mini-pipeline on real data.</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Track 3 - flagship -->
+                    <div class="track" id="track-3">
+                        <div class="track-node">3</div>
+                        <div class="track-card flagship">
+                            <div class="track-head">
+                                <h3>Transcriptomics <span class="badge flag">★ Flagship</span> <span class="badge amber">Intermediate</span></h3>
+                                <p>Our strongest track, built around RNA-seq from start to finish. Begin with the complete project below, then go deeper.</p>
+                            </div>
+                            <ul class="lessons">
+                                <li><span>The RNA-seq big picture <span class="pill soon">Soon</span></span><span class="meta">🌐 · 30 min</span></li>
+                                <li><span><a href="rna-seq-first-analysis.html">Your First RNA-seq Analysis — end-to-end project</a> <span class="pill live">Live</span></span><span class="meta">📊🐍🌐 · 2–3 hr</span></li>
+                                <li><span>From raw counts to differential expression (DESeq2) <span class="pill soon">Soon</span></span><span class="meta">📊 · 1.5 hr</span></li>
+                                <li><span>Reading volcano &amp; MA plots <span class="pill soon">Soon</span></span><span class="meta">📊 · 45 min</span></li>
+                                <li><span>Heatmaps &amp; clustering that mean something <span class="pill soon">Soon</span></span><span class="meta">📊 · 1 hr</span></li>
+                                <li><span>Functional enrichment: GO, KEGG, GSEA <span class="pill soon">Soon</span></span><span class="meta">📊🌐 · 1.5 hr</span></li>
+                                <li><span>A gentle intro to single-cell RNA-seq <span class="pill soon">Soon</span></span><span class="meta">🐍 · 2 hr</span></li>
+                            </ul>
+                            <div class="deliverable"><div><strong>You'll build:</strong> a complete, portfolio-ready RNA-seq analysis from a public dataset, with a written biological interpretation.</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Track 4 -->
+                    <div class="track" id="track-4">
+                        <div class="track-node">4</div>
+                        <div class="track-card">
+                            <div class="track-head">
+                                <h3>RNA biology &amp; epitranscriptomics <span class="badge red">Advanced</span> <span class="badge flag">Signature</span></h3>
+                                <p>Deep, differentiated content almost no beginner platform offers — taught from real research expertise.</p>
+                            </div>
+                            <ul class="lessons">
+                                <li><span>RNA structure &amp; why it matters computationally <span class="pill soon">Soon</span></span><span class="meta">🌐 · 40 min</span></li>
+                                <li><span>RNA–protein interactions: an intro to CLIP-seq <span class="pill soon">Soon</span></span><span class="meta">💻📊 · 2 hr</span></li>
+                                <li><span>Epitranscriptomics 101: m6A &amp; RNA modifications <span class="pill soon">Soon</span></span><span class="meta">🌐 · 45 min</span></li>
+                                <li><span>Analyzing m6A-seq / MeRIP data <span class="pill soon">Soon</span></span><span class="meta">💻📊 · 2.5 hr</span></li>
+                                <li><span>Integrative thinking: layering RNA-level evidence <span class="pill soon">Soon</span></span><span class="meta">📊 · 1.5 hr</span></li>
+                            </ul>
+                            <div class="deliverable"><div><strong>You'll build:</strong> a CLIP-seq or m6A peak-analysis walkthrough on real data.</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Track 5 -->
+                    <div class="track" id="track-5">
+                        <div class="track-node">5</div>
+                        <div class="track-card">
+                            <div class="track-head">
+                                <h3>Statistics &amp; visualization <span class="badge amber">Cross-cutting</span></h3>
+                                <p>The layer everyone skips and later regrets. Short, practical, and threaded through everything else.</p>
+                            </div>
+                            <ul class="lessons">
+                                <li><span>Stats you can't avoid: p-values, distributions, effect sizes <span class="pill soon">Soon</span></span><span class="meta">🧮🌐 · 1 hr</span></li>
+                                <li><span>The multiple-testing problem <span class="pill soon">Soon</span></span><span class="meta">🧮📊 · 45 min</span></li>
+                                <li><span>Plots that tell the truth: viz best practices <span class="pill soon">Soon</span></span><span class="meta">📊🐍 · 1 hr</span></li>
+                            </ul>
+                            <div class="deliverable"><div><strong>You'll build:</strong> a critique-and-fix exercise on a misleading figure.</div></div>
+                        </div>
+                    </div>
+
+                    <!-- Track 6 -->
+                    <div class="track" id="track-6">
+                        <div class="track-node">6</div>
+                        <div class="track-card">
+                            <div class="track-head">
+                                <h3>Reproducibility &amp; career <span class="badge amber">Professional layer</span></h3>
+                                <p>What turns a learner into someone employable — especially valuable if you're switching fields.</p>
+                            </div>
+                            <ul class="lessons">
+                                <li><span>Git &amp; GitHub for scientists <span class="pill soon">Soon</span></span><span class="meta">💻🌐 · 1.5 hr</span></li>
+                                <li><span>Conda environments: never break your setup again <span class="pill soon">Soon</span></span><span class="meta">💻 · 1 hr</span></li>
+                                <li><span>Building a portfolio that gets noticed <span class="pill soon">Soon</span></span><span class="meta">🌐 · 45 min</span></li>
+                                <li><span>Career paths: academia, biotech, pharma, clinical <span class="pill soon">Soon</span></span><span class="meta">🌐 · 30 min</span></li>
+                                <li><span>From the bench to the keyboard: a transition playbook <span class="pill soon">Soon</span></span><span class="meta">🌐 · 40 min</span></li>
+                            </ul>
+                            <div class="deliverable"><div><strong>You'll build:</strong> a polished public GitHub repo showcasing your completed projects.</div></div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <div class="cta-band">
+                <h2>Start with the real thing</h2>
+                <p>The best way to know if bioinformatics is for you is to actually do some. Our flagship project walks you through a complete RNA-seq analysis — runnable in your browser, no setup required.</p>
+                <a href="rna-seq-first-analysis.html">Open Your First RNA-seq Analysis →</a>
+            </div>
+
         </div>
     </main>
 

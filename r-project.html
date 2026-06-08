@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project: Explore a Real Dataset with R - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; --amber:#f59e0b; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.88rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .k { color:#c084fc; } pre .s { color:#86efac; } pre .o { color:#7dd3fc; }
+        .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white; font-weight:700; font-size:0.95rem; margin-right:10px; vertical-align:middle; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .challenge { background:white; border:2px solid rgba(168,85,247,0.3); border-radius:12px; padding:24px 28px; margin:28px 0; }
+        .challenge h3 { font-family:'Crimson Pro',serif; color:var(--primary-purple); margin-bottom:10px; }
+        .challenge ul { margin:0 0 0 22px; } .challenge li { margin-bottom:8px; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (3 of 3)</div>
+            <h1>Project: Explore a Real Dataset with R</h1>
+            <p class="promise">Take a real, published dataset from messy to insight: load it, clean it, summarise it by group, and produce a polished figure — the exact workflow you'll later run on gene expression data.</p>
+            <div class="tags">
+                <span class="tag green">🟢→🟡 Beginner project</span>
+                <span class="tag">⏱️ ~1.5 hr</span>
+                <span class="tag">📊 R · tidyverse</span>
+                <span class="tag green">📈 Real data</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <p>We'll use the <strong>Palmer Penguins</strong> dataset — real measurements of 344 penguins from three species, collected at the Palmer Station research base in Antarctica. It's deliberately friendly to start on, but every move you make here is the same move you'll make on a gene expression table: load, inspect, clean, group, summarise, plot. Learn the pattern on penguins, apply it to biology.</p>
+
+            <div class="why"><h4>Why not jump straight to gene data?</h4><p>Because the <em>skill</em> you're building — wrangling a real table and seeing structure in it — is identical, and penguins won't drown you in biological jargon while you're still learning the verbs. Once this clicks, swapping in an expression matrix is a small step.</p></div>
+
+            <h2><span class="step-num">1</span>Load the data and look at it</h2>
+            <pre><span class="k">library</span>(tidyverse)
+<span class="k">library</span>(palmerpenguins)
+
+penguins         <span class="c"># the dataset comes with the package</span>
+glimpse(penguins) <span class="c"># columns, types, and a peek at values</span></pre>
+            <p>Always look before you leap. <code class="inline">glimpse()</code> shows you the columns (species, island, bill length, flipper length, body mass, sex…) and their types. Notice some values are <code class="inline">NA</code> — missing. Real data is always a little messy.</p>
+
+            <h2><span class="step-num">2</span>Clean it</h2>
+            <pre>clean &lt;- penguins |&gt;
+  drop_na(bill_length_mm, bill_depth_mm, species)   <span class="c"># remove rows missing these</span>
+
+nrow(penguins)   <span class="c"># before</span>
+nrow(clean)      <span class="c"># after</span></pre>
+            <div class="why"><h4>Decode the jargon: NA</h4><p><code class="inline">NA</code> means "not available" — a missing value. Many calculations refuse to run with NAs present (on purpose, so you don't get silently wrong answers). Deciding what to do with them is a real and important judgment call in every analysis.</p></div>
+
+            <h2><span class="step-num">3</span>Summarise by group</h2>
+            <p>This is the question-answering step. How do the species differ?</p>
+            <pre>clean |&gt;
+  group_by(species) |&gt;
+  summarise(
+    n = n(),
+    avg_bill_length = mean(bill_length_mm),
+    avg_body_mass   = mean(body_mass_g, na.rm = <span class="k">TRUE</span>)
+  )</pre>
+            <p>In one short block you've just computed, per species, how many penguins there are and their average measurements. That <code class="inline">group_by() |&gt; summarise()</code> combination is one of the most useful patterns in all of data analysis.</p>
+
+            <h2><span class="step-num">4</span>Visualize the structure</h2>
+            <pre><span class="k">ggplot</span>(clean, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point(size = <span class="o">2</span>, alpha = <span class="o">0.8</span>) +
+  labs(
+    title = <span class="s">"Bill shape separates penguin species"</span>,
+    x = <span class="s">"Bill length (mm)"</span>, y = <span class="s">"Bill depth (mm)"</span>
+  ) +
+  theme_minimal()</pre>
+            <p>Look at the result: the three species form distinct clusters. You've just <em>discovered</em> something real from data — that bill shape alone largely tells the species apart. That move, finding group structure in measurements, is exactly what clustering gene expression does later.</p>
+
+            <h2><span class="step-num">5</span>One more: a boxplot</h2>
+            <pre><span class="k">ggplot</span>(clean, aes(x = species, y = body_mass_g, fill = species)) +
+  geom_boxplot() +
+  labs(title = <span class="s">"Body mass by species"</span>, y = <span class="s">"Body mass (g)"</span>) +
+  theme_minimal()</pre>
+
+            <div class="challenge">
+                <h3>🚀 Make it your own</h3>
+                <ul>
+                    <li>Use <code class="inline">filter()</code> to look at just one island, then re-make the scatter plot. Do the clusters change?</li>
+                    <li>Add <code class="inline">facet_wrap(~ island)</code> to the scatter plot — what does splitting by island reveal?</li>
+                    <li>Group by <strong>species and sex</strong> together and compare average body mass. Which is the bigger driver?</li>
+                    <li><strong>Bridge to biology:</strong> download any gene-length or expression CSV from <a href="resources.html">Resources</a>, <code class="inline">read_csv()</code> it, and run the same load → clean → group → plot pattern. The skill transfers directly.</li>
+                    <li><strong>Portfolio move:</strong> knit your script into an HTML report (RStudio → Knit) and put it on GitHub.</li>
+                </ul>
+            </div>
+
+            <h2>What you just did</h2>
+            <p>You took a real, imperfect dataset and walked the full loop: <em>load → inspect → clean → summarise → visualize</em>. You handled missing data, computed group summaries, and made two figures that reveal genuine structure. That is data analysis — and it's the identical workflow behind a published RNA-seq figure, just with genes in place of penguins.</p>
+
+            <details><summary>Why <code class="inline">na.rm = TRUE</code> inside <code class="inline">mean()</code>?</summary><p>It tells <code class="inline">mean()</code> to ignore missing values when averaging. Without it, a single <code class="inline">NA</code> in the column makes the whole result <code class="inline">NA</code> — R's way of refusing to guess.</p></details>
+
+            <a class="next-lesson" href="bash-install.html">
+                <span>Next foundation</span>
+                <h3>Start the Bash series: setting up a terminal →</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installing R & RStudio - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; --amber:#f59e0b; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin:28px 0 12px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.88rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .k { color:#c084fc; } pre .s { color:#86efac; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .os-block { background:white; border-radius:12px; box-shadow:0 4px 18px rgba(0,0,0,0.06); border-top:4px solid var(--primary-blue); padding:26px 28px; margin:18px 0; }
+        .os-block h3 { margin-top:0; display:flex; align-items:center; gap:10px; }
+        .os-badge { font-size:0.75rem; font-weight:700; padding:4px 11px; border-radius:20px; background:rgba(91,156,248,0.14); color:#3b6fd4; }
+        .checkpoint { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:18px 24px; margin:26px 0; }
+        .checkpoint h4 { color:#047857; margin-bottom:8px; }
+        .checkpoint p { font-size:1rem; color:var(--text-gray); margin:0; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (1 of 3)</div>
+            <h1>Installing R &amp; RStudio</h1>
+            <p class="promise">By the end of this lesson you'll have R — the language statisticians and biologists reach for — plus RStudio, the friendly workspace that makes it a pleasure to use.</p>
+            <div class="tags">
+                <span class="tag green">🟢 Beginner</span>
+                <span class="tag">⏱️ ~30 min</span>
+                <span class="tag">📊 R</span>
+                <span class="tag">💻 Windows · macOS · Linux</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <h2>Two pieces, and why</h2>
+            <p>You install <strong>two</strong> things. <strong>R</strong> is the actual language and engine. <strong>RStudio</strong> is the workspace you'll spend your time in — it gives you a code editor, your plots, your data, and your console all in one window. R is the car; RStudio is the comfortable dashboard. Install R first, then RStudio.</p>
+
+            <div class="why"><h4>Why R for bioinformatics?</h4><p>R was built by statisticians, and the gold-standard tools for RNA-seq, differential expression, and genomics — DESeq2, edgeR, limma, and the whole Bioconductor project — live in R. If you want to work with expression data, R is unavoidable, and that's a good thing.</p></div>
+
+            <h2>Step 1 — Install R (from CRAN)</h2>
+            <p>R is distributed by <strong>CRAN</strong> (the Comprehensive R Archive Network) at <code class="inline">cran.r-project.org</code>. Pick your OS:</p>
+
+            <div class="os-block">
+                <h3>🪟 <span>Windows</span> <span class="os-badge">Windows 10/11</span></h3>
+                <ol>
+                    <li>Go to <code class="inline">cran.r-project.org</code> → "Download R for Windows" → "base" → "Download R for Windows".</li>
+                    <li>Run the <code class="inline">.exe</code> installer and accept the defaults.</li>
+                </ol>
+            </div>
+            <div class="os-block">
+                <h3>🍎 <span>macOS</span> <span class="os-badge">Intel &amp; Apple Silicon</span></h3>
+                <ol>
+                    <li>Go to <code class="inline">cran.r-project.org</code> → "Download R for macOS".</li>
+                    <li>Pick the right <code class="inline">.pkg</code>: <strong>arm64</strong> for Apple Silicon (M1–M4), or the Intel build for older Macs.</li>
+                    <li>Open the <code class="inline">.pkg</code> and follow the installer.</li>
+                </ol>
+            </div>
+            <div class="os-block">
+                <h3>🐧 <span>Linux</span> <span class="os-badge">Ubuntu / Debian</span></h3>
+                <p>The quickest route on Ubuntu/Debian:</p>
+                <pre>sudo apt update
+sudo apt install r-base</pre>
+                <p>For the very latest R, CRAN has per-distro instructions at <code class="inline">cran.r-project.org/bin/linux</code>. On Fedora, use <code class="inline">sudo dnf install R</code>.</p>
+            </div>
+
+            <h2>Step 2 — Install RStudio Desktop (free)</h2>
+            <p>Go to <strong>posit.co/download/rstudio-desktop</strong> and download the free <strong>RStudio Desktop</strong> for your OS. It will detect the R you just installed automatically.</p>
+            <ul>
+                <li><strong>Windows:</strong> run the <code class="inline">.exe</code> installer.</li>
+                <li><strong>macOS:</strong> open the <code class="inline">.dmg</code> and drag RStudio into Applications.</li>
+                <li><strong>Linux:</strong> download the <code class="inline">.deb</code> (Ubuntu/Debian) or <code class="inline">.rpm</code> (Fedora) and install it.</li>
+            </ul>
+
+            <h2>Step 3 — Check it worked</h2>
+            <p>Open <strong>RStudio</strong>. In the <strong>Console</strong> pane (bottom-left), type this and press Enter:</p>
+            <pre>R.version.string
+<span class="c"># [1] "R version 4.x.x ..."</span>
+1 + 1
+<span class="c"># [1] 2</span></pre>
+            <p>If R answers, you're in business. 🎉</p>
+
+            <h2>Step 4 — Install your first packages</h2>
+            <p>Packages add features. We'll grab the <strong>tidyverse</strong> (the modern toolkit for data work) and <strong>palmerpenguins</strong> (a friendly real dataset we'll use in the project). In the Console:</p>
+            <pre><span class="k">install.packages</span>(<span class="s">"tidyverse"</span>)
+<span class="k">install.packages</span>(<span class="s">"palmerpenguins"</span>)</pre>
+            <p>This downloads from CRAN and can take a few minutes the first time — that's normal. Say "yes" to any prompts.</p>
+
+            <div class="why"><h4>Decode the jargon: Bioconductor</h4><p>CRAN is R's general package store. <strong>Bioconductor</strong> is a second store dedicated to biology — it's where DESeq2 and friends live. You install from it a little differently (<code class="inline">BiocManager::install("DESeq2")</code>). You don't need it yet, but now the name won't surprise you when it shows up in Track 3.</p></div>
+
+            <div class="checkpoint">
+                <h4>✅ You're ready when…</h4>
+                <p>RStudio opens, <code class="inline">1 + 1</code> returns <code class="inline">2</code> in the Console, and <code class="inline">library(tidyverse)</code> runs without an error. On to the basics.</p>
+            </div>
+
+            <h2>Stuck? Common snags</h2>
+            <details><summary>RStudio says it can't find R</summary><p>This happens if RStudio was installed before R, or you have multiple R versions. In RStudio go to Tools → Global Options → General → and set the R version, or simply reinstall R then restart RStudio.</p></details>
+            <details><summary>install.packages fails with a "non-zero exit status" on Linux</summary><p>Some R packages need system libraries to compile. The error usually names what's missing (e.g. <code class="inline">libcurl</code>, <code class="inline">libxml2</code>). Install the matching <code class="inline">-dev</code> package with apt (e.g. <code class="inline">sudo apt install libcurl4-openssl-dev</code>) and try again.</p></details>
+
+            <a class="next-lesson" href="r-basics.html">
+                <span>Next in the R series</span>
+                <h3>R basics: data frames &amp; plotting →</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+</body>
+</html>

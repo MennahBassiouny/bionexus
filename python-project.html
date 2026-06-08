@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project: Analyze a Real DNA Sequence - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; --amber:#f59e0b; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.88rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .k { color:#c084fc; } pre .s { color:#86efac; } pre .o { color:#7dd3fc; }
+        .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white; font-weight:700; font-size:0.95rem; margin-right:10px; vertical-align:middle; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .colab-cta { display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; background:var(--deep-navy); color:white; border-radius:12px; padding:24px 30px; margin:24px 0; }
+        .colab-cta div p:first-child { font-weight:700; font-size:1.12rem; margin-bottom:4px; }
+        .colab-cta div p:last-child { color:rgba(255,255,255,0.7); font-size:0.95rem; margin:0; }
+        .colab-btn { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white; padding:13px 26px; border-radius:8px; font-weight:700; text-decoration:none; white-space:nowrap; }
+        .fallback { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:10px; padding:16px 22px; margin:18px 0; font-size:1rem; color:var(--text-gray); }
+        .fallback strong { color:#b45309; }
+        .challenge { background:white; border:2px solid rgba(168,85,247,0.3); border-radius:12px; padding:24px 28px; margin:28px 0; }
+        .challenge h3 { font-family:'Crimson Pro',serif; color:var(--primary-purple); margin-bottom:10px; }
+        .challenge ul { margin:0 0 0 22px; } .challenge li { margin-bottom:8px; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Python series (3 of 3)</div>
+            <h1>Project: Analyze a Real DNA Sequence</h1>
+            <p class="promise">Put it all together: download the real human insulin gene from a public database and analyze it — base composition, GC content, the protein it codes for, and a chart — all in your own Python.</p>
+            <div class="tags">
+                <span class="tag green">🟢→🟡 Beginner project</span>
+                <span class="tag">⏱️ ~1.5 hr</span>
+                <span class="tag">🐍 Python · Biopython</span>
+                <span class="tag green">🧬 Real data</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <p>This is where it gets real. You'll pull an actual gene sequence from <strong>NCBI</strong> — the same database working scientists use every day — and analyze it with the Python you just learned. The gene is <strong>human insulin (accession NM_000207)</strong>: the molecule that lets your body use sugar, and the first protein ever made as a medicine.</p>
+
+            <div class="colab-cta">
+                <div>
+                    <p>▶ Code along</p>
+                    <p>Use a Jupyter notebook in your <code class="inline">bionexus</code> environment, or open a free Colab. Run each block as you go.</p>
+                </div>
+                <a class="colab-btn" href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener">Open a blank Colab →</a>
+            </div>
+
+            <h2><span class="step-num">1</span>Fetch a real gene from NCBI</h2>
+            <p>Biopython's <code class="inline">Entrez</code> module talks to NCBI for you. (NCBI just asks that you tell them who you are via an email — any address is fine.)</p>
+            <pre><span class="k">from</span> Bio <span class="k">import</span> Entrez, SeqIO
+
+Entrez.email = <span class="s">"your.email@example.com"</span>   <span class="c"># put any email here</span>
+
+<span class="c"># Fetch the human insulin mRNA as a FASTA record</span>
+handle = Entrez.efetch(db=<span class="s">"nucleotide"</span>, id=<span class="s">"NM_000207"</span>,
+                       rettype=<span class="s">"fasta"</span>, retmode=<span class="s">"text"</span>)
+record = SeqIO.read(handle, <span class="s">"fasta"</span>)
+handle.close()
+
+seq = <span class="k">str</span>(record.seq)
+<span class="k">print</span>(record.description)
+<span class="k">print</span>(<span class="s">"Length:"</span>, <span class="k">len</span>(seq), <span class="s">"bases"</span>)</pre>
+
+            <div class="fallback"><strong>Network blocked?</strong> Some school or work networks block NCBI. If the fetch fails, no problem — download the FASTA by hand from <code class="inline">ncbi.nlm.nih.gov/nuccore/NM_000207</code> (Send to → File → FASTA), then load it with <code class="inline">record = SeqIO.read("NM_000207.fasta", "fasta")</code>.</div>
+
+            <h2><span class="step-num">2</span>Base composition</h2>
+            <p>Use the loop pattern from the basics lesson to count each base:</p>
+            <pre>tally = {}
+<span class="k">for</span> base <span class="k">in</span> seq:
+    tally[base] = tally.get(base, <span class="o">0</span>) + <span class="o">1</span>
+
+<span class="k">print</span>(tally)
+<span class="k">for</span> base, n <span class="k">in</span> tally.items():
+    <span class="k">print</span>(base, n, <span class="k">round</span>(n/<span class="k">len</span>(seq)*<span class="o">100</span>, <span class="o">1</span>), <span class="s">"%"</span>)</pre>
+
+            <h2><span class="step-num">3</span>GC content — reuse your function</h2>
+            <pre><span class="k">def</span> <span class="o">gc_content</span>(s):
+    <span class="k">return</span> <span class="k">round</span>((s.count(<span class="s">"G"</span>) + s.count(<span class="s">"C"</span>)) / <span class="k">len</span>(s) * <span class="o">100</span>, <span class="o">1</span>)
+
+<span class="k">print</span>(<span class="s">"GC content:"</span>, gc_content(seq), <span class="s">"%"</span>)</pre>
+            <div class="why"><h4>Why GC content is interesting</h4><p>GC pairs bond more tightly than AT pairs, so GC-rich regions are more stable and often mark important, actively-used genes. Comparing GC content across genes and organisms is a real, everyday bioinformatics task.</p></div>
+
+            <h2><span class="step-num">4</span>From gene to protein</h2>
+            <p>The whole point of insulin's gene is the protein it builds. Biopython can translate the coding sequence into amino acids for you:</p>
+            <pre><span class="k">from</span> Bio.Seq <span class="k">import</span> Seq
+
+protein = Seq(seq).translate(to_stop=<span class="k">True</span>)
+<span class="k">print</span>(<span class="s">"Protein length:"</span>, <span class="k">len</span>(protein), <span class="s">"amino acids"</span>)
+<span class="k">print</span>(<span class="s">"First 20:"</span>, protein[:<span class="o">20</span>])</pre>
+            <p>The first amino acids you see (starting <code class="inline">M...</code>, the standard "start" residue) are the beginning of the real insulin protein. You just decoded a gene.</p>
+
+            <h2><span class="step-num">5</span>Visualize it</h2>
+            <pre><span class="k">import</span> matplotlib.pyplot <span class="k">as</span> plt
+
+bases = [<span class="s">"A"</span>, <span class="s">"C"</span>, <span class="s">"G"</span>, <span class="s">"T"</span>]
+heights = [tally.get(b, <span class="o">0</span>) <span class="k">for</span> b <span class="k">in</span> bases]
+
+plt.bar(bases, heights, color=[<span class="s">"#5b9cf8"</span>,<span class="s">"#a855f7"</span>,<span class="s">"#10b981"</span>,<span class="s">"#f59e0b"</span>])
+plt.title(<span class="s">"Base composition of human insulin (NM_000207)"</span>)
+plt.ylabel(<span class="s">"Count"</span>)
+plt.show()</pre>
+            <p>That bar chart is a small but complete piece of analysis — and it's yours. You fetched real data, processed it, and visualized a result.</p>
+
+            <div class="challenge">
+                <h3>🚀 Make it your own</h3>
+                <p>The best way to cement a skill is to push past the tutorial. Try one (or all) of these:</p>
+                <ul>
+                    <li>Fetch a <strong>different gene</strong> — try <code class="inline">NM_000518</code> (beta-globin, the blood gene behind sickle-cell). Compare its GC content to insulin.</li>
+                    <li>Write a function that returns the <strong>reverse complement</strong> of a sequence (hint: Biopython's <code class="inline">Seq(seq).reverse_complement()</code>).</li>
+                    <li>Count the <strong>most common codon</strong> in the sequence using a loop over <code class="inline">seq[i:i+3]</code>.</li>
+                    <li><strong>Portfolio move:</strong> save your notebook to GitHub with a short README. That's your first public bioinformatics project.</li>
+                </ul>
+            </div>
+
+            <h2>What you just did</h2>
+            <p>Step back and notice the shape of what happened: you connected to a real scientific database, retrieved real data, applied your own code to it, and produced a result and a figure. That loop — <em>get data → analyze → visualize</em> — is the core of nearly every bioinformatics project, no matter how advanced. You now own the whole pattern.</p>
+
+            <details><summary>The translation gave a warning about length not being a multiple of three. Is that bad?</summary><p>Not necessarily — the FASTA includes untranslated regions around the coding sequence, so the full mRNA isn't a clean multiple of three. For a precise translation you'd extract just the coding region (CDS); for this project, <code class="inline">to_stop=True</code> gives you the protein up to the first stop, which is what we want.</p></details>
+
+            <a class="next-lesson" href="r-install.html">
+                <span>Next foundation</span>
+                <h3>Start the R series: installing R &amp; RStudio →</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+</body>
+</html>

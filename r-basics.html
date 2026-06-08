@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>R Basics: Data Frames & Plotting - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.88rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .k { color:#c084fc; } pre .s { color:#86efac; } pre .o { color:#7dd3fc; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .tryit { background:rgba(16,185,129,0.08); border-left:4px solid var(--green); border-radius:8px; padding:14px 20px; margin:18px 0; font-size:1rem; color:#065f46; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (2 of 3)</div>
+            <h1>R Basics: Data Frames &amp; Plotting</h1>
+            <p class="promise">The R you'll use constantly — vectors, data frames, the handful of tidyverse verbs that do 80% of data work, and your first ggplot — built up gently and ready for real data.</p>
+            <div class="tags">
+                <span class="tag green">🟢 Beginner</span>
+                <span class="tag">⏱️ ~1.5 hr</span>
+                <span class="tag">📊 R · tidyverse</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <p>Open RStudio and type each line into the <strong>Console</strong>. Better yet, open a new R Script (File → New File → R Script) and run lines with Ctrl/Cmd+Enter — that way you keep a record of what you did.</p>
+
+            <h2>1. Vectors — R's basic building block</h2>
+            <p>R loves <strong>vectors</strong>: an ordered set of values of the same type. Most R operations work on whole vectors at once, which is what makes it so good for data.</p>
+            <pre>expression &lt;- <span class="k">c</span>(<span class="o">12.4</span>, <span class="o">8.1</span>, <span class="o">15.7</span>, <span class="o">3.3</span>, <span class="o">9.9</span>)   <span class="c"># c() = "combine"</span>
+mean(expression)     <span class="c"># average → 9.88</span>
+max(expression)      <span class="c"># 15.7</span>
+expression * <span class="o">2</span>       <span class="c"># multiplies EVERY value at once</span>
+length(expression)   <span class="c"># 5</span></pre>
+            <div class="why"><h4>Decode the jargon: <code class="inline">&lt;-</code></h4><p>In R, <code class="inline">&lt;-</code> is the assignment arrow — it means "store this on the right into the name on the left." (<code class="inline">=</code> also works, but R people use the arrow. RStudio types it for you with Alt+−.)</p></div>
+
+            <h2>2. Data frames — the spreadsheet of R</h2>
+            <p>A <strong>data frame</strong> is a table: columns are variables, rows are observations. It's exactly how gene expression tables, sample sheets, and clinical data are shaped.</p>
+            <pre>genes &lt;- data.frame(
+  gene  = <span class="k">c</span>(<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>, <span class="s">"MYC"</span>),
+  length_kb = <span class="k">c</span>(<span class="o">19.1</span>, <span class="o">81.2</span>, <span class="o">188.3</span>, <span class="o">5.3</span>),
+  chromosome = <span class="k">c</span>(<span class="s">"17"</span>, <span class="s">"17"</span>, <span class="s">"7"</span>, <span class="s">"8"</span>)
+)
+genes            <span class="c"># print the whole table</span>
+head(genes)      <span class="c"># first rows (handy for big tables)</span>
+genes$length_kb  <span class="c"># pull out one column by name with $</span></pre>
+
+            <h2>3. The tidyverse verbs that do most of the work</h2>
+            <p>Load the tidyverse, then meet five verbs that cover the vast majority of everyday data wrangling. The <code class="inline">|&gt;</code> "pipe" passes the result of one step into the next — read it as "and then."</p>
+            <pre><span class="k">library</span>(tidyverse)
+
+genes |&gt;
+  filter(length_kb &gt; <span class="o">10</span>) |&gt;          <span class="c"># keep rows matching a condition</span>
+  arrange(desc(length_kb))           <span class="c"># sort, largest first</span></pre>
+            <p>The five you'll reach for again and again:</p>
+            <ul>
+                <li><code class="inline">filter()</code> — keep rows that match a condition</li>
+                <li><code class="inline">select()</code> — keep only certain columns</li>
+                <li><code class="inline">mutate()</code> — add or change a column</li>
+                <li><code class="inline">summarise()</code> — collapse to a summary (mean, count…)</li>
+                <li><code class="inline">group_by()</code> — do the above <em>per group</em></li>
+            </ul>
+            <pre><span class="c"># Add a column, then average gene length per chromosome</span>
+genes |&gt;
+  mutate(length_bp = length_kb * <span class="o">1000</span>) |&gt;
+  group_by(chromosome) |&gt;
+  summarise(avg_length = mean(length_kb))</pre>
+            <div class="tryit">✍️ <strong>Try it:</strong> change <code class="inline">filter(length_kb &gt; 10)</code> to <code class="inline">&gt; 50</code>. Which genes survive?</div>
+
+            <h2>4. Your first plot with ggplot2</h2>
+            <p>ggplot2 (part of the tidyverse) builds plots in layers: start with the data, say what goes on each axis (<code class="inline">aes</code>), then add a <em>geom</em> — the kind of mark to draw.</p>
+            <pre><span class="k">ggplot</span>(genes, aes(x = gene, y = length_kb)) +
+  geom_col(fill = <span class="s">"#5b9cf8"</span>) +
+  labs(title = <span class="s">"Gene lengths"</span>, y = <span class="s">"Length (kb)"</span>) +
+  theme_minimal()</pre>
+            <div class="why"><h4>Why ggplot looks weird at first (the <code class="inline">+</code>)</h4><p>You build a ggplot by <em>adding layers</em> with <code class="inline">+</code>: data, then axes, then geoms, then labels and themes. Once it clicks, it's a wonderfully logical way to compose any figure — and it produces publication-quality plots by default.</p></div>
+
+            <h2>5. Reading your own data</h2>
+            <p>Real data usually arrives as a CSV. Reading it is one line:</p>
+            <pre>my_data &lt;- read_csv(<span class="s">"my_file.csv"</span>)
+glimpse(my_data)   <span class="c"># a quick look at columns and types</span></pre>
+
+            <h2>Check your understanding</h2>
+            <details><summary>What does the pipe <code class="inline">|&gt;</code> do?</summary><p>It passes the result of the left-hand side into the first argument of the right-hand side, so you can chain steps in reading order: "take genes, <em>and then</em> filter, <em>and then</em> sort."</p></details>
+            <details><summary>What's the difference between <code class="inline">filter()</code> and <code class="inline">select()</code>?</summary><p><code class="inline">filter()</code> keeps <em>rows</em> (observations) that match a condition; <code class="inline">select()</code> keeps <em>columns</em> (variables). Rows = filter, columns = select.</p></details>
+            <details><summary>Why build plots with <code class="inline">+</code> layers?</summary><p>Because it lets you compose any figure from simple, reusable pieces — swap a <code class="inline">geom_col</code> for a <code class="inline">geom_point</code> and you have a different chart of the same data, with everything else unchanged.</p></details>
+
+            <a class="next-lesson" href="r-project.html">
+                <span>Next in the R series — the payoff</span>
+                <h3>Project: explore a real dataset with R →</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Basics for Bioinformatics - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.88rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .k { color:#c084fc; } pre .s { color:#86efac; } pre .o { color:#7dd3fc; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .tryit { background:rgba(16,185,129,0.08); border-left:4px solid var(--green); border-radius:8px; padding:14px 20px; margin:18px 0; font-size:1rem; color:#065f46; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Python series (2 of 3)</div>
+            <h1>Python Basics for Bioinformatics</h1>
+            <p class="promise">The core Python you'll actually use — variables, lists, dictionaries, loops, functions, and reading files — taught with DNA and genes instead of abstract examples.</p>
+            <div class="tags">
+                <span class="tag green">🟢 Beginner</span>
+                <span class="tag">⏱️ ~1.5 hr</span>
+                <span class="tag">🐍 Python</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <p>You've got Python installed (if not, do the <a href="python-install.html">install lesson</a> first). Now let's learn just enough to be dangerous. Open a terminal, activate your environment with <code class="inline">conda activate bionexus</code>, type <code class="inline">python</code> to start, and follow along — typing each example yourself is how it sticks.</p>
+
+            <h2>1. Variables &amp; strings</h2>
+            <p>A variable is a name for a piece of data. In bioinformatics, a DNA sequence is just a <strong>string</strong> — text made of A, C, G, and T.</p>
+            <pre>dna = <span class="s">"ATGCGTACGTTAG"</span>
+<span class="k">print</span>(dna)
+<span class="k">print</span>(<span class="k">len</span>(dna))        <span class="c"># length of the sequence → 13</span>
+<span class="k">print</span>(dna.count(<span class="s">"G"</span>))   <span class="c"># how many G's → 3</span>
+<span class="k">print</span>(dna[<span class="o">0</span>])           <span class="c"># first base (counting starts at 0!) → A</span></pre>
+            <div class="why"><h4>Decode the jargon: zero-indexing</h4><p>Python counts from 0, not 1. So <code class="inline">dna[0]</code> is the first base and <code class="inline">dna[1]</code> is the second. This trips up everyone at first — biologists especially, since we usually call the first base "position 1." Just remember: code starts at zero.</p></div>
+
+            <h2>2. Doing real work with strings</h2>
+            <pre><span class="c"># GC content: the fraction of bases that are G or C — a real, useful metric</span>
+gc = (dna.count(<span class="s">"G"</span>) + dna.count(<span class="s">"C"</span>)) / <span class="k">len</span>(dna)
+<span class="k">print</span>(<span class="k">round</span>(gc * <span class="o">100</span>, <span class="o">1</span>), <span class="s">"% GC"</span>)
+
+<span class="c"># Replace lets us transcribe DNA → RNA (T becomes U)</span>
+rna = dna.replace(<span class="s">"T"</span>, <span class="s">"U"</span>)
+<span class="k">print</span>(rna)</pre>
+            <div class="tryit">✍️ <strong>Try it:</strong> change the <code class="inline">dna</code> string and re-run. What GC content do you get for a sequence of all A's and T's?</div>
+
+            <h2>3. Lists — ordered collections</h2>
+            <pre>genes = [<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>, <span class="s">"MYC"</span>]
+<span class="k">print</span>(genes[<span class="o">1</span>])          <span class="c"># BRCA1</span>
+genes.append(<span class="s">"KRAS"</span>)     <span class="c"># add one to the end</span>
+<span class="k">print</span>(<span class="k">len</span>(genes))        <span class="c"># 5</span></pre>
+
+            <h2>4. Dictionaries — labelled lookups</h2>
+            <p>A dictionary stores key → value pairs. Perfect for things like "how many of each base?"</p>
+            <pre>counts = {<span class="s">"A"</span>: <span class="o">10</span>, <span class="s">"C"</span>: <span class="o">7</span>, <span class="s">"G"</span>: <span class="o">9</span>, <span class="s">"T"</span>: <span class="o">12</span>}
+<span class="k">print</span>(counts[<span class="s">"G"</span>])       <span class="c"># 9</span>
+counts[<span class="s">"N"</span>] = <span class="o">2</span>          <span class="c"># add an "unknown base" entry</span></pre>
+
+            <h2>5. Loops — do something to each item</h2>
+            <pre><span class="k">for</span> gene <span class="k">in</span> genes:
+    <span class="k">print</span>(gene, <span class="s">"has"</span>, <span class="k">len</span>(gene), <span class="s">"letters"</span>)
+
+<span class="c"># Count each base in a sequence by looping</span>
+tally = {}
+<span class="k">for</span> base <span class="k">in</span> dna:
+    tally[base] = tally.get(base, <span class="o">0</span>) + <span class="o">1</span>
+<span class="k">print</span>(tally)</pre>
+            <div class="why"><h4>Why loops matter</h4><p>A genome has millions of bases. You'll never process them by hand — you write the instruction <em>once</em> and the loop applies it to everything. This is the moment programming starts paying off.</p></div>
+
+            <h2>6. Functions — reusable recipes</h2>
+            <p>When you do something more than once, wrap it in a function so you can reuse it.</p>
+            <pre><span class="k">def</span> <span class="o">gc_content</span>(seq):
+    <span class="s">"""Return the GC percentage of a DNA sequence."""</span>
+    g = seq.count(<span class="s">"G"</span>) + seq.count(<span class="s">"C"</span>)
+    <span class="k">return</span> <span class="k">round</span>(g / <span class="k">len</span>(seq) * <span class="o">100</span>, <span class="o">1</span>)
+
+<span class="k">print</span>(gc_content(<span class="s">"ATGCGCGC"</span>))   <span class="c"># 75.0</span>
+<span class="k">print</span>(gc_content(<span class="s">"AAATTT"</span>))     <span class="c"># 0.0</span></pre>
+
+            <h2>7. Reading a file</h2>
+            <p>Real data lives in files. Here's the pattern for reading one line by line:</p>
+            <pre><span class="k">with</span> <span class="k">open</span>(<span class="s">"sequence.txt"</span>) <span class="k">as</span> f:
+    <span class="k">for</span> line <span class="k">in</span> f:
+        line = line.strip()      <span class="c"># remove the invisible newline</span>
+        <span class="k">print</span>(line)</pre>
+            <div class="why"><h4>Decode the jargon: Biopython</h4><p>For real sequence files (FASTA, FASTQ) you won't parse them by hand — a library called <strong>Biopython</strong> does it for you. You installed it in the previous lesson. You'll use it in the project next.</p></div>
+
+            <h2>Check your understanding</h2>
+            <details><summary>Why does <code class="inline">dna[1]</code> give the second base, not the first?</summary><p>Because Python indexes from 0. The first item is at index 0, the second at index 1, and so on.</p></details>
+            <details><summary>When should you write a function?</summary><p>Whenever you find yourself doing the same operation more than once. A function lets you write the logic once and reuse it with different inputs — clearer, shorter, and less error-prone.</p></details>
+            <details><summary>What's the difference between a list and a dictionary?</summary><p>A list is an ordered sequence you access by position (<code class="inline">genes[0]</code>). A dictionary stores labelled pairs you access by key (<code class="inline">counts["G"]</code>). Use a list for "a bunch of things in order," a dictionary for "look this up by name."</p></details>
+
+            <a class="next-lesson" href="python-project.html">
+                <span>Next in the Python series — the payoff</span>
+                <h3>Project: analyze a real DNA sequence →</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+</body>
+</html>

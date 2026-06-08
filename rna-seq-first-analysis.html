@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your First RNA-seq Analysis - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .colab-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; background: var(--deep-navy); color: white; border-radius: 12px; padding: 26px 30px; margin: 28px 0; }
+        .colab-cta div p:first-child { font-weight: 700; font-size: 1.15rem; margin-bottom: 4px; }
+        .colab-cta div p:last-child { color: rgba(255,255,255,0.7); font-size: 0.95rem; margin: 0; }
+        .colab-btn { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: transform 0.3s ease; }
+        .colab-btn:hover { transform: translateY(-2px); }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .k { color: #c084fc; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .step-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; font-weight: 700; font-size: 0.95rem; margin-right: 10px; vertical-align: middle; }
+
+        .levelup { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 22px 26px; margin: 28px 0; }
+        .levelup h4 { color: #b45309; margin-bottom: 8px; }
+        .levelup p { font-size: 1rem; color: var(--text-gray); margin-bottom: 8px; }
+        .levelup a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+
+        details { background: white; border: 1px solid rgba(91,156,248,0.2); border-radius: 8px; padding: 14px 20px; margin-bottom: 12px; }
+        details summary { font-weight: 600; cursor: pointer; color: var(--deep-navy); }
+        details p { margin: 12px 0 0; color: var(--text-gray); font-size: 1rem; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; Flagship project</div>
+                <h1>Your First RNA-seq Analysis</h1>
+                <p class="promise">By the end of this lesson you'll have run a real differential-expression analysis from start to finish — finding which genes change between two conditions — entirely in your browser, with no software to install.</p>
+                <div class="tags">
+                    <span class="tag green">🟢→🟡 Beginner-friendly</span>
+                    <span class="tag">⏱️ 2–3 hours</span>
+                    <span class="tag">🐍 Python</span>
+                    <span class="tag green">🌐 Runs in your browser</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="prereq">
+                    <h4>Before you start</h4>
+                    <ul>
+                        <li>You can read a little Python — variables, functions, importing libraries. (New to this? Start with <a href="learn.html#track-0">Track 0</a>.)</li>
+                        <li>A free Google account, so you can run the code in Google Colab.</li>
+                        <li>Curiosity. You do <em>not</em> need to understand the math behind the statistics yet — we'll point at it and keep moving.</li>
+                    </ul>
+                </div>
+
+                <h2>The question we're actually answering</h2>
+                <p>Before any code, let's be clear on what RNA-seq is <em>for</em>. Every cell carries the same DNA, but at any moment it's only reading some of those genes. The genes a cell is actively "reading" get transcribed into <strong>RNA</strong>. So if you measure how much RNA there is for each gene, you get a snapshot of what the cell is actually <em>doing</em>.</p>
+                <p>RNA-seq is the technology that counts that RNA, gene by gene, across thousands of genes at once. The classic experiment compares two groups — say, <strong>untreated cells vs. cells given a drug</strong> — and asks a deceptively simple question:</p>
+                <p style="font-size:1.2rem; color:var(--deep-navy); font-weight:600; text-align:center; padding:8px 0;">"Which genes change their activity between the two conditions?"</p>
+                <p>That's <strong>differential expression analysis</strong>, and it's the workhorse of modern molecular biology — used to understand diseases, find drug targets, and figure out how cells respond to their environment. That's exactly what you're about to do.</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Count matrix</h4>
+                    <p>The starting point of most RNA-seq analyses is a big table: one row per gene, one column per sample, and each cell holds a whole number — how many RNA fragments ("reads") were counted for that gene in that sample. Higher number = the gene was more active. Getting from raw sequencer output to this table (alignment and counting) is its own topic; here we start from the count matrix, which is where most analyses really begin.</p>
+                </div>
+
+                <h2>The plan</h2>
+                <p>Five steps. Each one is a few lines of code, and we'll explain what every line is doing and — more importantly — <em>why</em>.</p>
+                <ol>
+                    <li><strong>Set up</strong> — install one package.</li>
+                    <li><strong>Load the data</strong> — a count matrix and a table describing the samples.</li>
+                    <li><strong>Run the analysis</strong> — let DESeq2 do the heavy statistical lifting.</li>
+                    <li><strong>Read the results</strong> — find the genes that changed.</li>
+                    <li><strong>Visualize</strong> — draw a volcano plot, the signature figure of RNA-seq.</li>
+                </ol>
+
+                <div class="colab-cta">
+                    <div>
+                        <p>▶ Code along in Google Colab</p>
+                        <p>Open a free notebook, paste each block below, and run it. Nothing to install on your computer.</p>
+                    </div>
+                    <a class="colab-btn" href="https://colab.research.google.com/#create=true" target="_blank" rel="noopener">Open a blank Colab →</a>
+                </div>
+
+                <h2><span class="step-num">1</span>Set up</h2>
+                <p>We'll use <strong>PyDESeq2</strong>, a Python implementation of the famous DESeq2 method for differential expression. In Colab, install it once:</p>
+                <pre><span class="c"># Run this in the first Colab cell. The "!" runs a shell command.</span>
+!pip install pydeseq2</pre>
+                <p>Then import what we need:</p>
+                <pre><span class="k">import</span> pandas <span class="k">as</span> pd
+<span class="k">import</span> numpy <span class="k">as</span> np
+<span class="k">import</span> matplotlib.pyplot <span class="k">as</span> plt
+<span class="k">from</span> pydeseq2.dds <span class="k">import</span> DeseqDataSet
+<span class="k">from</span> pydeseq2.ds <span class="k">import</span> DeseqStats</pre>
+
+                <h2><span class="step-num">2</span>Load the data</h2>
+                <p>We'll use a compact, ready-made example count matrix so everything runs in <em>seconds</em> and you can focus on the workflow. (When you're ready for a real published dataset, see the "Level up" box near the end — the steps are identical.)</p>
+                <p>Two files: a <strong>count matrix</strong> (genes × samples) and a <strong>metadata</strong> table that says which condition each sample belongs to.</p>
+                <pre>base = <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
+
+<span class="c"># Count matrix: rows = genes, columns = samples.</span>
+<span class="c"># We transpose with .T so rows become samples, which is what PyDESeq2 expects.</span>
+counts = pd.read_csv(base + <span class="s">"test_counts.csv"</span>, index_col=<span class="s">0</span>).T
+
+<span class="c"># Metadata: one row per sample, with a "condition" column (values A and B).</span>
+metadata = pd.read_csv(base + <span class="s">"test_metadata.csv"</span>, index_col=<span class="s">0</span>)
+
+<span class="k">print</span>(counts.shape)      <span class="c"># (samples, genes)</span>
+counts.head()</pre>
+                <p>Take a moment to actually look at <code class="inline">counts.head()</code> and <code class="inline">metadata.head()</code>. Getting comfortable <em>looking</em> at your data before analyzing it is one of the most underrated habits in bioinformatics — most real-world mistakes are caught just by eyeballing the table.</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Normalization</h4>
+                    <p>You can't compare raw counts directly between samples, because some samples are sequenced more deeply than others (more total reads), making every gene look "higher" just by accident. DESeq2 <em>normalizes</em> to correct for this — adjusting so that differences reflect real biology, not how much data each sample happened to get. The good news: it does this for you automatically in the next step.</p>
+                </div>
+
+                <h2><span class="step-num">3</span>Run the analysis</h2>
+                <p>This is where DESeq2 earns its reputation. In two lines it normalizes the data, models the counts statistically, and prepares everything needed to test each gene.</p>
+                <pre>dds = DeseqDataSet(
+    counts=counts,
+    metadata=metadata,
+    design_factors=<span class="s">"condition"</span>,   <span class="c"># the column in metadata we're comparing</span>
+)
+<span class="c"># Note: newer PyDESeq2 versions prefer design="~condition" instead of</span>
+<span class="c"># design_factors. If you see a deprecation warning, swap to that — same result.</span>
+dds.deseq2()   <span class="c"># fit the model — this does the real work</span></pre>
+                <p>The <code class="inline">design_factors="condition"</code> part is you telling DESeq2: "the thing I care about is the difference between conditions A and B." That single choice frames the entire analysis.</p>
+
+                <h2><span class="step-num">4</span>Read the results</h2>
+                <p>Now we ask, for every gene: is the difference between A and B big enough — and consistent enough — to be real?</p>
+                <pre>stat_res = DeseqStats(dds, contrast=[<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>])
+stat_res.summary()
+res = stat_res.results_df
+res.sort_values(<span class="s">"padj"</span>).head(<span class="s">10</span>)   <span class="c"># the 10 most convincing hits</span></pre>
+                <p>The results table has a few columns that matter enormously:</p>
+                <ul>
+                    <li><strong>log2FoldChange</strong> — how much the gene changed, on a log2 scale. +1 means it doubled in B vs A; −1 means it halved. Sign tells you direction, size tells you magnitude.</li>
+                    <li><strong>pvalue</strong> — the raw probability that you'd see a change this big by pure chance.</li>
+                    <li><strong>padj</strong> — the p-value <em>adjusted</em> for the fact that we tested thousands of genes at once. <strong>This is the one you trust</strong>, not the raw p-value.</li>
+                </ul>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Why padj, not pvalue?</h4>
+                    <p>If you test 10,000 genes and call anything with p &lt; 0.05 a "hit," you'll get ~500 false positives by chance alone — before any real biology. Adjusting for <em>multiple testing</em> (here, the Benjamini–Hochberg method) controls that flood of false alarms. Rule of thumb: a gene is a credible hit if <strong>padj &lt; 0.05</strong>. We'll devote a whole lesson to this idea in Track 5 — it's that important.</p>
+                </div>
+
+                <h2><span class="step-num">5</span>Visualize: the volcano plot</h2>
+                <p>The volcano plot is the iconic RNA-seq figure. Each dot is a gene. The x-axis is how much it changed (fold change); the y-axis is how confident we are (significance). The genes that matter — big change <em>and</em> high confidence — fly up into the top corners, which is where the name comes from.</p>
+                <pre>res = res.dropna()
+res[<span class="s">"-log10padj"</span>] = -np.log10(res[<span class="s">"padj"</span>])
+sig = res[<span class="s">"padj"</span>] &lt; <span class="s">0.05</span>
+
+plt.figure(figsize=(<span class="s">7</span>, <span class="s">6</span>))
+plt.scatter(res.log2FoldChange[~sig], res[<span class="s">"-log10padj"</span>][~sig],
+            s=<span class="s">10</span>, color=<span class="s">"#cbd5e1"</span>, label=<span class="s">"Not significant"</span>)
+plt.scatter(res.log2FoldChange[sig], res[<span class="s">"-log10padj"</span>][sig],
+            s=<span class="s">12</span>, color=<span class="s">"#a855f7"</span>, label=<span class="s">"padj &lt; 0.05"</span>)
+plt.axhline(-np.log10(<span class="s">0.05</span>), ls=<span class="s">"--"</span>, color=<span class="s">"#64748b"</span>, lw=<span class="s">1</span>)
+plt.xlabel(<span class="s">"log2 fold change (B vs A)"</span>)
+plt.ylabel(<span class="s">"-log10 adjusted p-value"</span>)
+plt.title(<span class="s">"Volcano plot — your first one!"</span>)
+plt.legend()
+plt.show()</pre>
+                <p>That's it. You just took a count matrix, ran a real statistical workflow, identified the genes that change between conditions, and made the figure you'll see in thousands of published papers. The exact same five steps scale up to a real experiment with 20,000 genes.</p>
+
+                <div class="levelup">
+                    <h4>🔶 Level up: run it on a real published dataset</h4>
+                    <p>Ready to use real biology? A great next dataset is the <strong>airway</strong> experiment (Himes et al., 2014, GEO accession <strong>GSE52778</strong>): human airway smooth-muscle cells treated with dexamethasone, a steroid used in asthma. It's the classic teaching dataset for exactly this workflow.</p>
+                    <p>The only thing that changes is <em>where the count matrix comes from</em> — load airway counts and metadata instead of the example files, set <code class="inline">design_factors</code> to the treatment column, and every other step is identical. That repeatability is the whole point.</p>
+                    <p><a href="resources.html">Find dataset links in Resources →</a></p>
+                </div>
+
+                <h2>Check your understanding</h2>
+                <details>
+                    <summary>A gene has a log2 fold change of −2. What does that mean?</summary>
+                    <p>It dropped to one-quarter of its original level in condition B compared to A (−1 = halved, −2 = halved again). The negative sign means it went <em>down</em> in B.</p>
+                </details>
+                <details>
+                    <summary>Why do we look at padj instead of the raw pvalue?</summary>
+                    <p>Because we tested thousands of genes at once. Without adjusting for that, we'd flag hundreds of genes as "significant" purely by chance. The adjusted p-value (padj) controls for this, so it's the number you trust.</p>
+                </details>
+                <details>
+                    <summary>Where do the most interesting genes appear on a volcano plot?</summary>
+                    <p>In the top-left and top-right corners — high on the y-axis (very significant) and far from zero on the x-axis (large change). Big, confident changes in both directions.</p>
+                </details>
+
+                <a class="next-lesson" href="learn.html#track-3">
+                    <span>Next in Track 3</span>
+                    <h3>From raw counts to differential expression: going deeper with DESeq2 →</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+</body>
+</html>
