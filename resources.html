@@ -27,12 +27,27 @@
         .cta-nav::after { display: none; }
         .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
         .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
-        main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 100px 0; }
-        .coming-soon { text-align: center; max-width: 600px; }
-        .coming-soon h1 { font-family: 'Crimson Pro', serif; font-size: 5rem; font-weight: 700; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 24px; }
-        .coming-soon p { font-size: 1.3rem; color: var(--text-gray); margin-bottom: 32px; }
-        .btn-primary { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; padding: 16px 36px; border-radius: 8px; font-weight: 600; text-decoration: none; display: inline-block; transition: all 0.3s ease; }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91, 156, 248, 0.4); }
+        .page-header { padding: 80px 0 50px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); text-align: center; }
+        .page-header h1 { font-family: 'Crimson Pro', serif; font-size: 3.5rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 18px; }
+        .page-header p { font-size: 1.25rem; color: var(--text-gray); max-width: 720px; margin: 0 auto; }
+        main { flex: 1; padding: 64px 0 80px; }
+        .res-section { max-width: 980px; margin: 0 auto 56px; }
+        .res-section > h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin-bottom: 8px; }
+        .res-section > p.intro { color: var(--text-gray); margin-bottom: 26px; font-size: 1.05rem; }
+        .res-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 20px; }
+        .res-card { background: white; border-radius: 12px; padding: 24px 26px; box-shadow: 0 4px 18px rgba(0,0,0,0.06); border-left: 4px solid var(--primary-blue); display: flex; flex-direction: column; }
+        .res-card.purple { border-left-color: var(--primary-purple); }
+        .res-card h3 { font-family: 'Crimson Pro', serif; font-size: 1.25rem; color: var(--deep-navy); margin-bottom: 8px; }
+        .res-card p { color: var(--text-gray); font-size: 0.98rem; margin-bottom: 16px; flex: 1; }
+        .res-card a.link { color: var(--primary-blue); font-weight: 600; text-decoration: none; font-size: 0.95rem; }
+        .res-card a.link:hover { color: var(--primary-purple); }
+        .res-card .tagrow { margin-bottom: 12px; }
+        .res-card .tagrow span { display: inline-block; font-size: 0.72rem; font-weight: 700; color: #3b6fd4; background: rgba(91,156,248,0.12); padding: 3px 10px; border-radius: 12px; }
+        .callout { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; border-radius: 16px; padding: 40px 32px; text-align: center; max-width: 980px; margin: 0 auto; }
+        .callout h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; margin-bottom: 12px; }
+        .callout p { opacity: 0.95; margin-bottom: 24px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .callout a { background: white; color: var(--primary-blue); padding: 14px 32px; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-block; transition: transform 0.3s ease; }
+        .callout a:hover { transform: translateY(-3px) scale(1.03); }
         footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
         footer p { color: rgba(255, 255, 255, 0.6); }
         @media (max-width: 768px) {
@@ -40,7 +55,7 @@
             nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
             nav ul.active { display: flex; }
             .logo-img { height: 40px; }
-            .coming-soon h1 { font-size: 3rem; }
+            .page-header h1 { font-size: 2.5rem; }
         }
     </style>
 </head>
@@ -64,13 +79,153 @@
         </div>
     </header>
 
+    <div class="page-header">
+        <div class="container">
+            <h1>Resources</h1>
+            <p>The datasets, databases, and free tools used throughout our lessons — plus the trusted references every bioinformatician keeps close.</p>
+        </div>
+    </div>
+
     <main>
         <div class="container">
-            <div class="coming-soon">
-                <h1>COMING SOON!</h1>
-                <p>We're preparing amazing resources to help you on your bioinformatics journey. Stay tuned!</p>
-                <a href="https://www.facebook.com/bionexushub" target="_blank" class="btn-primary">Follow Us for Updates</a>
+
+            <!-- Datasets used in lessons -->
+            <section class="res-section">
+                <h2>Datasets from our lessons</h2>
+                <p class="intro">The exact real datasets our projects use. Open these to follow along, or to practice the same workflow on your own.</p>
+                <div class="res-grid">
+                    <div class="res-card">
+                        <div class="tagrow"><span>RNA-seq · Track 3</span></div>
+                        <h3>The airway dataset</h3>
+                        <p>Human airway smooth-muscle cells treated with dexamethasone (Himes et al., 2014). The classic teaching dataset for differential expression.</p>
+                        <a class="link" href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE52778" target="_blank" rel="noopener">Open GSE52778 on GEO →</a>
+                    </div>
+                    <div class="res-card">
+                        <div class="tagrow"><span>Python · Foundations</span></div>
+                        <h3>Human gene sequences</h3>
+                        <p>Real RefSeq records used in the Python and Bash projects: insulin (NM_000207), beta-globin (NM_000518), and APP (NM_000484).</p>
+                        <a class="link" href="https://www.ncbi.nlm.nih.gov/nuccore/NM_000207" target="_blank" rel="noopener">View NM_000207 (insulin) →</a>
+                    </div>
+                    <div class="res-card">
+                        <div class="tagrow"><span>R · Foundations</span></div>
+                        <h3>Palmer Penguins</h3>
+                        <p>Real measurements of 344 penguins across three species — the friendly dataset behind the R project. Installs as an R package.</p>
+                        <a class="link" href="https://allisonhorst.github.io/palmerpenguins/" target="_blank" rel="noopener">Palmer Penguins docs →</a>
+                    </div>
+                    <div class="res-card">
+                        <div class="tagrow"><span>RNA-seq · Track 3</span></div>
+                        <h3>PyDESeq2 example data</h3>
+                        <p>The compact count matrix the flagship RNA-seq lesson runs on, so everything works instantly in your browser.</p>
+                        <a class="link" href="https://pydeseq2.readthedocs.io/" target="_blank" rel="noopener">PyDESeq2 documentation →</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Where data lives -->
+            <section class="res-section">
+                <h2>Where the data lives</h2>
+                <p class="intro">The public databases professional bioinformaticians use every day. Free, open, and enormous.</p>
+                <div class="res-grid">
+                    <div class="res-card purple">
+                        <h3>NCBI</h3>
+                        <p>The U.S. hub for sequences, genes, and genomes — including GenBank and the Entrez search system.</p>
+                        <a class="link" href="https://www.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">ncbi.nlm.nih.gov →</a>
+                    </div>
+                    <div class="res-card purple">
+                        <h3>Ensembl</h3>
+                        <p>Richly annotated genomes for humans and many other species, with a friendly genome browser.</p>
+                        <a class="link" href="https://www.ensembl.org/" target="_blank" rel="noopener">ensembl.org →</a>
+                    </div>
+                    <div class="res-card purple">
+                        <h3>GEO</h3>
+                        <p>Gene Expression Omnibus — a vast archive of expression experiments (including RNA-seq) you can reanalyze.</p>
+                        <a class="link" href="https://www.ncbi.nlm.nih.gov/geo/" target="_blank" rel="noopener">GEO →</a>
+                    </div>
+                    <div class="res-card purple">
+                        <h3>SRA</h3>
+                        <p>The Sequence Read Archive — raw sequencing reads from published studies worldwide.</p>
+                        <a class="link" href="https://www.ncbi.nlm.nih.gov/sra/" target="_blank" rel="noopener">SRA →</a>
+                    </div>
+                    <div class="res-card purple">
+                        <h3>UniProt</h3>
+                        <p>The reference database for protein sequences and functional information.</p>
+                        <a class="link" href="https://www.uniprot.org/" target="_blank" rel="noopener">uniprot.org →</a>
+                    </div>
+                    <div class="res-card purple">
+                        <h3>PDB</h3>
+                        <p>The Protein Data Bank — 3D structures of proteins and other biological molecules.</p>
+                        <a class="link" href="https://www.rcsb.org/" target="_blank" rel="noopener">rcsb.org →</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Free tools -->
+            <section class="res-section">
+                <h2>Free tools to work in</h2>
+                <p class="intro">Everything you need to start, without spending a cent or — for the first three — installing anything.</p>
+                <div class="res-grid">
+                    <div class="res-card">
+                        <h3>Google Colab</h3>
+                        <p>Run Python notebooks in your browser, free. What our lessons use so you can start with zero setup.</p>
+                        <a class="link" href="https://colab.research.google.com/" target="_blank" rel="noopener">Open Colab →</a>
+                    </div>
+                    <div class="res-card">
+                        <h3>Galaxy</h3>
+                        <p>Run real bioinformatics tools (alignment, QC, and more) through a point-and-click web interface — no command line needed.</p>
+                        <a class="link" href="https://usegalaxy.org/" target="_blank" rel="noopener">usegalaxy.org →</a>
+                    </div>
+                    <div class="res-card">
+                        <h3>VS Code</h3>
+                        <p>A free desktop editor for your scripts and projects. We have a step-by-step setup guide.</p>
+                        <a class="link" href="vscode-setup.html">Set up VS Code →</a>
+                    </div>
+                    <div class="res-card">
+                        <h3>Bioconductor</h3>
+                        <p>The home of R's biology packages — DESeq2, edgeR, limma, and hundreds more.</p>
+                        <a class="link" href="https://bioconductor.org/" target="_blank" rel="noopener">bioconductor.org →</a>
+                    </div>
+                    <div class="res-card">
+                        <h3>Biopython</h3>
+                        <p>The Python toolkit for working with sequences and biological file formats.</p>
+                        <a class="link" href="https://biopython.org/" target="_blank" rel="noopener">biopython.org →</a>
+                    </div>
+                    <div class="res-card">
+                        <h3>Rosalind</h3>
+                        <p>Learn bioinformatics by solving bite-sized coding problems — a fun way to practice.</p>
+                        <a class="link" href="https://rosalind.info/" target="_blank" rel="noopener">rosalind.info →</a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Help & community -->
+            <section class="res-section">
+                <h2>When you get stuck</h2>
+                <p class="intro">Everyone does. These are where the community goes for answers.</p>
+                <div class="res-grid">
+                    <div class="res-card purple">
+                        <h3>Biostars</h3>
+                        <p>A Q&amp;A community dedicated entirely to bioinformatics questions.</p>
+                        <a class="link" href="https://www.biostars.org/" target="_blank" rel="noopener">biostars.org →</a>
+                    </div>
+                    <div class="res-card purple">
+                        <h3>Stack Overflow</h3>
+                        <p>The go-to for coding errors in Python, R, and the command line.</p>
+                        <a class="link" href="https://stackoverflow.com/" target="_blank" rel="noopener">stackoverflow.com →</a>
+                    </div>
+                    <div class="res-card purple">
+                        <h3>Our Facebook page</h3>
+                        <p>Updates, tips, and a place to connect with the BioNexus Hub community.</p>
+                        <a class="link" href="https://www.facebook.com/bionexushub" target="_blank" rel="noopener">Follow BioNexus Hub →</a>
+                    </div>
+                </div>
+            </section>
+
+            <div class="callout">
+                <h2>Ready to put these to use?</h2>
+                <p>The roadmap walks you through exactly how to use these datasets and tools, step by step — from your first line of code to a finished analysis.</p>
+                <a href="learn.html">Start the roadmap →</a>
             </div>
+
         </div>
     </main>
 
