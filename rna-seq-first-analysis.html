@@ -138,7 +138,7 @@
                 <div class="tags">
                     <span class="tag green">🟢→🟡 Beginner-friendly</span>
                     <span class="tag">⏱️ 2–3 hours</span>
-                    <span class="tag">🐍 Python</span>
+                    <span class="tag">📊 R · DESeq2</span>
                     <span class="tag green">🌐 Runs in your browser</span>
                 </div>
             </div>
@@ -152,7 +152,7 @@
                 <div class="prereq">
                     <h4>Before you start</h4>
                     <ul>
-                        <li>You can read a little Python — variables, functions, importing libraries. (New to this? Start with <a href="learn.html#track-0">Track 0</a>.)</li>
+                        <li>You can read a little R — variables, functions, loading packages. (New to this? Start with the <a href="learn.html#foundations">R series</a> or <a href="learn.html#track-0">Track 0</a>.)</li>
                         <li>A free Google account, so you can run the code in Google Colab.</li>
                         <li>Curiosity. You do <em>not</em> need to understand the math behind the statistics yet — we'll point at it and keep moving.</li>
                     </ul>
@@ -184,34 +184,34 @@
                         <p>▶ Code along in Google Colab</p>
                         <p>Open a free notebook, paste each block below, and run it. Nothing to install on your computer.</p>
                     </div>
-                    <a class="colab-btn" href="https://colab.research.google.com/github/MennahBassiouny/bionexus/blob/main/nb-rna-seq.ipynb" target="_blank" rel="noopener">Open a blank Colab →</a>
+                    <a class="colab-btn" href="https://colab.research.google.com/github/MennahBassiouny/bionexus/blob/main/nb-rna-seq.ipynb" target="_blank" rel="noopener">Open the R notebook in Colab →</a>
                 </div>
 
                 <h2><span class="step-num">1</span>Set up</h2>
-                <p>We'll use <strong>PyDESeq2</strong>, a Python implementation of the famous DESeq2 method for differential expression. In Colab, install it once:</p>
-                <pre><span class="c"># Run this in the first Colab cell. The "!" runs a shell command.</span>
-!pip install pydeseq2</pre>
-                <p>Then import what we need:</p>
-                <pre><span class="k">import</span> pandas <span class="k">as</span> pd
-<span class="k">import</span> numpy <span class="k">as</span> np
-<span class="k">import</span> matplotlib.pyplot <span class="k">as</span> plt
-<span class="k">from</span> pydeseq2.dds <span class="k">import</span> DeseqDataSet
-<span class="k">from</span> pydeseq2.ds <span class="k">import</span> DeseqStats</pre>
+                <p>We'll use <strong>DESeq2</strong>, the standard <strong>R / Bioconductor</strong> package for differential expression — the original method the whole field is built on. Make sure your Colab notebook is set to the <strong>R runtime</strong> (Runtime → Change runtime type → R), then install it once:</p>
+                <pre><span class="c"># Installing Bioconductor packages takes a few minutes the first time — grab a coffee.</span>
+<span class="k">if</span> (!requireNamespace(<span class="s">"BiocManager"</span>, quietly = TRUE)) install.packages(<span class="s">"BiocManager"</span>)
+BiocManager::install(<span class="s">"DESeq2"</span>, update = FALSE, ask = FALSE)</pre>
+                <p>Then load the library:</p>
+                <pre><span class="k">library</span>(DESeq2)</pre>
 
                 <h2><span class="step-num">2</span>Load the data</h2>
                 <p>We'll use a compact, ready-made example count matrix so everything runs in <em>seconds</em> and you can focus on the workflow. (When you're ready for a real published dataset, see the "Level up" box near the end — the steps are identical.)</p>
                 <p>Two files: a <strong>count matrix</strong> (genes × samples) and a <strong>metadata</strong> table that says which condition each sample belongs to.</p>
-                <pre>base = <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
+                <pre>base <- <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
 
-<span class="c"># Count matrix: rows = genes, columns = samples.</span>
-<span class="c"># We transpose with .T so rows become samples, which is what PyDESeq2 expects.</span>
-counts = pd.read_csv(base + <span class="s">"test_counts.csv"</span>, index_col=<span class="s">0</span>).T
+<span class="c"># Count matrix: rows = genes, columns = samples — exactly what DESeq2 wants.</span>
+counts <- as.matrix(read.csv(paste0(base, <span class="s">"test_counts.csv"</span>), row.names = 1))
 
 <span class="c"># Metadata: one row per sample, with a "condition" column (values A and B).</span>
-metadata = pd.read_csv(base + <span class="s">"test_metadata.csv"</span>, index_col=<span class="s">0</span>)
+metadata <- read.csv(paste0(base, <span class="s">"test_metadata.csv"</span>), row.names = 1)
+metadata$condition <- factor(metadata$condition)
 
-<span class="k">print</span>(counts.shape)      <span class="c"># (samples, genes)</span>
-counts.head()</pre>
+<span class="c"># Keep the metadata rows in the same order as the count columns.</span>
+metadata <- metadata[colnames(counts), , drop = FALSE]
+
+dim(counts)        <span class="c"># genes x samples</span>
+head(counts)</pre>
                 <p>Take a moment to actually look at <code class="inline">counts.head()</code> and <code class="inline">metadata.head()</code>. Getting comfortable <em>looking</em> at your data before analyzing it is one of the most underrated habits in bioinformatics — most real-world mistakes are caught just by eyeballing the table.</p>
 
                 <div class="jargon">
@@ -221,22 +221,20 @@ counts.head()</pre>
 
                 <h2><span class="step-num">3</span>Run the analysis</h2>
                 <p>This is where DESeq2 earns its reputation. In two lines it normalizes the data, models the counts statistically, and prepares everything needed to test each gene.</p>
-                <pre>dds = DeseqDataSet(
-    counts=counts,
-    metadata=metadata,
-    design_factors=<span class="s">"condition"</span>,   <span class="c"># the column in metadata we're comparing</span>
-)
-<span class="c"># Note: newer PyDESeq2 versions prefer design="~condition" instead of</span>
-<span class="c"># design_factors. If you see a deprecation warning, swap to that — same result.</span>
-dds.deseq2()   <span class="c"># fit the model — this does the real work</span></pre>
-                <p>The <code class="inline">design_factors="condition"</code> part is you telling DESeq2: "the thing I care about is the difference between conditions A and B." That single choice frames the entire analysis.</p>
+                <pre><span class="c"># Build the DESeq2 dataset. design = ~condition is the question we're asking.</span>
+dds <- DESeqDataSetFromMatrix(countData = counts,
+                              colData   = metadata,
+                              design    = ~ condition)
+
+dds <- DESeq(dds)   <span class="c"># fit the model — this does the real work</span></pre>
+                <p>The <code class="inline">design = ~ condition</code> part is you telling DESeq2: "the thing I care about is the difference between conditions A and B." That single choice frames the entire analysis.</p>
 
                 <h2><span class="step-num">4</span>Read the results</h2>
                 <p>Now we ask, for every gene: is the difference between A and B big enough — and consistent enough — to be real?</p>
-                <pre>stat_res = DeseqStats(dds, contrast=[<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>])
-stat_res.summary()
-res = stat_res.results_df
-res.sort_values(<span class="s">"padj"</span>).head(<span class="s">10</span>)   <span class="c"># the 10 most convincing hits</span></pre>
+                <pre><span class="c"># contrast = compare condition B vs A</span>
+res <- results(dds, contrast = c(<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>))
+res <- res[order(res$padj), ]   <span class="c"># sort by adjusted p-value</span>
+head(res, 10)                    <span class="c"># the 10 most convincing hits</span></pre>
                 <p>The results table has a few columns that matter enormously:</p>
                 <ul>
                     <li><strong>log2FoldChange</strong> — how much the gene changed, on a log2 scale. +1 means it doubled in B vs A; −1 means it halved. Sign tells you direction, size tells you magnitude.</li>
@@ -251,29 +249,50 @@ res.sort_values(<span class="s">"padj"</span>).head(<span class="s">10</span>)  
 
                 <h2><span class="step-num">5</span>Visualize: the volcano plot</h2>
                 <p>The volcano plot is the iconic RNA-seq figure. Each dot is a gene. The x-axis is how much it changed (fold change); the y-axis is how confident we are (significance). The genes that matter — big change <em>and</em> high confidence — fly up into the top corners, which is where the name comes from.</p>
-                <pre>res = res.dropna()
-res[<span class="s">"-log10padj"</span>] = -np.log10(res[<span class="s">"padj"</span>])
-sig = res[<span class="s">"padj"</span>] &lt; <span class="s">0.05</span>
+                <pre><span class="c"># Turn the results into a plain data frame and drop genes with no p-value</span>
+df <- as.data.frame(res)
+df <- df[!is.na(df$padj), ]
+df$sig <- df$padj &lt; 0.05
 
-plt.figure(figsize=(<span class="s">7</span>, <span class="s">6</span>))
-plt.scatter(res.log2FoldChange[~sig], res[<span class="s">"-log10padj"</span>][~sig],
-            s=<span class="s">10</span>, color=<span class="s">"#cbd5e1"</span>, label=<span class="s">"Not significant"</span>)
-plt.scatter(res.log2FoldChange[sig], res[<span class="s">"-log10padj"</span>][sig],
-            s=<span class="s">12</span>, color=<span class="s">"#a855f7"</span>, label=<span class="s">"padj &lt; 0.05"</span>)
-plt.axhline(-np.log10(<span class="s">0.05</span>), ls=<span class="s">"--"</span>, color=<span class="s">"#64748b"</span>, lw=<span class="s">1</span>)
-plt.xlabel(<span class="s">"log2 fold change (B vs A)"</span>)
-plt.ylabel(<span class="s">"-log10 adjusted p-value"</span>)
-plt.title(<span class="s">"Volcano plot — your first one!"</span>)
-plt.legend()
-plt.show()</pre>
+plot(df$log2FoldChange, -log10(df$padj),
+     pch = 20,
+     col = ifelse(df$sig, <span class="s">"#a855f7"</span>, <span class="s">"#cbd5e1"</span>),
+     xlab = <span class="s">"log2 fold change (B vs A)"</span>,
+     ylab = <span class="s">"-log10 adjusted p-value"</span>,
+     main = <span class="s">"Volcano plot — your first one!"</span>)
+abline(h = -log10(0.05), lty = 2, col = <span class="s">"#64748b"</span>)   <span class="c"># the padj &lt; 0.05 line</span></pre>
                 <p>That's it. You just took a count matrix, ran a real statistical workflow, identified the genes that change between conditions, and made the figure you'll see in thousands of published papers. The exact same five steps scale up to a real experiment with 20,000 genes.</p>
 
                 <div class="levelup">
                     <h4>🔶 Level up: run it on a real published dataset</h4>
                     <p>Ready to use real biology? A great next dataset is the <strong>airway</strong> experiment (Himes et al., 2014, GEO accession <strong>GSE52778</strong>): human airway smooth-muscle cells treated with dexamethasone, a steroid used in asthma. It's the classic teaching dataset for exactly this workflow.</p>
-                    <p>The only thing that changes is <em>where the count matrix comes from</em> — load airway counts and metadata instead of the example files, set <code class="inline">design_factors</code> to the treatment column, and every other step is identical. That repeatability is the whole point.</p>
+                    <p>The only thing that changes is <em>where the count matrix comes from</em> — load airway counts and metadata instead of the example files, set the <code class="inline">design</code> to <code class="inline">~ treatment</code>, and every other step is identical. That repeatability is the whole point. (Handy bonus: in R, the <code class="inline">airway</code> Bioconductor package ships this exact dataset ready to load.)</p>
                     <p><a href="resources.html">Find dataset links in Resources →</a></p>
                 </div>
+
+                <details>
+                    <summary>Prefer Python? The same analysis with PyDESeq2</summary>
+                    <p>DESeq2 lives in R, but <strong>PyDESeq2</strong> is a faithful Python re-implementation that gives essentially the same results — handy if you work mostly in Python (e.g. alongside scanpy for single-cell). Here's the identical five-step workflow in Python:</p>
+                    <pre><span class="c"># install once</span>
+!pip install pydeseq2
+
+<span class="k">import</span> pandas <span class="k">as</span> pd
+<span class="k">from</span> pydeseq2.dds <span class="k">import</span> DeseqDataSet
+<span class="k">from</span> pydeseq2.ds <span class="k">import</span> DeseqStats
+
+base = <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
+counts = pd.read_csv(base + <span class="s">"test_counts.csv"</span>, index_col=0).T   <span class="c"># samples x genes for PyDESeq2</span>
+metadata = pd.read_csv(base + <span class="s">"test_metadata.csv"</span>, index_col=0)
+
+dds = DeseqDataSet(counts=counts, metadata=metadata, design=<span class="s">"~condition"</span>)
+dds.deseq2()
+
+stat_res = DeseqStats(dds, contrast=[<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>])
+stat_res.summary()
+res = stat_res.results_df.sort_values(<span class="s">"padj"</span>)
+res.head(10)</pre>
+                    <p>The columns (<code class="inline">log2FoldChange</code>, <code class="inline">pvalue</code>, <code class="inline">padj</code>) and how you read them are exactly the same as the R version above.</p>
+                </details>
 
                 <h2>Check your understanding</h2>
                 <details>
