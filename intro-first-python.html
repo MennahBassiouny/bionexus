@@ -156,9 +156,25 @@ T: 5</div>
                 <p>You understand what bioinformatics is, you've got the vocabulary, and you've written and run real code that analyzes DNA. You are no longer a complete beginner - you're someone who has done this.</p>
             </div>
 
-            <h2>Make it yours (60-second challenge)</h2>
-            <p>Change the <code class="inline">dna</code> sequence on line 1 to something else - make it longer, or all A's and T's - and re-run everything. Watch the counts and GC content change. Tinkering like this is exactly how you learn.</p>
-            <details><summary>What GC content would "AAATTTAAA" have?</summary><p>0% - there are no G or C bases at all, so the GC count is zero. Try it and confirm!</p></details>
+            <h2>Make it yours - run it right here</h2>
+            <p>No Colab needed for this one. Here is the whole program in one editable box. Press <strong>▶ Run</strong> to execute it in your browser, then change the <code class="inline">dna</code> sequence on the first line - make it longer, or all A's and T's - and run it again. Watch the counts and GC content change. Tinkering like this is exactly how you learn.</p>
+            <div class="pycell"><script type="application/x-python">
+dna = "ATGCGTACGTTAGCCGTA"
+print(dna)
+print("Length:", len(dna))
+print("A:", dna.count("A"))
+print("C:", dna.count("C"))
+print("G:", dna.count("G"))
+print("T:", dna.count("T"))
+gc = (dna.count("G") + dna.count("C")) / len(dna) * 100
+print("GC content:", round(gc, 1), "%")
+</script></div>
+            <div class="quiz" data-question='What GC content would the sequence "AAATTTAAA" have?'>
+                <button data-opt data-correct>0%</button>
+                <button data-opt>50%</button>
+                <button data-opt>100%</button>
+                <div class="quiz-explain"><strong>Correct, 0%.</strong> There are no G or C bases at all, so the GC count is zero. Change the cell above to <code>dna = "AAATTTAAA"</code> and run it to see for yourself.</div>
+            </div>
 
             <h2>Where to go next</h2>
             <p>You've got two great paths from here. Set up the tools properly on your own machine, or keep building data skills. Either works - pick what excites you.</p>
@@ -179,5 +195,6 @@ T: 5</div>
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

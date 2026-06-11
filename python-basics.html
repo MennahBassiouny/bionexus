@@ -152,6 +152,16 @@ tally = {}
 
 <span class="k">print</span>(gc_content(<span class="s">"ATGCGCGC"</span>))   <span class="c"># 75.0</span>
 <span class="k">print</span>(gc_content(<span class="s">"AAATTT"</span>))     <span class="c"># 0.0</span></pre>
+            <p><strong>Your turn.</strong> Run this in your browser, then edit the sequences (or the function) and run again.</p>
+            <div class="pycell"><script type="application/x-python">
+def gc_content(seq):
+    """Return the GC percentage of a DNA sequence."""
+    g = seq.count("G") + seq.count("C")
+    return round(g / len(seq) * 100, 1)
+
+print(gc_content("ATGCGCGC"))
+print(gc_content("AAATTT"))
+</script></div>
 
             <h2>7. Reading a file</h2>
             <p>Real data lives in files. Here's the pattern for reading one line by line:</p>
@@ -162,9 +172,24 @@ tally = {}
             <div class="why"><h4>Decode the jargon: Biopython</h4><p>For real sequence files (FASTA, FASTQ) you won't parse them by hand - a library called <strong>Biopython</strong> does it for you. You installed it in the previous lesson. You'll use it in the project next.</p></div>
 
             <h2>Check your understanding</h2>
-            <details><summary>Why does <code class="inline">dna[1]</code> give the second base, not the first?</summary><p>Because Python indexes from 0. The first item is at index 0, the second at index 1, and so on.</p></details>
-            <details><summary>When should you write a function?</summary><p>Whenever you find yourself doing the same operation more than once. A function lets you write the logic once and reuse it with different inputs - clearer, shorter, and less error-prone.</p></details>
-            <details><summary>What's the difference between a list and a dictionary?</summary><p>A list is an ordered sequence you access by position (<code class="inline">genes[0]</code>). A dictionary stores labelled pairs you access by key (<code class="inline">counts["G"]</code>). Use a list for "a bunch of things in order," a dictionary for "look this up by name."</p></details>
+            <div class="quiz" data-question="Why does dna[1] give the second base, not the first?">
+                <button data-opt data-correct>Python indexes from 0, so the first item is at index 0</button>
+                <button data-opt>Python skips the first character of every string</button>
+                <button data-opt>dna[1] is actually the first base; the docs are wrong</button>
+                <div class="quiz-explain"><strong>Right.</strong> Python counts from 0. The first item is at index 0, the second at index 1, and so on.</div>
+            </div>
+            <div class="quiz" data-question="When should you write a function?">
+                <button data-opt data-correct>When you do the same operation more than once</button>
+                <button data-opt>Only when your program is over 100 lines long</button>
+                <button data-opt>Never - functions just make code slower</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> A function lets you write the logic once and reuse it with different inputs - clearer, shorter, and less error-prone.</div>
+            </div>
+            <div class="quiz" data-question="What is the difference between a list and a dictionary?">
+                <button data-opt data-correct>A list is accessed by position; a dictionary by key/label</button>
+                <button data-opt>A dictionary can only hold words, a list only numbers</button>
+                <button data-opt>There is no real difference; they are interchangeable</button>
+                <div class="quiz-explain"><strong>Correct.</strong> A list is an ordered sequence you access by position (<code>genes[0]</code>). A dictionary stores labelled pairs you access by key (<code>counts["G"]</code>). Use a list for "things in order," a dictionary for "look this up by name."</div>
+            </div>
 
             <a class="next-lesson" href="python-project.html" target="_blank" rel="noopener">
                 <span>Next in the Python series - the payoff</span>
@@ -177,5 +202,6 @@ tally = {}
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

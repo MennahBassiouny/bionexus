@@ -296,18 +296,24 @@ res.head(10)</pre>
                 </details>
 
                 <h2>Check your understanding</h2>
-                <details>
-                    <summary>A gene has a log2 fold change of −2. What does that mean?</summary>
-                    <p>It dropped to one-quarter of its original level in condition B compared to A (−1 = halved, −2 = halved again). The negative sign means it went <em>down</em> in B.</p>
-                </details>
-                <details>
-                    <summary>Why do we look at padj instead of the raw pvalue?</summary>
-                    <p>Because we tested thousands of genes at once. Without adjusting for that, we'd flag hundreds of genes as "significant" purely by chance. The adjusted p-value (padj) controls for this, so it's the number you trust.</p>
-                </details>
-                <details>
-                    <summary>Where do the most interesting genes appear on a volcano plot?</summary>
-                    <p>In the top-left and top-right corners - high on the y-axis (very significant) and far from zero on the x-axis (large change). Big, confident changes in both directions.</p>
-                </details>
+                <div class="quiz" data-question="A gene has a log2 fold change of −2. What does that mean?">
+                    <button data-opt data-correct>It dropped to one-quarter of its level in B versus A</button>
+                    <button data-opt>It doubled in B versus A</button>
+                    <button data-opt>It changed by exactly 2 read counts</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> On a log2 scale, −1 = halved and −2 = halved again, so one-quarter of the original level. The negative sign means it went <em>down</em> in B.</div>
+                </div>
+                <div class="quiz" data-question="Why do we look at padj instead of the raw pvalue?">
+                    <button data-opt data-correct>Because testing thousands of genes at once produces many false positives by chance</button>
+                    <button data-opt>Because padj is always smaller, so more genes look significant</button>
+                    <button data-opt>Because the raw pvalue cannot be calculated for RNA-seq</button>
+                    <div class="quiz-explain"><strong>Right.</strong> Testing thousands of genes would flag hundreds as "significant" purely by chance. The adjusted p-value (padj) controls for that, so it is the number you trust.</div>
+                </div>
+                <div class="quiz" data-question="Where do the most interesting genes appear on a volcano plot?">
+                    <button data-opt data-correct>The top-left and top-right corners</button>
+                    <button data-opt>The very centre, near zero</button>
+                    <button data-opt>Along the bottom edge</button>
+                    <div class="quiz-explain"><strong>Exactly.</strong> High on the y-axis (very significant) and far from zero on the x-axis (large change): big, confident changes in both directions.</div>
+                </div>
 
                 <a class="next-lesson" href="learn.html#track-3" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
@@ -328,5 +334,6 @@ res.head(10)</pre>
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
     </script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>
