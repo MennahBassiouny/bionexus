@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Pandas for biologists: load, filter, group, and summarize tabular data — then complete the Track 1 project by fetching and summarizing real genes. A free BioNexus Hub lesson.">
+    <meta name="description" content="Pandas for biologists: load, filter, group, and summarize tabular data - then complete the Track 1 project by fetching and summarizing real genes. A free BioNexus Hub lesson.">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Pandas for Biologists + Track 1 Project — BioNexus Hub">
+    <meta property="og:title" content="Pandas for Biologists + Track 1 Project - BioNexus Hub">
     <meta property="og:description" content="Tabular data without tears, ending in a real-data project: fetch and summarize genes from NCBI.">
     <meta property="og:url" content="https://bionexushub.com/track1-pandas-for-biologists.html">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Pandas for Biologists + Track 1 Project — BioNexus Hub">
+    <meta name="twitter:title" content="Pandas for Biologists + Track 1 Project - BioNexus Hub">
     <meta name="twitter:description" content="Tabular data without tears, ending in a real-data project.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Pandas for Biologists - BioNexus Hub</title>
@@ -99,9 +99,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (5 of 5)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (5 of 5)</div>
             <h1>Pandas for Biologists</h1>
-            <p class="promise">Most biological data is a table — samples, genes, measurements. Pandas is how you handle tables in Python without tears. Learn it, then use it to finish Track 1.</p>
+            <p class="promise">Most biological data is a table - samples, genes, measurements. Pandas is how you handle tables in Python without tears. Learn it, then use it to finish Track 1.</p>
             <div class="tags">
                 <span class="tag green">🟢→🟡 Beginner</span>
                 <span class="tag">⏱️ ~1 hr</span>
@@ -116,11 +116,11 @@
 
             <div class="prereq">
                 <h4>Before you start</h4>
-                <p>You can fetch records from NCBI (<a href="track1-where-data-lives.html">lesson 4</a>) and run Python. In Colab, run <code class="inline">!pip install biopython pandas</code> first.</p>
+                <p>You can fetch records from NCBI (<a href="track1-where-data-lives.html" target="_blank" rel="noopener">lesson 4</a>) and run Python. In Colab, run <code class="inline">!pip install biopython pandas</code> first.</p>
             </div>
 
             <h2>The DataFrame: a spreadsheet in Python</h2>
-            <p>Pandas' core object is the <strong>DataFrame</strong> — a table with named columns and rows. If you've used Excel or the R lesson, this will feel familiar.</p>
+            <p>Pandas' core object is the <strong>DataFrame</strong> - a table with named columns and rows. If you've used Excel or the R lesson, this will feel familiar.</p>
             <pre><span class="k">import</span> pandas <span class="k">as</span> pd
 
 genes = pd.DataFrame({
@@ -141,10 +141,10 @@ genes.sort_values(<span class="s">"length"</span>, ascending=<span class="k">Fal
 <span class="c"># 3. a new COLUMN computed from others</span>
 genes[<span class="s">"length_kb"</span>] = genes[<span class="s">"length"</span>] / <span class="o">1000</span>
 
-<span class="c"># 4. SUMMARIZE — overall and per group</span>
+<span class="c"># 4. SUMMARIZE - overall and per group</span>
 <span class="k">print</span>(genes[<span class="s">"length"</span>].mean())
 genes.groupby(<span class="s">"chrom"</span>)[<span class="s">"length"</span>].mean()   <span class="c"># average length per chromosome</span></pre>
-            <div class="why"><h4>Why pandas is worth learning once</h4><p>Filter, sort, compute, group, summarize — these five verbs answer most questions you'll ever ask of a data table, whether it's 4 genes or 40,000. Learn them here and they pay off in every later track, including the RNA-seq results table.</p></div>
+            <div class="why"><h4>Why pandas is worth learning once</h4><p>Filter, sort, compute, group, summarize - these five verbs answer most questions you'll ever ask of a data table, whether it's 4 genes or 40,000. Learn them here and they pay off in every later track, including the RNA-seq results table.</p></div>
 
             <h2>Reading real files</h2>
             <p>Real data usually arrives as a CSV. One line loads it:</p>
@@ -153,7 +153,7 @@ df.info()       <span class="c"># columns, types, and missing values at a glance
 
             <!-- PROJECT -->
             <div class="project">
-                <span class="label">★ Track 1 project — the payoff</span>
+                <span class="label">★ Track 1 project - the payoff</span>
                 <h2>Fetch &amp; summarize real genes</h2>
                 <p>Time to combine everything in Track 1: pull real gene sequences from NCBI, then use pandas to build a clean summary table comparing them. This is your portfolio-ready deliverable.</p>
 
@@ -202,7 +202,7 @@ df</pre>
 <span class="k">print</span>(<span class="s">"Mean GC%:"</span>, <span class="k">round</span>(df[<span class="s">"GC_percent"</span>].mean(), <span class="o">1</span>))
 <span class="k">print</span>(<span class="s">"Longest gene:"</span>, df.loc[df[<span class="s">"length"</span>].idxmax(), <span class="s">"gene"</span>])
 
-<span class="c"># save your summary — your deliverable</span>
+<span class="c"># save your summary - your deliverable</span>
 df.to_csv(<span class="s">"gene_summary.csv"</span>, index=<span class="k">False</span>)</pre>
 
                 <h3 style="font-family:'Crimson Pro',serif; color:var(--deep-navy); margin:18px 0 8px;"><span class="step-num">4</span>Visualize it</h3>
@@ -211,21 +211,21 @@ df.plot(x=<span class="s">"gene"</span>, y=<span class="s">"GC_percent"</span>, 
         color=<span class="s">"#5b9cf8"</span>, title=<span class="s">"GC content by gene"</span>)
 plt.ylabel(<span class="s">"GC %"</span>); plt.tight_layout(); plt.show()</pre>
 
-                <div class="fallback"><strong>Network blocked?</strong> If NCBI is unreachable, paste any three sequences directly into the <code class="inline">seqs</code> dictionary instead of fetching — every step from #2 onward works identically.</div>
+                <div class="fallback"><strong>Network blocked?</strong> If NCBI is unreachable, paste any three sequences directly into the <code class="inline">seqs</code> dictionary instead of fetching - every step from #2 onward works identically.</div>
             </div>
 
             <div class="celebrate">
                 <h2>🎉 You've finished Track 1!</h2>
-                <p>You can now read sequence files, recognize every major format, manipulate sequences with Biopython, pull real data from public databases, and summarize it with pandas — and you built a portfolio-ready gene summary to prove it.</p>
+                <p>You can now read sequence files, recognize every major format, manipulate sequences with Biopython, pull real data from public databases, and summarize it with pandas - and you built a portfolio-ready gene summary to prove it.</p>
             </div>
 
-            <p><strong>Put it on your portfolio.</strong> Save the notebook and <code class="inline">gene_summary.csv</code> to a GitHub repo with a short README explaining what it does. That's a real, shareable piece of work — exactly what the reproducibility-and-career track will help you polish.</p>
+            <p><strong>Put it on your portfolio.</strong> Save the notebook and <code class="inline">gene_summary.csv</code> to a GitHub repo with a short README explaining what it does. That's a real, shareable piece of work - exactly what the reproducibility-and-career track will help you polish.</p>
 
-            <details><summary>The translate or fetch warned about something — did it fail?</summary><p>Warnings (like a sequence length not being a multiple of three) aren't errors — the code still produced your table. Read the message, but if you got a DataFrame, you succeeded.</p></details>
+            <details><summary>The translate or fetch warned about something - did it fail?</summary><p>Warnings (like a sequence length not being a multiple of three) aren't errors - the code still produced your table. Read the message, but if you got a DataFrame, you succeeded.</p></details>
 
-            <a class="next-lesson" href="learn.html">
+            <a class="next-lesson" href="learn.html" target="_blank" rel="noopener">
                 <span>You've completed the data-literacy track</span>
-                <h3>Back to the roadmap — pick your next track →</h3>
+                <h3>Back to the roadmap - pick your next track →</h3>
             </a>
 
         </div></div>

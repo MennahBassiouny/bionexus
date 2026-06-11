@@ -7,14 +7,14 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="The Biology a Coder Needs — BioNexus Hub">
+    <meta property="og:title" content="The Biology a Coder Needs - BioNexus Hub">
     <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
     <meta property="og:url" content="https://bionexushub.com/">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="The Biology a Coder Needs — BioNexus Hub">
+    <meta name="twitter:title" content="The Biology a Coder Needs - BioNexus Hub">
     <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>The Biology a Coder Needs - BioNexus Hub</title>
@@ -90,9 +90,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 0: Orientation (3 of 5)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 0: Orientation (3 of 5)</div>
             <h1>Decode the Jargon: The Biology a Coder Needs</h1>
-            <p class="promise">Come from a computing or non-biology background? Here's the essential biology — explained through analogies a programmer will instantly recognize.</p>
+            <p class="promise">Come from a computing or non-biology background? Here's the essential biology - explained through analogies a programmer will instantly recognize.</p>
             <div class="tags">
                 <span class="tag green">🟢 Beginner</span>
                 <span class="tag">⏱️ ~30 min</span>
@@ -108,22 +108,22 @@
 
             <div class="analogy">
                 <h3>DNA is source code</h3>
-                <p>Every cell carries a complete copy of an organism's instructions, written in a 4-letter alphabet: <code>A, C, G, T</code>. That's <strong>DNA</strong> — think of it as a giant read-only source file that every cell stores but only runs parts of.</p>
+                <p>Every cell carries a complete copy of an organism's instructions, written in a 4-letter alphabet: <code>A, C, G, T</code>. That's <strong>DNA</strong> - think of it as a giant read-only source file that every cell stores but only runs parts of.</p>
             </div>
 
             <h2>The core vocabulary</h2>
             <div class="gloss"><table>
-                <tr><td>DNA</td><td>The instruction set, written in bases <code class="inline">A/C/G/T</code>. Like a program's source code — stored in every cell.</td></tr>
+                <tr><td>DNA</td><td>The instruction set, written in bases <code class="inline">A/C/G/T</code>. Like a program's source code - stored in every cell.</td></tr>
                 <tr><td>Base / nucleotide</td><td>A single letter (A, C, G, or T). The individual characters of the code.</td></tr>
-                <tr><td>Genome</td><td>The <em>entire</em> DNA of an organism — the whole codebase. The human genome is ~3 billion bases.</td></tr>
+                <tr><td>Genome</td><td>The <em>entire</em> DNA of an organism - the whole codebase. The human genome is ~3 billion bases.</td></tr>
                 <tr><td>Chromosome</td><td>The genome split into big chunks for storage. Like separate files in a repo; humans have 23 pairs.</td></tr>
-                <tr><td>Gene</td><td>A meaningful segment of DNA with a specific job — most like a <strong>function</strong> in your codebase. Humans have ~20,000.</td></tr>
-                <tr><td>Protein</td><td>What a gene actually produces when "called" — the working machinery that does jobs in the cell. The function's <em>output</em>, and the thing that does real work.</td></tr>
+                <tr><td>Gene</td><td>A meaningful segment of DNA with a specific job - most like a <strong>function</strong> in your codebase. Humans have ~20,000.</td></tr>
+                <tr><td>Protein</td><td>What a gene actually produces when "called" - the working machinery that does jobs in the cell. The function's <em>output</em>, and the thing that does real work.</td></tr>
                 <tr><td>RNA</td><td>A temporary working copy of a gene, made on demand. Like loading a function into memory to run it.</td></tr>
-                <tr><td>Mutation</td><td>A change in the DNA letters — a typo in the source. Some are harmless; some break things (cause disease).</td></tr>
+                <tr><td>Mutation</td><td>A change in the DNA letters - a typo in the source. Some are harmless; some break things (cause disease).</td></tr>
             </table></div>
 
-            <h2>The "central dogma" — biology's main function call</h2>
+            <h2>The "central dogma" - biology's main function call</h2>
             <p>There's one process so fundamental it has a grand name: the <strong>central dogma</strong>. It's just the pipeline by which a gene becomes a working protein:</p>
             <div class="dogma">
                 <span class="node">DNA<small>the stored code</small></span>
@@ -132,22 +132,22 @@
                 <span class="arrow">→</span>
                 <span class="node">Protein<small>the output (translation)</small></span>
             </div>
-            <p>In programmer terms: <strong>transcription</strong> is copying a function's code out of the source file into memory (DNA → RNA), and <strong>translation</strong> is executing it to produce a result (RNA → protein). When biologists say a gene is "<strong>expressed</strong>," they mean it's currently being run — actively copied into RNA and made into protein.</p>
+            <p>In programmer terms: <strong>transcription</strong> is copying a function's code out of the source file into memory (DNA → RNA), and <strong>translation</strong> is executing it to produce a result (RNA → protein). When biologists say a gene is "<strong>expressed</strong>," they mean it's currently being run - actively copied into RNA and made into protein.</p>
 
-            <div class="why"><h4>Why "gene expression" is the heart of so much bioinformatics</h4><p>Every cell has the same DNA, but a brain cell and a muscle cell are wildly different — because they <em>run different genes</em>. Measuring which genes are expressed, and how much, tells you what a cell is doing. That measurement (RNA-seq) is one of the most common analyses in the field, and it's the flagship project on this site.</p></div>
+            <div class="why"><h4>Why "gene expression" is the heart of so much bioinformatics</h4><p>Every cell has the same DNA, but a brain cell and a muscle cell are wildly different - because they <em>run different genes</em>. Measuring which genes are expressed, and how much, tells you what a cell is doing. That measurement (RNA-seq) is one of the most common analyses in the field, and it's the flagship project on this site.</p></div>
 
             <h2>A few more terms you'll meet constantly</h2>
             <div class="gloss"><table>
-                <tr><td>Sequencing</td><td>Reading the order of bases in DNA or RNA — turning a physical molecule into text you can analyze. The machines output millions of short "reads."</td></tr>
+                <tr><td>Sequencing</td><td>Reading the order of bases in DNA or RNA - turning a physical molecule into text you can analyze. The machines output millions of short "reads."</td></tr>
                 <tr><td>Read</td><td>One short stretch of sequence from the machine (e.g. 150 letters). You reassemble or map these to study the whole.</td></tr>
-                <tr><td>Reference genome</td><td>A standard, agreed-upon copy of a species' genome you compare your data against — like a baseline branch you diff against.</td></tr>
-                <tr><td>Expression level</td><td>How much RNA a gene is producing — i.e., how "active" it is right now. The main quantity in transcriptomics.</td></tr>
+                <tr><td>Reference genome</td><td>A standard, agreed-upon copy of a species' genome you compare your data against - like a baseline branch you diff against.</td></tr>
+                <tr><td>Expression level</td><td>How much RNA a gene is producing - i.e., how "active" it is right now. The main quantity in transcriptomics.</td></tr>
             </table></div>
 
             <h2>That's genuinely most of it</h2>
-            <p>DNA is code, genes are functions, proteins are the output they produce, and "expression" is which functions are running. Sequencing turns molecules into text, and bioinformatics analyzes that text. With just this mental model, the rest of the roadmap will make sense as you go — and we'll define anything new the moment it appears. Next, the mirror image: the computing concepts a biologist needs.</p>
+            <p>DNA is code, genes are functions, proteins are the output they produce, and "expression" is which functions are running. Sequencing turns molecules into text, and bioinformatics analyzes that text. With just this mental model, the rest of the roadmap will make sense as you go - and we'll define anything new the moment it appears. Next, the mirror image: the computing concepts a biologist needs.</p>
 
-            <a class="next-lesson" href="intro-computing-for-biologists.html">
+            <a class="next-lesson" href="intro-computing-for-biologists.html" target="_blank" rel="noopener">
                 <span>Next in Track 0</span>
                 <h3>Decode the jargon: the computing a biologist needs →</h3>
             </a>

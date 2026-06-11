@@ -7,14 +7,14 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Python Project: Analyze a Real DNA Sequence — BioNexus Hub">
+    <meta property="og:title" content="Python Project: Analyze a Real DNA Sequence - BioNexus Hub">
     <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
     <meta property="og:url" content="https://bionexushub.com/">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Python Project: Analyze a Real DNA Sequence — BioNexus Hub">
+    <meta name="twitter:title" content="Python Project: Analyze a Real DNA Sequence - BioNexus Hub">
     <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Project: Analyze a Real DNA Sequence - BioNexus Hub</title>
@@ -93,9 +93,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Python series (3 of 3)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Python series (3 of 3)</div>
             <h1>Project: Analyze a Real DNA Sequence</h1>
-            <p class="promise">Put it all together: download the real human insulin gene from a public database and analyze it — base composition, GC content, the protein it codes for, and a chart — all in your own Python.</p>
+            <p class="promise">Put it all together: download the real human insulin gene from a public database and analyze it - base composition, GC content, the protein it codes for, and a chart - all in your own Python.</p>
             <div class="tags">
                 <span class="tag green">🟢→🟡 Beginner project</span>
                 <span class="tag">⏱️ ~1.5 hr</span>
@@ -108,7 +108,7 @@
     <main>
         <div class="container"><div class="lesson-body">
 
-            <p>This is where it gets real. You'll pull an actual gene sequence from <strong>NCBI</strong> — the same database working scientists use every day — and analyze it with the Python you just learned. The gene is <strong>human insulin (accession NM_000207)</strong>: the molecule that lets your body use sugar, and the first protein ever made as a medicine.</p>
+            <p>This is where it gets real. You'll pull an actual gene sequence from <strong>NCBI</strong> - the same database working scientists use every day - and analyze it with the Python you just learned. The gene is <strong>human insulin (accession NM_000207)</strong>: the molecule that lets your body use sugar, and the first protein ever made as a medicine.</p>
 
             <div class="colab-cta">
                 <div>
@@ -119,7 +119,7 @@
             </div>
 
             <h2><span class="step-num">1</span>Fetch a real gene from NCBI</h2>
-            <p>Biopython's <code class="inline">Entrez</code> module talks to NCBI for you. (NCBI just asks that you tell them who you are via an email — any address is fine.)</p>
+            <p>Biopython's <code class="inline">Entrez</code> module talks to NCBI for you. (NCBI just asks that you tell them who you are via an email - any address is fine.)</p>
             <pre><span class="k">from</span> Bio <span class="k">import</span> Entrez, SeqIO
 
 Entrez.email = <span class="s">"your.email@example.com"</span>   <span class="c"># put any email here</span>
@@ -134,7 +134,7 @@ seq = <span class="k">str</span>(record.seq)
 <span class="k">print</span>(record.description)
 <span class="k">print</span>(<span class="s">"Length:"</span>, <span class="k">len</span>(seq), <span class="s">"bases"</span>)</pre>
 
-            <div class="fallback"><strong>Network blocked?</strong> Some school or work networks block NCBI. If the fetch fails, no problem — download the FASTA by hand from <code class="inline">ncbi.nlm.nih.gov/nuccore/NM_000207</code> (Send to → File → FASTA), then load it with <code class="inline">record = SeqIO.read("NM_000207.fasta", "fasta")</code>.</div>
+            <div class="fallback"><strong>Network blocked?</strong> Some school or work networks block NCBI. If the fetch fails, no problem - download the FASTA by hand from <code class="inline">ncbi.nlm.nih.gov/nuccore/NM_000207</code> (Send to → File → FASTA), then load it with <code class="inline">record = SeqIO.read("NM_000207.fasta", "fasta")</code>.</div>
 
             <h2><span class="step-num">2</span>Base composition</h2>
             <p>Use the loop pattern from the basics lesson to count each base:</p>
@@ -146,7 +146,7 @@ seq = <span class="k">str</span>(record.seq)
 <span class="k">for</span> base, n <span class="k">in</span> tally.items():
     <span class="k">print</span>(base, n, <span class="k">round</span>(n/<span class="k">len</span>(seq)*<span class="o">100</span>, <span class="o">1</span>), <span class="s">"%"</span>)</pre>
 
-            <h2><span class="step-num">3</span>GC content — reuse your function</h2>
+            <h2><span class="step-num">3</span>GC content - reuse your function</h2>
             <pre><span class="k">def</span> <span class="o">gc_content</span>(s):
     <span class="k">return</span> <span class="k">round</span>((s.count(<span class="s">"G"</span>) + s.count(<span class="s">"C"</span>)) / <span class="k">len</span>(s) * <span class="o">100</span>, <span class="o">1</span>)
 
@@ -172,13 +172,13 @@ plt.bar(bases, heights, color=[<span class="s">"#5b9cf8"</span>,<span class="s">
 plt.title(<span class="s">"Base composition of human insulin (NM_000207)"</span>)
 plt.ylabel(<span class="s">"Count"</span>)
 plt.show()</pre>
-            <p>That bar chart is a small but complete piece of analysis — and it's yours. You fetched real data, processed it, and visualized a result.</p>
+            <p>That bar chart is a small but complete piece of analysis - and it's yours. You fetched real data, processed it, and visualized a result.</p>
 
             <div class="challenge">
                 <h3>🚀 Make it your own</h3>
                 <p>The best way to cement a skill is to push past the tutorial. Try one (or all) of these:</p>
                 <ul>
-                    <li>Fetch a <strong>different gene</strong> — try <code class="inline">NM_000518</code> (beta-globin, the blood gene behind sickle-cell). Compare its GC content to insulin.</li>
+                    <li>Fetch a <strong>different gene</strong> - try <code class="inline">NM_000518</code> (beta-globin, the blood gene behind sickle-cell). Compare its GC content to insulin.</li>
                     <li>Write a function that returns the <strong>reverse complement</strong> of a sequence (hint: Biopython's <code class="inline">Seq(seq).reverse_complement()</code>).</li>
                     <li>Count the <strong>most common codon</strong> in the sequence using a loop over <code class="inline">seq[i:i+3]</code>.</li>
                     <li><strong>Portfolio move:</strong> save your notebook to GitHub with a short README. That's your first public bioinformatics project.</li>
@@ -186,11 +186,11 @@ plt.show()</pre>
             </div>
 
             <h2>What you just did</h2>
-            <p>Step back and notice the shape of what happened: you connected to a real scientific database, retrieved real data, applied your own code to it, and produced a result and a figure. That loop — <em>get data → analyze → visualize</em> — is the core of nearly every bioinformatics project, no matter how advanced. You now own the whole pattern.</p>
+            <p>Step back and notice the shape of what happened: you connected to a real scientific database, retrieved real data, applied your own code to it, and produced a result and a figure. That loop - <em>get data → analyze → visualize</em> - is the core of nearly every bioinformatics project, no matter how advanced. You now own the whole pattern.</p>
 
-            <details><summary>The translation gave a warning about length not being a multiple of three. Is that bad?</summary><p>Not necessarily — the FASTA includes untranslated regions around the coding sequence, so the full mRNA isn't a clean multiple of three. For a precise translation you'd extract just the coding region (CDS); for this project, <code class="inline">to_stop=True</code> gives you the protein up to the first stop, which is what we want.</p></details>
+            <details><summary>The translation gave a warning about length not being a multiple of three. Is that bad?</summary><p>Not necessarily - the FASTA includes untranslated regions around the coding sequence, so the full mRNA isn't a clean multiple of three. For a precise translation you'd extract just the coding region (CDS); for this project, <code class="inline">to_stop=True</code> gives you the protein up to the first stop, which is what we want.</p></details>
 
-            <a class="next-lesson" href="r-install.html">
+            <a class="next-lesson" href="r-install.html" target="_blank" rel="noopener">
                 <span>Next foundation</span>
                 <h3>Start the R series: installing R &amp; RStudio →</h3>
             </a>

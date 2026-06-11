@@ -7,14 +7,14 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="R Basics &amp; Plotting for Biologists — BioNexus Hub">
+    <meta property="og:title" content="R Basics &amp; Plotting for Biologists - BioNexus Hub">
     <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
     <meta property="og:url" content="https://bionexushub.com/">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="R Basics &amp; Plotting for Biologists — BioNexus Hub">
+    <meta name="twitter:title" content="R Basics &amp; Plotting for Biologists - BioNexus Hub">
     <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>R Basics: Data Frames & Plotting - BioNexus Hub</title>
@@ -84,9 +84,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (2 of 3)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (2 of 3)</div>
             <h1>R Basics: Data Frames &amp; Plotting</h1>
-            <p class="promise">The R you'll use constantly — vectors, data frames, the handful of tidyverse verbs that do 80% of data work, and your first ggplot — built up gently and ready for real data.</p>
+            <p class="promise">The R you'll use constantly - vectors, data frames, the handful of tidyverse verbs that do 80% of data work, and your first ggplot - built up gently and ready for real data.</p>
             <div class="tags">
                 <span class="tag green">🟢 Beginner</span>
                 <span class="tag">⏱️ ~1.5 hr</span>
@@ -98,18 +98,18 @@
     <main>
         <div class="container"><div class="lesson-body">
 
-            <p>Open RStudio and type each line into the <strong>Console</strong>. Better yet, open a new R Script (File → New File → R Script) and run lines with Ctrl/Cmd+Enter — that way you keep a record of what you did.</p>
+            <p>Open RStudio and type each line into the <strong>Console</strong>. Better yet, open a new R Script (File → New File → R Script) and run lines with Ctrl/Cmd+Enter - that way you keep a record of what you did.</p>
 
-            <h2>1. Vectors — R's basic building block</h2>
+            <h2>1. Vectors - R's basic building block</h2>
             <p>R loves <strong>vectors</strong>: an ordered set of values of the same type. Most R operations work on whole vectors at once, which is what makes it so good for data.</p>
             <pre>expression &lt;- <span class="k">c</span>(<span class="o">12.4</span>, <span class="o">8.1</span>, <span class="o">15.7</span>, <span class="o">3.3</span>, <span class="o">9.9</span>)   <span class="c"># c() = "combine"</span>
 mean(expression)     <span class="c"># average → 9.88</span>
 max(expression)      <span class="c"># 15.7</span>
 expression * <span class="o">2</span>       <span class="c"># multiplies EVERY value at once</span>
 length(expression)   <span class="c"># 5</span></pre>
-            <div class="why"><h4>Decode the jargon: <code class="inline">&lt;-</code></h4><p>In R, <code class="inline">&lt;-</code> is the assignment arrow — it means "store this on the right into the name on the left." (<code class="inline">=</code> also works, but R people use the arrow. RStudio types it for you with Alt+−.)</p></div>
+            <div class="why"><h4>Decode the jargon: <code class="inline">&lt;-</code></h4><p>In R, <code class="inline">&lt;-</code> is the assignment arrow - it means "store this on the right into the name on the left." (<code class="inline">=</code> also works, but R people use the arrow. RStudio types it for you with Alt+−.)</p></div>
 
-            <h2>2. Data frames — the spreadsheet of R</h2>
+            <h2>2. Data frames - the spreadsheet of R</h2>
             <p>A <strong>data frame</strong> is a table: columns are variables, rows are observations. It's exactly how gene expression tables, sample sheets, and clinical data are shaped.</p>
             <pre>genes &lt;- data.frame(
   gene  = <span class="k">c</span>(<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>, <span class="s">"MYC"</span>),
@@ -121,7 +121,7 @@ head(genes)      <span class="c"># first rows (handy for big tables)</span>
 genes$length_kb  <span class="c"># pull out one column by name with $</span></pre>
 
             <h2>3. The tidyverse verbs that do most of the work</h2>
-            <p>Load the tidyverse, then meet five verbs that cover the vast majority of everyday data wrangling. The <code class="inline">|&gt;</code> "pipe" passes the result of one step into the next — read it as "and then."</p>
+            <p>Load the tidyverse, then meet five verbs that cover the vast majority of everyday data wrangling. The <code class="inline">|&gt;</code> "pipe" passes the result of one step into the next - read it as "and then."</p>
             <pre><span class="k">library</span>(tidyverse)
 
 genes |&gt;
@@ -129,11 +129,11 @@ genes |&gt;
   arrange(desc(length_kb))           <span class="c"># sort, largest first</span></pre>
             <p>The five you'll reach for again and again:</p>
             <ul>
-                <li><code class="inline">filter()</code> — keep rows that match a condition</li>
-                <li><code class="inline">select()</code> — keep only certain columns</li>
-                <li><code class="inline">mutate()</code> — add or change a column</li>
-                <li><code class="inline">summarise()</code> — collapse to a summary (mean, count…)</li>
-                <li><code class="inline">group_by()</code> — do the above <em>per group</em></li>
+                <li><code class="inline">filter()</code> - keep rows that match a condition</li>
+                <li><code class="inline">select()</code> - keep only certain columns</li>
+                <li><code class="inline">mutate()</code> - add or change a column</li>
+                <li><code class="inline">summarise()</code> - collapse to a summary (mean, count…)</li>
+                <li><code class="inline">group_by()</code> - do the above <em>per group</em></li>
             </ul>
             <pre><span class="c"># Add a column, then average gene length per chromosome</span>
 genes |&gt;
@@ -143,12 +143,12 @@ genes |&gt;
             <div class="tryit">✍️ <strong>Try it:</strong> change <code class="inline">filter(length_kb &gt; 10)</code> to <code class="inline">&gt; 50</code>. Which genes survive?</div>
 
             <h2>4. Your first plot with ggplot2</h2>
-            <p>ggplot2 (part of the tidyverse) builds plots in layers: start with the data, say what goes on each axis (<code class="inline">aes</code>), then add a <em>geom</em> — the kind of mark to draw.</p>
+            <p>ggplot2 (part of the tidyverse) builds plots in layers: start with the data, say what goes on each axis (<code class="inline">aes</code>), then add a <em>geom</em> - the kind of mark to draw.</p>
             <pre><span class="k">ggplot</span>(genes, aes(x = gene, y = length_kb)) +
   geom_col(fill = <span class="s">"#5b9cf8"</span>) +
   labs(title = <span class="s">"Gene lengths"</span>, y = <span class="s">"Length (kb)"</span>) +
   theme_minimal()</pre>
-            <div class="why"><h4>Why ggplot looks weird at first (the <code class="inline">+</code>)</h4><p>You build a ggplot by <em>adding layers</em> with <code class="inline">+</code>: data, then axes, then geoms, then labels and themes. Once it clicks, it's a wonderfully logical way to compose any figure — and it produces publication-quality plots by default.</p></div>
+            <div class="why"><h4>Why ggplot looks weird at first (the <code class="inline">+</code>)</h4><p>You build a ggplot by <em>adding layers</em> with <code class="inline">+</code>: data, then axes, then geoms, then labels and themes. Once it clicks, it's a wonderfully logical way to compose any figure - and it produces publication-quality plots by default.</p></div>
 
             <h2>5. Reading your own data</h2>
             <p>Real data usually arrives as a CSV. Reading it is one line:</p>
@@ -158,10 +158,10 @@ glimpse(my_data)   <span class="c"># a quick look at columns and types</span></p
             <h2>Check your understanding</h2>
             <details><summary>What does the pipe <code class="inline">|&gt;</code> do?</summary><p>It passes the result of the left-hand side into the first argument of the right-hand side, so you can chain steps in reading order: "take genes, <em>and then</em> filter, <em>and then</em> sort."</p></details>
             <details><summary>What's the difference between <code class="inline">filter()</code> and <code class="inline">select()</code>?</summary><p><code class="inline">filter()</code> keeps <em>rows</em> (observations) that match a condition; <code class="inline">select()</code> keeps <em>columns</em> (variables). Rows = filter, columns = select.</p></details>
-            <details><summary>Why build plots with <code class="inline">+</code> layers?</summary><p>Because it lets you compose any figure from simple, reusable pieces — swap a <code class="inline">geom_col</code> for a <code class="inline">geom_point</code> and you have a different chart of the same data, with everything else unchanged.</p></details>
+            <details><summary>Why build plots with <code class="inline">+</code> layers?</summary><p>Because it lets you compose any figure from simple, reusable pieces - swap a <code class="inline">geom_col</code> for a <code class="inline">geom_point</code> and you have a different chart of the same data, with everything else unchanged.</p></details>
 
-            <a class="next-lesson" href="r-project.html">
-                <span>Next in the R series — the payoff</span>
+            <a class="next-lesson" href="r-project.html" target="_blank" rel="noopener">
+                <span>Next in the R series - the payoff</span>
                 <h3>Project: explore a real dataset with R →</h3>
             </a>
 

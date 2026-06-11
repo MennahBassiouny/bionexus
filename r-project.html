@@ -7,14 +7,14 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="R Project: Explore a Real Dataset — BioNexus Hub">
+    <meta property="og:title" content="R Project: Explore a Real Dataset - BioNexus Hub">
     <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
     <meta property="og:url" content="https://bionexushub.com/">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="R Project: Explore a Real Dataset — BioNexus Hub">
+    <meta name="twitter:title" content="R Project: Explore a Real Dataset - BioNexus Hub">
     <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Project: Explore a Real Dataset with R - BioNexus Hub</title>
@@ -87,9 +87,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (3 of 3)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (3 of 3)</div>
             <h1>Project: Explore a Real Dataset with R</h1>
-            <p class="promise">Take a real, published dataset from messy to insight: load it, clean it, summarise it by group, and produce a polished figure — the exact workflow you'll later run on gene expression data.</p>
+            <p class="promise">Take a real, published dataset from messy to insight: load it, clean it, summarise it by group, and produce a polished figure - the exact workflow you'll later run on gene expression data.</p>
             <div class="tags">
                 <span class="tag green">🟢→🟡 Beginner project</span>
                 <span class="tag">⏱️ ~1.5 hr</span>
@@ -102,9 +102,9 @@
     <main>
         <div class="container"><div class="lesson-body">
 
-            <p>We'll use the <strong>Palmer Penguins</strong> dataset — real measurements of 344 penguins from three species, collected at the Palmer Station research base in Antarctica. It's deliberately friendly to start on, but every move you make here is the same move you'll make on a gene expression table: load, inspect, clean, group, summarise, plot. Learn the pattern on penguins, apply it to biology.</p>
+            <p>We'll use the <strong>Palmer Penguins</strong> dataset - real measurements of 344 penguins from three species, collected at the Palmer Station research base in Antarctica. It's deliberately friendly to start on, but every move you make here is the same move you'll make on a gene expression table: load, inspect, clean, group, summarise, plot. Learn the pattern on penguins, apply it to biology.</p>
 
-            <div class="why"><h4>Why not jump straight to gene data?</h4><p>Because the <em>skill</em> you're building — wrangling a real table and seeing structure in it — is identical, and penguins won't drown you in biological jargon while you're still learning the verbs. Once this clicks, swapping in an expression matrix is a small step.</p></div>
+            <div class="why"><h4>Why not jump straight to gene data?</h4><p>Because the <em>skill</em> you're building - wrangling a real table and seeing structure in it - is identical, and penguins won't drown you in biological jargon while you're still learning the verbs. Once this clicks, swapping in an expression matrix is a small step.</p></div>
 
             <h2><span class="step-num">1</span>Load the data and look at it</h2>
             <pre><span class="k">library</span>(tidyverse)
@@ -112,7 +112,7 @@
 
 penguins         <span class="c"># the dataset comes with the package</span>
 glimpse(penguins) <span class="c"># columns, types, and a peek at values</span></pre>
-            <p>Always look before you leap. <code class="inline">glimpse()</code> shows you the columns (species, island, bill length, flipper length, body mass, sex…) and their types. Notice some values are <code class="inline">NA</code> — missing. Real data is always a little messy.</p>
+            <p>Always look before you leap. <code class="inline">glimpse()</code> shows you the columns (species, island, bill length, flipper length, body mass, sex…) and their types. Notice some values are <code class="inline">NA</code> - missing. Real data is always a little messy.</p>
 
             <h2><span class="step-num">2</span>Clean it</h2>
             <pre>clean &lt;- penguins |&gt;
@@ -120,7 +120,7 @@ glimpse(penguins) <span class="c"># columns, types, and a peek at values</span><
 
 nrow(penguins)   <span class="c"># before</span>
 nrow(clean)      <span class="c"># after</span></pre>
-            <div class="why"><h4>Decode the jargon: NA</h4><p><code class="inline">NA</code> means "not available" — a missing value. Many calculations refuse to run with NAs present (on purpose, so you don't get silently wrong answers). Deciding what to do with them is a real and important judgment call in every analysis.</p></div>
+            <div class="why"><h4>Decode the jargon: NA</h4><p><code class="inline">NA</code> means "not available" - a missing value. Many calculations refuse to run with NAs present (on purpose, so you don't get silently wrong answers). Deciding what to do with them is a real and important judgment call in every analysis.</p></div>
 
             <h2><span class="step-num">3</span>Summarise by group</h2>
             <p>This is the question-answering step. How do the species differ?</p>
@@ -141,7 +141,7 @@ nrow(clean)      <span class="c"># after</span></pre>
     x = <span class="s">"Bill length (mm)"</span>, y = <span class="s">"Bill depth (mm)"</span>
   ) +
   theme_minimal()</pre>
-            <p>Look at the result: the three species form distinct clusters. You've just <em>discovered</em> something real from data — that bill shape alone largely tells the species apart. That move, finding group structure in measurements, is exactly what clustering gene expression does later.</p>
+            <p>Look at the result: the three species form distinct clusters. You've just <em>discovered</em> something real from data - that bill shape alone largely tells the species apart. That move, finding group structure in measurements, is exactly what clustering gene expression does later.</p>
 
             <h2><span class="step-num">5</span>One more: a boxplot</h2>
             <pre><span class="k">ggplot</span>(clean, aes(x = species, y = body_mass_g, fill = species)) +
@@ -153,19 +153,19 @@ nrow(clean)      <span class="c"># after</span></pre>
                 <h3>🚀 Make it your own</h3>
                 <ul>
                     <li>Use <code class="inline">filter()</code> to look at just one island, then re-make the scatter plot. Do the clusters change?</li>
-                    <li>Add <code class="inline">facet_wrap(~ island)</code> to the scatter plot — what does splitting by island reveal?</li>
+                    <li>Add <code class="inline">facet_wrap(~ island)</code> to the scatter plot - what does splitting by island reveal?</li>
                     <li>Group by <strong>species and sex</strong> together and compare average body mass. Which is the bigger driver?</li>
-                    <li><strong>Bridge to biology:</strong> download any gene-length or expression CSV from <a href="resources.html">Resources</a>, <code class="inline">read_csv()</code> it, and run the same load → clean → group → plot pattern. The skill transfers directly.</li>
+                    <li><strong>Bridge to biology:</strong> download any gene-length or expression CSV from <a href="resources.html" target="_blank" rel="noopener">Resources</a>, <code class="inline">read_csv()</code> it, and run the same load → clean → group → plot pattern. The skill transfers directly.</li>
                     <li><strong>Portfolio move:</strong> knit your script into an HTML report (RStudio → Knit) and put it on GitHub.</li>
                 </ul>
             </div>
 
             <h2>What you just did</h2>
-            <p>You took a real, imperfect dataset and walked the full loop: <em>load → inspect → clean → summarise → visualize</em>. You handled missing data, computed group summaries, and made two figures that reveal genuine structure. That is data analysis — and it's the identical workflow behind a published RNA-seq figure, just with genes in place of penguins.</p>
+            <p>You took a real, imperfect dataset and walked the full loop: <em>load → inspect → clean → summarise → visualize</em>. You handled missing data, computed group summaries, and made two figures that reveal genuine structure. That is data analysis - and it's the identical workflow behind a published RNA-seq figure, just with genes in place of penguins.</p>
 
-            <details><summary>Why <code class="inline">na.rm = TRUE</code> inside <code class="inline">mean()</code>?</summary><p>It tells <code class="inline">mean()</code> to ignore missing values when averaging. Without it, a single <code class="inline">NA</code> in the column makes the whole result <code class="inline">NA</code> — R's way of refusing to guess.</p></details>
+            <details><summary>Why <code class="inline">na.rm = TRUE</code> inside <code class="inline">mean()</code>?</summary><p>It tells <code class="inline">mean()</code> to ignore missing values when averaging. Without it, a single <code class="inline">NA</code> in the column makes the whole result <code class="inline">NA</code> - R's way of refusing to guess.</p></details>
 
-            <a class="next-lesson" href="bash-install.html">
+            <a class="next-lesson" href="bash-install.html" target="_blank" rel="noopener">
                 <span>Next foundation</span>
                 <h3>Start the Bash series: setting up a terminal →</h3>
             </a>

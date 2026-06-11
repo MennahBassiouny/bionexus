@@ -7,14 +7,14 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Command-Line Basics for Bioinformatics — BioNexus Hub">
+    <meta property="og:title" content="Command-Line Basics for Bioinformatics - BioNexus Hub">
     <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
     <meta property="og:url" content="https://bionexushub.com/">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Command-Line Basics for Bioinformatics — BioNexus Hub">
+    <meta name="twitter:title" content="Command-Line Basics for Bioinformatics - BioNexus Hub">
     <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Command-Line Basics - BioNexus Hub</title>
@@ -88,9 +88,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Bash series (2 of 3)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Bash series (2 of 3)</div>
             <h1>Command-Line Basics: Files, Pipes &amp; Text</h1>
-            <p class="promise">The two dozen commands that make the terminal genuinely useful — moving around, handling files, and the pipe trick that turns simple tools into a data-processing assembly line.</p>
+            <p class="promise">The two dozen commands that make the terminal genuinely useful - moving around, handling files, and the pipe trick that turns simple tools into a data-processing assembly line.</p>
             <div class="tags">
                 <span class="tag green">🟢 Beginner</span>
                 <span class="tag">⏱️ ~1.5 hr</span>
@@ -102,11 +102,11 @@
     <main>
         <div class="container"><div class="lesson-body">
 
-            <p>Open your terminal (set it up in the <a href="bash-install.html">install lesson</a> if you haven't). Type each command yourself — muscle memory is the whole game here.</p>
+            <p>Open your terminal (set it up in the <a href="bash-install.html" target="_blank" rel="noopener">install lesson</a> if you haven't). Type each command yourself - muscle memory is the whole game here.</p>
 
             <h2>1. Knowing where you are &amp; moving around</h2>
             <p>The terminal always has a "current folder." Three commands are your eyes and feet:</p>
-            <pre>pwd            <span class="c"># print working directory — where am I?</span>
+            <pre>pwd            <span class="c"># print working directory - where am I?</span>
 ls             <span class="c"># list what's in this folder</span>
 ls -l          <span class="c"># list with details (size, date)</span>
 ls -la         <span class="c"># also show hidden files (those starting with .)</span>
@@ -121,8 +121,8 @@ cd project
 touch notes.txt      <span class="c"># create an empty file</span>
 cp notes.txt copy.txt  <span class="c"># copy</span>
 mv copy.txt final.txt  <span class="c"># move OR rename</span>
-rm final.txt         <span class="c"># remove (careful — no recycle bin!)</span></pre>
-            <div class="why"><h4>⚠️ <code class="inline">rm</code> is forever</h4><p>The command line has no trash can. <code class="inline">rm</code> deletes immediately and permanently. Read the line twice before you run it — especially before <code class="inline">rm -r</code> (which deletes whole folders). This caution is a habit worth building on day one.</p></div>
+rm final.txt         <span class="c"># remove (careful - no recycle bin!)</span></pre>
+            <div class="why"><h4>⚠️ <code class="inline">rm</code> is forever</h4><p>The command line has no trash can. <code class="inline">rm</code> deletes immediately and permanently. Read the line twice before you run it - especially before <code class="inline">rm -r</code> (which deletes whole folders). This caution is a habit worth building on day one.</p></div>
 
             <h2>3. Looking inside files</h2>
             <pre>cat file.txt     <span class="c"># dump the whole file to the screen</span>
@@ -130,7 +130,7 @@ head file.txt    <span class="c"># first 10 lines</span>
 head -n 3 file.txt  <span class="c"># first 3 lines</span>
 tail file.txt    <span class="c"># last 10 lines</span>
 less file.txt    <span class="c"># scroll through a big file (press q to quit)</span></pre>
-            <p><code class="inline">head</code> and <code class="inline">less</code> matter enormously in bioinformatics, where a single file can be gigabytes — you never want to <code class="inline">cat</code> a whole genome to your screen.</p>
+            <p><code class="inline">head</code> and <code class="inline">less</code> matter enormously in bioinformatics, where a single file can be gigabytes - you never want to <code class="inline">cat</code> a whole genome to your screen.</p>
 
             <h2>4. Searching &amp; counting</h2>
             <pre>grep <span class="s">"TP53"</span> genes.txt   <span class="c"># print lines containing "TP53"</span>
@@ -138,9 +138,9 @@ grep -c <span class="s">"&gt;"</span> seqs.fasta   <span class="c"># COUNT lines
 wc -l file.txt           <span class="c"># count lines in a file</span>
 sort names.txt           <span class="c"># sort lines alphabetically</span>
 sort names.txt | uniq    <span class="c"># sort, then remove duplicates</span></pre>
-            <div class="why"><h4>Why <code class="inline">grep</code> is a bioinformatics superpower</h4><p>FASTA files mark each sequence with a header line starting <code class="inline">&gt;</code>. So <code class="inline">grep -c "&gt;"</code> instantly counts how many sequences are in a file of any size. Tiny command, huge time saver — you'll use it constantly.</p></div>
+            <div class="why"><h4>Why <code class="inline">grep</code> is a bioinformatics superpower</h4><p>FASTA files mark each sequence with a header line starting <code class="inline">&gt;</code>. So <code class="inline">grep -c "&gt;"</code> instantly counts how many sequences are in a file of any size. Tiny command, huge time saver - you'll use it constantly.</p></div>
 
-            <h2>5. The pipe <code class="inline">|</code> — the big idea</h2>
+            <h2>5. The pipe <code class="inline">|</code> - the big idea</h2>
             <p>This is the concept that makes the command line powerful. The <strong>pipe</strong> <code class="inline">|</code> takes the output of one command and feeds it straight into the next, so small tools combine into something bigger.</p>
             <pre><span class="c"># "Take the file, keep header lines, then count them"</span>
 cat seqs.fasta | grep <span class="s">"&gt;"</span> | wc -l
@@ -170,12 +170,12 @@ grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class=
             </table></div>
 
             <h2>Check your understanding</h2>
-            <details><summary>What does <code class="inline">grep "&gt;" seqs.fasta | wc -l</code> tell you?</summary><p>The number of sequences in the FASTA file — because each sequence has one header line starting with <code class="inline">&gt;</code>, and you're counting those lines.</p></details>
-            <details><summary>What's the difference between <code class="inline">&gt;</code> and <code class="inline">&gt;&gt;</code>?</summary><p><code class="inline">&gt;</code> creates (or overwrites) a file with the output. <code class="inline">&gt;&gt;</code> adds to the end of an existing file without erasing it. Mix them up and you can overwrite something you meant to keep — another reason to read before you run.</p></details>
+            <details><summary>What does <code class="inline">grep "&gt;" seqs.fasta | wc -l</code> tell you?</summary><p>The number of sequences in the FASTA file - because each sequence has one header line starting with <code class="inline">&gt;</code>, and you're counting those lines.</p></details>
+            <details><summary>What's the difference between <code class="inline">&gt;</code> and <code class="inline">&gt;&gt;</code>?</summary><p><code class="inline">&gt;</code> creates (or overwrites) a file with the output. <code class="inline">&gt;&gt;</code> adds to the end of an existing file without erasing it. Mix them up and you can overwrite something you meant to keep - another reason to read before you run.</p></details>
             <details><summary>Why prefer <code class="inline">head</code> or <code class="inline">less</code> over <code class="inline">cat</code> for big files?</summary><p>Because genomic files can be enormous. <code class="inline">cat</code> would flood your screen with millions of lines; <code class="inline">head</code> shows just the top, and <code class="inline">less</code> lets you scroll calmly.</p></details>
 
-            <a class="next-lesson" href="bash-project.html">
-                <span>Next in the Bash series — the payoff</span>
+            <a class="next-lesson" href="bash-project.html" target="_blank" rel="noopener">
+                <span>Next in the Bash series - the payoff</span>
                 <h3>Project: wrangle a real data file from the command line →</h3>
             </a>
 

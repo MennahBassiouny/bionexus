@@ -7,14 +7,14 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Bash Project: Wrangle a Real Data File — BioNexus Hub">
+    <meta property="og:title" content="Bash Project: Wrangle a Real Data File - BioNexus Hub">
     <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
     <meta property="og:url" content="https://bionexushub.com/">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Bash Project: Wrangle a Real Data File — BioNexus Hub">
+    <meta name="twitter:title" content="Bash Project: Wrangle a Real Data File - BioNexus Hub">
     <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Project: Wrangle a Real Data File - BioNexus Hub</title>
@@ -89,9 +89,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Bash series (3 of 3)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Bash series (3 of 3)</div>
             <h1>Project: Wrangle a Real Data File</h1>
-            <p class="promise">Download a real FASTA file of human genes and answer questions about it — how many sequences, how long, how GC-rich — using nothing but the command line. This is genuine bioinformatics.</p>
+            <p class="promise">Download a real FASTA file of human genes and answer questions about it - how many sequences, how long, how GC-rich - using nothing but the command line. This is genuine bioinformatics.</p>
             <div class="tags">
                 <span class="tag green">🟢→🟡 Beginner project</span>
                 <span class="tag">⏱️ ~1.5 hr</span>
@@ -104,7 +104,7 @@
     <main>
         <div class="container"><div class="lesson-body">
 
-            <p>Bioinformaticians spend a surprising amount of time just <em>interrogating files</em> from the command line before any heavy analysis — how big is it, how many records, does it contain what I expect? That's exactly this project. You'll grab a real FASTA file of three human genes and answer real questions about it.</p>
+            <p>Bioinformaticians spend a surprising amount of time just <em>interrogating files</em> from the command line before any heavy analysis - how big is it, how many records, does it contain what I expect? That's exactly this project. You'll grab a real FASTA file of three human genes and answer real questions about it.</p>
 
             <h2><span class="step-num">1</span>Get the data</h2>
             <p>Make a workspace and download three real human gene sequences (insulin, beta-globin, and APP) straight from NCBI:</p>
@@ -114,7 +114,7 @@ cd fasta-project
 curl <span class="s">"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NM_000207,NM_000518,NM_000484&rettype=fasta&retmode=text"</span> -o genes.fasta</pre>
             <p>(If <code class="inline">curl</code> isn't found, try <code class="inline">wget</code> with the same URL and <code class="inline">-O genes.fasta</code>.)</p>
 
-            <div class="fallback"><strong>No internet, or NCBI blocked?</strong> Create a small real FASTA by hand instead — paste this whole block into your terminal and press Enter:
+            <div class="fallback"><strong>No internet, or NCBI blocked?</strong> Create a small real FASTA by hand instead - paste this whole block into your terminal and press Enter:
             <pre><span class="k">cat</span> &gt; genes.fasta &lt;&lt;<span class="s">'EOF'</span>
 &gt;gene1 insulin
 ATGGCCCTGTGGATGCGCCTCCTGCCCCTGCTGGCGCTGCTG
@@ -126,24 +126,24 @@ ATGAAGTGGGTAACCTTTATTTCCCTTCTTTTTCTCTTTAGC
             Every command below works the same on this file.</div>
 
             <h2><span class="step-num">2</span>First look</h2>
-            <pre>head genes.fasta     <span class="c"># peek at the top — don't dump the whole thing</span>
+            <pre>head genes.fasta     <span class="c"># peek at the top - don't dump the whole thing</span>
 wc -l genes.fasta    <span class="c"># how many lines total?</span></pre>
 
             <h2><span class="step-num">3</span>How many sequences?</h2>
             <p>Every FASTA record starts with a <code class="inline">&gt;</code> header line. So counting headers counts sequences:</p>
             <pre>grep -c <span class="s">"&gt;"</span> genes.fasta</pre>
-            <p>That's the single most common FASTA sanity-check in all of bioinformatics — and you can now do it instantly.</p>
+            <p>That's the single most common FASTA sanity-check in all of bioinformatics - and you can now do it instantly.</p>
 
             <h2><span class="step-num">4</span>What are they?</h2>
             <pre>grep <span class="s">"&gt;"</span> genes.fasta            <span class="c"># list just the header lines</span>
 grep <span class="s">"&gt;"</span> genes.fasta &gt; headers.txt  <span class="c"># save them to a file</span></pre>
 
             <h2><span class="step-num">5</span>How long is the sequence, in total?</h2>
-            <p>Here's a pipeline: strip out the header lines, remove the line breaks, and count the remaining characters — the total number of bases.</p>
+            <p>Here's a pipeline: strip out the header lines, remove the line breaks, and count the remaining characters - the total number of bases.</p>
             <pre>grep -v <span class="s">"&gt;"</span> genes.fasta | tr -d <span class="s">'\n'</span> | wc -c</pre>
             <div class="why"><h4>Reading the pipeline</h4><p><code class="inline">grep -v "&gt;"</code> keeps every line that is <em>not</em> a header (the <code class="inline">-v</code> inverts the match). <code class="inline">tr -d '\n'</code> deletes the newlines so the bases form one continuous string. <code class="inline">wc -c</code> counts the characters. Three tiny tools, one real answer.</p></div>
 
-            <h2><span class="step-num">6</span>GC content — from the command line</h2>
+            <h2><span class="step-num">6</span>GC content - from the command line</h2>
             <p>Count the G and C bases, then the total, then compute the percentage:</p>
             <pre><span class="c"># Count just G and C characters in the sequence</span>
 grep -v <span class="s">"&gt;"</span> genes.fasta | tr -d <span class="s">'\n'</span> | tr -cd <span class="s">'GC'</span> | wc -c
@@ -152,27 +152,27 @@ grep -v <span class="s">"&gt;"</span> genes.fasta | tr -d <span class="s">'\n'</
 gc=$(grep -v <span class="s">"&gt;"</span> genes.fasta | tr -d <span class="s">'\n'</span> | tr -cd <span class="s">'GC'</span> | wc -c)
 total=$(grep -v <span class="s">"&gt;"</span> genes.fasta | tr -d <span class="s">'\n'</span> | wc -c)
 awk <span class="s">"BEGIN{printf \"GC%% = %.1f\n\", $gc/$total*100}"</span></pre>
-            <p>You just computed a real biological metric on real data with a few command-line tools — no programming language required. That's the power (and the surprise) of Bash for bioinformatics.</p>
+            <p>You just computed a real biological metric on real data with a few command-line tools - no programming language required. That's the power (and the surprise) of Bash for bioinformatics.</p>
 
             <div class="challenge">
                 <h3>🚀 Make it your own</h3>
                 <ul>
                     <li>Download a <strong>different set of genes</strong> by editing the <code class="inline">id=</code> list in the URL (any NCBI nucleotide accessions).</li>
-                    <li>Use <code class="inline">grep -c "N"</code> to count ambiguous bases (Ns) — a quick quality check.</li>
+                    <li>Use <code class="inline">grep -c "N"</code> to count ambiguous bases (Ns) - a quick quality check.</li>
                     <li>Count how many headers mention a keyword: <code class="inline">grep "&gt;" genes.fasta | grep -c "insulin"</code>.</li>
-                    <li>Save your whole session as a <strong>shell script</strong> (<code class="inline">analyze.sh</code>) and run it with <code class="inline">bash analyze.sh</code> — your first automation.</li>
+                    <li>Save your whole session as a <strong>shell script</strong> (<code class="inline">analyze.sh</code>) and run it with <code class="inline">bash analyze.sh</code> - your first automation.</li>
                     <li><strong>Portfolio move:</strong> put the script and a short README on GitHub.</li>
                 </ul>
             </div>
 
             <h2>What you just did</h2>
-            <p>You downloaded real biological data and answered concrete questions about it — count, identity, length, composition — using only the command line. This is not a toy version of bioinformatics; it's the real daily reality of inspecting files before and after every analysis. The aligners and variant callers in Track 2 are just bigger commands that fit exactly this pattern.</p>
+            <p>You downloaded real biological data and answered concrete questions about it - count, identity, length, composition - using only the command line. This is not a toy version of bioinformatics; it's the real daily reality of inspecting files before and after every analysis. The aligners and variant callers in Track 2 are just bigger commands that fit exactly this pattern.</p>
 
             <details><summary>Why <code class="inline">tr -cd 'GC'</code> and not <code class="inline">tr -d</code>?</summary><p><code class="inline">tr -cd 'GC'</code> means "delete every character that is <em>not</em> G or C" (the <code class="inline">-c</code> complements the set). What's left is only the G and C characters, so <code class="inline">wc -c</code> counts exactly those.</p></details>
 
-            <a class="next-lesson" href="learn.html">
+            <a class="next-lesson" href="learn.html" target="_blank" rel="noopener">
                 <span>You've finished the foundations 🎉</span>
-                <h3>Back to the roadmap — pick your next track →</h3>
+                <h3>Back to the roadmap - pick your next track →</h3>
             </a>
 
         </div></div>

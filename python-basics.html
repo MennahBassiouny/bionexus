@@ -7,14 +7,14 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Python Basics with Real Biological Data — BioNexus Hub">
+    <meta property="og:title" content="Python Basics with Real Biological Data - BioNexus Hub">
     <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
     <meta property="og:url" content="https://bionexushub.com/">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Python Basics with Real Biological Data — BioNexus Hub">
+    <meta name="twitter:title" content="Python Basics with Real Biological Data - BioNexus Hub">
     <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Python Basics for Bioinformatics - BioNexus Hub</title>
@@ -84,9 +84,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Python series (2 of 3)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Python series (2 of 3)</div>
             <h1>Python Basics for Bioinformatics</h1>
-            <p class="promise">The core Python you'll actually use — variables, lists, dictionaries, loops, functions, and reading files — taught with DNA and genes instead of abstract examples.</p>
+            <p class="promise">The core Python you'll actually use - variables, lists, dictionaries, loops, functions, and reading files - taught with DNA and genes instead of abstract examples.</p>
             <div class="tags">
                 <span class="tag green">🟢 Beginner</span>
                 <span class="tag">⏱️ ~1.5 hr</span>
@@ -98,19 +98,19 @@
     <main>
         <div class="container"><div class="lesson-body">
 
-            <p>You've got Python installed (if not, do the <a href="python-install.html">install lesson</a> first). Now let's learn just enough to be dangerous. Follow along in whichever tool you set up in the install lesson — <strong>VS Code, PyCharm, Jupyter, or Google Colab</strong> all work equally well here. If you're working in a terminal, activate your environment first (<code class="inline">bionexus\Scripts\activate</code> on Windows, <code class="inline">source bionexus/bin/activate</code> on Mac/Linux) and type <code class="inline">python</code> to start. Whichever you choose, type each example yourself — that's how it sticks.</p>
+            <p>You've got Python installed (if not, do the <a href="python-install.html" target="_blank" rel="noopener">install lesson</a> first). Now let's learn just enough to be dangerous. Follow along in whichever tool you set up in the install lesson - <strong>VS Code, PyCharm, Jupyter, or Google Colab</strong> all work equally well here. If you're working in a terminal, activate your environment first (<code class="inline">bionexus\Scripts\activate</code> on Windows, <code class="inline">source bionexus/bin/activate</code> on Mac/Linux) and type <code class="inline">python</code> to start. Whichever you choose, type each example yourself - that's how it sticks.</p>
 
             <h2>1. Variables &amp; strings</h2>
-            <p>A variable is a name for a piece of data. In bioinformatics, a DNA sequence is just a <strong>string</strong> — text made of A, C, G, and T.</p>
+            <p>A variable is a name for a piece of data. In bioinformatics, a DNA sequence is just a <strong>string</strong> - text made of A, C, G, and T.</p>
             <pre>dna = <span class="s">"ATGCGTACGTTAG"</span>
 <span class="k">print</span>(dna)
 <span class="k">print</span>(<span class="k">len</span>(dna))        <span class="c"># length of the sequence → 13</span>
 <span class="k">print</span>(dna.count(<span class="s">"G"</span>))   <span class="c"># how many G's → 3</span>
 <span class="k">print</span>(dna[<span class="o">0</span>])           <span class="c"># first base (counting starts at 0!) → A</span></pre>
-            <div class="why"><h4>Decode the jargon: zero-indexing</h4><p>Python counts from 0, not 1. So <code class="inline">dna[0]</code> is the first base and <code class="inline">dna[1]</code> is the second. This trips up everyone at first — biologists especially, since we usually call the first base "position 1." Just remember: code starts at zero.</p></div>
+            <div class="why"><h4>Decode the jargon: zero-indexing</h4><p>Python counts from 0, not 1. So <code class="inline">dna[0]</code> is the first base and <code class="inline">dna[1]</code> is the second. This trips up everyone at first - biologists especially, since we usually call the first base "position 1." Just remember: code starts at zero.</p></div>
 
             <h2>2. Doing real work with strings</h2>
-            <pre><span class="c"># GC content: the fraction of bases that are G or C — a real, useful metric</span>
+            <pre><span class="c"># GC content: the fraction of bases that are G or C - a real, useful metric</span>
 gc = (dna.count(<span class="s">"G"</span>) + dna.count(<span class="s">"C"</span>)) / <span class="k">len</span>(dna)
 <span class="k">print</span>(<span class="k">round</span>(gc * <span class="o">100</span>, <span class="o">1</span>), <span class="s">"% GC"</span>)
 
@@ -119,19 +119,19 @@ rna = dna.replace(<span class="s">"T"</span>, <span class="s">"U"</span>)
 <span class="k">print</span>(rna)</pre>
             <div class="tryit">✍️ <strong>Try it:</strong> change the <code class="inline">dna</code> string and re-run. What GC content do you get for a sequence of all A's and T's?</div>
 
-            <h2>3. Lists — ordered collections</h2>
+            <h2>3. Lists - ordered collections</h2>
             <pre>genes = [<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>, <span class="s">"MYC"</span>]
 <span class="k">print</span>(genes[<span class="o">1</span>])          <span class="c"># BRCA1</span>
 genes.append(<span class="s">"KRAS"</span>)     <span class="c"># add one to the end</span>
 <span class="k">print</span>(<span class="k">len</span>(genes))        <span class="c"># 5</span></pre>
 
-            <h2>4. Dictionaries — labelled lookups</h2>
+            <h2>4. Dictionaries - labelled lookups</h2>
             <p>A dictionary stores key → value pairs. Perfect for things like "how many of each base?"</p>
             <pre>counts = {<span class="s">"A"</span>: <span class="o">10</span>, <span class="s">"C"</span>: <span class="o">7</span>, <span class="s">"G"</span>: <span class="o">9</span>, <span class="s">"T"</span>: <span class="o">12</span>}
 <span class="k">print</span>(counts[<span class="s">"G"</span>])       <span class="c"># 9</span>
 counts[<span class="s">"N"</span>] = <span class="o">2</span>          <span class="c"># add an "unknown base" entry</span></pre>
 
-            <h2>5. Loops — do something to each item</h2>
+            <h2>5. Loops - do something to each item</h2>
             <pre><span class="k">for</span> gene <span class="k">in</span> genes:
     <span class="k">print</span>(gene, <span class="s">"has"</span>, <span class="k">len</span>(gene), <span class="s">"letters"</span>)
 
@@ -140,9 +140,9 @@ tally = {}
 <span class="k">for</span> base <span class="k">in</span> dna:
     tally[base] = tally.get(base, <span class="o">0</span>) + <span class="o">1</span>
 <span class="k">print</span>(tally)</pre>
-            <div class="why"><h4>Why loops matter</h4><p>A genome has millions of bases. You'll never process them by hand — you write the instruction <em>once</em> and the loop applies it to everything. This is the moment programming starts paying off.</p></div>
+            <div class="why"><h4>Why loops matter</h4><p>A genome has millions of bases. You'll never process them by hand - you write the instruction <em>once</em> and the loop applies it to everything. This is the moment programming starts paying off.</p></div>
 
-            <h2>6. Functions — reusable recipes</h2>
+            <h2>6. Functions - reusable recipes</h2>
             <p>When you do something more than once, wrap it in a function so you can reuse it.</p>
             <pre><span class="k">def</span> <span class="o">gc_content</span>(seq):
     <span class="s">"""Return the GC percentage of a DNA sequence."""</span>
@@ -158,15 +158,15 @@ tally = {}
     <span class="k">for</span> line <span class="k">in</span> f:
         line = line.strip()      <span class="c"># remove the invisible newline</span>
         <span class="k">print</span>(line)</pre>
-            <div class="why"><h4>Decode the jargon: Biopython</h4><p>For real sequence files (FASTA, FASTQ) you won't parse them by hand — a library called <strong>Biopython</strong> does it for you. You installed it in the previous lesson. You'll use it in the project next.</p></div>
+            <div class="why"><h4>Decode the jargon: Biopython</h4><p>For real sequence files (FASTA, FASTQ) you won't parse them by hand - a library called <strong>Biopython</strong> does it for you. You installed it in the previous lesson. You'll use it in the project next.</p></div>
 
             <h2>Check your understanding</h2>
             <details><summary>Why does <code class="inline">dna[1]</code> give the second base, not the first?</summary><p>Because Python indexes from 0. The first item is at index 0, the second at index 1, and so on.</p></details>
-            <details><summary>When should you write a function?</summary><p>Whenever you find yourself doing the same operation more than once. A function lets you write the logic once and reuse it with different inputs — clearer, shorter, and less error-prone.</p></details>
+            <details><summary>When should you write a function?</summary><p>Whenever you find yourself doing the same operation more than once. A function lets you write the logic once and reuse it with different inputs - clearer, shorter, and less error-prone.</p></details>
             <details><summary>What's the difference between a list and a dictionary?</summary><p>A list is an ordered sequence you access by position (<code class="inline">genes[0]</code>). A dictionary stores labelled pairs you access by key (<code class="inline">counts["G"]</code>). Use a list for "a bunch of things in order," a dictionary for "look this up by name."</p></details>
 
-            <a class="next-lesson" href="python-project.html">
-                <span>Next in the Python series — the payoff</span>
+            <a class="next-lesson" href="python-project.html" target="_blank" rel="noopener">
+                <span>Next in the Python series - the payoff</span>
                 <h3>Project: analyze a real DNA sequence →</h3>
             </a>
 

@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A friendly tour of the bioinformatics file formats — SAM/BAM, VCF, GFF/GTF, and BED — and what each one is for. A free BioNexus Hub lesson.">
+    <meta name="description" content="A friendly tour of the bioinformatics file formats - SAM/BAM, VCF, GFF/GTF, and BED - and what each one is for. A free BioNexus Hub lesson.">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="The File-Format Alphabet Soup — BioNexus Hub">
-    <meta property="og:description" content="SAM/BAM, VCF, GFF/GTF, BED — what each format holds and when you'll meet it.">
+    <meta property="og:title" content="The File-Format Alphabet Soup - BioNexus Hub">
+    <meta property="og:description" content="SAM/BAM, VCF, GFF/GTF, BED - what each format holds and when you'll meet it.">
     <meta property="og:url" content="https://bionexushub.com/track1-file-formats.html">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="The File-Format Alphabet Soup — BioNexus Hub">
-    <meta name="twitter:description" content="SAM/BAM, VCF, GFF/GTF, BED — what each format holds and when you'll meet it.">
+    <meta name="twitter:title" content="The File-Format Alphabet Soup - BioNexus Hub">
+    <meta name="twitter:description" content="SAM/BAM, VCF, GFF/GTF, BED - what each format holds and when you'll meet it.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>The File-Format Alphabet Soup - BioNexus Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -89,7 +89,7 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (2 of 5)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (2 of 5)</div>
             <h1>The File-Format Alphabet Soup</h1>
             <p class="promise">SAM, BAM, VCF, GFF, GTF, BED… the acronyms are intimidating until you know the one question each format answers. After this, they'll never confuse you again.</p>
             <div class="tags">
@@ -139,27 +139,27 @@
             </figure>
 
             <h2>SAM / BAM <span class="badge">Where did each read map?</span></h2>
-            <p>After you sequence a sample, you have millions of short reads. The next step is figuring out <em>where in the genome each read came from</em> — that's alignment. The result is stored as <strong>SAM</strong> (Sequence Alignment/Map), a text table with one row per read showing which chromosome and position it matched.</p>
+            <p>After you sequence a sample, you have millions of short reads. The next step is figuring out <em>where in the genome each read came from</em> - that's alignment. The result is stored as <strong>SAM</strong> (Sequence Alignment/Map), a text table with one row per read showing which chromosome and position it matched.</p>
             <pre><span class="c"># one read's row (simplified): name, position, sequence...</span>
 read1   chr7   55019021   ATGCGTACGT...   60</pre>
-            <p><strong>BAM</strong> is simply the <em>compressed, binary</em> version of SAM — same information, far smaller and faster for computers to read. You'll almost always store BAM and convert to readable SAM only when you need to look.</p>
+            <p><strong>BAM</strong> is simply the <em>compressed, binary</em> version of SAM - same information, far smaller and faster for computers to read. You'll almost always store BAM and convert to readable SAM only when you need to look.</p>
             <div class="why"><h4>Why two versions?</h4><p>A human sequencing run produces hundreds of millions of alignments. As plain-text SAM that's enormous; BAM squeezes it down. Rule of thumb: <strong>SAM = readable, BAM = efficient.</strong> The <code class="inline">samtools</code> program converts between them.</p></div>
 
             <h2>VCF <span class="badge">How does this genome differ?</span></h2>
-            <p>Once reads are aligned, you can ask: where does this individual's DNA differ from the reference? Each difference is a <strong>variant</strong>, and they're stored in a <strong>VCF</strong> (Variant Call Format) file — one row per variant, giving its position and what changed.</p>
+            <p>Once reads are aligned, you can ask: where does this individual's DNA differ from the reference? Each difference is a <strong>variant</strong>, and they're stored in a <strong>VCF</strong> (Variant Call Format) file - one row per variant, giving its position and what changed.</p>
             <pre><span class="h">#CHROM  POS       ID    REF  ALT  QUAL</span>
 chr11   5227002   .     T    A    99
 chr7    117559590 .     G    C    87</pre>
-            <p>That first row reads: on chromosome 11, position 5,227,002, the reference has a <code class="inline">T</code> but this sample has an <code class="inline">A</code>. VCF is how genetic differences — including disease-causing mutations — are recorded and shared.</p>
+            <p>That first row reads: on chromosome 11, position 5,227,002, the reference has a <code class="inline">T</code> but this sample has an <code class="inline">A</code>. VCF is how genetic differences - including disease-causing mutations - are recorded and shared.</p>
 
             <h2>GFF / GTF <span class="badge">Where are the genes?</span></h2>
-            <p>A genome is just a long string of letters; <strong>GFF</strong> (General Feature Format) and its close cousin <strong>GTF</strong> are the <em>annotation</em> — the map that says "a gene starts here, an exon is there." Each row describes one feature: its type, chromosome, and start/end coordinates.</p>
+            <p>A genome is just a long string of letters; <strong>GFF</strong> (General Feature Format) and its close cousin <strong>GTF</strong> are the <em>annotation</em> - the map that says "a gene starts here, an exon is there." Each row describes one feature: its type, chromosome, and start/end coordinates.</p>
             <pre><span class="h">chr7  havana  gene  55019017  55211628  +  ...EGFR</span>
 chr7  havana  exon  55019017  55019365  +  ...</pre>
             <p>This is what lets a tool say "this variant falls inside the EGFR gene." GTF is a slightly stricter flavor of GFF used a lot in RNA-seq.</p>
 
             <h2>BED <span class="badge">Which regions am I interested in?</span></h2>
-            <p><strong>BED</strong> is the simplest of all: a plain list of genomic intervals — chromosome, start, end — often with a name. It's the universal way to say "look at just these stretches of the genome."</p>
+            <p><strong>BED</strong> is the simplest of all: a plain list of genomic intervals - chromosome, start, end - often with a name. It's the universal way to say "look at just these stretches of the genome."</p>
             <pre><span class="h">chrom  start     end       name</span>
 chr7   55019017  55211628  EGFR
 chr11  5225464   5227071   HBB</pre>
@@ -167,22 +167,22 @@ chr11  5225464   5227071   HBB</pre>
 
             <h2>Your quick reference</h2>
             <div class="cheat"><table>
-                <tr><td>FASTA</td><td>Sequences (genes, genomes, proteins) — header + sequence.</td></tr>
+                <tr><td>FASTA</td><td>Sequences (genes, genomes, proteins) - header + sequence.</td></tr>
                 <tr><td>FASTQ</td><td>Raw sequencing reads <em>with</em> quality scores.</td></tr>
                 <tr><td>SAM / BAM</td><td>Where each read aligned to the genome (BAM = compressed).</td></tr>
-                <tr><td>VCF</td><td>Variants — how a genome differs from the reference.</td></tr>
-                <tr><td>GFF / GTF</td><td>Annotation — where genes, exons, and other features are.</td></tr>
+                <tr><td>VCF</td><td>Variants - how a genome differs from the reference.</td></tr>
+                <tr><td>GFF / GTF</td><td>Annotation - where genes, exons, and other features are.</td></tr>
                 <tr><td>BED</td><td>A simple list of genomic regions of interest.</td></tr>
             </table></div>
 
-            <p>You don't need to memorize the exact columns — you'll look those up forever, and that's normal. What matters is recognizing each format on sight and knowing the question it answers. That alone puts you ahead of most beginners.</p>
+            <p>You don't need to memorize the exact columns - you'll look those up forever, and that's normal. What matters is recognizing each format on sight and knowing the question it answers. That alone puts you ahead of most beginners.</p>
 
             <h2>Check your understanding</h2>
-            <details><summary>You have aligned reads and want to find mutations. Which format holds the result?</summary><p>VCF — it records variants (differences from the reference). The alignments themselves live in SAM/BAM; calling variants from them produces the VCF.</p></details>
-            <details><summary>What's the difference between SAM and BAM?</summary><p>None in content — BAM is just the compressed binary version of SAM. SAM is human-readable; BAM is smaller and faster for tools.</p></details>
-            <details><summary>Which format tells a tool where a gene is located?</summary><p>GFF or GTF — the annotation formats that map features (genes, exons) onto genome coordinates.</p></details>
+            <details><summary>You have aligned reads and want to find mutations. Which format holds the result?</summary><p>VCF - it records variants (differences from the reference). The alignments themselves live in SAM/BAM; calling variants from them produces the VCF.</p></details>
+            <details><summary>What's the difference between SAM and BAM?</summary><p>None in content - BAM is just the compressed binary version of SAM. SAM is human-readable; BAM is smaller and faster for tools.</p></details>
+            <details><summary>Which format tells a tool where a gene is located?</summary><p>GFF or GTF - the annotation formats that map features (genes, exons) onto genome coordinates.</p></details>
 
-            <a class="next-lesson" href="track1-biopython-basics.html">
+            <a class="next-lesson" href="track1-biopython-basics.html" target="_blank" rel="noopener">
                 <span>Next in Track 1</span>
                 <h3>Biopython basics: parse, manipulate, write →</h3>
             </a>

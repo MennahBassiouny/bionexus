@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="A tour of the public biological databases — NCBI, Ensembl, GEO, SRA, UniProt — and how to fetch records programmatically with Biopython. A free BioNexus Hub lesson.">
+    <meta name="description" content="A tour of the public biological databases - NCBI, Ensembl, GEO, SRA, UniProt - and how to fetch records programmatically with Biopython. A free BioNexus Hub lesson.">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Where the Data Lives: NCBI, Ensembl, GEO, SRA — BioNexus Hub">
+    <meta property="og:title" content="Where the Data Lives: NCBI, Ensembl, GEO, SRA - BioNexus Hub">
     <meta property="og:description" content="The public databases professionals use every day, and how to pull data from them.">
     <meta property="og:url" content="https://bionexushub.com/track1-where-data-lives.html">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Where the Data Lives — BioNexus Hub">
+    <meta name="twitter:title" content="Where the Data Lives - BioNexus Hub">
     <meta name="twitter:description" content="The public databases professionals use every day, and how to pull data from them.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Where the Data Lives: NCBI, Ensembl, GEO, SRA - BioNexus Hub</title>
@@ -94,9 +94,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (4 of 5)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (4 of 5)</div>
             <h1>Where the Data Lives</h1>
-            <p class="promise">You rarely generate data from scratch — you download it. Meet the handful of public databases that hold the world's biology, and learn to pull from them in code.</p>
+            <p class="promise">You rarely generate data from scratch - you download it. Meet the handful of public databases that hold the world's biology, and learn to pull from them in code.</p>
             <div class="tags">
                 <span class="tag green">🟢 Beginner</span>
                 <span class="tag">⏱️ ~45 min</span>
@@ -115,7 +115,7 @@
             <div class="db-grid">
                 <div class="db-card">
                     <h3>NCBI</h3>
-                    <p>The U.S. hub for sequences, genes, and genomes. Home of GenBank and the Entrez search system — your first stop for a gene or a sequence.</p>
+                    <p>The U.S. hub for sequences, genes, and genomes. Home of GenBank and the Entrez search system - your first stop for a gene or a sequence.</p>
                     <a href="https://www.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">ncbi.nlm.nih.gov →</a>
                 </div>
                 <div class="db-card">
@@ -125,22 +125,22 @@
                 </div>
                 <div class="db-card">
                     <h3>GEO</h3>
-                    <p>Gene Expression Omnibus — a giant archive of expression experiments (including RNA-seq) you can re-analyze, like the dataset in our flagship project.</p>
+                    <p>Gene Expression Omnibus - a giant archive of expression experiments (including RNA-seq) you can re-analyze, like the dataset in our flagship project.</p>
                     <a href="https://www.ncbi.nlm.nih.gov/geo/" target="_blank" rel="noopener">GEO →</a>
                 </div>
                 <div class="db-card">
                     <h3>SRA</h3>
-                    <p>The Sequence Read Archive — the raw FASTQ reads behind published studies. This is where you go for the original sequencing data.</p>
+                    <p>The Sequence Read Archive - the raw FASTQ reads behind published studies. This is where you go for the original sequencing data.</p>
                     <a href="https://www.ncbi.nlm.nih.gov/sra/" target="_blank" rel="noopener">SRA →</a>
                 </div>
                 <div class="db-card">
                     <h3>UniProt</h3>
-                    <p>The reference for protein sequences and what they do — function, structure links, and disease associations.</p>
+                    <p>The reference for protein sequences and what they do - function, structure links, and disease associations.</p>
                     <a href="https://www.uniprot.org/" target="_blank" rel="noopener">uniprot.org →</a>
                 </div>
             </div>
 
-            <div class="why"><h4>Decode the jargon: accession numbers</h4><p>Every record has a unique ID called an <strong>accession</strong> — like <code class="inline">NM_000207</code> (the insulin mRNA) or <code class="inline">GSE52778</code> (a GEO dataset). Accessions are how you (and your code) ask for one exact record. Collect the accession from a paper or a search, and you can fetch the data anywhere.</p></div>
+            <div class="why"><h4>Decode the jargon: accession numbers</h4><p>Every record has a unique ID called an <strong>accession</strong> - like <code class="inline">NM_000207</code> (the insulin mRNA) or <code class="inline">GSE52778</code> (a GEO dataset). Accessions are how you (and your code) ask for one exact record. Collect the accession from a paper or a search, and you can fetch the data anywhere.</p></div>
 
             <h2>Fetching data in code (not by clicking)</h2>
             <p>You can download by hand from these websites, but the real power is pulling data <em>programmatically</em> so your analysis is reproducible. Biopython's <code class="inline">Entrez</code> module talks to NCBI for you. (NCBI just asks for an email so they can contact you about heavy usage.)</p>
@@ -165,7 +165,7 @@ handle.close()
 
 <span class="k">print</span>(record.description)
 <span class="k">print</span>(<span class="s">"Length:"</span>, <span class="k">len</span>(record.seq), <span class="s">"bases"</span>)</pre>
-            <p>That's the same pattern from the <a href="python-project.html">Python project</a> — and it works for any accession. Swap the <code class="inline">id</code> and you can fetch any gene, on demand, in two lines.</p>
+            <p>That's the same pattern from the <a href="python-project.html" target="_blank" rel="noopener">Python project</a> - and it works for any accession. Swap the <code class="inline">id</code> and you can fetch any gene, on demand, in two lines.</p>
 
             <div class="fallback"><strong>Network blocked?</strong> Some school or work networks block NCBI. If the fetch fails, download the FASTA by hand from <code class="inline">ncbi.nlm.nih.gov/nuccore/NM_000518</code> (Send to → File → FASTA) and load it with <code class="inline">SeqIO.read("file.fasta", "fasta")</code>.</p></div>
 
@@ -174,15 +174,15 @@ handle.close()
             <pre>search = Entrez.esearch(db=<span class="s">"nucleotide"</span>, term=<span class="s">"BRCA1 Homo sapiens mRNA"</span>, retmax=<span class="s">5</span>)
 results = Entrez.read(search)
 <span class="k">print</span>(results[<span class="s">"IdList"</span>])   <span class="c"># a list of matching record IDs</span></pre>
-            <p>Search to find IDs, then fetch those IDs — that two-step dance is the heart of programmatic data access.</p>
+            <p>Search to find IDs, then fetch those IDs - that two-step dance is the heart of programmatic data access.</p>
 
             <h2>Check your understanding</h2>
             <details><summary>You want the raw FASTQ reads from a published study. Which database?</summary><p>The SRA (Sequence Read Archive). GEO holds processed expression data; SRA holds the raw reads behind it.</p></details>
-            <details><summary>What's an accession number, and why does it matter?</summary><p>A unique ID for one record (e.g., <code class="inline">NM_000518</code>). It lets you — or your code — request that exact record reproducibly, from anywhere.</p></details>
+            <details><summary>What's an accession number, and why does it matter?</summary><p>A unique ID for one record (e.g., <code class="inline">NM_000518</code>). It lets you - or your code - request that exact record reproducibly, from anywhere.</p></details>
             <details><summary>Why fetch data in code rather than clicking download?</summary><p>Reproducibility. A script that fetches by accession can be re-run by anyone to get the identical data, and it scales to hundreds of records without manual clicking.</p></details>
 
-            <a class="next-lesson" href="track1-pandas-for-biologists.html">
-                <span>Last in Track 1 — the payoff</span>
+            <a class="next-lesson" href="track1-pandas-for-biologists.html" target="_blank" rel="noopener">
+                <span>Last in Track 1 - the payoff</span>
                 <h3>Pandas for biologists + your Track 1 project →</h3>
             </a>
 

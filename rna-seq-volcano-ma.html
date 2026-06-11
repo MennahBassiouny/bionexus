@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Turn a DESeq2 results table into the two plots every RNA-seq paper uses: the volcano plot and the MA plot. Build them in R and learn to read them like a pro.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Reading Volcano and MA Plots in R | BioNexus Hub">
+    <meta property="og:description" content="Turn a DESeq2 results table into a volcano plot and an MA plot in R, and learn to read them like a pro.">
+    <meta property="og:url" content="https://bionexushub.com/rna-seq-volcano-ma.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Reading Volcano and MA Plots in R | BioNexus Hub">
+    <meta name="twitter:description" content="Turn a DESeq2 results table into a volcano plot and an MA plot in R, and read them like a pro.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Reading Volcano and MA Plots - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .colab-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; background: var(--deep-navy); color: white; border-radius: 12px; padding: 26px 30px; margin: 28px 0; }
+        .colab-cta div p:first-child { font-weight: 700; font-size: 1.15rem; margin-bottom: 4px; }
+        .colab-cta div p:last-child { color: rgba(255,255,255,0.7); font-size: 0.95rem; margin: 0; }
+        .colab-btn { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: transform 0.3s ease; }
+        .colab-btn:hover { transform: translateY(-2px); }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .k { color: #c084fc; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .step-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; font-weight: 700; font-size: 0.95rem; margin-right: 10px; vertical-align: middle; }
+
+        .levelup { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 22px 26px; margin: 28px 0; }
+        .levelup h4 { color: #b45309; margin-bottom: 8px; }
+        .levelup p { font-size: 1rem; color: var(--text-gray); margin-bottom: 8px; }
+        .levelup a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+
+        details { background: white; border: 1px solid rgba(91,156,248,0.2); border-radius: 8px; padding: 14px 20px; margin-bottom: 12px; }
+        details summary { font-weight: 600; cursor: pointer; color: var(--deep-navy); }
+        details p { margin: 12px 0 0; color: var(--text-gray); font-size: 1rem; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; Volcano and MA plots</div>
+                <h1>Reading Volcano and MA Plots</h1>
+                <p class="promise">Your DESeq2 results table is a wall of numbers. These two plots turn it into a picture you can read in seconds: which genes changed, by how much, and how confident you are. Let's build both in R and learn to read them like a pro.</p>
+                <div class="tags">
+                    <span class="tag green">🟡 Intermediate</span>
+                    <span class="tag">⏱️ ~45 min</span>
+                    <span class="tag">📊 R</span>
+                    <span class="tag green">🌐 Runs in your browser</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="prereq">
+                    <h4>Before you start</h4>
+                    <ul>
+                        <li>You've done <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">From Raw Counts to Differential Expression</a>, so you have a DESeq2 results table.</li>
+                        <li>A little R, and a free Google account to run the Colab notebook.</li>
+                    </ul>
+                </div>
+
+                <h2>Two plots, two questions</h2>
+                <p>Both plots are drawn from the same results table, but they answer different questions:</p>
+                <ul>
+                    <li>The <strong>volcano plot</strong> asks: "which genes are both big <em>and</em> trustworthy?" It puts effect size on one axis and confidence on the other, so the genes that matter shoot up into the corners.</li>
+                    <li>The <strong>MA plot</strong> asks: "is my data healthy, and are changes spread fairly across expression levels?" It plots fold change against how strongly each gene is expressed, which is a great sanity check.</li>
+                </ul>
+                <p>You'll use the volcano to pick out hits and the MA plot to trust your experiment. Both belong in any RNA-seq report.</p>
+
+                <div class="colab-cta">
+                    <div>
+                        <p>▶ Code along in Google Colab</p>
+                        <p>Set the runtime to R (Runtime, then Change runtime type, then R), and run each block as you read.</p>
+                    </div>
+                    <a class="colab-btn" href="https://colab.research.google.com/github/MennahBassiouny/bionexus/blob/main/nb-rna-seq-volcano-ma.ipynb" target="_blank" rel="noopener">Open the R notebook in Colab →</a>
+                </div>
+
+                <h2><span class="step-num">1</span>Get a results table to plot</h2>
+                <p>We'll rebuild the results from the previous lesson so this notebook stands on its own. We keep both the raw <code class="inline">res</code> and the shrunken <code class="inline">res_shrunk</code>, because each plot prefers a different one.</p>
+                <pre><span class="k">library</span>(DESeq2)
+
+base <- <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
+counts <- as.matrix(read.csv(paste0(base, <span class="s">"test_counts.csv"</span>), row.names = 1))
+metadata <- read.csv(paste0(base, <span class="s">"test_metadata.csv"</span>), row.names = 1)
+metadata$condition <- factor(metadata$condition)
+metadata <- metadata[colnames(counts), , drop = FALSE]
+
+dds <- DESeqDataSetFromMatrix(counts, metadata, design = ~ condition)
+dds <- DESeq(dds)
+
+res        <- results(dds, contrast = c(<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>))
+res_shrunk <- lfcShrink(dds, coef = <span class="s">"condition_B_vs_A"</span>, type = <span class="s">"apeglm"</span>)</pre>
+
+                <h2><span class="step-num">2</span>The MA plot (the health check)</h2>
+                <p>DESeq2 has this one built in. Use the <em>shrunken</em> results so low-count noise doesn't spray dots all over the edges.</p>
+                <pre>plotMA(res_shrunk, ylim = c(-3, 3), main = <span class="s">"MA plot (shrunken)"</span>)</pre>
+                <p>How to read it: each dot is a gene. The horizontal axis is the average expression level (low on the left, high on the right). The vertical axis is the log2 fold change. Dots far from the centre line changed a lot; DESeq2 colours the significant ones. A healthy MA plot is a fat cloud hugging the zero line, fanning out a little on the low-expression left side (where there's naturally more noise). If it looks lopsided or tilted, something may be off with normalization.</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Why "MA"?</h4>
+                    <p>The name comes from the early microarray days. <strong>M</strong> is the log ratio (the fold change, the vertical axis) and <strong>A</strong> is the average intensity (the expression level, the horizontal axis). The name stuck even though we use it for sequencing now.</p>
+                </div>
+
+                <h2><span class="step-num">3</span>The volcano plot (the hit finder)</h2>
+                <p>There's no single built-in function, so we draw it ourselves. The recipe: fold change on the x-axis, and <code class="inline">-log10(padj)</code> on the y-axis so that the most significant genes sit highest.</p>
+                <pre>df <- as.data.frame(res)
+df <- df[!is.na(df$padj), ]
+
+<span class="c"># a gene is a "hit" if it's significant AND changed at least two-fold</span>
+df$sig <- df$padj &lt; 0.05 &amp; abs(df$log2FoldChange) > 1
+
+plot(df$log2FoldChange, -log10(df$padj),
+     pch = 20,
+     col = ifelse(df$sig, <span class="s">"#a855f7"</span>, <span class="s">"#cbd5e1"</span>),
+     xlab = <span class="s">"log2 fold change (B vs A)"</span>,
+     ylab = <span class="s">"-log10 adjusted p-value"</span>,
+     main = <span class="s">"Volcano plot"</span>)
+
+<span class="c"># threshold guides: significance line and two-fold lines</span>
+abline(h = -log10(0.05), lty = 2, col = <span class="s">"#64748b"</span>)
+abline(v = c(-1, 1), lty = 2, col = <span class="s">"#64748b"</span>)
+
+<span class="c"># label the five most significant genes</span>
+top <- head(df[order(df$padj), ], 5)
+text(top$log2FoldChange, -log10(top$padj), labels = rownames(top), pos = 3, cex = 0.7)</pre>
+
+                <h2><span class="step-num">4</span>How to read a volcano plot</h2>
+                <p>Picture the plot as four regions:</p>
+                <ul>
+                    <li><strong>Top-right</strong>: strongly up in condition B, and highly significant. Your most interesting "up" genes.</li>
+                    <li><strong>Top-left</strong>: strongly down in B, highly significant. Your most interesting "down" genes.</li>
+                    <li><strong>Bottom middle</strong>: little change and low confidence. The quiet majority of genes.</li>
+                    <li><strong>Far sides but low down</strong>: big fold change but weak significance. Treat these with caution, they're often low-count genes (this is exactly what shrinkage helps with).</li>
+                </ul>
+                <p>The dashed lines are your thresholds: above the horizontal line means <code class="inline">padj &lt; 0.05</code>, and outside the vertical lines means at least a two-fold change. The coloured dots in the upper corners are the genes you'd carry forward into the next step, functional enrichment.</p>
+
+                <div class="levelup">
+                    <h4>🔶 Level up: publication-ready volcanoes</h4>
+                    <p>For a polished figure with automatic gene labels and styling, the <code class="inline">EnhancedVolcano</code> Bioconductor package is the community favourite: <code class="inline">BiocManager::install("EnhancedVolcano")</code>, then one call draws a paper-ready plot. The base-R version above is perfect for understanding what's going on under the hood first.</p>
+                </div>
+
+                <h2>Check your understanding</h2>
+                <details>
+                    <summary>On a volcano plot, where are the most interesting genes?</summary>
+                    <p>In the top-left and top-right corners: high on the y-axis (very significant) and far from zero on the x-axis (large change). Big, confident changes in both directions.</p>
+                </details>
+                <details>
+                    <summary>Why do we plot -log10(padj) instead of padj directly?</summary>
+                    <p>Because tiny p-values (like 0.0000001) are the interesting ones, and on a raw scale they'd all be squashed near zero. Taking -log10 flips them so the most significant genes sit highest on the plot, which is much easier to read.</p>
+                </details>
+                <details>
+                    <summary>What is the MA plot good for that the volcano is not?</summary>
+                    <p>It's a health check. By plotting fold change against expression level, it shows whether your normalization looks sane and whether changes are spread fairly across low- and high-expression genes. The volcano is for picking hits; the MA plot is for trusting the data.</p>
+                </details>
+
+                <a class="next-lesson" href="learn.html#track-3" target="_blank" rel="noopener">
+                    <span>Next in Track 3</span>
+                    <h3>Heatmaps and clustering that mean something →</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+</body>
+</html>

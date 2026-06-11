@@ -7,14 +7,14 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Installing Python for Bioinformatics — BioNexus Hub">
+    <meta property="og:title" content="Installing Python for Bioinformatics - BioNexus Hub">
     <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
     <meta property="og:url" content="https://bionexushub.com/">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Installing Python for Bioinformatics — BioNexus Hub">
+    <meta name="twitter:title" content="Installing Python for Bioinformatics - BioNexus Hub">
     <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Installing Python - BioNexus Hub</title>
@@ -90,9 +90,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Python series (1 of 3)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Python series (1 of 3)</div>
             <h1>Installing Python</h1>
-            <p class="promise">By the end of this lesson, Python will be running on your own computer — Windows, Mac, or Linux — and you'll have a clean workspace ready for real bioinformatics work.</p>
+            <p class="promise">By the end of this lesson, Python will be running on your own computer - Windows, Mac, or Linux - and you'll have a clean workspace ready for real bioinformatics work.</p>
             <div class="tags">
                 <span class="tag green">🟢 Beginner</span>
                 <span class="tag">⏱️ ~30 min</span>
@@ -106,21 +106,21 @@
         <div class="container"><div class="lesson-body">
 
             <h2>What we're installing, and why</h2>
-            <p>We'll install Python using the <strong>official installer from python.org</strong> — the simplest, most universal way to get Python onto your machine. It comes with <strong>pip</strong> (for installing packages) and <strong>venv</strong> (for creating isolated "environments" so one project never breaks another). That's everything you need to start, and most beginner tutorials assume exactly this standard setup.</p>
+            <p>We'll install Python using the <strong>official installer from python.org</strong> - the simplest, most universal way to get Python onto your machine. It comes with <strong>pip</strong> (for installing packages) and <strong>venv</strong> (for creating isolated "environments" so one project never breaks another). That's everything you need to start, and most beginner tutorials assume exactly this standard setup.</p>
 
             <div class="why">
                 <h4>Decode the jargon: environment</h4>
                 <p>An "environment" is a self-contained box holding a specific Python version and set of packages. Project A can use one box, Project B another, and they never collide. It's the single best habit for avoiding the dreaded "it worked yesterday" problem.</p>
             </div>
 
-            <h2>Step 1 — Download &amp; install Python</h2>
+            <h2>Step 1 - Download &amp; install Python</h2>
             <p>Go to <strong>python.org/downloads</strong> and download the latest Python (version 3.12 or newer) for your operating system. Then follow the section for your OS below.</p>
 
             <div class="os-block">
                 <h3>🪟 <span>Windows</span> <span class="os-badge">Windows 10/11</span></h3>
                 <ol>
                     <li>Download the <strong>Windows installer (64-bit)</strong> <code class="inline">.exe</code> from python.org.</li>
-                    <li><strong>Important:</strong> on the very first installer screen, tick <strong>"Add python.exe to PATH"</strong> at the bottom — this lets you run Python from any terminal. Then click <strong>Install Now</strong>.</li>
+                    <li><strong>Important:</strong> on the very first installer screen, tick <strong>"Add python.exe to PATH"</strong> at the bottom - this lets you run Python from any terminal. Then click <strong>Install Now</strong>.</li>
                     <li>When it finishes, open a <strong>new</strong> Command Prompt or PowerShell from the Start menu. This is your Python-aware terminal.</li>
                 </ol>
             </div>
@@ -128,7 +128,7 @@
             <div class="os-block">
                 <h3>🍎 <span>macOS</span> <span class="os-badge">Intel &amp; Apple Silicon</span></h3>
                 <ol>
-                    <li>Download the <strong>macOS 64-bit universal2 installer</strong> (<code class="inline">.pkg</code>) — one file works on both Apple Silicon and Intel.</li>
+                    <li>Download the <strong>macOS 64-bit universal2 installer</strong> (<code class="inline">.pkg</code>) - one file works on both Apple Silicon and Intel.</li>
                     <li>Double-click it and follow the wizard, accepting the defaults.</li>
                 </ol>
                 <p>macOS ships with an old system Python, so on a Mac you'll usually type <code class="inline">python3</code> and <code class="inline">pip3</code> (the python.org installer sets these up for you).</p>
@@ -137,7 +137,7 @@
             <div class="os-block">
                 <h3>🐧 <span>Linux</span> <span class="os-badge">Ubuntu / Debian / Fedora …</span></h3>
                 <ol>
-                    <li>Python 3 is usually already installed — check with <code class="inline">python3 --version</code>.</li>
+                    <li>Python 3 is usually already installed - check with <code class="inline">python3 --version</code>.</li>
                     <li>If it's missing, or you need <code class="inline">pip</code> and <code class="inline">venv</code>, install them with your package manager:</li>
                 </ol>
                 <pre><span class="c"># Ubuntu / Debian</span>
@@ -147,13 +147,13 @@ sudo apt update &amp;&amp; sudo apt install python3 python3-pip python3-venv
 sudo dnf install python3 python3-pip</pre>
             </div>
 
-            <h2>Step 2 — Check it worked</h2>
+            <h2>Step 2 - Check it worked</h2>
             <p>In your terminal (Command Prompt or PowerShell on Windows, Terminal on Mac/Linux), type:</p>
             <pre>python --version
 pip --version</pre>
-            <p>You should see a version number for each (for example <code class="inline">Python 3.13.x</code>). If you do — Python is installed. 🎉 <em>On macOS and Linux, use <code class="inline">python3</code> and <code class="inline">pip3</code> if plain <code class="inline">python</code> isn't found.</em></p>
+            <p>You should see a version number for each (for example <code class="inline">Python 3.13.x</code>). If you do - Python is installed. 🎉 <em>On macOS and Linux, use <code class="inline">python3</code> and <code class="inline">pip3</code> if plain <code class="inline">python</code> isn't found.</em></p>
 
-            <h2>Step 3 — Make your first environment</h2>
+            <h2>Step 3 - Make your first environment</h2>
             <p>Let's create an isolated workspace (a "virtual environment") for your BioNexus learning, then install the core packages into it:</p>
             <pre><span class="c"># 1. Create a virtual environment called "bionexus"</span>
 python -m venv bionexus          <span class="c"># use python3 on macOS/Linux</span>
@@ -164,33 +164,33 @@ source bionexus/bin/activate     <span class="c"># macOS / Linux</span>
 
 <span class="c"># 3. With it active, install the packages you'll use</span>
 pip install jupyter pandas numpy matplotlib biopython</pre>
-            <p>When the environment is active, you'll see <code class="inline">(bionexus)</code> at the start of your prompt — that's how you know which box you're working in. Type <code class="inline">deactivate</code> to leave it.</p>
+            <p>When the environment is active, you'll see <code class="inline">(bionexus)</code> at the start of your prompt - that's how you know which box you're working in. Type <code class="inline">deactivate</code> to leave it.</p>
 
             <div class="why">
                 <h4>What about conda / Miniconda?</h4>
-                <p>Conda (installed via <strong>Miniconda</strong>) is a popular alternative in bioinformatics because it can install non-Python command-line tools — like <code class="inline">samtools</code> or <code class="inline">bwa</code> — right alongside your Python packages. You don't need it to begin: <code class="inline">pip</code> and <code class="inline">venv</code> cover everything in this Python series. We'll bring in conda later, once you reach tools that require it.</p>
+                <p>Conda (installed via <strong>Miniconda</strong>) is a popular alternative in bioinformatics because it can install non-Python command-line tools - like <code class="inline">samtools</code> or <code class="inline">bwa</code> - right alongside your Python packages. You don't need it to begin: <code class="inline">pip</code> and <code class="inline">venv</code> cover everything in this Python series. We'll bring in conda later, once you reach tools that require it.</p>
             </div>
 
             <h2>Where you'll write your code</h2>
-            <p>Python is installed — but where do you actually type your code? There's no single right answer; here are the common options, all perfectly valid. Many people use more than one depending on the task.</p>
+            <p>Python is installed - but where do you actually type your code? There's no single right answer; here are the common options, all perfectly valid. Many people use more than one depending on the task.</p>
             <ul>
-                <li><strong>Google Colab</strong> — notebooks in your browser, nothing to install. Great for learning and for the lessons on this site.</li>
-                <li><strong>Jupyter</strong> — local notebooks. We installed it above with <code class="inline">pip</code>; with your environment active, run <code class="inline">jupyter notebook</code> to start. Ideal for step-by-step, exploratory analysis.</li>
-                <li><strong>VS Code</strong> — a free desktop editor that holds your scripts, files, and a terminal in one window. If you'd like to try it, follow the <a href="vscode-setup.html">Set up VS Code</a> guide.</li>
-                <li><strong>PyCharm</strong> — a full Python IDE (desktop app) with smart autocomplete, a visual debugger, and built-in Jupyter support; a favorite once your scripts grow. Download steps are just below.</li>
-                <li><strong>RStudio</strong> — primarily for R, but worth knowing it exists once you reach the R series.</li>
+                <li><strong>Google Colab</strong> - notebooks in your browser, nothing to install. Great for learning and for the lessons on this site.</li>
+                <li><strong>Jupyter</strong> - local notebooks. We installed it above with <code class="inline">pip</code>; with your environment active, run <code class="inline">jupyter notebook</code> to start. Ideal for step-by-step, exploratory analysis.</li>
+                <li><strong>VS Code</strong> - a free desktop editor that holds your scripts, files, and a terminal in one window. If you'd like to try it, follow the <a href="vscode-setup.html" target="_blank" rel="noopener">Set up VS Code</a> guide.</li>
+                <li><strong>PyCharm</strong> - a full Python IDE (desktop app) with smart autocomplete, a visual debugger, and built-in Jupyter support; a favorite once your scripts grow. Download steps are just below.</li>
+                <li><strong>RStudio</strong> - primarily for R, but worth knowing it exists once you reach the R series.</li>
             </ul>
-            <p>Pick whichever feels comfortable. You can always switch later — your code runs the same way regardless of where you write it.</p>
+            <p>Pick whichever feels comfortable. You can always switch later - your code runs the same way regardless of where you write it.</p>
 
             <h3>Downloading PyCharm</h3>
             <ol>
                 <li>Go to <strong>jetbrains.com/pycharm/download</strong> and choose your operating system (Windows, macOS, or Linux).</li>
                 <li>Run the installer and accept the defaults. On Windows you can tick "Add bin folder to PATH" and a desktop shortcut if you'd like.</li>
-                <li>Open PyCharm, choose <strong>New Project</strong>, and point it at the <code class="inline">bionexus</code> virtual environment you made in Step 3 (<em>Settings → Project → Python Interpreter → Add Interpreter → Existing</em>) — or let PyCharm create a fresh environment for you.</li>
+                <li>Open PyCharm, choose <strong>New Project</strong>, and point it at the <code class="inline">bionexus</code> virtual environment you made in Step 3 (<em>Settings → Project → Python Interpreter → Add Interpreter → Existing</em>) - or let PyCharm create a fresh environment for you.</li>
             </ol>
             <div class="why">
                 <h4>Is PyCharm free?</h4>
-                <p>Yes for learning. PyCharm starts with a free one-month Pro trial, then keeps working for free with its core features — including Jupyter support — which covers everything in these lessons. The paid Pro tier adds database tools, web frameworks, and remote development you won't need yet.</p>
+                <p>Yes for learning. PyCharm starts with a free one-month Pro trial, then keeps working for free with its core features - including Jupyter support - which covers everything in these lessons. The paid Pro tier adds database tools, web frameworks, and remote development you won't need yet.</p>
             </div>
 
             <div class="checkpoint">
@@ -200,11 +200,11 @@ pip install jupyter pandas numpy matplotlib biopython</pre>
 
             <h2>Stuck? Common snags</h2>
             <details><summary>"python is not recognized" on Windows</summary><p>You most likely didn't tick <strong>"Add python.exe to PATH"</strong> during install. Re-run the installer, choose <strong>Modify</strong>, enable that option (or reinstall and tick the box), then open a <strong>new</strong> terminal. As a quick workaround you can also use the <code class="inline">py</code> launcher: <code class="inline">py --version</code>.</p></details>
-            <details><summary>"python --version" shows Python 2.x (macOS / Linux)</summary><p>Older systems map <code class="inline">python</code> to version 2. Use <code class="inline">python3</code> and <code class="inline">pip3</code> instead — e.g. <code class="inline">python3 -m venv bionexus</code>.</p></details>
-            <details><summary>"Activate.ps1 cannot be loaded" in PowerShell</summary><p>PowerShell blocks scripts by default. Run this once: <code class="inline">Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code>, then activate again — or just use Command Prompt, where <code class="inline">bionexus\Scripts\activate.bat</code> works without any changes.</p></details>
+            <details><summary>"python --version" shows Python 2.x (macOS / Linux)</summary><p>Older systems map <code class="inline">python</code> to version 2. Use <code class="inline">python3</code> and <code class="inline">pip3</code> instead - e.g. <code class="inline">python3 -m venv bionexus</code>.</p></details>
+            <details><summary>"Activate.ps1 cannot be loaded" in PowerShell</summary><p>PowerShell blocks scripts by default. Run this once: <code class="inline">Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code>, then activate again - or just use Command Prompt, where <code class="inline">bionexus\Scripts\activate.bat</code> works without any changes.</p></details>
             <details><summary>"pip is not recognized" / not found</summary><p>Use <code class="inline">python -m pip install ...</code> (or <code class="inline">python3 -m pip</code> on Mac/Linux). Routing through <code class="inline">python -m</code> always finds the right pip, even when the bare <code class="inline">pip</code> command isn't on your PATH.</p></details>
 
-            <a class="next-lesson" href="python-basics.html"><span>Next in the Python series</span><h3>Python basics with real biological data →</h3></a>
+            <a class="next-lesson" href="python-basics.html" target="_blank" rel="noopener"><span>Next in the Python series</span><h3>Python basics with real biological data →</h3></a>
         </div></div>
     </main>
 

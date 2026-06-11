@@ -7,14 +7,14 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Install R &amp; RStudio — BioNexus Hub">
+    <meta property="og:title" content="Install R &amp; RStudio - BioNexus Hub">
     <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
     <meta property="og:url" content="https://bionexushub.com/">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Install R &amp; RStudio — BioNexus Hub">
+    <meta name="twitter:title" content="Install R &amp; RStudio - BioNexus Hub">
     <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Installing R & RStudio - BioNexus Hub</title>
@@ -90,9 +90,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (1 of 3)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (1 of 3)</div>
             <h1>Installing R &amp; RStudio</h1>
-            <p class="promise">By the end of this lesson you'll have R — the language statisticians and biologists reach for — plus RStudio, the friendly workspace that makes it a pleasure to use.</p>
+            <p class="promise">By the end of this lesson you'll have R - the language statisticians and biologists reach for - plus RStudio, the friendly workspace that makes it a pleasure to use.</p>
             <div class="tags">
                 <span class="tag green">🟢 Beginner</span>
                 <span class="tag">⏱️ ~30 min</span>
@@ -106,11 +106,11 @@
         <div class="container"><div class="lesson-body">
 
             <h2>Two pieces, and why</h2>
-            <p>You install <strong>two</strong> things. <strong>R</strong> is the actual language and engine. <strong>RStudio</strong> is the workspace you'll spend your time in — it gives you a code editor, your plots, your data, and your console all in one window. R is the car; RStudio is the comfortable dashboard. Install R first, then RStudio.</p>
+            <p>You install <strong>two</strong> things. <strong>R</strong> is the actual language and engine. <strong>RStudio</strong> is the workspace you'll spend your time in - it gives you a code editor, your plots, your data, and your console all in one window. R is the car; RStudio is the comfortable dashboard. Install R first, then RStudio.</p>
 
-            <div class="why"><h4>Why R for bioinformatics?</h4><p>R was built by statisticians, and the gold-standard tools for RNA-seq, differential expression, and genomics — DESeq2, edgeR, limma, and the whole Bioconductor project — live in R. If you want to work with expression data, R is unavoidable, and that's a good thing.</p></div>
+            <div class="why"><h4>Why R for bioinformatics?</h4><p>R was built by statisticians, and the gold-standard tools for RNA-seq, differential expression, and genomics - DESeq2, edgeR, limma, and the whole Bioconductor project - live in R. If you want to work with expression data, R is unavoidable, and that's a good thing.</p></div>
 
-            <h2>Step 1 — Install R (from CRAN)</h2>
+            <h2>Step 1 - Install R (from CRAN)</h2>
             <p>R is distributed by <strong>CRAN</strong> (the Comprehensive R Archive Network) at <code class="inline">cran.r-project.org</code>. Pick your OS:</p>
 
             <div class="os-block">
@@ -124,7 +124,7 @@
                 <h3>🍎 <span>macOS</span> <span class="os-badge">Intel &amp; Apple Silicon</span></h3>
                 <ol>
                     <li>Go to <code class="inline">cran.r-project.org</code> → "Download R for macOS".</li>
-                    <li>Pick the right <code class="inline">.pkg</code>: <strong>arm64</strong> for Apple Silicon (M1–M4), or the Intel build for older Macs.</li>
+                    <li>Pick the right <code class="inline">.pkg</code>: <strong>arm64</strong> for Apple Silicon (M1-M4), or the Intel build for older Macs.</li>
                     <li>Open the <code class="inline">.pkg</code> and follow the installer.</li>
                 </ol>
             </div>
@@ -136,7 +136,7 @@ sudo apt install r-base</pre>
                 <p>For the very latest R, CRAN has per-distro instructions at <code class="inline">cran.r-project.org/bin/linux</code>. On Fedora, use <code class="inline">sudo dnf install R</code>.</p>
             </div>
 
-            <h2>Step 2 — Install RStudio Desktop (free)</h2>
+            <h2>Step 2 - Install RStudio Desktop (free)</h2>
             <p>Go to <strong>posit.co/download/rstudio-desktop</strong> and download the free <strong>RStudio Desktop</strong> for your OS. It will detect the R you just installed automatically.</p>
             <ul>
                 <li><strong>Windows:</strong> run the <code class="inline">.exe</code> installer.</li>
@@ -144,7 +144,7 @@ sudo apt install r-base</pre>
                 <li><strong>Linux:</strong> download the <code class="inline">.deb</code> (Ubuntu/Debian) or <code class="inline">.rpm</code> (Fedora) and install it.</li>
             </ul>
 
-            <h2>Step 3 — Check it worked</h2>
+            <h2>Step 3 - Check it worked</h2>
             <p>Open <strong>RStudio</strong>. In the <strong>Console</strong> pane (bottom-left), type this and press Enter:</p>
             <pre>R.version.string
 <span class="c"># [1] "R version 4.x.x ..."</span>
@@ -152,13 +152,13 @@ sudo apt install r-base</pre>
 <span class="c"># [1] 2</span></pre>
             <p>If R answers, you're in business. 🎉</p>
 
-            <h2>Step 4 — Install your first packages</h2>
+            <h2>Step 4 - Install your first packages</h2>
             <p>Packages add features. We'll grab the <strong>tidyverse</strong> (the modern toolkit for data work) and <strong>palmerpenguins</strong> (a friendly real dataset we'll use in the project). In the Console:</p>
             <pre><span class="k">install.packages</span>(<span class="s">"tidyverse"</span>)
 <span class="k">install.packages</span>(<span class="s">"palmerpenguins"</span>)</pre>
-            <p>This downloads from CRAN and can take a few minutes the first time — that's normal. Say "yes" to any prompts.</p>
+            <p>This downloads from CRAN and can take a few minutes the first time - that's normal. Say "yes" to any prompts.</p>
 
-            <div class="why"><h4>Decode the jargon: Bioconductor</h4><p>CRAN is R's general package store. <strong>Bioconductor</strong> is a second store dedicated to biology — it's where DESeq2 and friends live. You install from it a little differently (<code class="inline">BiocManager::install("DESeq2")</code>). You don't need it yet, but now the name won't surprise you when it shows up in Track 3.</p></div>
+            <div class="why"><h4>Decode the jargon: Bioconductor</h4><p>CRAN is R's general package store. <strong>Bioconductor</strong> is a second store dedicated to biology - it's where DESeq2 and friends live. You install from it a little differently (<code class="inline">BiocManager::install("DESeq2")</code>). You don't need it yet, but now the name won't surprise you when it shows up in Track 3.</p></div>
 
             <div class="checkpoint">
                 <h4>✅ You're ready when…</h4>
@@ -169,7 +169,7 @@ sudo apt install r-base</pre>
             <details><summary>RStudio says it can't find R</summary><p>This happens if RStudio was installed before R, or you have multiple R versions. In RStudio go to Tools → Global Options → General → and set the R version, or simply reinstall R then restart RStudio.</p></details>
             <details><summary>install.packages fails with a "non-zero exit status" on Linux</summary><p>Some R packages need system libraries to compile. The error usually names what's missing (e.g. <code class="inline">libcurl</code>, <code class="inline">libxml2</code>). Install the matching <code class="inline">-dev</code> package with apt (e.g. <code class="inline">sudo apt install libcurl4-openssl-dev</code>) and try again.</p></details>
 
-            <a class="next-lesson" href="r-basics.html">
+            <a class="next-lesson" href="r-basics.html" target="_blank" rel="noopener">
                 <span>Next in the R series</span>
                 <h3>R basics: data frames &amp; plotting →</h3>
             </a>

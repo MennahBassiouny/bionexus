@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Understand sequence files: the FASTA and FASTQ formats, headers, and quality scores — with hands-on parsing in your browser. A free BioNexus Hub bioinformatics lesson.">
+    <meta name="description" content="Understand sequence files: the FASTA and FASTQ formats, headers, and quality scores - with hands-on parsing in your browser. A free BioNexus Hub bioinformatics lesson.">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Sequences, FASTA & FASTQ Explained — BioNexus Hub">
-    <meta property="og:description" content="The two file formats every bioinformatician reads first — explained simply, with hands-on parsing.">
+    <meta property="og:title" content="Sequences, FASTA & FASTQ Explained - BioNexus Hub">
+    <meta property="og:description" content="The two file formats every bioinformatician reads first - explained simply, with hands-on parsing.">
     <meta property="og:url" content="https://bionexushub.com/track1-sequences-fasta-fastq.html">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Sequences, FASTA & FASTQ Explained — BioNexus Hub">
-    <meta name="twitter:description" content="The two file formats every bioinformatician reads first — explained simply, with hands-on parsing.">
+    <meta name="twitter:title" content="Sequences, FASTA & FASTQ Explained - BioNexus Hub">
+    <meta name="twitter:description" content="The two file formats every bioinformatician reads first - explained simply, with hands-on parsing.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Sequences, FASTA &amp; FASTQ Explained - BioNexus Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -91,9 +91,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (1 of 5)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (1 of 5)</div>
             <h1>Sequences, FASTA &amp; FASTQ Explained</h1>
-            <p class="promise">Two text formats hold most of the world's sequence data. By the end of this lesson you'll be able to read both — and know exactly what every line means.</p>
+            <p class="promise">Two text formats hold most of the world's sequence data. By the end of this lesson you'll be able to read both - and know exactly what every line means.</p>
             <div class="tags">
                 <span class="tag green">🟢 Beginner</span>
                 <span class="tag">⏱️ ~45 min</span>
@@ -108,22 +108,22 @@
 
             <div class="prereq">
                 <h4>Before you start</h4>
-                <p>You can read a little Python and run code in a notebook. New here? Do <a href="intro-first-python.html">Track 0</a> first, or the <a href="python-install.html">Python setup</a>.</p>
+                <p>You can read a little Python and run code in a notebook. New here? Do <a href="intro-first-python.html" target="_blank" rel="noopener">Track 0</a> first, or the <a href="python-install.html" target="_blank" rel="noopener">Python setup</a>.</p>
             </div>
 
             <h2>Why these two formats matter</h2>
-            <p>When a sequencing machine reads DNA or RNA, or when you download a gene or genome, the data almost always arrives as plain text in one of two formats: <strong>FASTA</strong> or <strong>FASTQ</strong>. They're the front door to nearly every analysis. The good news: both are simple, human-readable text — you can open them in any editor and understand them once you know the pattern.</p>
+            <p>When a sequencing machine reads DNA or RNA, or when you download a gene or genome, the data almost always arrives as plain text in one of two formats: <strong>FASTA</strong> or <strong>FASTQ</strong>. They're the front door to nearly every analysis. The good news: both are simple, human-readable text - you can open them in any editor and understand them once you know the pattern.</p>
 
-            <h2>FASTA — sequences with a label</h2>
+            <h2>FASTA - sequences with a label</h2>
             <p>FASTA is the simplest. Each record is just two parts: a <strong>header line starting with <code class="inline">&gt;</code></strong> (the name/description), followed by the <strong>sequence</strong> itself on one or more lines.</p>
             <pre><span class="h">&gt;gene1 human insulin (example)</span>
 ATGGCCCTGTGGATGCGCCTCCTGCCCCTGCTGGCGCTGCTG
 GCCCTCTGGGGACCTGACCCAGCCGCAGCCTTTGTGAACCAA</pre>
-            <p>That's it. A file can hold one record or millions, each starting with its own <code class="inline">&gt;</code> header. FASTA is used for genes, genomes, proteins — any sequence where you don't need quality information.</p>
-            <div class="why"><h4>The <code class="inline">&gt;</code> is your friend</h4><p>Because every record starts with <code class="inline">&gt;</code>, counting sequences is as easy as counting header lines — exactly the <code class="inline">grep -c "&gt;"</code> trick from the <a href="bash-project.html">Bash project</a>. One symbol, huge convenience.</p></div>
+            <p>That's it. A file can hold one record or millions, each starting with its own <code class="inline">&gt;</code> header. FASTA is used for genes, genomes, proteins - any sequence where you don't need quality information.</p>
+            <div class="why"><h4>The <code class="inline">&gt;</code> is your friend</h4><p>Because every record starts with <code class="inline">&gt;</code>, counting sequences is as easy as counting header lines - exactly the <code class="inline">grep -c "&gt;"</code> trick from the <a href="bash-project.html" target="_blank" rel="noopener">Bash project</a>. One symbol, huge convenience.</p></div>
 
-            <h2>FASTQ — sequences <em>with quality</em></h2>
-            <p>Sequencing machines aren't perfect — each base is read with a certain confidence. <strong>FASTQ</strong> captures that. Every record is exactly <strong>four lines</strong>:</p>
+            <h2>FASTQ - sequences <em>with quality</em></h2>
+            <p>Sequencing machines aren't perfect - each base is read with a certain confidence. <strong>FASTQ</strong> captures that. Every record is exactly <strong>four lines</strong>:</p>
             <pre><span class="h">@read1</span>                          <span class="c"># 1. ID line, starts with @</span>
 ATGCGTACGTTAGCCGTA             <span class="c"># 2. the sequence</span>
 +                              <span class="c"># 3. a separator (just a +)</span>
@@ -131,12 +131,12 @@ IIIIIIIHHHHHGGGFFF             <span class="c"># 4. one quality score per base</
             <p>Line 4 has one character for each base in line 2, encoding how confident the machine was about that base. Those symbols look cryptic, but they map to numbers.</p>
 
             <figure style="margin:24px 0;">
-                <svg viewBox="0 0 720 250" role="img" aria-label="Anatomy of a FASTQ record: four lines — identifier, sequence, separator, and quality scores, one per base." style="width:100%; height:auto; background:#ffffff; border:1px solid rgba(91,156,248,0.25); border-radius:12px;">
+                <svg viewBox="0 0 720 250" role="img" aria-label="Anatomy of a FASTQ record: four lines - identifier, sequence, separator, and quality scores, one per base." style="width:100%; height:auto; background:#ffffff; border:1px solid rgba(91,156,248,0.25); border-radius:12px;">
                     <text x="28" y="36" font-family="Georgia, 'Crimson Pro', serif" font-size="20" font-weight="700" fill="#0f172a">Anatomy of one FASTQ record</text>
                     <!-- Row 1 -->
                     <circle cx="44" cy="78" r="13" fill="#5b9cf8"/><text x="44" y="83" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">1</text>
                     <text x="70" y="84" font-family="monospace" font-size="17" fill="#0f172a">@read1</text>
-                    <text x="430" y="84" font-family="Arial,sans-serif" font-size="14" font-weight="600" fill="#3b6fd4">Identifier — starts with @</text>
+                    <text x="430" y="84" font-family="Arial,sans-serif" font-size="14" font-weight="600" fill="#3b6fd4">Identifier - starts with @</text>
                     <!-- Row 2 -->
                     <circle cx="44" cy="123" r="13" fill="#a855f7"/><text x="44" y="128" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">2</text>
                     <text x="70" y="129" font-family="monospace" font-size="17" fill="#0f172a">ATGCGTACGTTAGCCGTA</text>
@@ -148,15 +148,15 @@ IIIIIIIHHHHHGGGFFF             <span class="c"># 4. one quality score per base</
                     <!-- Row 4 -->
                     <circle cx="44" cy="213" r="13" fill="#10b981"/><text x="44" y="218" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="700" fill="#fff">4</text>
                     <text x="70" y="219" font-family="monospace" font-size="17" fill="#0f172a">IIIIIIIHHHHHGGGFFF</text>
-                    <text x="430" y="219" font-family="Arial,sans-serif" font-size="14" font-weight="600" fill="#047857">Quality — one score per base</text>
+                    <text x="430" y="219" font-family="Arial,sans-serif" font-size="14" font-weight="600" fill="#047857">Quality - one score per base</text>
                     <!-- alignment guide between seq and quality -->
                     <line x1="70" y1="137" x2="70" y2="205" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3 3"/>
                     <line x1="280" y1="137" x2="280" y2="205" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="3 3"/>
                 </svg>
-                <figcaption style="text-align:center; color:#64748b; font-size:0.9rem; margin-top:8px;">Four lines per record. Lines 2 and 4 are always the same length — one quality score for every base.</figcaption>
+                <figcaption style="text-align:center; color:#64748b; font-size:0.9rem; margin-top:8px;">Four lines per record. Lines 2 and 4 are always the same length - one quality score for every base.</figcaption>
             </figure>
 
-            <div class="why"><h4>Decode the jargon: Phred quality scores</h4><p>Each quality character represents a <strong>Phred score</strong> — a number saying how likely the base is wrong. A score of 30 means a 1-in-1,000 chance of error (99.9% confident); 40 means 1-in-10,000. The characters are just those numbers shifted into printable symbols. You rarely read them by eye — tools like FastQC summarize them for you — but now you know what line 4 <em>is</em>.</p></div>
+            <div class="why"><h4>Decode the jargon: Phred quality scores</h4><p>Each quality character represents a <strong>Phred score</strong> - a number saying how likely the base is wrong. A score of 30 means a 1-in-1,000 chance of error (99.9% confident); 40 means 1-in-10,000. The characters are just those numbers shifted into printable symbols. You rarely read them by eye - tools like FastQC summarize them for you - but now you know what line 4 <em>is</em>.</p></div>
 
             <h2>Hands-on: read both formats</h2>
             <p>Let's actually parse them with Biopython (you installed it in the foundations track; in Colab, run <code class="inline">!pip install biopython</code> first).</p>
@@ -184,7 +184,7 @@ IIIIIIIHHHHHGGGFFF             <span class="c"># 4. one quality score per base</
     <span class="k">print</span>(record.id, <span class="s">"|"</span>, <span class="k">len</span>(record.seq), <span class="s">"bases |"</span>, record.seq)</pre>
             <p><code class="inline">SeqIO.parse</code> hands you one <strong>record</strong> at a time, each with an <code class="inline">.id</code> (the header) and a <code class="inline">.seq</code> (the sequence). That single pattern reads a 2-line file or a 2-million-line file the same way.</p>
 
-            <p>Now a FASTQ record — note we also get quality scores:</p>
+            <p>Now a FASTQ record - note we also get quality scores:</p>
             <pre><span class="k">with</span> <span class="k">open</span>(<span class="s">"demo.fastq"</span>, <span class="s">"w"</span>) <span class="k">as</span> f:
     f.write(<span class="s">"@read1\nATGCGTACGT\n+\nIIIIIHHHHH\n"</span>)
 
@@ -194,11 +194,11 @@ rec = <span class="k">next</span>(SeqIO.parse(<span class="s">"demo.fastq"</span
             <p>Biopython decoded those quality characters into the actual numbers for you. You're now reading both of the formats that start almost every bioinformatics pipeline.</p>
 
             <h2>Check your understanding</h2>
-            <details><summary>How do you count the number of sequences in a FASTA file?</summary><p>Count the header lines — every record starts with <code class="inline">&gt;</code>. From the command line that's <code class="inline">grep -c "&gt;" file.fasta</code>; in Python, count the records from <code class="inline">SeqIO.parse</code>.</p></details>
+            <details><summary>How do you count the number of sequences in a FASTA file?</summary><p>Count the header lines - every record starts with <code class="inline">&gt;</code>. From the command line that's <code class="inline">grep -c "&gt;" file.fasta</code>; in Python, count the records from <code class="inline">SeqIO.parse</code>.</p></details>
             <details><summary>What's the key difference between FASTA and FASTQ?</summary><p>FASTQ adds per-base <strong>quality scores</strong>. FASTA is just header + sequence (2 parts); FASTQ is 4 lines per record (ID, sequence, +, quality). Use FASTQ for raw sequencing reads, FASTA for finished sequences.</p></details>
-            <details><summary>A Phred score of 20 — is that good?</summary><p>It means a 1-in-100 chance the base is wrong (99% confident). Decent, but most analyses prefer 30+ (99.9%). You'll learn to read these summaries in the quality-control lesson later.</p></details>
+            <details><summary>A Phred score of 20 - is that good?</summary><p>It means a 1-in-100 chance the base is wrong (99% confident). Decent, but most analyses prefer 30+ (99.9%). You'll learn to read these summaries in the quality-control lesson later.</p></details>
 
-            <a class="next-lesson" href="track1-file-formats.html">
+            <a class="next-lesson" href="track1-file-formats.html" target="_blank" rel="noopener">
                 <span>Next in Track 1</span>
                 <h3>The file-format alphabet soup: SAM/BAM, VCF, GFF, BED →</h3>
             </a>

@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Learn Biopython: parse, manipulate, and write sequences — Seq, SeqRecord, SeqIO, transcription, translation, and reverse complement. A free BioNexus Hub lesson.">
+    <meta name="description" content="Learn Biopython: parse, manipulate, and write sequences - Seq, SeqRecord, SeqIO, transcription, translation, and reverse complement. A free BioNexus Hub lesson.">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Biopython Basics: Parse, Manipulate, Write — BioNexus Hub">
+    <meta property="og:title" content="Biopython Basics: Parse, Manipulate, Write - BioNexus Hub">
     <meta property="og:description" content="The Python toolkit for biological sequences, hands-on in your browser.">
     <meta property="og:url" content="https://bionexushub.com/track1-biopython-basics.html">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Biopython Basics — BioNexus Hub">
+    <meta name="twitter:title" content="Biopython Basics - BioNexus Hub">
     <meta name="twitter:description" content="The Python toolkit for biological sequences, hands-on in your browser.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Biopython Basics: Parse, Manipulate, Write - BioNexus Hub</title>
@@ -93,7 +93,7 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (3 of 5)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (3 of 5)</div>
             <h1>Biopython Basics: Parse, Manipulate, Write</h1>
             <p class="promise">Biopython is the Swiss-army knife for biological data in Python. Learn the few objects and methods that handle 90% of everyday sequence work.</p>
             <div class="tags">
@@ -110,7 +110,7 @@
 
             <div class="prereq">
                 <h4>Before you start</h4>
-                <p>You've met FASTA/FASTQ in <a href="track1-sequences-fasta-fastq.html">lesson 1</a> and can run Python. In Colab, start each notebook with <code class="inline">!pip install biopython</code>.</p>
+                <p>You've met FASTA/FASTQ in <a href="track1-sequences-fasta-fastq.html" target="_blank" rel="noopener">lesson 1</a> and can run Python. In Colab, start each notebook with <code class="inline">!pip install biopython</code>.</p>
             </div>
 
             <h2>The one import to remember</h2>
@@ -127,7 +127,7 @@
 <span class="k">print</span>(dna.reverse_complement()) <span class="c"># the other strand, read 5'→3'</span>
 <span class="k">print</span>(dna.transcribe())        <span class="c"># DNA → RNA (T becomes U)</span>
 <span class="k">print</span>(dna.translate())          <span class="c"># RNA/DNA → protein (amino acids)</span></pre>
-            <div class="why"><h4>Decode the jargon: reverse complement</h4><p>DNA is double-stranded. If one strand reads <code class="inline">ATGC</code>, the partner strand reads <code class="inline">GCAT</code> (complement each base, then reverse the order). You need the <strong>reverse complement</strong> constantly — for example, when a gene sits on the opposite strand. Biopython does it in one call.</p></div>
+            <div class="why"><h4>Decode the jargon: reverse complement</h4><p>DNA is double-stranded. If one strand reads <code class="inline">ATGC</code>, the partner strand reads <code class="inline">GCAT</code> (complement each base, then reverse the order). You need the <strong>reverse complement</strong> constantly - for example, when a gene sits on the opposite strand. Biopython does it in one call.</p></div>
 
             <h2>SeqIO: reading files (the pattern that scales)</h2>
             <p>Two methods cover almost everything. <code class="inline">SeqIO.read()</code> for a file with <em>one</em> record; <code class="inline">SeqIO.parse()</code> for a file with <em>many</em>.</p>
@@ -139,7 +139,7 @@
 
 <span class="k">for</span> rec <span class="k">in</span> SeqIO.parse(<span class="s">"genes.fasta"</span>, <span class="s">"fasta"</span>):
     <span class="k">print</span>(rec.id, <span class="k">len</span>(rec.seq), <span class="s">"bp"</span>)</pre>
-            <p>Each <code class="inline">rec</code> is a <strong>SeqRecord</strong> — a sequence plus its metadata: <code class="inline">rec.id</code> (the name), <code class="inline">rec.description</code>, and <code class="inline">rec.seq</code> (the <code class="inline">Seq</code> itself).</p>
+            <p>Each <code class="inline">rec</code> is a <strong>SeqRecord</strong> - a sequence plus its metadata: <code class="inline">rec.id</code> (the name), <code class="inline">rec.description</code>, and <code class="inline">rec.seq</code> (the <code class="inline">Seq</code> itself).</p>
 
             <h2>Manipulate: filter records</h2>
             <p>A real task: keep only the records longer than some cutoff. Just loop and test.</p>
@@ -152,7 +152,7 @@
             <p>Whatever records you've kept or changed, <code class="inline">SeqIO.write()</code> saves them back to a file in any format.</p>
             <pre>SeqIO.write(keep, <span class="s">"filtered.fasta"</span>, <span class="s">"fasta"</span>)
 <span class="k">print</span>(<span class="s">"Saved filtered.fasta"</span>)</pre>
-            <p>That's the full cycle — <strong>read → manipulate → write</strong> — and it's the backbone of countless real scripts. You now have the tools to process a sequence file of any size.</p>
+            <p>That's the full cycle - <strong>read → manipulate → write</strong> - and it's the backbone of countless real scripts. You now have the tools to process a sequence file of any size.</p>
 
             <div class="challenge">
                 <h3>🚀 Make it your own</h3>
@@ -166,10 +166,10 @@
 
             <h2>Check your understanding</h2>
             <details><summary>When do you use <code class="inline">SeqIO.read()</code> vs <code class="inline">SeqIO.parse()</code>?</summary><p><code class="inline">read()</code> for a file with exactly one record (it returns that single record); <code class="inline">parse()</code> for a file with one or many (it returns an iterator you loop over).</p></details>
-            <details><summary>What does a SeqRecord contain that a plain Seq doesn't?</summary><p>Metadata — the <code class="inline">.id</code>, <code class="inline">.description</code>, and other annotations — wrapped around the <code class="inline">.seq</code>. A <code class="inline">Seq</code> is just the letters; a <code class="inline">SeqRecord</code> is the letters plus their label.</p></details>
+            <details><summary>What does a SeqRecord contain that a plain Seq doesn't?</summary><p>Metadata - the <code class="inline">.id</code>, <code class="inline">.description</code>, and other annotations - wrapped around the <code class="inline">.seq</code>. A <code class="inline">Seq</code> is just the letters; a <code class="inline">SeqRecord</code> is the letters plus their label.</p></details>
             <details><summary>Why use a Seq object instead of a regular string?</summary><p>Because it carries biology-aware methods: <code class="inline">complement</code>, <code class="inline">reverse_complement</code>, <code class="inline">transcribe</code>, <code class="inline">translate</code>. A plain string can't do those.</p></details>
 
-            <a class="next-lesson" href="track1-where-data-lives.html">
+            <a class="next-lesson" href="track1-where-data-lives.html" target="_blank" rel="noopener">
                 <span>Next in Track 1</span>
                 <h3>Where the data lives: NCBI, Ensembl, GEO, SRA →</h3>
             </a>

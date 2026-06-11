@@ -7,14 +7,14 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="article">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Going Further: GenBank, Big Files & Joining Tables — BioNexus Hub">
+    <meta property="og:title" content="Going Further: GenBank, Big Files & Joining Tables - BioNexus Hub">
     <meta property="og:description" content="The next layer of real-world data skills: annotations, compressed files, and table joins.">
     <meta property="og:url" content="https://bionexushub.com/track1-enrichment.html">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Going Further: GenBank, Big Files & Joining Tables — BioNexus Hub">
+    <meta name="twitter:title" content="Going Further: GenBank, Big Files & Joining Tables - BioNexus Hub">
     <meta name="twitter:description" content="The next layer of real-world data skills: annotations, compressed files, and table joins.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Going Further: GenBank, Big Files &amp; Joining Tables - BioNexus Hub</title>
@@ -93,7 +93,7 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (going further)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (going further)</div>
             <h1>Going Further: GenBank, Big Files &amp; Joining Tables</h1>
             <p class="promise">Three real-world skills the basics don't cover but you'll need fast: reading annotated records, handling compressed and huge files, and combining two tables into one.</p>
             <div class="tags">
@@ -110,13 +110,13 @@
 
             <div class="prereq">
                 <h4>Before you start</h4>
-                <p>You've finished the five core Track 1 lessons — FASTA/FASTQ, formats, Biopython, databases, and pandas. In Colab, run <code class="inline">!pip install biopython pandas</code> first.</p>
+                <p>You've finished the five core Track 1 lessons - FASTA/FASTQ, formats, Biopython, databases, and pandas. In Colab, run <code class="inline">!pip install biopython pandas</code> first.</p>
             </div>
 
             <p>The core lessons got you reading sequences and tables. This optional lesson adds the three things that trip people up the moment they touch real, full-size data.</p>
 
-            <h2>1. GenBank — sequences <em>with annotations</em></h2>
-            <p>A FASTA file gives you the sequence and a name. A <strong>GenBank</strong> record gives you the whole story: the organism, the gene names, where the coding regions are, and more — all the annotation a FASTA leaves out. You fetch it the same way, but ask for <code class="inline">rettype="gb"</code> and parse it as <code class="inline">"genbank"</code>.</p>
+            <h2>1. GenBank - sequences <em>with annotations</em></h2>
+            <p>A FASTA file gives you the sequence and a name. A <strong>GenBank</strong> record gives you the whole story: the organism, the gene names, where the coding regions are, and more - all the annotation a FASTA leaves out. You fetch it the same way, but ask for <code class="inline">rettype="gb"</code> and parse it as <code class="inline">"genbank"</code>.</p>
 
             <div class="colab-cta">
                 <div>
@@ -129,7 +129,7 @@
             <pre><span class="k">from</span> Bio <span class="k">import</span> Entrez, SeqIO
 Entrez.email = <span class="s">"your.email@example.com"</span>
 
-<span class="c"># note rettype="gb" — that's the difference from fetching FASTA</span>
+<span class="c"># note rettype="gb" - that's the difference from fetching FASTA</span>
 h = Entrez.efetch(db=<span class="s">"nucleotide"</span>, id=<span class="s">"NM_000207"</span>, rettype=<span class="s">"gb"</span>, retmode=<span class="s">"text"</span>)
 rec = SeqIO.read(h, <span class="s">"genbank"</span>)
 h.close()
@@ -137,14 +137,14 @@ h.close()
 <span class="k">print</span>(<span class="s">"Name:"</span>, rec.description)
 <span class="k">print</span>(<span class="s">"Length:"</span>, <span class="k">len</span>(rec.seq))</pre>
 
-            <p>The real value is in <code class="inline">rec.features</code> — a list of annotated regions. Each feature has a <code class="inline">.type</code> (like "gene" or "CDS") and a dictionary of <code class="inline">.qualifiers</code>.</p>
+            <p>The real value is in <code class="inline">rec.features</code> - a list of annotated regions. Each feature has a <code class="inline">.type</code> (like "gene" or "CDS") and a dictionary of <code class="inline">.qualifiers</code>.</p>
             <pre><span class="k">for</span> feat <span class="k">in</span> rec.features:
     <span class="k">if</span> feat.type <span class="k">in</span> (<span class="s">"source"</span>, <span class="s">"gene"</span>, <span class="s">"CDS"</span>):
         <span class="k">print</span>(feat.type, <span class="s">"→"</span>, <span class="k">dict</span>(feat.qualifiers))</pre>
-            <div class="why"><h4>Decode the jargon: CDS</h4><p>A <strong>CDS</strong> (coding sequence) feature marks the exact part of the record that gets translated into protein. Pull its <code class="inline">/translation</code> qualifier and you have the official protein — no guessing where the gene starts. Qualifier values come back as lists, so you read them like <code class="inline">feat.qualifiers["gene"][0]</code>.</p></div>
+            <div class="why"><h4>Decode the jargon: CDS</h4><p>A <strong>CDS</strong> (coding sequence) feature marks the exact part of the record that gets translated into protein. Pull its <code class="inline">/translation</code> qualifier and you have the official protein - no guessing where the gene starts. Qualifier values come back as lists, so you read them like <code class="inline">feat.qualifiers["gene"][0]</code>.</p></div>
 
             <h2>2. Compressed &amp; large files</h2>
-            <p>Real sequencing files are huge and almost always <strong>gzipped</strong> — you'll see names ending in <code class="inline">.fastq.gz</code>. You don't need to unzip them; Python's <code class="inline">gzip</code> module reads them on the fly.</p>
+            <p>Real sequencing files are huge and almost always <strong>gzipped</strong> - you'll see names ending in <code class="inline">.fastq.gz</code>. You don't need to unzip them; Python's <code class="inline">gzip</code> module reads them on the fly.</p>
             <pre><span class="k">import</span> gzip
 <span class="k">from</span> Bio <span class="k">import</span> SeqIO
 
@@ -156,7 +156,7 @@ h.close()
 <span class="k">for</span> rec <span class="k">in</span> SeqIO.parse(gzip.open(<span class="s">"demo.fasta.gz"</span>, <span class="s">"rt"</span>), <span class="s">"fasta"</span>):
     <span class="k">print</span>(rec.id, <span class="k">len</span>(rec.seq))</pre>
 
-            <div class="why"><h4>The golden rule for big files: don't load it all</h4><p>A FASTQ file can be tens of gigabytes — far more than your computer's memory. The trick is to <strong>stream</strong>: loop over records one at a time with <code class="inline">SeqIO.parse</code> (which yields them lazily) instead of building a giant list. The loop above already does this — it never holds more than one record in memory, so it works on a 10-line file or a 100-million-read file unchanged.</p></div>
+            <div class="why"><h4>The golden rule for big files: don't load it all</h4><p>A FASTQ file can be tens of gigabytes - far more than your computer's memory. The trick is to <strong>stream</strong>: loop over records one at a time with <code class="inline">SeqIO.parse</code> (which yields them lazily) instead of building a giant list. The loop above already does this - it never holds more than one record in memory, so it works on a 10-line file or a 100-million-read file unchanged.</p></div>
             <pre><span class="c"># count millions of reads using almost no memory</span>
 total = <span class="o">0</span>
 <span class="k">for</span> rec <span class="k">in</span> SeqIO.parse(gzip.open(<span class="s">"demo.fasta.gz"</span>, <span class="s">"rt"</span>), <span class="s">"fasta"</span>):
@@ -182,26 +182,26 @@ merged = counts.merge(samples, on=<span class="s">"sample"</span>)
 
 <span class="c"># now you can ask cross-table questions</span>
 merged.groupby(<span class="s">"condition"</span>)[<span class="s">"gene_count"</span>].mean()</pre>
-            <div class="why"><h4>Why merging is everywhere</h4><p>Nearly every real analysis is "table A + table B." An RNA-seq count matrix means nothing until you join it to the <strong>sample sheet</strong> that says which columns are treated vs. control — that join is literally step one of the flagship project. Learn <code class="inline">merge</code> and you've learned the connective tissue of data analysis.</p></div>
+            <div class="why"><h4>Why merging is everywhere</h4><p>Nearly every real analysis is "table A + table B." An RNA-seq count matrix means nothing until you join it to the <strong>sample sheet</strong> that says which columns are treated vs. control - that join is literally step one of the flagship project. Learn <code class="inline">merge</code> and you've learned the connective tissue of data analysis.</p></div>
 
             <div class="challenge">
                 <h3>🚀 Put it together</h3>
                 <ul>
                     <li>Fetch a gene as GenBank and print its organism and every <code class="inline">gene</code> name in the record.</li>
                     <li>Extract the <code class="inline">/translation</code> from the CDS feature and compare it to <code class="inline">rec.seq.translate()</code>.</li>
-                    <li>Download a real <code class="inline">.fasta.gz</code> (e.g., a small genome) and count its sequences by streaming — never building a list.</li>
+                    <li>Download a real <code class="inline">.fasta.gz</code> (e.g., a small genome) and count its sequences by streaming - never building a list.</li>
                     <li>Make a fake counts table and sample sheet, merge them, and compute the mean per condition.</li>
                 </ul>
             </div>
 
             <h2>Check your understanding</h2>
-            <details><summary>What does GenBank give you that FASTA doesn't?</summary><p>Annotation — the organism, gene names, coding regions (CDS), and more. FASTA is just a header plus the sequence.</p></details>
+            <details><summary>What does GenBank give you that FASTA doesn't?</summary><p>Annotation - the organism, gene names, coding regions (CDS), and more. FASTA is just a header plus the sequence.</p></details>
             <details><summary>How do you read a 20 GB FASTQ without running out of memory?</summary><p>Stream it: loop over records one at a time with <code class="inline">SeqIO.parse</code> (and <code class="inline">gzip.open</code> if it's compressed), never building a full list. Each iteration holds just one record.</p></details>
             <details><summary>You have a counts table and a separate sample sheet. How do you analyze them together?</summary><p>Merge them on their shared column (e.g., the sample ID) with <code class="inline">pandas.merge</code>, then group and summarize across the combined table.</p></details>
 
-            <a class="next-lesson" href="learn.html">
+            <a class="next-lesson" href="learn.html" target="_blank" rel="noopener">
                 <span>That's Track 1, in full</span>
-                <h3>Back to the roadmap — pick your next track →</h3>
+                <h3>Back to the roadmap - pick your next track →</h3>
             </a>
 
         </div></div>
