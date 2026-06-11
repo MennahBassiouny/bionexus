@@ -125,6 +125,8 @@
   /* ---------- Quiz ---------- */
   function buildQuiz(quiz) {
     var question = quiz.getAttribute('data-question') || '';
+    var qsrcEl = quiz.querySelector('.quiz-q-src');
+    var qsrcHTML = qsrcEl ? qsrcEl.innerHTML : '';
     var opts = Array.prototype.slice.call(quiz.querySelectorAll('[data-opt]'));
     var explainEl = quiz.querySelector('.quiz-explain');
     var explainHTML = explainEl ? explainEl.innerHTML : '';
@@ -132,7 +134,7 @@
     quiz.innerHTML = '';
     var q = document.createElement('div');
     q.className = 'quiz-q';
-    q.textContent = question;
+    if (qsrcHTML) { q.innerHTML = qsrcHTML; } else { q.textContent = question; }
     quiz.appendChild(q);
 
     var explain = document.createElement('div');

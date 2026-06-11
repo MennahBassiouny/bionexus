@@ -157,9 +157,27 @@ genes |&gt;
 glimpse(my_data)   <span class="c"># a quick look at columns and types</span></pre>
 
             <h2>Check your understanding</h2>
-            <details><summary>What does the pipe <code class="inline">|&gt;</code> do?</summary><p>It passes the result of the left-hand side into the first argument of the right-hand side, so you can chain steps in reading order: "take genes, <em>and then</em> filter, <em>and then</em> sort."</p></details>
-            <details><summary>What's the difference between <code class="inline">filter()</code> and <code class="inline">select()</code>?</summary><p><code class="inline">filter()</code> keeps <em>rows</em> (observations) that match a condition; <code class="inline">select()</code> keeps <em>columns</em> (variables). Rows = filter, columns = select.</p></details>
-            <details><summary>Why build plots with <code class="inline">+</code> layers?</summary><p>Because it lets you compose any figure from simple, reusable pieces - swap a <code class="inline">geom_col</code> for a <code class="inline">geom_point</code> and you have a different chart of the same data, with everything else unchanged.</p></details>
+            <div class="quiz">
+                <div class="quiz-q-src">What does the pipe <code class="inline">|&gt;</code> do?</div>
+                <button data-opt data-correct>Passes the left result into the next function, so steps read in order</button>
+                <button data-opt>Runs two functions in parallel</button>
+                <button data-opt>Comments out the rest of the line</button>
+                <div class="quiz-explain">It passes the result of the left-hand side into the first argument of the right-hand side, so you can chain steps in reading order: "take genes, <em>and then</em> filter, <em>and then</em> sort."</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What's the difference between <code class="inline">filter()</code> and <code class="inline">select()</code>?</div>
+                <button data-opt>Both only remove missing values</button>
+                <button data-opt data-correct>filter() keeps rows; select() keeps columns</button>
+                <button data-opt>filter() keeps columns; select() keeps rows</button>
+                <div class="quiz-explain"><code class="inline">filter()</code> keeps <em>rows</em> (observations) that match a condition; <code class="inline">select()</code> keeps <em>columns</em> (variables). Rows = filter, columns = select.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Why build plots with <code class="inline">+</code> layers?</div>
+                <button data-opt>It adds numbers together inside the plot</button>
+                <button data-opt>It is required to save the plot to disk</button>
+                <button data-opt data-correct>It composes a figure from reusable pieces you can swap</button>
+                <div class="quiz-explain">Because it lets you compose any figure from simple, reusable pieces - swap a <code class="inline">geom_col</code> for a <code class="inline">geom_point</code> and you have a different chart of the same data, with everything else unchanged.</div>
+            </div>
 
             <a class="next-lesson" href="r-project.html" target="_blank" rel="noopener">
                 <span>Next in the R series - the payoff</span>
@@ -172,5 +190,6 @@ glimpse(my_data)   <span class="c"># a quick look at columns and types</span></p
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

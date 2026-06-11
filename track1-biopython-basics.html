@@ -166,9 +166,27 @@
             </div>
 
             <h2>Check your understanding</h2>
-            <details><summary>When do you use <code class="inline">SeqIO.read()</code> vs <code class="inline">SeqIO.parse()</code>?</summary><p><code class="inline">read()</code> for a file with exactly one record (it returns that single record); <code class="inline">parse()</code> for a file with one or many (it returns an iterator you loop over).</p></details>
-            <details><summary>What does a SeqRecord contain that a plain Seq doesn't?</summary><p>Metadata - the <code class="inline">.id</code>, <code class="inline">.description</code>, and other annotations - wrapped around the <code class="inline">.seq</code>. A <code class="inline">Seq</code> is just the letters; a <code class="inline">SeqRecord</code> is the letters plus their label.</p></details>
-            <details><summary>Why use a Seq object instead of a regular string?</summary><p>Because it carries biology-aware methods: <code class="inline">complement</code>, <code class="inline">reverse_complement</code>, <code class="inline">transcribe</code>, <code class="inline">translate</code>. A plain string can't do those.</p></details>
+            <div class="quiz">
+                <div class="quiz-q-src">When do you use <code class="inline">SeqIO.read()</code> vs <code class="inline">SeqIO.parse()</code>?</div>
+                <button data-opt data-correct>read() for exactly one record; parse() for one or many</button>
+                <button data-opt>read() for many records; parse() for exactly one</button>
+                <button data-opt>read() is for FASTA, parse() for FASTQ only</button>
+                <div class="quiz-explain"><code class="inline">read()</code> for a file with exactly one record (it returns that single record); <code class="inline">parse()</code> for a file with one or many (it returns an iterator you loop over).</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What does a SeqRecord contain that a plain Seq doesn't?</div>
+                <button data-opt>There is no difference</button>
+                <button data-opt data-correct>It wraps metadata (.id, .description) around the sequence</button>
+                <button data-opt>It holds only the raw letters</button>
+                <div class="quiz-explain">Metadata - the <code class="inline">.id</code>, <code class="inline">.description</code>, and other annotations - wrapped around the <code class="inline">.seq</code>. A <code class="inline">Seq</code> is just the letters; a <code class="inline">SeqRecord</code> is the letters plus their label.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Why use a Seq object instead of a regular string?</div>
+                <button data-opt>It uses less memory than a string</button>
+                <button data-opt>A string cannot store DNA letters</button>
+                <button data-opt data-correct>It carries biology-aware methods like reverse_complement and translate</button>
+                <div class="quiz-explain">Because it carries biology-aware methods: <code class="inline">complement</code>, <code class="inline">reverse_complement</code>, <code class="inline">transcribe</code>, <code class="inline">translate</code>. A plain string can't do those.</div>
+            </div>
 
             <a class="next-lesson" href="track1-where-data-lives.html" target="_blank" rel="noopener">
                 <span>Next in Track 1</span>
@@ -181,5 +199,6 @@
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

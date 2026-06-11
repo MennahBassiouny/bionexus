@@ -195,9 +195,27 @@ rec = <span class="k">next</span>(SeqIO.parse(<span class="s">"demo.fastq"</span
             <p>Biopython decoded those quality characters into the actual numbers for you. You're now reading both of the formats that start almost every bioinformatics pipeline.</p>
 
             <h2>Check your understanding</h2>
-            <details><summary>How do you count the number of sequences in a FASTA file?</summary><p>Count the header lines - every record starts with <code class="inline">&gt;</code>. From the command line that's <code class="inline">grep -c "&gt;" file.fasta</code>; in Python, count the records from <code class="inline">SeqIO.parse</code>.</p></details>
-            <details><summary>What's the key difference between FASTA and FASTQ?</summary><p>FASTQ adds per-base <strong>quality scores</strong>. FASTA is just header + sequence (2 parts); FASTQ is 4 lines per record (ID, sequence, +, quality). Use FASTQ for raw sequencing reads, FASTA for finished sequences.</p></details>
-            <details><summary>A Phred score of 20 - is that good?</summary><p>It means a 1-in-100 chance the base is wrong (99% confident). Decent, but most analyses prefer 30+ (99.9%). You'll learn to read these summaries in the quality-control lesson later.</p></details>
+            <div class="quiz">
+                <div class="quiz-q-src">How do you count the number of sequences in a FASTA file?</div>
+                <button data-opt data-correct>Count the header lines that start with &gt;</button>
+                <button data-opt>Count every line in the file</button>
+                <button data-opt>Divide the file size by 60</button>
+                <div class="quiz-explain">Count the header lines - every record starts with <code class="inline">&gt;</code>. From the command line that's <code class="inline">grep -c "&gt;" file.fasta</code>; in Python, count the records from <code class="inline">SeqIO.parse</code>.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What's the key difference between FASTA and FASTQ?</div>
+                <button data-opt>FASTQ can only hold one sequence</button>
+                <button data-opt data-correct>FASTQ adds per-base quality scores</button>
+                <button data-opt>FASTA stores RNA, FASTQ stores DNA</button>
+                <div class="quiz-explain">FASTQ adds per-base <strong>quality scores</strong>. FASTA is just header + sequence (2 parts); FASTQ is 4 lines per record (ID, sequence, +, quality). Use FASTQ for raw sequencing reads, FASTA for finished sequences.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">A Phred score of 20 - is that good?</div>
+                <button data-opt>Perfect, with zero chance of error</button>
+                <button data-opt>A 1-in-20 chance of error, unusable</button>
+                <button data-opt data-correct>A 1-in-100 chance of error (99%); decent, but 30+ is preferred</button>
+                <div class="quiz-explain">It means a 1-in-100 chance the base is wrong (99% confident). Decent, but most analyses prefer 30+ (99.9%). You'll learn to read these summaries in the quality-control lesson later.</div>
+            </div>
 
             <a class="next-lesson" href="track1-file-formats.html" target="_blank" rel="noopener">
                 <span>Next in Track 1</span>
@@ -210,5 +228,6 @@ rec = <span class="k">next</span>(SeqIO.parse(<span class="s">"demo.fastq"</span
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

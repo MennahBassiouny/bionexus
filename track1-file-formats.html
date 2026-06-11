@@ -179,9 +179,27 @@ chr11  5225464   5227071   HBB</pre>
             <p>You don't need to memorize the exact columns - you'll look those up forever, and that's normal. What matters is recognizing each format on sight and knowing the question it answers. That alone puts you ahead of most beginners.</p>
 
             <h2>Check your understanding</h2>
-            <details><summary>You have aligned reads and want to find mutations. Which format holds the result?</summary><p>VCF - it records variants (differences from the reference). The alignments themselves live in SAM/BAM; calling variants from them produces the VCF.</p></details>
-            <details><summary>What's the difference between SAM and BAM?</summary><p>None in content - BAM is just the compressed binary version of SAM. SAM is human-readable; BAM is smaller and faster for tools.</p></details>
-            <details><summary>Which format tells a tool where a gene is located?</summary><p>GFF or GTF - the annotation formats that map features (genes, exons) onto genome coordinates.</p></details>
+            <div class="quiz">
+                <div class="quiz-q-src">You have aligned reads and want to find mutations. Which format holds the result?</div>
+                <button data-opt data-correct>VCF</button>
+                <button data-opt>FASTA</button>
+                <button data-opt>GFF</button>
+                <div class="quiz-explain">VCF - it records variants (differences from the reference). The alignments themselves live in SAM/BAM; calling variants from them produces the VCF.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What's the difference between SAM and BAM?</div>
+                <button data-opt>BAM holds variants, SAM holds alignments</button>
+                <button data-opt data-correct>Same content; BAM is the compressed binary form of SAM</button>
+                <button data-opt>SAM stores DNA, BAM stores RNA</button>
+                <div class="quiz-explain">None in content - BAM is just the compressed binary version of SAM. SAM is human-readable; BAM is smaller and faster for tools.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Which format tells a tool where a gene is located?</div>
+                <button data-opt>FASTQ</button>
+                <button data-opt>VCF</button>
+                <button data-opt data-correct>GFF or GTF (annotation)</button>
+                <div class="quiz-explain">GFF or GTF - the annotation formats that map features (genes, exons) onto genome coordinates.</div>
+            </div>
 
             <a class="next-lesson" href="track1-biopython-basics.html" target="_blank" rel="noopener">
                 <span>Next in Track 1</span>
@@ -194,5 +212,6 @@ chr11  5225464   5227071   HBB</pre>
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

@@ -245,18 +245,27 @@
                 </div>
 
                 <h2>Check your understanding</h2>
-                <details>
-                    <summary>Why must a BAM be sorted before it can be indexed?</summary>
-                    <p>The index is a table of contents that points to where each genome region sits in the file. That only makes sense if reads are stored in genome order. An unsorted BAM has reads scattered randomly, so there's nothing orderly for the index to point into, and samtools will refuse to index it.</p>
-                </details>
-                <details>
-                    <summary>What does a region query like <code>chr1:1000-1100</code> rely on?</summary>
-                    <p>It relies on the BAM being coordinate-sorted and indexed. The index lets samtools jump straight to that slice of the file instead of scanning every read, which is what makes the query nearly instant on huge files.</p>
-                </details>
-                <details>
-                    <summary>You see a mean depth of 2x over your region. Is that enough to call variants confidently?</summary>
-                    <p>Usually not. At 2x, a single sequencing error can masquerade as a variant because so few reads vouch for each position. Most variant-calling work aims for much higher depth (often 30x or more for human germline work) so multiple reads independently confirm each call.</p>
-                </details>
+                <div class="quiz">
+                <div class="quiz-q-src">Why must a BAM be sorted before it can be indexed?</div>
+                <button data-opt data-correct>The index points to genome positions, which only works if reads are in genome order</button>
+                <button data-opt>Sorting compresses the file, which indexing requires</button>
+                <button data-opt>You actually index first, then sort</button>
+                <div class="quiz-explain">The index is a table of contents that points to where each genome region sits in the file. That only makes sense if reads are stored in genome order. An unsorted BAM has reads scattered randomly, so there's nothing orderly for the index to point into, and samtools will refuse to index it.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">What does a region query like <code>chr1:1000-1100</code> rely on?</div>
+                <button data-opt>Converting the BAM back to FASTQ first</button>
+                <button data-opt data-correct>A coordinate-sorted, indexed BAM, so samtools can jump straight there</button>
+                <button data-opt>An internet connection to a reference server</button>
+                <div class="quiz-explain">It relies on the BAM being coordinate-sorted and indexed. The index lets samtools jump straight to that slice of the file instead of scanning every read, which is what makes the query nearly instant on huge files.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">You see a mean depth of 2x over your region. Is that enough to call variants confidently?</div>
+                <button data-opt>Yes: 2x is plenty for confident calls</button>
+                <button data-opt>Depth has nothing to do with variant calling</button>
+                <button data-opt data-correct>Usually not: at 2x a single error can look like a variant</button>
+                <div class="quiz-explain">Usually not. At 2x, a single sequencing error can masquerade as a variant because so few reads vouch for each position. Most variant-calling work aims for much higher depth (often 30x or more for human germline work) so multiple reads independently confirm each call.</div>
+            </div>
 
                 <a class="next-lesson" href="ngs-variant-calling.html" target="_blank" rel="noopener">
                     <span>Next in Track 2 · The capstone</span>
@@ -277,5 +286,6 @@
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
     </script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

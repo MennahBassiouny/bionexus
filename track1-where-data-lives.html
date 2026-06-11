@@ -178,9 +178,27 @@ results = Entrez.read(search)
             <p>Search to find IDs, then fetch those IDs - that two-step dance is the heart of programmatic data access.</p>
 
             <h2>Check your understanding</h2>
-            <details><summary>You want the raw FASTQ reads from a published study. Which database?</summary><p>The SRA (Sequence Read Archive). GEO holds processed expression data; SRA holds the raw reads behind it.</p></details>
-            <details><summary>What's an accession number, and why does it matter?</summary><p>A unique ID for one record (e.g., <code class="inline">NM_000518</code>). It lets you - or your code - request that exact record reproducibly, from anywhere.</p></details>
-            <details><summary>Why fetch data in code rather than clicking download?</summary><p>Reproducibility. A script that fetches by accession can be re-run by anyone to get the identical data, and it scales to hundreds of records without manual clicking.</p></details>
+            <div class="quiz">
+                <div class="quiz-q-src">You want the raw FASTQ reads from a published study. Which database?</div>
+                <button data-opt data-correct>The SRA (Sequence Read Archive)</button>
+                <button data-opt>GEO</button>
+                <button data-opt>UniProt</button>
+                <div class="quiz-explain">The SRA (Sequence Read Archive). GEO holds processed expression data; SRA holds the raw reads behind it.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What's an accession number, and why does it matter?</div>
+                <button data-opt>The number of bases in a sequence</button>
+                <button data-opt data-correct>A unique ID for one record, so you can request it reproducibly</button>
+                <button data-opt>A password needed to download data</button>
+                <div class="quiz-explain">A unique ID for one record (e.g., <code class="inline">NM_000518</code>). It lets you - or your code - request that exact record reproducibly, from anywhere.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Why fetch data in code rather than clicking download?</div>
+                <button data-opt>It is the only method the databases allow</button>
+                <button data-opt>Clicking download corrupts the file</button>
+                <button data-opt data-correct>Reproducibility: anyone can rerun it, and it scales</button>
+                <div class="quiz-explain">Reproducibility. A script that fetches by accession can be re-run by anyone to get the identical data, and it scales to hundreds of records without manual clicking.</div>
+            </div>
 
             <a class="next-lesson" href="track1-pandas-for-biologists.html" target="_blank" rel="noopener">
                 <span>Last in Track 1 - the payoff</span>
@@ -193,5 +211,6 @@ results = Entrez.read(search)
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

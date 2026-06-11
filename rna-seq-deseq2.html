@@ -261,17 +261,49 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                 </div>
 
                 <h2>Check your understanding</h2>
-                <details>
-                    <summary>In the design ~ batch + condition, which effect is being tested?</summary>
-                    <p>The effect of <strong>condition</strong>. It comes last, so DESeq2 tests it after accounting for batch. Batch is a control variable here, not the thing being tested.</p>
-                </details>
-                <details>
-                    <summary>Why would a gene have NA in its padj column?</summary>
-                    <p>Because DESeq2 filtered it out as too low-count to be reliably tested (independent filtering). Removing those genes from the multiple-testing pool makes your real hits more significant. NA means "not testable", not "failed".</p>
-                </details>
-                <details>
-                    <summary>When should you use shrunken (lfcShrink) fold changes?</summary>
-                    <p>Whenever you rank genes or make plots. Shrinkage tames the wild fold changes that low-count genes produce by chance, so your rankings and volcano/MA plots reflect real, well-measured effects.</p>
-                </details>
+                <div class="quiz">
+                    <div class="quiz-q-src">In the design <code class="inline">~ batch + condition</code>, which effect is being tested?</div>
+                    <button data-opt data-correct>condition - it comes last, tested after accounting for batch</button>
+                    <button data-opt>batch - the first term is always the one tested</button>
+                    <button data-opt>both are tested as the main effect equally</button>
+                    <div class="quiz-explain">The effect of <strong>condition</strong>. It comes last, so DESeq2 tests it after accounting for batch. Batch is a control variable here, not the thing being tested.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Why would a gene have NA in its padj column?</div>
+                    <button data-opt>The gene had a perfect p-value of exactly zero</button>
+                    <button data-opt data-correct>DESeq2 filtered it out as too low-count to test reliably</button>
+                    <button data-opt>NA means it is the single most significant hit</button>
+                    <div class="quiz-explain">Because DESeq2 filtered it out as too low-count to be reliably tested (independent filtering). Removing those genes from the multiple-testing pool makes your real hits more significant. NA means "not testable", not "failed".</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">When should you use shrunken (<code class="inline">lfcShrink</code>) fold changes?</div>
+                    <button data-opt>Only when you have a single replicate</button>
+                    <button data-opt>Never - shrinkage hides real effects</button>
+                    <button data-opt data-correct>Whenever you rank genes or make plots</button>
+                    <div class="quiz-explain">Whenever you rank genes or make plots. Shrinkage tames the wild fold changes that low-count genes produce by chance, so your rankings and volcano/MA plots reflect real, well-measured effects.</div>
+                </div>
+
+                <a class="next-lesson" href="rna-seq-volcano-ma.html" target="_blank" rel="noopener">
+                    <span>Next in Track 3</span>
+                    <h3>Reading volcano &amp; MA plots in R →</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
 
            

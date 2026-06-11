@@ -240,18 +240,27 @@ pheatmap(mat,
                 </div>
 
                 <h2>Check your understanding</h2>
-                <details>
-                    <summary>Why transform the counts with vst before making a heatmap?</summary>
-                    <p>Raw counts span a huge range and depend on sequencing depth, so a few high-count genes would dominate the colours. The variance-stabilizing transform puts genes on a comparable scale, so real patterns drive the heatmap instead of raw magnitude.</p>
-                </details>
-                <details>
-                    <summary>What does the sample-distance heatmap tell you?</summary>
-                    <p>Whether replicates of the same condition are actually similar to each other. Tight same-condition blocks with a clean split between groups is healthy. A sample sitting with the wrong group hints at a swap, a batch effect, or an outlier.</p>
-                </details>
-                <details>
-                    <summary>Why z-score each gene before the gene heatmap?</summary>
-                    <p>So the heatmap shows each gene's relative change (up or down versus its own average) rather than its absolute expression level. Otherwise a handful of very highly expressed genes would dominate and hide the pattern.</p>
-                </details>
+                <div class="quiz">
+                <div class="quiz-q-src">Why transform the counts with vst before making a heatmap?</div>
+                <button data-opt data-correct>It puts genes on a comparable scale so a few high-count genes do not dominate</button>
+                <button data-opt>It removes all low-expression genes</button>
+                <button data-opt>It is only needed for PCA, not heatmaps</button>
+                <div class="quiz-explain">Raw counts span a huge range and depend on sequencing depth, so a few high-count genes would dominate the colours. The variance-stabilizing transform puts genes on a comparable scale, so real patterns drive the heatmap instead of raw magnitude.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">What does the sample-distance heatmap tell you?</div>
+                <button data-opt>The exact p-value for each gene</button>
+                <button data-opt data-correct>Whether replicates of the same condition really are similar</button>
+                <button data-opt>Which individual genes changed the most</button>
+                <div class="quiz-explain">Whether replicates of the same condition are actually similar to each other. Tight same-condition blocks with a clean split between groups is healthy. A sample sitting with the wrong group hints at a swap, a batch effect, or an outlier.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">Why z-score each gene before the gene heatmap?</div>
+                <button data-opt>To delete genes with low counts</button>
+                <button data-opt>To convert counts into p-values</button>
+                <button data-opt data-correct>So the map shows each gene's relative change, not its absolute level</button>
+                <div class="quiz-explain">So the heatmap shows each gene's relative change (up or down versus its own average) rather than its absolute expression level. Otherwise a handful of very highly expressed genes would dominate and hide the pattern.</div>
+            </div>
 
                 <a class="next-lesson" href="learn.html#track-3" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
@@ -272,5 +281,6 @@ pheatmap(mat,
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
     </script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

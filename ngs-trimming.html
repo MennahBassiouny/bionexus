@@ -215,18 +215,27 @@
                 </div>
 
                 <h2>Check your understanding</h2>
-                <details>
-                    <summary>Why must adapter sequence be trimmed before alignment?</summary>
-                    <p>Adapter is artificial sequence added in the lab, not part of the genome. If you leave it on, the aligner tries to match non-biological letters and either fails or maps reads to the wrong place. Removing it gives clean, biological sequence to align.</p>
-                </details>
-                <details>
-                    <summary>After trimming you have fewer reads than you started with. Is that a problem?</summary>
-                    <p>Usually no. Trimming drops reads that became too short or were too low-quality to trust. Losing a modest fraction is normal and healthy; it means you kept only reliable reads. Losing most of your reads, though, points to a deeper problem worth investigating.</p>
-                </details>
-                <details>
-                    <summary>What does fastp do that you would otherwise need several tools for?</summary>
-                    <p>It detects and trims adapters, trims low-quality bases, filters short reads, and produces a before-and-after QC report, all in one fast command. That is why it has become the go-to first step.</p>
-                </details>
+                <div class="quiz">
+                <div class="quiz-q-src">Why must adapter sequence be trimmed before alignment?</div>
+                <button data-opt data-correct>Adapter is artificial sequence; left on, it mismaps or fails to align</button>
+                <button data-opt>Adapters make files too large to open</button>
+                <button data-opt>Adapters are the most important biological signal</button>
+                <div class="quiz-explain">Adapter is artificial sequence added in the lab, not part of the genome. If you leave it on, the aligner tries to match non-biological letters and either fails or maps reads to the wrong place. Removing it gives clean, biological sequence to align.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">After trimming you have fewer reads than you started with. Is that a problem?</div>
+                <button data-opt>Yes: trimming should never remove reads</button>
+                <button data-opt data-correct>Usually not: it drops untrustworthy reads, and losing a modest fraction is healthy</button>
+                <button data-opt>Yes: losing any reads means the run failed</button>
+                <div class="quiz-explain">Usually no. Trimming drops reads that became too short or were too low-quality to trust. Losing a modest fraction is normal and healthy; it means you kept only reliable reads. Losing most of your reads, though, points to a deeper problem worth investigating.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">What does fastp do that you would otherwise need several tools for?</div>
+                <button data-opt>It aligns reads to the reference genome</button>
+                <button data-opt>It calls variants from the trimmed reads</button>
+                <button data-opt data-correct>Adapter and quality trimming, length filtering, and a QC report in one command</button>
+                <div class="quiz-explain">It detects and trims adapters, trims low-quality bases, filters short reads, and produces a before-and-after QC report, all in one fast command. That is why it has become the go-to first step.</div>
+            </div>
 
                 <a class="next-lesson" href="ngs-alignment.html" target="_blank" rel="noopener">
                     <span>Next in Track 2</span>
@@ -247,5 +256,6 @@
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
     </script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

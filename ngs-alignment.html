@@ -253,18 +253,27 @@
                 </div>
 
                 <h2>Check your understanding</h2>
-                <details>
-                    <summary>Why do you index the reference before aligning?</summary>
-                    <p>Searching the raw genome for every one of millions of reads would be far too slow. The index reorganizes the reference into a lookup structure the aligner can query almost instantly. You build it once and reuse it for all your reads.</p>
-                </details>
-                <details>
-                    <summary>What does the POS column in a SAM file tell you?</summary>
-                    <p>It's the position on the reference (the coordinate on a given chromosome) where the read's alignment begins. Combined with RNAME (which chromosome), it pins the read to an exact spot on the genome.</p>
-                </details>
-                <details>
-                    <summary>Your flagstat shows only 40% of reads mapped. What might be wrong?</summary>
-                    <p>A low mapping rate usually means a mismatch between reads and reference: the wrong species or genome build, heavy adapter or quality contamination that trimming missed, or a contaminated sample. It's worth investigating before trusting anything downstream.</p>
-                </details>
+                <div class="quiz">
+                <div class="quiz-q-src">Why do you index the reference before aligning?</div>
+                <button data-opt data-correct>Searching the raw genome per read is too slow; the index makes lookups instant</button>
+                <button data-opt>Indexing compresses the reads to save space</button>
+                <button data-opt>It translates the genome into protein</button>
+                <div class="quiz-explain">Searching the raw genome for every one of millions of reads would be far too slow. The index reorganizes the reference into a lookup structure the aligner can query almost instantly. You build it once and reuse it for all your reads.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">What does the POS column in a SAM file tell you?</div>
+                <button data-opt>The quality score of the read</button>
+                <button data-opt data-correct>The position on the reference where the read's alignment begins</button>
+                <button data-opt>The number of mismatches in the read</button>
+                <div class="quiz-explain">It's the position on the reference (the coordinate on a given chromosome) where the read's alignment begins. Combined with RNAME (which chromosome), it pins the read to an exact spot on the genome.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">Your flagstat shows only 40% of reads mapped. What might be wrong?</div>
+                <button data-opt>The reads are simply too high quality</button>
+                <button data-opt>Nothing: 40% is the expected maximum</button>
+                <button data-opt data-correct>Likely the wrong reference or build, or contamination trimming missed</button>
+                <div class="quiz-explain">A low mapping rate usually means a mismatch between reads and reference: the wrong species or genome build, heavy adapter or quality contamination that trimming missed, or a contaminated sample. It's worth investigating before trusting anything downstream.</div>
+            </div>
 
                 <a class="next-lesson" href="ngs-samtools.html" target="_blank" rel="noopener">
                     <span>Next in Track 2</span>
@@ -285,5 +294,6 @@
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
     </script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

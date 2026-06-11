@@ -264,18 +264,27 @@ ranks <- sort(ranks, decreasing = TRUE)
                 </div>
 
                 <h2>Check your understanding</h2>
-                <details>
-                    <summary>What is the difference between over-representation and GSEA?</summary>
-                    <p>Over-representation uses only your significant gene list and asks if a function is over-represented in it. GSEA uses the whole ranked list and asks if a group of related genes clusters near the top or bottom. GSEA can catch coordinated, subtle changes that do not pass a per-gene cutoff.</p>
-                </details>
-                <details>
-                    <summary>Why do we need real gene IDs (like Entrez) for enrichment?</summary>
-                    <p>Because the tools look up what each gene does in annotation databases (GO, KEGG). Made-up names like "gene_1" are not in those databases, so nothing can be matched. Real IDs let the analysis connect your genes to known functions and pathways.</p>
-                </details>
-                <details>
-                    <summary>A GO term has a positive NES and p.adjust of 0.001. What does that mean?</summary>
-                    <p>The genes in that term are coordinately shifted toward the top of your ranking (up in your condition), and the result is highly significant after correcting for multiple testing. It is a credible, biologically meaningful hit worth reporting.</p>
-                </details>
+                <div class="quiz">
+                <div class="quiz-q-src">What is the difference between over-representation and GSEA?</div>
+                <button data-opt data-correct>Over-representation uses your hit list; GSEA uses the whole ranked list</button>
+                <button data-opt>They are two names for the same method</button>
+                <button data-opt>GSEA ignores the data and uses random genes</button>
+                <div class="quiz-explain">Over-representation uses only your significant gene list and asks if a function is over-represented in it. GSEA uses the whole ranked list and asks if a group of related genes clusters near the top or bottom. GSEA can catch coordinated, subtle changes that do not pass a per-gene cutoff.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">Why do we need real gene IDs (like Entrez) for enrichment?</div>
+                <button data-opt>Any text label works equally well</button>
+                <button data-opt data-correct>The databases (GO, KEGG) can only match real IDs, not made-up names</button>
+                <button data-opt>Real IDs make the analysis run faster</button>
+                <div class="quiz-explain">Because the tools look up what each gene does in annotation databases (GO, KEGG). Made-up names like "gene_1" are not in those databases, so nothing can be matched. Real IDs let the analysis connect your genes to known functions and pathways.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">A GO term has a positive NES and p.adjust of 0.001. What does that mean?</div>
+                <button data-opt>A gene deleted from the genome</button>
+                <button data-opt>An error, since NES cannot be positive</button>
+                <button data-opt data-correct>A credible, significant hit shifted toward the top of your ranking</button>
+                <div class="quiz-explain">The genes in that term are coordinately shifted toward the top of your ranking (up in your condition), and the result is highly significant after correcting for multiple testing. It is a credible, biologically meaningful hit worth reporting.</div>
+            </div>
 
                 <a class="next-lesson" href="learn.html#track-3" target="_blank" rel="noopener">
                     <span>Track 3</span>
@@ -296,5 +305,6 @@ ranks <- sort(ranks, decreasing = TRUE)
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
     </script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

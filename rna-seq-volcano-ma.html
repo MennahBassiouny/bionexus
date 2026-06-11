@@ -239,18 +239,27 @@ text(top$log2FoldChange, -log10(top$padj), labels = rownames(top), pos = 3, cex 
                 </div>
 
                 <h2>Check your understanding</h2>
-                <details>
-                    <summary>On a volcano plot, where are the most interesting genes?</summary>
-                    <p>In the top-left and top-right corners: high on the y-axis (very significant) and far from zero on the x-axis (large change). Big, confident changes in both directions.</p>
-                </details>
-                <details>
-                    <summary>Why do we plot -log10(padj) instead of padj directly?</summary>
-                    <p>Because tiny p-values (like 0.0000001) are the interesting ones, and on a raw scale they'd all be squashed near zero. Taking -log10 flips them so the most significant genes sit highest on the plot, which is much easier to read.</p>
-                </details>
-                <details>
-                    <summary>What is the MA plot good for that the volcano is not?</summary>
-                    <p>It's a health check. By plotting fold change against expression level, it shows whether your normalization looks sane and whether changes are spread fairly across low- and high-expression genes. The volcano is for picking hits; the MA plot is for trusting the data.</p>
-                </details>
+                <div class="quiz">
+                <div class="quiz-q-src">On a volcano plot, where are the most interesting genes?</div>
+                <button data-opt data-correct>The top-left and top-right corners</button>
+                <button data-opt>The exact centre</button>
+                <button data-opt>Along the bottom edge</button>
+                <div class="quiz-explain">In the top-left and top-right corners: high on the y-axis (very significant) and far from zero on the x-axis (large change). Big, confident changes in both directions.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">Why do we plot -log10(padj) instead of padj directly?</div>
+                <button data-opt>It is required by the plotting library</button>
+                <button data-opt data-correct>It lifts the tiny, most-significant p-values to the top where they are readable</button>
+                <button data-opt>It converts p-values into fold changes</button>
+                <div class="quiz-explain">Because tiny p-values (like 0.0000001) are the interesting ones, and on a raw scale they'd all be squashed near zero. Taking -log10 flips them so the most significant genes sit highest on the plot, which is much easier to read.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">What is the MA plot good for that the volcano is not?</div>
+                <button data-opt>Picking the single best gene</button>
+                <button data-opt>Counting the number of samples</button>
+                <button data-opt data-correct>A health check on normalization across expression levels</button>
+                <div class="quiz-explain">It's a health check. By plotting fold change against expression level, it shows whether your normalization looks sane and whether changes are spread fairly across low- and high-expression genes. The volcano is for picking hits; the MA plot is for trusting the data.</div>
+            </div>
 
                 <a class="next-lesson" href="learn.html#track-3" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
@@ -271,5 +280,6 @@ text(top$log2FoldChange, -log10(top$padj), labels = rownames(top), pos = 3, cex 
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
     </script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

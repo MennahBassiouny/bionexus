@@ -209,18 +209,27 @@
                 <p>Now that you have the picture, the rest of Track 2 walks the DNA workflow end to end, all in your browser: checking read quality with FastQC, trimming bad bases, aligning reads to a reference genome, wrangling the results with samtools, and finally calling variants to produce a VCF. By the end you'll have run a real mini variant-calling pipeline.</p>
 
                 <h2>Check your understanding</h2>
-                <details>
-                    <summary>In one sentence, what makes NGS "next-generation"?</summary>
-                    <p>It reads millions of DNA fragments in parallel instead of one at a time, which makes sequencing vastly faster and cheaper.</p>
-                </details>
-                <details>
-                    <summary>What is a "read", and why isn't the output just one long genome?</summary>
-                    <p>A read is the sequence of a single short fragment. Because the DNA was chopped into millions of fragments, the output is millions of short reads; reconstructing or comparing them to a reference is the analysis job that follows.</p>
-                </details>
-                <details>
-                    <summary>Why does coverage matter?</summary>
-                    <p>Each base is read many times, so higher coverage gives more confidence. It lets you tell a true difference from the reference (a variant) apart from a random sequencing error.</p>
-                </details>
+                <div class="quiz">
+                <div class="quiz-q-src">In one sentence, what makes NGS "next-generation"?</div>
+                <button data-opt data-correct>It reads millions of fragments in parallel, not one at a time</button>
+                <button data-opt>It uses a newer brand of microscope</button>
+                <button data-opt>It only sequences RNA, never DNA</button>
+                <div class="quiz-explain">It reads millions of DNA fragments in parallel instead of one at a time, which makes sequencing vastly faster and cheaper.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">What is a "read", and why isn't the output just one long genome?</div>
+                <button data-opt>A read is the machine's error rate</button>
+                <button data-opt data-correct>A read is one short fragment's sequence; the DNA was chopped into millions</button>
+                <button data-opt>A read is the whole genome in one piece</button>
+                <div class="quiz-explain">A read is the sequence of a single short fragment. Because the DNA was chopped into millions of fragments, the output is millions of short reads; reconstructing or comparing them to a reference is the analysis job that follows.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">Why does coverage matter?</div>
+                <button data-opt>Higher coverage makes the genome shorter</button>
+                <button data-opt>Coverage only affects file size, not accuracy</button>
+                <button data-opt data-correct>Reading each base many times separates real variants from errors</button>
+                <div class="quiz-explain">Each base is read many times, so higher coverage gives more confidence. It lets you tell a true difference from the reference (a variant) apart from a random sequencing error.</div>
+            </div>
 
                 <a class="next-lesson" href="learn.html#track-2" target="_blank" rel="noopener">
                     <span>Next in Track 2</span>
@@ -241,5 +250,6 @@
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
     </script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

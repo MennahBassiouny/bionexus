@@ -196,9 +196,27 @@ merged.groupby(<span class="s">"condition"</span>)[<span class="s">"gene_count"<
             </div>
 
             <h2>Check your understanding</h2>
-            <details><summary>What does GenBank give you that FASTA doesn't?</summary><p>Annotation - the organism, gene names, coding regions (CDS), and more. FASTA is just a header plus the sequence.</p></details>
-            <details><summary>How do you read a 20 GB FASTQ without running out of memory?</summary><p>Stream it: loop over records one at a time with <code class="inline">SeqIO.parse</code> (and <code class="inline">gzip.open</code> if it's compressed), never building a full list. Each iteration holds just one record.</p></details>
-            <details><summary>You have a counts table and a separate sample sheet. How do you analyze them together?</summary><p>Merge them on their shared column (e.g., the sample ID) with <code class="inline">pandas.merge</code>, then group and summarize across the combined table.</p></details>
+            <div class="quiz">
+                <div class="quiz-q-src">What does GenBank give you that FASTA doesn't?</div>
+                <button data-opt data-correct>Annotation: organism, gene names, coding regions, and more</button>
+                <button data-opt>A higher-resolution version of the sequence</button>
+                <button data-opt>Nothing; they are the same format</button>
+                <div class="quiz-explain">Annotation - the organism, gene names, coding regions (CDS), and more. FASTA is just a header plus the sequence.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">How do you read a 20 GB FASTQ without running out of memory?</div>
+                <button data-opt>Split it into 20 files by hand</button>
+                <button data-opt data-correct>Stream it record by record with SeqIO.parse, never building a full list</button>
+                <button data-opt>Load the whole file into a list first, then loop</button>
+                <div class="quiz-explain">Stream it: loop over records one at a time with <code class="inline">SeqIO.parse</code> (and <code class="inline">gzip.open</code> if it's compressed), never building a full list. Each iteration holds just one record.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">You have a counts table and a separate sample sheet. How do you analyze them together?</div>
+                <button data-opt>Paste them side by side in a text editor</button>
+                <button data-opt>You cannot analyze two tables together</button>
+                <button data-opt data-correct>Merge them on the shared sample-ID column with pandas.merge</button>
+                <div class="quiz-explain">Merge them on their shared column (e.g., the sample ID) with <code class="inline">pandas.merge</code>, then group and summarize across the combined table.</div>
+            </div>
 
             <a class="next-lesson" href="learn.html" target="_blank" rel="noopener">
                 <span>That's Track 1, in full</span>
@@ -211,5 +229,6 @@ merged.groupby(<span class="s">"condition"</span>)[<span class="s">"gene_count"<
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

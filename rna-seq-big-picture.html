@@ -211,18 +211,27 @@
                 </ul>
 
                 <h2>Check your understanding</h2>
-                <details>
-                    <summary>If every cell has the same DNA, why do RNA levels differ between cell types?</summary>
-                    <p>Because each cell only switches on (expresses) some of its genes. The DNA is the same full manual everywhere, but RNA reflects which instructions a particular cell is actually using right now.</p>
-                </details>
-                <details>
-                    <summary>What is the count matrix, and why is it the starting point?</summary>
-                    <p>It is a table of genes by samples, where each cell is the number of reads counted for that gene. The earlier steps (lab work, sequencing, alignment) produce it; once you have it, the data analysis, which is what these lessons focus on, can begin.</p>
-                </details>
-                <details>
-                    <summary>Why do RNA-seq experiments use replicates?</summary>
-                    <p>Biology is noisy, so a single sample can change just by chance. Replicates let the statistics separate a real, consistent difference between groups from random fluctuation.</p>
-                </details>
+                <div class="quiz">
+                <div class="quiz-q-src">If every cell has the same DNA, why do RNA levels differ between cell types?</div>
+                <button data-opt data-correct>Each cell expresses only some of its genes</button>
+                <button data-opt>Different cell types carry different DNA</button>
+                <button data-opt>RNA is copied from a separate genome</button>
+                <div class="quiz-explain">Because each cell only switches on (expresses) some of its genes. The DNA is the same full manual everywhere, but RNA reflects which instructions a particular cell is actually using right now.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">What is the count matrix, and why is it the starting point?</div>
+                <button data-opt>A list of every mutation in the sample</button>
+                <button data-opt data-correct>A genes-by-samples table of read counts; analysis starts from it</button>
+                <button data-opt>The raw image files from the sequencer</button>
+                <div class="quiz-explain">It is a table of genes by samples, where each cell is the number of reads counted for that gene. The earlier steps (lab work, sequencing, alignment) produce it; once you have it, the data analysis, which is what these lessons focus on, can begin.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">Why do RNA-seq experiments use replicates?</div>
+                <button data-opt>To make the experiment cheaper</button>
+                <button data-opt>Replicates are not actually needed</button>
+                <button data-opt data-correct>To separate a real difference from random biological noise</button>
+                <div class="quiz-explain">Biology is noisy, so a single sample can change just by chance. Replicates let the statistics separate a real, consistent difference between groups from random fluctuation.</div>
+            </div>
 
                 <a class="next-lesson" href="rna-seq-first-analysis.html" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
@@ -243,5 +252,6 @@
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
     </script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

@@ -171,9 +171,27 @@ grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class=
             </table></div>
 
             <h2>Check your understanding</h2>
-            <details><summary>What does <code class="inline">grep "&gt;" seqs.fasta | wc -l</code> tell you?</summary><p>The number of sequences in the FASTA file - because each sequence has one header line starting with <code class="inline">&gt;</code>, and you're counting those lines.</p></details>
-            <details><summary>What's the difference between <code class="inline">&gt;</code> and <code class="inline">&gt;&gt;</code>?</summary><p><code class="inline">&gt;</code> creates (or overwrites) a file with the output. <code class="inline">&gt;&gt;</code> adds to the end of an existing file without erasing it. Mix them up and you can overwrite something you meant to keep - another reason to read before you run.</p></details>
-            <details><summary>Why prefer <code class="inline">head</code> or <code class="inline">less</code> over <code class="inline">cat</code> for big files?</summary><p>Because genomic files can be enormous. <code class="inline">cat</code> would flood your screen with millions of lines; <code class="inline">head</code> shows just the top, and <code class="inline">less</code> lets you scroll calmly.</p></details>
+            <div class="quiz">
+                <div class="quiz-q-src">What does <code class="inline">grep "&gt;" seqs.fasta | wc -l</code> tell you?</div>
+                <button data-opt data-correct>The number of sequences in the file</button>
+                <button data-opt>The total number of bases in the file</button>
+                <button data-opt>The length of the longest sequence</button>
+                <div class="quiz-explain">The number of sequences in the FASTA file - because each sequence has one header line starting with <code class="inline">&gt;</code>, and you're counting those lines.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What's the difference between <code class="inline">&gt;</code> and <code class="inline">&gt;&gt;</code>?</div>
+                <button data-opt>They are identical; both append</button>
+                <button data-opt data-correct>&gt; overwrites a file; &gt;&gt; appends to it</button>
+                <button data-opt>&gt; appends to a file; &gt;&gt; overwrites it</button>
+                <div class="quiz-explain"><code class="inline">&gt;</code> creates (or overwrites) a file with the output. <code class="inline">&gt;&gt;</code> adds to the end of an existing file without erasing it. Mix them up and you can overwrite something you meant to keep - another reason to read before you run.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Why prefer <code class="inline">head</code> or <code class="inline">less</code> over <code class="inline">cat</code> for big files?</div>
+                <button data-opt>cat is faster for files of any size</button>
+                <button data-opt>head and less only work on compressed files</button>
+                <button data-opt data-correct>cat dumps the whole (possibly huge) file; head/less show or scroll part of it</button>
+                <div class="quiz-explain">Because genomic files can be enormous. <code class="inline">cat</code> would flood your screen with millions of lines; <code class="inline">head</code> shows just the top, and <code class="inline">less</code> lets you scroll calmly.</div>
+            </div>
 
             <a class="next-lesson" href="bash-project.html" target="_blank" rel="noopener">
                 <span>Next in the Bash series - the payoff</span>
@@ -186,5 +204,6 @@ grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class=
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

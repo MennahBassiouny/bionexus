@@ -273,18 +273,27 @@
                 </div>
 
                 <h2>Check your understanding</h2>
-                <details>
-                    <summary>What is the difference between a sequencing error and a variant?</summary>
-                    <p>Both look like a read disagreeing with the reference. The difference is consensus and consistency: a sequencing error appears in one or a few reads at random, while a true variant appears in many reads covering that position, consistently. The caller uses depth and quality to tell them apart.</p>
-                </details>
-                <details>
-                    <summary>What do <code>bcftools mpileup</code> and <code>bcftools call</code> each contribute?</summary>
-                    <p><code>mpileup</code> gathers the evidence: at each position it assembles the pile of read bases and their qualities. <code>call</code> makes the decision: it judges each pile statistically and outputs the positions it believes are genuine variants.</p>
-                </details>
-                <details>
-                    <summary>Why filter a VCF instead of trusting every line?</summary>
-                    <p>Callers produce false positives, particularly where coverage is thin or the region is repetitive. Filtering by quality and depth removes the shakiest calls so that what remains is trustworthy. Skipping this step lets sequencing noise masquerade as biology.</p>
-                </details>
+                <div class="quiz">
+                <div class="quiz-q-src">What is the difference between a sequencing error and a variant?</div>
+                <button data-opt data-correct>An error shows in a few reads at random; a variant shows consistently in many</button>
+                <button data-opt>There is no way to tell them apart</button>
+                <button data-opt>A variant appears in one read, an error in many</button>
+                <div class="quiz-explain">Both look like a read disagreeing with the reference. The difference is consensus and consistency: a sequencing error appears in one or a few reads at random, while a true variant appears in many reads covering that position, consistently. The caller uses depth and quality to tell them apart.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">What do <code>bcftools mpileup</code> and <code>bcftools call</code> each contribute?</div>
+                <button data-opt>They do exactly the same thing</button>
+                <button data-opt data-correct>mpileup gathers the read evidence; call decides which piles are variants</button>
+                <button data-opt>mpileup makes the calls; call just saves the file</button>
+                <div class="quiz-explain"><code>mpileup</code> gathers the evidence: at each position it assembles the pile of read bases and their qualities. <code>call</code> makes the decision: it judges each pile statistically and outputs the positions it believes are genuine variants.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">Why filter a VCF instead of trusting every line?</div>
+                <button data-opt>Filtering is only to make the file smaller</button>
+                <button data-opt>You should never filter: every call is real</button>
+                <button data-opt data-correct>Callers make false positives in thin or repetitive regions; filtering keeps trustworthy calls</button>
+                <div class="quiz-explain">Callers produce false positives, particularly where coverage is thin or the region is repetitive. Filtering by quality and depth removes the shakiest calls so that what remains is trustworthy. Skipping this step lets sequencing noise masquerade as biology.</div>
+            </div>
 
                 <a class="next-lesson" href="learn.html#track-3" target="_blank" rel="noopener">
                     <span>Track 2 complete · keep going</span>
@@ -305,5 +314,6 @@
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
     </script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>
