@@ -30,7 +30,14 @@
     '.quiz-opt .mark{float:right;font-weight:700;}' +
     '.quiz-explain{margin-top:6px;padding:13px 16px;border-radius:9px;background:rgba(91,156,248,0.08);color:#475569;font:0.96rem/1.5 "Work Sans",sans-serif;display:none;}' +
     '.quiz-explain.show{display:block;}' +
-    '.quiz-explain strong{color:#0f172a;}';
+    '.quiz-explain strong{color:#0f172a;}' +
+    '.ngsstrip{display:flex;flex-wrap:wrap;align-items:center;gap:6px;background:#fff;border:1px solid rgba(91,156,248,0.2);border-radius:10px;padding:10px 14px;margin:0 0 26px;font-family:"Work Sans",sans-serif;}' +
+    '.ngsstrip .lab{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#64748b;margin-right:2px;}' +
+    '.ngsstrip a.step,.ngsstrip span.step{font-size:0.82rem;font-weight:600;text-decoration:none;padding:5px 11px;border-radius:7px;white-space:nowrap;}' +
+    '.ngsstrip a.step{color:#3b6fd4;background:rgba(91,156,248,0.1);transition:background .15s;}' +
+    '.ngsstrip a.step:hover{background:rgba(91,156,248,0.22);}' +
+    '.ngsstrip span.step.here{color:#fff;background:linear-gradient(135deg,#5b9cf8,#a855f7);}' +
+    '.ngsstrip .sep{color:#a855f7;font-weight:700;font-size:0.8rem;}';
 
   function injectCSS() {
     if (document.getElementById('bnx-ix-css')) return;
@@ -175,16 +182,57 @@
     quiz.appendChild(explain);
   }
 
+  /* ---------- NGS pipeline strip ---------- */
+  var NGS_STEPS = [
+    ['fastqc', 'QC', 'ngs-fastqc.html'],
+    ['trimming', 'Trim', 'ngs-trimming.html'],
+    ['alignment', 'Align', 'ngs-alignment.html'],
+    ['samtools', 'Sort & index', 'ngs-samtools.html'],
+    ['variant', 'Variants', 'ngs-variant-calling.html']
+  ];
+  function buildNgsStrip(el) {
+    var here = el.getAttribute('data-here') || '';
+    el.innerHTML = '';
+    var lab = document.createElement('span');
+    lab.className = 'lab';
+    lab.textContent = 'Pipeline:';
+    el.appendChild(lab);
+    NGS_STEPS.forEach(function (s, i) {
+      if (i > 0) {
+        var sep = document.createElement('span');
+        sep.className = 'sep';
+        sep.textContent = '→';
+        el.appendChild(sep);
+      }
+      if (s[0] === here) {
+        var sp = document.createElement('span');
+        sp.className = 'step here';
+        sp.textContent = s[1];
+        el.appendChild(sp);
+      } else {
+        var a = document.createElement('a');
+        a.className = 'step';
+        a.href = s[2];
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = s[1];
+        el.appendChild(a);
+      }
+    });
+  }
+
   /* ---------- init ---------- */
   function init() {
     var cells = document.querySelectorAll('.pycell');
     var quizzes = document.querySelectorAll('.quiz');
-    if (!cells.length && !quizzes.length) return;
+    var strips = document.querySelectorAll('.ngsstrip');
+    if (!cells.length && !quizzes.length && !strips.length) return;
     injectCSS();
     var root = document.body;
     if (root) root.classList.add('bnx-ix');
     for (var i = 0; i < cells.length; i++) buildPyCell(cells[i]);
     for (var k = 0; k < quizzes.length; k++) buildQuiz(quizzes[k]);
+    for (var s = 0; s < strips.length; s++) buildNgsStrip(strips[s]);
   }
 
   if (document.readyState === 'loading') {
