@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Turn a list of changed genes into biology: over-representation (GO, KEGG) and GSEA in R with clusterProfiler, explained in plain language.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Functional Enrichment (GO, KEGG, GSEA) in R | BioNexus Hub">
+    <meta property="og:description" content="Over-representation (GO, KEGG) and GSEA in R with clusterProfiler. Turn a gene list into the biology that is changing.">
+    <meta property="og:url" content="https://bionexushub.com/rna-seq-enrichment.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Functional Enrichment (GO, KEGG, GSEA) in R | BioNexus Hub">
+    <meta name="twitter:description" content="Over-representation and GSEA in R with clusterProfiler, explained simply.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Functional Enrichment: GO, KEGG, GSEA - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .colab-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; background: var(--deep-navy); color: white; border-radius: 12px; padding: 26px 30px; margin: 28px 0; }
+        .colab-cta div p:first-child { font-weight: 700; font-size: 1.15rem; margin-bottom: 4px; }
+        .colab-cta div p:last-child { color: rgba(255,255,255,0.7); font-size: 0.95rem; margin: 0; }
+        .colab-btn { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: transform 0.3s ease; }
+        .colab-btn:hover { transform: translateY(-2px); }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .k { color: #c084fc; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .step-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; font-weight: 700; font-size: 0.95rem; margin-right: 10px; vertical-align: middle; }
+
+        .levelup { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 22px 26px; margin: 28px 0; }
+        .levelup h4 { color: #b45309; margin-bottom: 8px; }
+        .levelup p { font-size: 1rem; color: var(--text-gray); margin-bottom: 8px; }
+        .levelup a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+
+        details { background: white; border: 1px solid rgba(91,156,248,0.2); border-radius: 8px; padding: 14px 20px; margin-bottom: 12px; }
+        details summary { font-weight: 600; cursor: pointer; color: var(--deep-navy); }
+        details p { margin: 12px 0 0; color: var(--text-gray); font-size: 1rem; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; Functional enrichment</div>
+                <h1>Functional Enrichment: GO, KEGG, and GSEA</h1>
+                <p class="promise">You have found the genes that change. Now for the real question: so what biology is actually happening? Enrichment analysis takes your gene list and tells you which biological functions and pathways are involved. This is where a list of genes becomes a story.</p>
+                <div class="tags">
+                    <span class="tag green">🟡 Intermediate</span>
+                    <span class="tag">⏱️ ~1.5 hours</span>
+                    <span class="tag">📊 R</span>
+                    <span class="tag green">🌐 Runs in your browser</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="prereq">
+                    <h4>Before you start</h4>
+                    <ul>
+                        <li>You've done <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">From Raw Counts to Differential Expression</a>, so you understand a results table and fold changes.</li>
+                        <li>A little R, and a free Google account to run the Colab notebook.</li>
+                        <li>New to any term below? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has plain-language definitions.</li>
+                    </ul>
+                </div>
+
+                <h2>From a gene list to biology</h2>
+                <p>Differential expression often hands you hundreds of changed genes. Reading them one by one is hopeless, and your eye will only recognise the few you already know. <strong>Functional enrichment</strong> solves this by grouping genes by what they do, then asking a statistical question: is any biological function or pathway showing up in your list far more than you would expect by chance? If "immune response" genes are all over your hits, that is a strong clue about what your experiment did.</p>
+
+                <h2>Two ways to ask the question</h2>
+                <p>There are two common approaches, and they suit different situations.</p>
+                <ul>
+                    <li><strong>Over-representation analysis (ORA).</strong> You take your list of significant genes (your hits) and ask: is this list unusually full of genes from a particular function or pathway, compared to all genes? It is simple and intuitive, but it throws away everything below your significance cutoff.</li>
+                    <li><strong>Gene Set Enrichment Analysis (GSEA).</strong> You keep <em>all</em> genes, ranked from most up to most down, and ask: does any group of related genes sit together near the top or the bottom of the ranking? It catches coordinated, subtle shifts that ORA can miss.</li>
+                </ul>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Gene set</h4>
+                    <p>A named group of genes that share something, for example "all genes involved in DNA repair" or "the genes in the insulin signalling pathway". Enrichment is really just testing your data against thousands of these predefined gene sets to see which ones light up.</p>
+                </div>
+
+                <div class="colab-cta">
+                    <div>
+                        <p>▶ Code along in Google Colab</p>
+                        <p>Set the runtime to R (Runtime, then Change runtime type, then R). The Bioconductor install takes a few minutes.</p>
+                    </div>
+                    <a class="colab-btn" href="https://colab.research.google.com/github/MennahBassiouny/bionexus/blob/main/nb-rna-seq-enrichment.ipynb" target="_blank" rel="noopener">Open the R notebook in Colab →</a>
+                </div>
+
+                <h2><span class="step-num">1</span>Set up and get a ranked gene list</h2>
+                <p>Enrichment needs <em>real</em> gene IDs (so the tools can look up what each gene does), which our small synthetic dataset does not have. So we'll use a ready-made example list of real human genes that ships with the analysis package. It is a named vector: each gene's ID paired with its fold change, sorted from most up to most down. That is exactly the shape your own DESeq2 results take once you map them (we show how at the end).</p>
+                <pre><span class="c"># clusterProfiler is the standard R toolkit for enrichment</span>
+<span class="k">if</span> (!requireNamespace(<span class="s">"BiocManager"</span>, quietly = TRUE)) install.packages(<span class="s">"BiocManager"</span>)
+BiocManager::install(c(<span class="s">"clusterProfiler"</span>, <span class="s">"org.Hs.eg.db"</span>, <span class="s">"DOSE"</span>, <span class="s">"enrichplot"</span>), update = FALSE, ask = FALSE)
+<span class="k">library</span>(clusterProfiler); <span class="k">library</span>(org.Hs.eg.db); <span class="k">library</span>(enrichplot)
+
+<span class="c"># a ranked list of real human genes (named vector: gene ID -> fold change)</span>
+data(geneList, package = <span class="s">"DOSE"</span>)
+head(geneList)</pre>
+                <p>The names are <strong>Entrez IDs</strong>, a standard numeric code for each gene. <code class="inline">org.Hs.eg.db</code> is the human annotation database that lets the tools translate those IDs into functions and pathways. (The "Hs" means <em>Homo sapiens</em>; there are equivalent packages for mouse, and other species.)</p>
+
+                <h2><span class="step-num">2</span>Over-representation: GO terms</h2>
+                <p>First the simple approach. We take the clearly significant genes and ask which Gene Ontology terms are over-represented.</p>
+                <pre><span class="c"># treat genes with a large fold change as our "hits"</span>
+sig_genes <- names(geneList)[abs(geneList) > 2]
+
+ego <- enrichGO(gene          = sig_genes,
+                OrgDb         = org.Hs.eg.db,
+                ont           = <span class="s">"BP"</span>,        <span class="c"># Biological Process</span>
+                pAdjustMethod = <span class="s">"BH"</span>,
+                pvalueCutoff  = 0.05,
+                readable      = TRUE)       <span class="c"># show gene symbols, not IDs</span>
+
+head(ego)
+dotplot(ego, showCategory = 12) + ggtitle(<span class="s">"Over-represented biological processes"</span>)</pre>
+                <p>The dot plot is the payoff: each row is a biological process, the dot size is how many of your genes fall in it, and the colour is the adjusted p-value. Processes near the top are the ones your changed genes are concentrated in.</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>GO and KEGG</h4>
+                    <p><strong>GO (Gene Ontology)</strong> is a standardized dictionary of what genes do, split into biological processes ("BP"), molecular functions, and cellular locations. <strong>KEGG</strong> is a database of pathways, the wiring diagrams of interacting genes (for example, "cell cycle" or "insulin signalling"). Swap <code class="inline">enrichGO</code> for <code class="inline">enrichKEGG</code> to test pathways instead of GO terms.</p>
+                </div>
+
+                <h2><span class="step-num">3</span>GSEA: the whole ranked list</h2>
+                <p>Now the more powerful approach. GSEA uses every gene, in ranked order, and finds gene sets that trend up or down as a group, even if no single gene was a dramatic hit.</p>
+                <pre>gse <- gseGO(geneList     = geneList,    <span class="c"># the full ranked list</span>
+             OrgDb        = org.Hs.eg.db,
+             ont          = <span class="s">"BP"</span>,
+             pvalueCutoff = 0.05,
+             verbose      = FALSE)
+
+head(gse[, c(<span class="s">"Description"</span>, <span class="s">"NES"</span>, <span class="s">"p.adjust"</span>)])
+
+<span class="c"># the classic GSEA running-score plot for the top gene set</span>
+gseaplot2(gse, geneSetID = 1, title = gse$Description[1])</pre>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>NES (Normalized Enrichment Score)</h4>
+                    <p>GSEA's headline number. A <strong>positive NES</strong> means the gene set is shifted toward the top of your ranking (up in your condition); a <strong>negative NES</strong> means it is shifted toward the bottom (down). The bigger the absolute value, the stronger the coordinated shift. Pair it with <code class="inline">p.adjust</code> below 0.05 to decide what to trust.</p>
+                </div>
+
+                <h2><span class="step-num">4</span>Reading the results</h2>
+                <p>Whichever approach you use, the result is a table of biological terms with a few key columns:</p>
+                <ul>
+                    <li><strong>Description</strong>: the name of the GO term or pathway.</li>
+                    <li><strong>p.adjust</strong>: the significance, corrected for testing thousands of gene sets. Trust terms below 0.05, just like padj for genes.</li>
+                    <li><strong>GeneRatio / setSize</strong>: how many of your genes are in that term, and how big the term is.</li>
+                    <li><strong>NES</strong> (GSEA only): the direction and strength of the shift.</li>
+                    <li><strong>core_enrichment</strong> (GSEA only): the specific genes driving the result, your shortlist for follow-up.</li>
+                </ul>
+                <p>The goal is not a giant table. It is a sentence: "the genes that changed are enriched for X, which makes sense because our treatment does Y." That sentence is the biological result of the whole analysis.</p>
+
+                <h2>Using your own DESeq2 results</h2>
+                <p>To run this on your own data, you need two small steps: translate your gene symbols into Entrez IDs, and rank them. Here is the bridge from a DESeq2 results table:</p>
+                <pre><span class="c"># res is your DESeq2 results data frame, with gene symbols as row names</span>
+ids <- bitr(rownames(res), fromType = <span class="s">"SYMBOL"</span>,
+            toType = <span class="s">"ENTREZID"</span>, OrgDb = org.Hs.eg.db)
+
+<span class="c"># build a ranked named vector (rank by the test statistic, high to low)</span>
+ranks <- res$stat
+names(ranks) <- rownames(res)
+ranks <- ranks[ids$SYMBOL]
+names(ranks) <- ids$ENTREZID
+ranks <- sort(ranks, decreasing = TRUE)
+<span class="c"># now feed 'ranks' into gseGO() exactly as above</span></pre>
+
+                <div class="levelup">
+                    <h4>🔶 Level up</h4>
+                    <p>Try <code class="inline">enrichKEGG</code> and <code class="inline">gseKEGG</code> for pathways, and the <code class="inline">ReactomePA</code> package for Reactome pathways. The <code class="inline">enrichplot</code> package has beautiful visuals (<code class="inline">cnetplot</code>, <code class="inline">emapplot</code>) that show how terms and genes connect. The free online <em>clusterProfiler book</em> by Guangchuang Yu is the definitive guide.</p>
+                </div>
+
+                <h2>Check your understanding</h2>
+                <details>
+                    <summary>What is the difference between over-representation and GSEA?</summary>
+                    <p>Over-representation uses only your significant gene list and asks if a function is over-represented in it. GSEA uses the whole ranked list and asks if a group of related genes clusters near the top or bottom. GSEA can catch coordinated, subtle changes that do not pass a per-gene cutoff.</p>
+                </details>
+                <details>
+                    <summary>Why do we need real gene IDs (like Entrez) for enrichment?</summary>
+                    <p>Because the tools look up what each gene does in annotation databases (GO, KEGG). Made-up names like "gene_1" are not in those databases, so nothing can be matched. Real IDs let the analysis connect your genes to known functions and pathways.</p>
+                </details>
+                <details>
+                    <summary>A GO term has a positive NES and p.adjust of 0.001. What does that mean?</summary>
+                    <p>The genes in that term are coordinately shifted toward the top of your ranking (up in your condition), and the result is highly significant after correcting for multiple testing. It is a credible, biologically meaningful hit worth reporting.</p>
+                </details>
+
+                <a class="next-lesson" href="learn.html#track-3" target="_blank" rel="noopener">
+                    <span>Track 3</span>
+                    <h3>See the full transcriptomics roadmap →</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+</body>
+</html>
