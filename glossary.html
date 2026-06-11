@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plain-language definitions of the bioinformatics terms used across BioNexus Hub: from FASTQ and DESeq2 to p-values, batch effects, and PCA. Look up any jargon in seconds.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Bioinformatics Glossary: Jargon in Plain English | BioNexus Hub">
+    <meta property="og:description" content="Plain-language definitions of bioinformatics terms: FASTQ, DESeq2, p-values, batch effects, PCA, and more. Search and learn.">
+    <meta property="og:url" content="https://bionexushub.com/glossary.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bioinformatics Glossary: Jargon in Plain English | BioNexus Hub">
+    <meta name="twitter:description" content="Plain-language definitions of bioinformatics terms, searchable in seconds.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Glossary - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .page-header { padding: 70px 0 40px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); text-align: center; }
+        .page-header h1 { font-family: 'Crimson Pro', serif; font-size: 3.2rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; }
+        .page-header p { font-size: 1.2rem; color: var(--text-gray); max-width: 700px; margin: 0 auto; }
+
+        main { flex: 1; padding: 0 0 80px; }
+        .glossary-search { max-width: 620px; margin: -28px auto 40px; position: relative; padding: 0 24px; }
+        .glossary-search input { width: 100%; padding: 16px 22px; font-family: inherit; font-size: 1.05rem; border: 2px solid rgba(91,156,248,0.3); border-radius: 12px; background: white; color: var(--text-dark); box-shadow: 0 6px 22px rgba(0,0,0,0.06); transition: border-color 0.2s; }
+        .glossary-search input:focus { outline: none; border-color: var(--primary-blue); }
+
+        .terms { max-width: 820px; margin: 0 auto; }
+        .term { background: white; border: 1px solid rgba(91,156,248,0.18); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 18px 24px; margin-bottom: 14px; }
+        .term h3 { font-family: 'Crimson Pro', serif; font-size: 1.3rem; color: var(--deep-navy); margin-bottom: 4px; }
+        .term p { color: var(--text-gray); font-size: 1.02rem; margin: 0; }
+        .term a { color: var(--primary-blue); text-decoration: none; font-weight: 600; }
+        .no-res { text-align: center; color: var(--text-gray); padding: 30px; display: none; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .page-header h1 { font-size: 2.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html" style="color: var(--primary-blue);">Glossary</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Glossary</h1>
+            <p>Every field has its jargon, and bioinformatics has a lot. Here is every term we use across the lessons, explained in plain English. Search for any word you meet and keep going.</p>
+        </div>
+    </div>
+
+    <main>
+        <div class="glossary-search">
+            <input type="text" id="glossarySearch" placeholder="🔍 Search a term, e.g. FASTQ, p-value, batch..." autocomplete="off">
+        </div>
+
+        <div class="container">
+            <div class="terms" id="terms">
+                <div class="term"><h3>Adjusted p-value (padj)</h3><p>A p-value corrected for the fact that thousands of genes are tested at once. It is the number you trust when deciding whether a gene's change is real. A common cutoff is below 0.05.</p></div>
+                <div class="term"><h3>Alignment</h3><p>Working out where each short sequencing read came from in a reference genome, like finding where a puzzle piece fits.</p></div>
+                <div class="term"><h3>BAM</h3><p>The compressed, computer-friendly version of a SAM file (aligned reads). Same information, much smaller.</p></div>
+                <div class="term"><h3>Batch effect</h3><p>A systematic technical difference between groups of samples that were processed at different times, by different people, or on different machines, with nothing to do with the biology. If ignored, it can look like a real result.</p></div>
+                <div class="term"><h3>BED</h3><p>A simple text format that lists regions of a genome (chromosome, start, end). Often used to mark features of interest.</p></div>
+                <div class="term"><h3>Bioconductor</h3><p>A large collection of R packages built specifically for biological data analysis. DESeq2 lives here.</p></div>
+                <div class="term"><h3>Bioinformatics</h3><p>Using computers and code to make sense of biological data such as DNA, RNA, and proteins.</p></div>
+                <div class="term"><h3>Biopython</h3><p>A free Python toolkit for working with biological sequences and data.</p></div>
+                <div class="term"><h3>Clustering</h3><p>Grouping samples or genes by how similar they are, so patterns and relationships become visible.</p></div>
+                <div class="term"><h3>conda</h3><p>A tool that installs software and manages separate "environments". Popular in bioinformatics because it can install non-Python command-line tools too.</p></div>
+                <div class="term"><h3>Count matrix</h3><p>A table with one row per gene and one column per sample, where each cell is how many sequencing reads were counted for that gene. The starting point of most RNA-seq analyses.</p></div>
+                <div class="term"><h3>DESeq2</h3><p>The standard R/Bioconductor package for finding genes that change between conditions (differential expression).</p></div>
+                <div class="term"><h3>Design formula</h3><p>A short recipe (like <code>~ condition</code>) that tells DESeq2 which sample features to model and what comparison you care about.</p></div>
+                <div class="term"><h3>Differential expression</h3><p>Finding which genes are more or less active between two conditions, for example treated versus untreated cells.</p></div>
+                <div class="term"><h3>Dispersion</h3><p>A measure of how much a gene's counts bounce around between replicates of the same group. Noisy genes need a bigger change before they are called significant.</p></div>
+                <div class="term"><h3>DNA</h3><p>The molecule that stores the genetic instructions of a cell, written in four letters: A, T, G, C.</p></div>
+                <div class="term"><h3>Ensembl</h3><p>A major public database of genomes and gene annotations.</p></div>
+                <div class="term"><h3>Environment (virtual environment)</h3><p>A self-contained box holding a specific set of software packages, so one project cannot break another.</p></div>
+                <div class="term"><h3>FASTA</h3><p>A simple text format for storing sequences: a header line starting with "&gt;" followed by the sequence (DNA, RNA, or protein).</p></div>
+                <div class="term"><h3>FASTQ</h3><p>Like FASTA, but each base also carries a quality score showing how confident the sequencer was. The raw output of sequencing.</p></div>
+                <div class="term"><h3>Functional enrichment</h3><p>Asking whether your list of changed genes is unusually full of genes with a shared role (a pathway or function), to learn what biology is changing.</p></div>
+                <div class="term"><h3>Gene</h3><p>A stretch of DNA that carries the instructions to make a product, usually a protein.</p></div>
+                <div class="term"><h3>GenBank</h3><p>NCBI's richly annotated sequence format and database.</p></div>
+                <div class="term"><h3>Genome</h3><p>The complete set of DNA in an organism.</p></div>
+                <div class="term"><h3>GEO (Gene Expression Omnibus)</h3><p>A public NCBI repository of gene-expression datasets you can download and reanalyze.</p></div>
+                <div class="term"><h3>GFF / GTF</h3><p>Text formats that describe where genes, exons, and other features sit on a genome (annotation).</p></div>
+                <div class="term"><h3>GO (Gene Ontology)</h3><p>A standardized vocabulary describing what genes do: their biological processes, molecular functions, and locations. Used in enrichment analysis.</p></div>
+                <div class="term"><h3>GSEA (Gene Set Enrichment Analysis)</h3><p>A method that scans your whole ranked gene list to see if a group of related genes trends up or down together.</p></div>
+                <div class="term"><h3>Heatmap</h3><p>A grid of coloured cells that shows patterns in data at a glance, for example which genes are high or low across samples.</p></div>
+                <div class="term"><h3>KEGG</h3><p>A database of biological pathways (chains of interacting genes and molecules). Used in enrichment analysis.</p></div>
+                <div class="term"><h3>LFC shrinkage</h3><p>Pulling unreliable fold changes (often from low-count genes) toward zero, so rankings and plots reflect well-measured effects.</p></div>
+                <div class="term"><h3>log2 fold change</h3><p>How much a gene changed, on a log2 scale. +1 means it doubled, -1 means it halved. The sign is the direction, the size is the magnitude.</p></div>
+                <div class="term"><h3>MA plot</h3><p>A plot of fold change against average expression level. A health check that shows whether changes are spread fairly across genes.</p></div>
+                <div class="term"><h3>Multiple testing</h3><p>The problem that testing thousands of genes at once produces many false positives by chance, which is why we adjust p-values.</p></div>
+                <div class="term"><h3>NCBI</h3><p>The US National Center for Biotechnology Information, home to many core biological databases.</p></div>
+                <div class="term"><h3>NGS (Next-Generation Sequencing)</h3><p>Modern technology that reads DNA or RNA in millions of short fragments at once.</p></div>
+                <div class="term"><h3>Normalization</h3><p>Adjusting counts so samples sequenced at different depths can be compared fairly, so differences reflect biology and not data volume.</p></div>
+                <div class="term"><h3>p-value</h3><p>The probability of seeing a difference this big by chance alone. Small means surprising. For many-gene tests, use the adjusted p-value instead.</p></div>
+                <div class="term"><h3>pandas</h3><p>A Python library for working with tables of data, like a programmable spreadsheet.</p></div>
+                <div class="term"><h3>PCA (Principal Component Analysis)</h3><p>A way to squeeze many measurements into two axes so you can see, at a glance, which samples group together.</p></div>
+                <div class="term"><h3>pip</h3><p>Python's package installer; it fetches and installs Python libraries.</p></div>
+                <div class="term"><h3>Reads</h3><p>The short sequences a sequencing machine produces, each one a fragment of the original DNA or RNA.</p></div>
+                <div class="term"><h3>Reference genome</h3><p>A standard, agreed-upon genome sequence that new reads are compared against.</p></div>
+                <div class="term"><h3>RNA</h3><p>A molecule transcribed from DNA. Measuring RNA tells you which genes a cell is actively using.</p></div>
+                <div class="term"><h3>RNA-seq</h3><p>Sequencing the RNA in a sample to measure how active each gene is.</p></div>
+                <div class="term"><h3>SAM</h3><p>A text format that stores aligned reads (where each read mapped on the genome). BAM is its compressed form.</p></div>
+                <div class="term"><h3>Sequence</h3><p>The order of letters (bases) in DNA or RNA, or of amino acids in a protein.</p></div>
+                <div class="term"><h3>Single-cell RNA-seq</h3><p>RNA-seq that measures gene activity in individual cells rather than averaged over millions.</p></div>
+                <div class="term"><h3>SRA (Sequence Read Archive)</h3><p>A public NCBI repository of raw sequencing reads.</p></div>
+                <div class="term"><h3>Transcription</h3><p>The cell copying a gene's DNA into RNA, the first step in using a gene.</p></div>
+                <div class="term"><h3>Transcriptomics</h3><p>The study of all the RNA in a sample: which genes are on, off, up, or down.</p></div>
+                <div class="term"><h3>UniProt</h3><p>A major public database of protein sequences and information.</p></div>
+                <div class="term"><h3>Variance-stabilizing transformation (vst)</h3><p>A transform that puts genes on a comparable scale before plotting or clustering, so high-count genes do not dominate.</p></div>
+                <div class="term"><h3>VCF (Variant Call Format)</h3><p>A text format that lists differences (variants) between a sample's DNA and the reference genome.</p></div>
+                <div class="term"><h3>venv</h3><p>Python's built-in tool for creating virtual environments.</p></div>
+                <div class="term"><h3>Volcano plot</h3><p>A scatter plot of significance versus fold change. The genes that matter fly up into the top corners.</p></div>
+                <div class="term"><h3>z-score</h3><p>Rescaling each gene so a heatmap shows its relative change (up or down versus its own average) rather than its absolute level.</p></div>
+            </div>
+            <p class="no-res" id="noRes">No term matches that search. Try another word, or send us a suggestion from the feedback button.</p>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+        (function () {
+            var input = document.getElementById('glossarySearch');
+            var terms = Array.prototype.slice.call(document.querySelectorAll('#terms .term'));
+            var noRes = document.getElementById('noRes');
+            input.addEventListener('input', function () {
+                var q = input.value.trim().toLowerCase();
+                var shown = 0;
+                terms.forEach(function (t) {
+                    var match = t.textContent.toLowerCase().indexOf(q) !== -1;
+                    t.style.display = match ? '' : 'none';
+                    if (match) shown++;
+                });
+                noRes.style.display = shown === 0 ? 'block' : 'none';
+            });
+        })();
+    </script>
+    <script src="reactions.js" defer></script>
+</body>
+</html>

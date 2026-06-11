@@ -123,6 +123,7 @@
                     <li><a href="about.html">About</a></li>
                     <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
                     <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
                     <li><a href="contact.html" class="cta-nav">Contact</a></li>
                 </ul>
             </nav>
@@ -176,6 +177,11 @@
                 <p>Real experiments are rarely that clean. Suppose your samples were processed in two different batches, and batch differences are leaking into your data. You can tell DESeq2 to account for that:</p>
                 <pre>design = ~ batch + condition</pre>
                 <p>This says: "explain away the differences due to <code class="inline">batch</code> first, then test the effect of <code class="inline">condition</code> on top of that." A simple rule worth memorizing: <strong>the variable you actually want to test goes last</strong>, and anything you want to control for (batch, sex, age) goes before it.</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Batch effect</h4>
+                    <p>A "batch" is simply a group of samples that were handled together: prepared on the same day, by the same person, or on the same machine. When different batches pick up small technical differences that have nothing to do with the biology, that is a <strong>batch effect</strong>. Left alone it can masquerade as a real result, so adding <code class="inline">batch</code> to the design tells DESeq2 to subtract those technical differences out before testing your real question.</p>
+                </div>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Design formula</h4>
@@ -268,24 +274,4 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                     <p>Whenever you rank genes or make plots. Shrinkage tames the wild fold changes that low-count genes produce by chance, so your rankings and volcano/MA plots reflect real, well-measured effects.</p>
                 </details>
 
-                <a class="next-lesson" href="learn.html#track-3" target="_blank" rel="noopener">
-                    <span>Next in Track 3</span>
-                    <h3>Reading volcano &amp; MA plots →</h3>
-                </a>
-
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
-        </div>
-    </footer>
-
-    <script>
-        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
-    </script>
-    <script src="reactions.js" defer></script>
-</body>
-</html>
+           
