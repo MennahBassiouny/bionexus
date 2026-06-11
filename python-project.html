@@ -191,6 +191,20 @@ plt.show()</pre>
 
             <details><summary>The translation gave a warning about length not being a multiple of three. Is that bad?</summary><p>Not necessarily - the FASTA includes untranslated regions around the coding sequence, so the full mRNA isn't a clean multiple of three. For a precise translation you'd extract just the coding region (CDS); for this project, <code class="inline">to_stop=True</code> gives you the protein up to the first stop, which is what we want.</p></details>
 
+                <h2>Check your understanding</h2>
+                <div class="quiz">
+                    <div class="quiz-q-src">In the project, where do you fetch the real gene sequence from?</div>
+                    <button data-opt data-correct>NCBI</button>
+                    <button data-opt>A spreadsheet on your desktop</button>
+                    <button data-opt>A random number generator</button>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Turning a gene's DNA into a protein sequence is called:</div>
+                    <button data-opt>Encryption</button>
+                    <button data-opt data-correct>Translation</button>
+                    <button data-opt>Compression</button>
+                </div>
+
             <a class="next-lesson" href="r-install.html" target="_blank" rel="noopener">
                 <span>Next foundation</span>
                 <h3>Start the R series: installing R &amp; RStudio →</h3>
@@ -202,5 +216,6 @@ plt.show()</pre>
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

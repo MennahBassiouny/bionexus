@@ -205,6 +205,20 @@ pip install jupyter pandas numpy matplotlib biopython</pre>
             <details><summary>"Activate.ps1 cannot be loaded" in PowerShell</summary><p>PowerShell blocks scripts by default. Run this once: <code class="inline">Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code>, then activate again - or just use Command Prompt, where <code class="inline">bionexus\Scripts\activate.bat</code> works without any changes.</p></details>
             <details><summary>"pip is not recognized" / not found</summary><p>Use <code class="inline">python -m pip install ...</code> (or <code class="inline">python3 -m pip</code> on Mac/Linux). Routing through <code class="inline">python -m</code> always finds the right pip, even when the bare <code class="inline">pip</code> command isn't on your PATH.</p></details>
 
+                <h2>Check your understanding</h2>
+                <div class="quiz">
+                    <div class="quiz-q-src">What does a virtual environment (venv) do?</div>
+                    <button data-opt data-correct>Keeps a project's packages isolated so projects don't clash</button>
+                    <button data-opt>Makes your internet connection faster</button>
+                    <button data-opt>Deletes Python when you finish</button>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Which tool installs Python packages?</div>
+                    <button data-opt>Excel</button>
+                    <button data-opt data-correct>pip</button>
+                    <button data-opt>git</button>
+                </div>
+
             <a class="next-lesson" href="python-basics.html" target="_blank" rel="noopener"><span>Next in the Python series</span><h3>Python basics with real biological data →</h3></a>
         </div></div>
     </main>
@@ -219,5 +233,6 @@ pip install jupyter pandas numpy matplotlib biopython</pre>
         function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
     </script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html> 

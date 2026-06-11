@@ -166,6 +166,20 @@ nrow(clean)      <span class="c"># after</span></pre>
 
             <details><summary>Why <code class="inline">na.rm = TRUE</code> inside <code class="inline">mean()</code>?</summary><p>It tells <code class="inline">mean()</code> to ignore missing values when averaging. Without it, a single <code class="inline">NA</code> in the column makes the whole result <code class="inline">NA</code> - R's way of refusing to guess.</p></details>
 
+                <h2>Check your understanding</h2>
+                <div class="quiz">
+                    <div class="quiz-q-src">The R project analyzes which friendly real dataset?</div>
+                    <button data-opt data-correct>Palmer Penguins</button>
+                    <button data-opt>The complete human genome</button>
+                    <button data-opt>Daily stock market prices</button>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Computing a value per group (like the mean per species) is called:</div>
+                    <button data-opt>Encrypting the table</button>
+                    <button data-opt data-correct>Summarising by group</button>
+                    <button data-opt>Deleting the data</button>
+                </div>
+
             <a class="next-lesson" href="bash-install.html" target="_blank" rel="noopener">
                 <span>Next foundation</span>
                 <h3>Start the Bash series: setting up a terminal →</h3>
@@ -177,5 +191,6 @@ nrow(clean)      <span class="c"># after</span></pre>
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

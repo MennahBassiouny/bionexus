@@ -170,6 +170,20 @@ sudo apt install r-base</pre>
             <details><summary>RStudio says it can't find R</summary><p>This happens if RStudio was installed before R, or you have multiple R versions. In RStudio go to Tools → Global Options → General → and set the R version, or simply reinstall R then restart RStudio.</p></details>
             <details><summary>install.packages fails with a "non-zero exit status" on Linux</summary><p>Some R packages need system libraries to compile. The error usually names what's missing (e.g. <code class="inline">libcurl</code>, <code class="inline">libxml2</code>). Install the matching <code class="inline">-dev</code> package with apt (e.g. <code class="inline">sudo apt install libcurl4-openssl-dev</code>) and try again.</p></details>
 
+                <h2>Check your understanding</h2>
+                <div class="quiz">
+                    <div class="quiz-q-src">Where do you download R itself from?</div>
+                    <button data-opt data-correct>CRAN</button>
+                    <button data-opt>The Apple App Store only</button>
+                    <button data-opt>NCBI</button>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">What is RStudio?</div>
+                    <button data-opt>A cloud database of genomes</button>
+                    <button data-opt data-correct>A friendly desktop editor (IDE) for writing and running R</button>
+                    <button data-opt>A separate language that replaces R</button>
+                </div>
+
             <a class="next-lesson" href="r-basics.html" target="_blank" rel="noopener">
                 <span>Next in the R series</span>
                 <h3>R basics: data frames &amp; plotting →</h3>
@@ -181,5 +195,6 @@ sudo apt install r-base</pre>
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

@@ -171,6 +171,20 @@ awk <span class="s">"BEGIN{printf \"GC%% = %.1f\n\", $gc/$total*100}"</span></pr
 
             <details><summary>Why <code class="inline">tr -cd 'GC'</code> and not <code class="inline">tr -d</code>?</summary><p><code class="inline">tr -cd 'GC'</code> means "delete every character that is <em>not</em> G or C" (the <code class="inline">-c</code> complements the set). What's left is only the G and C characters, so <code class="inline">wc -c</code> counts exactly those.</p></details>
 
+                <h2>Check your understanding</h2>
+                <div class="quiz">
+                    <div class="quiz-q-src">How do you count the sequences in a FASTA file from the command line?</div>
+                    <button data-opt data-correct>Count the header lines, which each start with &amp;gt;</button>
+                    <button data-opt>Count every character in the whole file</button>
+                    <button data-opt>Open it in a photo editor</button>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Tools like grep, wc and sort let you:</div>
+                    <button data-opt>Design 3D protein structures</button>
+                    <button data-opt data-correct>Inspect and summarise data files without writing a full program</button>
+                    <button data-opt>Only delete files</button>
+                </div>
+
             <a class="next-lesson" href="learn.html" target="_blank" rel="noopener">
                 <span>You've finished the foundations 🎉</span>
                 <h3>Back to the roadmap - pick your next track →</h3>
@@ -182,5 +196,6 @@ awk <span class="s">"BEGIN{printf \"GC%% = %.1f\n\", $gc/$total*100}"</span></pr
     <footer><div class="container"><p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>
