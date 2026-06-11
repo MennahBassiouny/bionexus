@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Build RNA-seq heatmaps that actually reveal structure: variance-stabilizing transforms, sample-distance heatmaps, PCA, and clustered gene heatmaps in R.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Heatmaps and Clustering for RNA-seq in R | BioNexus Hub">
+    <meta property="og:description" content="Variance-stabilizing transforms, sample-distance heatmaps, PCA, and clustered gene heatmaps in R, explained simply.">
+    <meta property="og:url" content="https://bionexushub.com/rna-seq-heatmaps.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Heatmaps and Clustering for RNA-seq in R | BioNexus Hub">
+    <meta name="twitter:description" content="Variance-stabilizing transforms, sample-distance heatmaps, PCA, and clustered gene heatmaps in R.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Heatmaps and Clustering - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .colab-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; background: var(--deep-navy); color: white; border-radius: 12px; padding: 26px 30px; margin: 28px 0; }
+        .colab-cta div p:first-child { font-weight: 700; font-size: 1.15rem; margin-bottom: 4px; }
+        .colab-cta div p:last-child { color: rgba(255,255,255,0.7); font-size: 0.95rem; margin: 0; }
+        .colab-btn { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: transform 0.3s ease; }
+        .colab-btn:hover { transform: translateY(-2px); }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .k { color: #c084fc; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .step-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; font-weight: 700; font-size: 0.95rem; margin-right: 10px; vertical-align: middle; }
+
+        .levelup { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 22px 26px; margin: 28px 0; }
+        .levelup h4 { color: #b45309; margin-bottom: 8px; }
+        .levelup p { font-size: 1rem; color: var(--text-gray); margin-bottom: 8px; }
+        .levelup a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+
+        details { background: white; border: 1px solid rgba(91,156,248,0.2); border-radius: 8px; padding: 14px 20px; margin-bottom: 12px; }
+        details summary { font-weight: 600; cursor: pointer; color: var(--deep-navy); }
+        details p { margin: 12px 0 0; color: var(--text-gray); font-size: 1rem; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; Heatmaps and clustering</div>
+                <h1>Heatmaps and Clustering That Mean Something</h1>
+                <p class="promise">A good heatmap shows the structure in your experiment at a glance: which samples belong together, and which genes drive the difference between groups. But only if you prepare the data the right way first. Let's do it properly in R.</p>
+                <div class="tags">
+                    <span class="tag green">🟡 Intermediate</span>
+                    <span class="tag">⏱️ ~1 hour</span>
+                    <span class="tag">📊 R</span>
+                    <span class="tag green">🌐 Runs in your browser</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="prereq">
+                    <h4>Before you start</h4>
+                    <ul>
+                        <li>You've done <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">From Raw Counts to Differential Expression</a>, so you have a <code class="inline">dds</code> object and a results table.</li>
+                        <li>A little R, and a free Google account to run the Colab notebook.</li>
+                    </ul>
+                </div>
+
+                <h2>First rule: never heatmap raw counts</h2>
+                <p>It's tempting to throw your count matrix straight into a heatmap, but it will mislead you. Raw counts span an enormous range (some genes have tens of reads, others tens of thousands), and they depend on how deeply each sample was sequenced. A heatmap of raw counts just shows you a handful of very high-count genes and hides everything else.</p>
+                <p>The fix is a <strong>variance-stabilizing transformation</strong>. It puts every gene on a comparable, roughly even scale so that real patterns, not raw magnitude, drive the colours. DESeq2 gives you one in a single line.</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Variance-stabilizing transformation (vst)</h4>
+                    <p>A transformation that flattens the relationship between a gene's average count and its variability, so highly expressed genes stop dominating. The result is values you can safely cluster, plot, and compare across samples. DESeq2's <code class="inline">vst()</code> is fast and works well for most datasets; for very small ones, <code class="inline">rlog()</code> is a gentler alternative.</p>
+                </div>
+
+                <div class="colab-cta">
+                    <div>
+                        <p>▶ Code along in Google Colab</p>
+                        <p>Set the runtime to R (Runtime, then Change runtime type, then R), and run each block as you read.</p>
+                    </div>
+                    <a class="colab-btn" href="https://colab.research.google.com/github/MennahBassiouny/bionexus/blob/main/nb-rna-seq-heatmaps.ipynb" target="_blank" rel="noopener">Open the R notebook in Colab →</a>
+                </div>
+
+                <h2><span class="step-num">1</span>Set up and transform</h2>
+                <p>Rebuild the dataset from the previous lessons, then transform it. We'll also install <code class="inline">pheatmap</code>, a small, friendly package for drawing heatmaps.</p>
+                <pre><span class="k">library</span>(DESeq2)
+install.packages(<span class="s">"pheatmap"</span>)   <span class="c"># small CRAN package, installs quickly</span>
+<span class="k">library</span>(pheatmap)
+
+base <- <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
+counts <- as.matrix(read.csv(paste0(base, <span class="s">"test_counts.csv"</span>), row.names = 1))
+metadata <- read.csv(paste0(base, <span class="s">"test_metadata.csv"</span>), row.names = 1)
+metadata$condition <- factor(metadata$condition)
+metadata <- metadata[colnames(counts), , drop = FALSE]
+
+dds <- DESeqDataSetFromMatrix(counts, metadata, design = ~ condition)
+dds <- DESeq(dds)
+res <- results(dds, contrast = c(<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>))
+
+<span class="c"># the transformed values we'll use for every plot below</span>
+vsd <- vst(dds, blind = FALSE)
+<span class="c"># tip: on a very small dataset, use rlog(dds) instead if vst complains</span></pre>
+
+                <h2><span class="step-num">2</span>Do my samples cluster by condition? (the QC heatmap)</h2>
+                <p>Before trusting any result, ask a basic question: do replicates of the same condition look alike? We answer it by measuring the distance between every pair of samples and drawing those distances as a heatmap.</p>
+                <pre>sampleDists <- dist(t(assay(vsd)))   <span class="c"># distance between samples</span>
+mat <- as.matrix(sampleDists)
+
+pheatmap(mat,
+         clustering_distance_rows = sampleDists,
+         clustering_distance_cols = sampleDists,
+         main = <span class="s">"Sample-to-sample distances"</span>)</pre>
+                <p>How to read it: darker (smaller distance) means two samples are more similar. You want samples of the same condition to sit together in tight blocks, with a clear split between groups. If one sample clusters with the wrong group, that's a red flag worth investigating: a possible sample swap, a batch effect, or an outlier. This single plot catches problems that would otherwise quietly ruin your conclusions.</p>
+
+                <h2><span class="step-num">3</span>The same question, even faster: PCA</h2>
+                <p>A PCA plot squeezes all the genes down to two axes that capture the biggest sources of variation, so you can see the grouping in one glance. DESeq2 has it built in.</p>
+                <pre>plotPCA(vsd, intgroup = <span class="s">"condition"</span>)</pre>
+                <p>Samples of the same condition should cluster together and the two conditions should separate, ideally along the first axis (PC1). PCA and the distance heatmap answer the same question two ways; seeing both agree is reassuring.</p>
+
+                <h2><span class="step-num">4</span>Which genes separate the groups? (the gene heatmap)</h2>
+                <p>Now the satisfying one. We take the most differentially expressed genes, scale each gene so we see its <em>pattern</em> rather than its absolute level, and let clustering arrange them.</p>
+                <pre><span class="c"># the 30 most significant genes</span>
+top <- head(order(res$padj), 30)
+mat <- assay(vsd)[top, ]
+
+<span class="c"># z-score each gene across samples (centre and scale per row)</span>
+mat <- t(scale(t(mat)))
+
+<span class="c"># label the columns by condition</span>
+ann <- as.data.frame(colData(vsd)[, <span class="s">"condition"</span>, drop = FALSE])
+
+pheatmap(mat,
+         annotation_col = ann,
+         show_rownames = FALSE,
+         main = <span class="s">"Top 30 genes (z-scored)"</span>)</pre>
+                <p>Read it as blocks of colour. A clean result shows two opposing blocks: a set of genes high (one colour) in condition A and low in B, and another set doing the reverse. The dendrogram across the top should group the samples by condition on its own, which is a lovely independent confirmation that your differential-expression hits are real and coherent.</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Z-score scaling</h4>
+                    <p>For each gene, we subtract its mean and divide by its standard deviation across samples. This rescales every gene to the same footing so the heatmap shows <em>relative</em> change (up or down versus that gene's own average) instead of which genes are simply loud. Without it, a few high-expression genes would wash out the pattern you care about.</p>
+                </div>
+
+                <div class="levelup">
+                    <h4>🔶 Level up: prettier and bigger heatmaps</h4>
+                    <p><code class="inline">pheatmap</code> has many options worth exploring: custom colour palettes, splitting rows or columns into groups with <code class="inline">cutree_rows</code>, and adding multiple annotation tracks. For complex, publication-grade figures, the <code class="inline">ComplexHeatmap</code> Bioconductor package is the community standard once you outgrow the basics.</p>
+                </div>
+
+                <h2>Check your understanding</h2>
+                <details>
+                    <summary>Why transform the counts with vst before making a heatmap?</summary>
+                    <p>Raw counts span a huge range and depend on sequencing depth, so a few high-count genes would dominate the colours. The variance-stabilizing transform puts genes on a comparable scale, so real patterns drive the heatmap instead of raw magnitude.</p>
+                </details>
+                <details>
+                    <summary>What does the sample-distance heatmap tell you?</summary>
+                    <p>Whether replicates of the same condition are actually similar to each other. Tight same-condition blocks with a clean split between groups is healthy. A sample sitting with the wrong group hints at a swap, a batch effect, or an outlier.</p>
+                </details>
+                <details>
+                    <summary>Why z-score each gene before the gene heatmap?</summary>
+                    <p>So the heatmap shows each gene's relative change (up or down versus its own average) rather than its absolute expression level. Otherwise a handful of very highly expressed genes would dominate and hide the pattern.</p>
+                </details>
+
+                <a class="next-lesson" href="learn.html#track-3" target="_blank" rel="noopener">
+                    <span>Next in Track 3</span>
+                    <h3>Functional enrichment: GO, KEGG, GSEA →</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+</body>
+</html>
