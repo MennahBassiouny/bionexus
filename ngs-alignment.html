@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Align sequencing reads to a reference genome with BWA-MEM, in your browser. Understand what alignment means, read the SAM/BAM format, and turn raw reads into mapped reads ready for variant calling.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Read Alignment with BWA-MEM | BioNexus Hub">
+    <meta property="og:description" content="Map sequencing reads to a reference genome with BWA-MEM and learn to read the SAM/BAM format, in the browser.">
+    <meta property="og:url" content="https://bionexushub.com/ngs-alignment.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Read Alignment with BWA-MEM | BioNexus Hub">
+    <meta name="twitter:description" content="Map reads to a reference genome with BWA-MEM and read the SAM/BAM format.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Read Alignment with BWA-MEM - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .colab-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; background: var(--deep-navy); color: white; border-radius: 12px; padding: 26px 30px; margin: 28px 0; }
+        .colab-cta div p:first-child { font-weight: 700; font-size: 1.15rem; margin-bottom: 4px; }
+        .colab-cta div p:last-child { color: rgba(255,255,255,0.7); font-size: 0.95rem; margin: 0; }
+        .colab-btn { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: transform 0.3s ease; }
+        .colab-btn:hover { transform: translateY(-2px); }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .p { color: #f472b6; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .step-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; font-weight: 700; font-size: 0.95rem; margin-right: 10px; vertical-align: middle; }
+
+        .sam-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 0.95rem; }
+        .sam-table th, .sam-table td { border: 1px solid rgba(91,156,248,0.2); padding: 9px 12px; text-align: left; vertical-align: top; }
+        .sam-table th { background: rgba(91,156,248,0.08); color: var(--deep-navy); font-weight: 600; }
+        .sam-table td code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: #4c5fd5; }
+
+        .levelup { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 22px 26px; margin: 28px 0; }
+        .levelup h4 { color: #b45309; margin-bottom: 8px; }
+        .levelup p { font-size: 1rem; color: var(--text-gray); margin-bottom: 8px; }
+        .levelup a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+
+        details { background: white; border: 1px solid rgba(91,156,248,0.2); border-radius: 8px; padding: 14px 20px; margin-bottom: 12px; }
+        details summary { font-weight: 600; cursor: pointer; color: var(--deep-navy); }
+        details p { margin: 12px 0 0; color: var(--text-gray); font-size: 1rem; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-2" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 2: Genomics &amp; NGS &nbsp;/&nbsp; Read alignment</div>
+                <h1>Read Alignment: Putting Reads Back on the Genome</h1>
+                <p class="promise">Your cleaned reads are millions of tiny puzzle pieces. Alignment finds where each piece belongs on the reference genome. We'll do it with BWA-MEM, the field-standard aligner, and learn to read the SAM/BAM file it produces, the format every downstream tool depends on.</p>
+                <div class="tags">
+                    <span class="tag green">🟡 Intermediate</span>
+                    <span class="tag">⏱️ ~1.5 hr</span>
+                    <span class="tag">💻 Command line</span>
+                    <span class="tag green">🌐 Runs in your browser</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="prereq">
+                    <h4>Before you start</h4>
+                    <ul>
+                        <li>You've done <a href="ngs-trimming.html" target="_blank" rel="noopener">Trimming and Filtering Reads</a>, so you have clean FASTQ reads to align.</li>
+                        <li>Comfortable running a few command-line lines. A free Google account to run the notebook.</li>
+                        <li>Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                    </ul>
+                </div>
+
+                <h2>What alignment actually does</h2>
+                <p>A sequencer hands you millions of short reads, but it does not tell you where in the genome each one came from. Alignment (also called mapping) answers exactly that question: for every read, it finds the spot on a known <strong>reference genome</strong> that the read matches best, and records that position.</p>
+                <p>Think of the reference as the picture on a jigsaw box and your reads as the loose pieces. Alignment is the act of laying each piece onto the spot it fits. Once every read has a coordinate, you can stack them up, see how many reads cover each position, and spot the places where your sample differs from the reference. Those differences are variants, and finding them is what the rest of this track builds toward.</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Reference genome</h4>
+                    <p>A <strong>reference genome</strong> is a finished, agreed-upon sequence for a species (for humans, the GRCh38 assembly) that the community uses as a common coordinate system. It is not a "perfect" or "correct" genome, just a shared map so everyone's positions mean the same thing. You align your reads <em>against</em> it to describe where they sit and how they differ.</p>
+                </div>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>BWA-MEM</h4>
+                    <p><strong>BWA</strong> (Burrows-Wheeler Aligner) is a widely used program for mapping reads to a reference, and <strong>MEM</strong> is its recommended algorithm for reads longer than about 70 bases. You'll also hear of <strong>Bowtie2</strong> (a close alternative for DNA), <strong>HISAT2</strong> and <strong>STAR</strong> (used for RNA-seq, because they handle reads that span across spliced introns). For DNA mapping, BWA-MEM is the dependable default.</p>
+                </div>
+
+                <div class="colab-cta">
+                    <div>
+                        <p>▶ Run it in Google Colab</p>
+                        <p>Colab is a free Linux machine in your browser, so BWA runs with nothing to install on your computer.</p>
+                    </div>
+                    <a class="colab-btn" href="https://colab.research.google.com/github/MennahBassiouny/bionexus/blob/main/nb-ngs-alignment.ipynb" target="_blank" rel="noopener">Open the notebook in Colab →</a>
+                </div>
+
+                <h2><span class="step-num">1</span>Install the tools and make a tiny reference</h2>
+                <p>We install BWA and samtools (we'll use samtools to convert and inspect the result). The notebook then writes a small reference genome and a handful of reads taken from it, so the whole thing runs in seconds.</p>
+                <pre><span class="p">!</span>apt-get -qq install -y bwa samtools
+<span class="p">!</span>bwa 2>&amp;1 | head -3</pre>
+
+                <h2><span class="step-num">2</span>Index the reference</h2>
+                <p>Before BWA can search the reference, it builds an <strong>index</strong>, a set of helper files that let it look up sequences fast (the same idea as the index at the back of a book). You do this once per reference.</p>
+                <pre><span class="p">!</span>bwa index reference.fasta</pre>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Index</h4>
+                    <p>An <strong>index</strong> is a pre-built lookup structure. Searching the raw genome letter by letter for every read would be hopelessly slow, so the aligner first reorganizes the reference into a form it can query in an instant. Indexing takes a little time up front and is reused for every read afterward.</p>
+                </div>
+
+                <h2><span class="step-num">3</span>Align the reads</h2>
+                <p>Now the main event. <code class="inline">bwa mem</code> takes the indexed reference and your reads and prints alignments in <strong>SAM</strong> format. We pipe that straight into samtools to save it as a compact <strong>BAM</strong> file.</p>
+                <pre><span class="p">!</span>bwa mem reference.fasta reads.trimmed.fastq &gt; aligned.sam
+<span class="c"># or, save space by going straight to BAM:</span>
+<span class="p">!</span>bwa mem reference.fasta reads.trimmed.fastq <span class="p">|</span> samtools view -b -o aligned.bam</pre>
+
+                <h2>Reading the SAM file</h2>
+                <p>SAM (Sequence Alignment/Map) is just a text table, one line per read. After a header (lines starting with <code class="inline">@</code>), each alignment line has eleven required columns. You rarely read them by hand, but knowing the key ones demystifies everything downstream.</p>
+                <table class="sam-table">
+                    <tr><th>Column</th><th>Name</th><th>What it tells you</th></tr>
+                    <tr><td>1</td><td><code>QNAME</code></td><td>The read's name.</td></tr>
+                    <tr><td>2</td><td><code>FLAG</code></td><td>A bundle of yes/no facts about the read (mapped? reverse strand? paired?).</td></tr>
+                    <tr><td>3</td><td><code>RNAME</code></td><td>Which reference sequence (chromosome) it mapped to.</td></tr>
+                    <tr><td>4</td><td><code>POS</code></td><td>The position on that chromosome where the alignment starts.</td></tr>
+                    <tr><td>5</td><td><code>MAPQ</code></td><td>Mapping quality: how confident the aligner is about this position.</td></tr>
+                    <tr><td>6</td><td><code>CIGAR</code></td><td>A compact code for how the read matches (matches, insertions, deletions, clips).</td></tr>
+                    <tr><td>10</td><td><code>SEQ</code></td><td>The read's actual bases.</td></tr>
+                    <tr><td>11</td><td><code>QUAL</code></td><td>The per-base quality scores.</td></tr>
+                </table>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>BAM vs SAM</h4>
+                    <p><strong>SAM</strong> is the human-readable text version. <strong>BAM</strong> is the exact same information compressed into a binary file, much smaller and faster for programs to read. In real projects you keep BAM on disk and only convert to SAM when you want to peek inside. Tools read BAM directly.</p>
+                </div>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>MAPQ (mapping quality)</h4>
+                    <p><strong>MAPQ</strong> is a score for how sure the aligner is that a read landed in the right place. A high MAPQ means the read fits one spot clearly. A low MAPQ (near 0) means the read could fit several places about equally well, often because it falls in a repetitive region. Variant callers lean on MAPQ to decide which reads to trust.</p>
+                </div>
+
+                <h2><span class="step-num">4</span>Did it map? A quick sanity check</h2>
+                <p>Before moving on, confirm that your reads actually mapped. <code class="inline">samtools flagstat</code> prints a one-glance summary, including the all-important percentage of mapped reads.</p>
+                <pre><span class="p">!</span>samtools flagstat aligned.bam</pre>
+                <p>For a clean sample against the right reference, you expect a high mapping rate (often well above 90%). A low rate is a red flag: wrong reference, leftover adapters, or contaminated reads.</p>
+
+                <div class="warn">
+                    <h4>⚠️ Align to the right reference</h4>
+                    <p>Reads only map well to the genome they actually came from. Aligning human reads to a mouse genome, or using the wrong build, produces a low mapping rate and garbage downstream. Always match your reference to your organism (and note which build you used, so your work is reproducible).</p>
+                </div>
+
+                <h2>Where the mapped reads go next</h2>
+                <p>You now have a BAM file: every read, with a coordinate. But it's in the order the reads came off the machine, which is not useful yet. The next lesson is the <strong>samtools survival kit</strong>, where you sort and index the BAM so tools can jump to any region instantly, the step that turns a raw alignment into something you can actually analyze.</p>
+
+                <div class="levelup">
+                    <h4>🔶 Level up: read groups and paired-end</h4>
+                    <p>Real pipelines align paired-end reads (two files) and tag each BAM with a <strong>read group</strong> (<code class="inline">-R</code>) that records the sample and sequencing run. Variant callers like GATK require read groups. The full command grows to something like <code class="inline">bwa mem -R '@RG\tID:run1\tSM:sample1' ref.fasta R1.fastq R2.fastq</code>, but the core idea is exactly what you just did.</p>
+                </div>
+
+                <h2>Check your understanding</h2>
+                <details>
+                    <summary>Why do you index the reference before aligning?</summary>
+                    <p>Searching the raw genome for every one of millions of reads would be far too slow. The index reorganizes the reference into a lookup structure the aligner can query almost instantly. You build it once and reuse it for all your reads.</p>
+                </details>
+                <details>
+                    <summary>What does the POS column in a SAM file tell you?</summary>
+                    <p>It's the position on the reference (the coordinate on a given chromosome) where the read's alignment begins. Combined with RNAME (which chromosome), it pins the read to an exact spot on the genome.</p>
+                </details>
+                <details>
+                    <summary>Your flagstat shows only 40% of reads mapped. What might be wrong?</summary>
+                    <p>A low mapping rate usually means a mismatch between reads and reference: the wrong species or genome build, heavy adapter or quality contamination that trimming missed, or a contaminated sample. It's worth investigating before trusting anything downstream.</p>
+                </details>
+
+                <a class="next-lesson" href="ngs-samtools.html" target="_blank" rel="noopener">
+                    <span>Next in Track 2</span>
+                    <h3>samtools survival kit: sort, index, inspect →</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+</body>
+</html>

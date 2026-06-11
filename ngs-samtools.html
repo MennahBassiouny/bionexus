@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Clean raw sequencing reads with fastp in your browser: trim adapters and low-quality bases, filter short reads, and re-check quality before alignment.">
+    <meta name="description" content="The samtools survival kit: sort, index, and inspect BAM alignment files. Learn the handful of samtools commands that every genomics pipeline relies on, running in your browser.">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Trimming and Filtering Reads with fastp | BioNexus Hub">
-    <meta property="og:description" content="Trim adapters and low-quality bases with fastp, in the browser, and see the before-and-after improvement.">
-    <meta property="og:url" content="https://bionexushub.com/ngs-trimming.html">
+    <meta property="og:title" content="The samtools Survival Kit | BioNexus Hub">
+    <meta property="og:description" content="Sort, index, and inspect BAM files with the core samtools commands every NGS pipeline depends on.">
+    <meta property="og:url" content="https://bionexushub.com/ngs-samtools.html">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Trimming and Filtering Reads with fastp | BioNexus Hub">
-    <meta name="twitter:description" content="Trim adapters and low-quality bases with fastp, in the browser.">
+    <meta name="twitter:title" content="The samtools Survival Kit | BioNexus Hub">
+    <meta name="twitter:description" content="Sort, index, and inspect BAM files with the core samtools commands.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
-    <title>Trimming and Filtering Reads - BioNexus Hub</title>
+    <title>The samtools Survival Kit - BioNexus Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -88,6 +88,11 @@
 
         .step-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; font-weight: 700; font-size: 0.95rem; margin-right: 10px; vertical-align: middle; }
 
+        .cmd-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 0.95rem; }
+        .cmd-table th, .cmd-table td { border: 1px solid rgba(91,156,248,0.2); padding: 9px 12px; text-align: left; vertical-align: top; }
+        .cmd-table th { background: rgba(91,156,248,0.08); color: var(--deep-navy); font-weight: 600; }
+        .cmd-table td code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; color: #4c5fd5; }
+
         .levelup { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 22px 26px; margin: 28px 0; }
         .levelup h4 { color: #b45309; margin-bottom: 8px; }
         .levelup p { font-size: 1rem; color: var(--text-gray); margin-bottom: 8px; }
@@ -137,12 +142,12 @@
     <div class="lesson-header">
         <div class="container">
             <div class="lesson-body">
-                <div class="breadcrumb"><a href="learn.html#track-2" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 2: Genomics &amp; NGS &nbsp;/&nbsp; Trimming</div>
-                <h1>Trimming and Filtering Reads</h1>
-                <p class="promise">FastQC told you what was wrong with your reads. Trimming fixes it: snip off leftover adapters and low-quality ends, drop reads that are too short to be useful, and send only clean, trustworthy sequence into alignment. We'll do it with one fast tool, fastp.</p>
+                <div class="breadcrumb"><a href="learn.html#track-2" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 2: Genomics &amp; NGS &nbsp;/&nbsp; samtools</div>
+                <h1>The samtools Survival Kit</h1>
+                <p class="promise">samtools is the Swiss Army knife of alignment files. You do not need all hundred of its options, just a handful that show up in every pipeline. This lesson teaches that core set: sort, index, view, and flagstat, the commands that turn a raw BAM into something you can actually work with.</p>
                 <div class="tags">
                     <span class="tag green">🟡 Intermediate</span>
-                    <span class="tag">⏱️ ~45 min</span>
+                    <span class="tag">⏱️ ~1 hr</span>
                     <span class="tag">💻 Command line</span>
                     <span class="tag green">🌐 Runs in your browser</span>
                 </div>
@@ -157,80 +162,105 @@
                 <div class="prereq">
                     <h4>Before you start</h4>
                     <ul>
-                        <li>You've done <a href="ngs-fastqc.html" target="_blank" rel="noopener">Quality Control with FastQC</a>, so you know what a bad read looks like.</li>
-                        <li>Comfortable with a few command-line lines. A free Google account to run the notebook.</li>
+                        <li>You've done <a href="ngs-alignment.html" target="_blank" rel="noopener">Read Alignment with BWA-MEM</a>, so you have a BAM file to work on.</li>
+                        <li>Comfortable running a few command-line lines. A free Google account to run the notebook.</li>
                         <li>Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                     </ul>
                 </div>
 
-                <h2>What "trimming" actually does</h2>
-                <p>Trimming is housekeeping for reads. It does three jobs:</p>
-                <ul>
-                    <li><strong>Adapter trimming</strong>: when a DNA fragment is shorter than the read, the machine reads past the real sequence into the adapter. That adapter is not biology, so it is cut off.</li>
-                    <li><strong>Quality trimming</strong>: the low-quality bases that pile up at the 3' end of reads are trimmed away, so you do not align unreliable letters.</li>
-                    <li><strong>Length filtering</strong>: if a read becomes too short after trimming (or was always bad), it is dropped entirely.</li>
-                </ul>
-                <p>The result is a new FASTQ file with cleaner reads, ready for alignment.</p>
+                <h2>Why a raw BAM isn't ready yet</h2>
+                <p>When BWA finishes, the reads in your BAM file are in the order they came off the sequencer, which is essentially random. To analyze a genome you need to ask questions like "show me every read covering position 1,500 on chr1." Answering that on an unsorted file means scanning the whole thing every time. The fix is two quick steps: <strong>sort</strong> the reads into genome order, then build an <strong>index</strong> so any region can be found instantly. Almost every genomics tool expects a sorted, indexed BAM, so this is the universal next step after alignment.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>fastp</h4>
-                    <p><strong>fastp</strong> is a single, fast tool that does adapter trimming, quality trimming, and filtering in one step. It even auto-detects the adapter sequence for you and writes its own before-and-after quality report, so you can see exactly what it cleaned. Older alternatives you'll see in papers are Trimmomatic and cutadapt; fastp is the modern, beginner-friendly default.</p>
+                    <h4><span>Decode the jargon</span>samtools</h4>
+                    <p><strong>samtools</strong> is the standard toolkit for working with SAM, BAM, and CRAM alignment files. It does conversions (SAM to BAM), sorting, indexing, filtering, statistics, and more. You call it as <code class="inline">samtools &lt;subcommand&gt;</code>, like <code class="inline">samtools sort</code> or <code class="inline">samtools view</code>.</p>
                 </div>
 
                 <div class="colab-cta">
                     <div>
                         <p>▶ Run it in Google Colab</p>
-                        <p>Colab is a free Linux machine in your browser, so fastp runs with nothing to install on your computer.</p>
+                        <p>Colab is a free Linux machine in your browser, so samtools runs with nothing to install on your computer.</p>
                     </div>
-                    <a class="colab-btn" href="https://colab.research.google.com/github/MennahBassiouny/bionexus/blob/main/nb-ngs-trimming.ipynb" target="_blank" rel="noopener">Open the notebook in Colab →</a>
+                    <a class="colab-btn" href="https://colab.research.google.com/github/MennahBassiouny/bionexus/blob/main/nb-ngs-samtools.ipynb" target="_blank" rel="noopener">Open the notebook in Colab →</a>
                 </div>
 
-                <h2><span class="step-num">1</span>Install fastp and get some reads</h2>
-                <p>Install the tool, then make an example FASTQ. The notebook builds reads that have both a quality drop at the end and adapter contamination in some reads, so there is something real to clean.</p>
-                <pre><span class="p">!</span>apt-get -qq install -y fastp
-<span class="p">!</span>fastp --version</pre>
+                <h2>The five commands you'll actually use</h2>
+                <table class="cmd-table">
+                    <tr><th>Command</th><th>What it does</th></tr>
+                    <tr><td><code>samtools view</code></td><td>Look inside a BAM, convert SAM to BAM, or filter reads.</td></tr>
+                    <tr><td><code>samtools sort</code></td><td>Reorder reads by their genome position.</td></tr>
+                    <tr><td><code>samtools index</code></td><td>Build the companion <code>.bai</code> index for fast region lookups.</td></tr>
+                    <tr><td><code>samtools flagstat</code></td><td>One-glance summary: total, mapped, duplicate, paired reads.</td></tr>
+                    <tr><td><code>samtools depth</code></td><td>Report how many reads cover each position (coverage).</td></tr>
+                </table>
 
-                <h2><span class="step-num">2</span>Trim with one command</h2>
-                <p>The core command takes an input file (<code class="inline">-i</code>) and writes a cleaned output file (<code class="inline">-o</code>). By default fastp auto-detects adapters and trims low-quality bases. The <code class="inline">-h</code> and <code class="inline">-j</code> options save its HTML and JSON reports.</p>
-                <pre><span class="p">!</span>fastp -i reads.fastq -o reads.trimmed.fastq -h fastp.html -j fastp.json</pre>
-                <p>As it runs, fastp prints a summary: how many reads went in, how many passed the filters, how many had adapters trimmed, and the quality before and after. That summary <em>is</em> your before-and-after QC.</p>
+                <h2><span class="step-num">1</span>Look inside the BAM</h2>
+                <p>BAM is binary, so you cannot just <code class="inline">cat</code> it. <code class="inline">samtools view</code> turns it back into readable text. Add <code class="inline">-H</code> to see just the header.</p>
+                <pre><span class="p">!</span>samtools view -H aligned.bam        <span class="c"># the header</span>
+<span class="p">!</span>samtools view aligned.bam <span class="p">|</span> head -3   <span class="c"># first 3 alignments</span></pre>
 
-                <h2><span class="step-num">3</span>Confirm it worked</h2>
-                <p>A quick count shows that some reads were dropped (the ones too short or too poor to keep), and fastp's report shows the adapter content gone and the average quality up.</p>
-                <pre><span class="p">!</span>echo "Before: $(( $(wc -l &lt; reads.fastq)/4 )) reads"
-<span class="p">!</span>echo "After:  $(( $(wc -l &lt; reads.trimmed.fastq)/4 )) reads"</pre>
-                <p>Open <code class="inline">fastp.html</code> (download it from the Colab file browser on the left) to see the full before-and-after graphs. This is the loop you repeat in real projects: QC, trim, QC again, until the reads are clean.</p>
+                <h2><span class="step-num">2</span>Sort into genome order</h2>
+                <p>This is the key step. <code class="inline">samtools sort</code> reorders the reads so they run from the start of each chromosome to the end. We write the result to a new file.</p>
+                <pre><span class="p">!</span>samtools sort aligned.bam -o aligned.sorted.bam</pre>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Coordinate-sorted</h4>
+                    <p>A <strong>coordinate-sorted</strong> BAM has its reads ordered by chromosome and then by position along that chromosome. It's the order that lets tools (and the index) jump straight to any region instead of reading the whole file. When a tool complains it "expects a sorted BAM," this is what it means.</p>
+                </div>
+
+                <h2><span class="step-num">3</span>Index the sorted BAM</h2>
+                <p>Indexing creates a small companion file (<code class="inline">aligned.sorted.bam.bai</code>) that acts like a table of contents. With it, a tool can leap directly to "chr1:1500" without scanning everything before it. You must sort first; you cannot index an unsorted BAM.</p>
+                <pre><span class="p">!</span>samtools index aligned.sorted.bam
+<span class="p">!</span>ls -lh aligned.sorted.bam*</pre>
+
+                <h2><span class="step-num">4</span>Summarize and pull a region</h2>
+                <p>With a sorted, indexed BAM you get two superpowers. <code class="inline">flagstat</code> gives you the health summary, and <code class="inline">view</code> with a region string instantly returns just the reads over that spot.</p>
+                <pre><span class="p">!</span>samtools flagstat aligned.sorted.bam
+<span class="c"># Pull only the reads covering positions 1000-1100 on chr1:</span>
+<span class="p">!</span>samtools view aligned.sorted.bam chr1:1000-1100 <span class="p">|</span> wc -l</pre>
+                <p>That region query is the payoff of indexing. On a real, multi-gigabyte BAM it returns in a fraction of a second instead of minutes.</p>
 
                 <div class="warn">
-                    <h4>⚠️ Do not over-trim</h4>
-                    <p>It is tempting to crank the settings up and cut aggressively, but over-trimming throws away good data and can bias your results. fastp's defaults are sensible for most data. Trim to fix real problems you saw in QC, not to chase a perfect-looking report.</p>
+                    <h4>⚠️ Sort before you index</h4>
+                    <p>Indexing only works on a coordinate-sorted BAM. If you try to index the raw output of the aligner, samtools will refuse. The reliable habit is always the same order: align, sort, index.</p>
                 </div>
 
-                <h2>Where the cleaned reads go next</h2>
-                <p>Your <code class="inline">reads.trimmed.fastq</code> is now ready for the heart of the workflow: <strong>alignment</strong>, where each read is matched to its place in a reference genome. That is the next lesson.</p>
+                <h2><span class="step-num">5</span>How deep is the coverage?</h2>
+                <p><strong>Coverage</strong> (or depth) is how many reads overlap a given position. It's one of the most important quality numbers in genomics: variant callers trust a position more when many reads agree on it.</p>
+                <pre><span class="p">!</span>samtools depth aligned.sorted.bam <span class="p">|</span> head
+<span class="c"># average depth across all covered positions:</span>
+<span class="p">!</span>samtools depth aligned.sorted.bam <span class="p">|</span> awk '{sum+=$3} END {print "mean depth:", sum/NR}'</pre>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Coverage / depth</h4>
+                    <p><strong>Coverage</strong> (often written like "30x") is the average number of reads stacked over each base. Higher coverage means more evidence at every position, so you can call variants with more confidence. Too little coverage and you can't tell a real variant from a sequencing error.</p>
+                </div>
+
+                <h2>Where this leads</h2>
+                <p>A sorted, indexed BAM with known coverage is exactly what a variant caller wants. In the next and final Track 2 lesson, you'll feed this file to a variant caller and produce a <strong>VCF</strong>, the list of every place your sample differs from the reference. That's the capstone that ties the whole workflow together.</p>
 
                 <div class="levelup">
-                    <h4>🔶 Level up: paired-end trimming</h4>
-                    <p>Most real sequencing is paired-end (two files, R1 and R2). fastp handles both at once and keeps the pairs in sync: <code class="inline">fastp -i R1.fastq -I R2.fastq -o R1.trimmed.fastq -O R2.trimmed.fastq</code>. The capital <code class="inline">-I</code> and <code class="inline">-O</code> are the second read of each pair.</p>
+                    <h4>🔶 Level up: mark duplicates</h4>
+                    <p>Real pipelines add one more step before variant calling: marking <strong>PCR duplicates</strong> (identical reads created during library prep, which can bias variant calls). Tools like <code class="inline">samtools markdup</code> or Picard's <code class="inline">MarkDuplicates</code> flag them so callers can ignore them. The principle is the same survival-kit thinking: clean the BAM before you trust it.</p>
                 </div>
 
                 <h2>Check your understanding</h2>
                 <details>
-                    <summary>Why must adapter sequence be trimmed before alignment?</summary>
-                    <p>Adapter is artificial sequence added in the lab, not part of the genome. If you leave it on, the aligner tries to match non-biological letters and either fails or maps reads to the wrong place. Removing it gives clean, biological sequence to align.</p>
+                    <summary>Why must a BAM be sorted before it can be indexed?</summary>
+                    <p>The index is a table of contents that points to where each genome region sits in the file. That only makes sense if reads are stored in genome order. An unsorted BAM has reads scattered randomly, so there's nothing orderly for the index to point into, and samtools will refuse to index it.</p>
                 </details>
                 <details>
-                    <summary>After trimming you have fewer reads than you started with. Is that a problem?</summary>
-                    <p>Usually no. Trimming drops reads that became too short or were too low-quality to trust. Losing a modest fraction is normal and healthy; it means you kept only reliable reads. Losing most of your reads, though, points to a deeper problem worth investigating.</p>
+                    <summary>What does a region query like <code>chr1:1000-1100</code> rely on?</summary>
+                    <p>It relies on the BAM being coordinate-sorted and indexed. The index lets samtools jump straight to that slice of the file instead of scanning every read, which is what makes the query nearly instant on huge files.</p>
                 </details>
                 <details>
-                    <summary>What does fastp do that you would otherwise need several tools for?</summary>
-                    <p>It detects and trims adapters, trims low-quality bases, filters short reads, and produces a before-and-after QC report, all in one fast command. That is why it has become the go-to first step.</p>
+                    <summary>You see a mean depth of 2x over your region. Is that enough to call variants confidently?</summary>
+                    <p>Usually not. At 2x, a single sequencing error can masquerade as a variant because so few reads vouch for each position. Most variant-calling work aims for much higher depth (often 30x or more for human germline work) so multiple reads independently confirm each call.</p>
                 </details>
 
-                <a class="next-lesson" href="ngs-alignment.html" target="_blank" rel="noopener">
-                    <span>Next in Track 2</span>
-                    <h3>Read alignment: BWA, HISAT2, STAR →</h3>
+                <a class="next-lesson" href="ngs-variant-calling.html" target="_blank" rel="noopener">
+                    <span>Next in Track 2 · The capstone</span>
+                    <h3>Variant calling: from FASTQ to VCF →</h3>
                 </a>
 
             </div>
