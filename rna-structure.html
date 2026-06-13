@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Why RNA structure matters computationally: secondary and tertiary structure, base pairing, thermodynamic structure prediction with ViennaRNA, and experimental probing with SHAPE and DMS, explained for bioinformatics learners.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="RNA Structure and Why It Matters Computationally | BioNexus Hub">
+    <meta property="og:description" content="Base pairing, secondary and tertiary structure, thermodynamic prediction, and experimental probing (SHAPE/DMS), explained clearly.">
+    <meta property="og:url" content="https://bionexushub.com/rna-structure.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="RNA Structure and Why It Matters | BioNexus Hub">
+    <meta name="twitter:description" content="RNA structure: base pairing, prediction with ViennaRNA, and probing with SHAPE/DMS.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>RNA Structure and Why It Matters - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.red { background: rgba(239,68,68,0.1); border-color: transparent; color: #b91c1c; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .p { color: #f472b6; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .levelup { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 22px 26px; margin: 28px 0; }
+        .levelup h4 { color: #b45309; margin-bottom: 8px; }
+        .levelup p { font-size: 1rem; color: var(--text-gray); margin-bottom: 8px; }
+        .levelup a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-4" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 4: RNA Biology &amp; Epitranscriptomics &nbsp;/&nbsp; RNA structure</div>
+                <h1>RNA Structure and Why It Matters Computationally</h1>
+                <p class="promise">A messenger RNA is not a flat string of letters. It folds back on itself into hairpins and loops, and that shape controls how it is spliced, translated, stabilized, and bound by proteins. This lesson is the structural foundation for the rest of Track 4: what RNA structure is, why it is functional, how we predict it from sequence, and how we measure it in living cells.</p>
+                <div class="tags">
+                    <span class="tag red">🔴 Advanced</span>
+                    <span class="tag">⏱️ ~40 min</span>
+                    <span class="tag green">🌐 No install needed</span>
+                    <span class="tag">📚 RNA biology</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="prereq">
+                    <h4>Before you start</h4>
+                    <ul>
+                        <li>You know what RNA is and the central dogma. New? See <a href="intro-biology-for-coders.html" target="_blank" rel="noopener">the biology a coder needs</a>.</li>
+                        <li>This is the first lesson of the advanced RNA track. No coding required here, but later lessons assume comfort with the command line and RNA-seq.</li>
+                        <li>Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                    </ul>
+                </div>
+
+                <h2>RNA is a shape, not just a sequence</h2>
+                <p>DNA is famously a stable double helix held by two separate strands. RNA is usually <strong>single-stranded</strong>, which changes everything: a single RNA molecule folds back on itself, and its own bases pair up internally. Adenine pairs with uracil, guanine with cytosine, and RNA also tolerates the weaker <strong>G–U "wobble" pair</strong>, which DNA does not use. Those internal pairings build the molecule's <strong>secondary structure</strong>: stems (paired regions), hairpin loops, internal loops, bulges, and junctions.</p>
+                <p>Stack the secondary structure into three dimensions and you get the <strong>tertiary structure</strong>, the actual folded shape, sometimes locked together by long-range contacts called pseudoknots. The classic mental image is the cloverleaf of a tRNA folding into an L shape, but every mRNA has structure too, especially in its untranslated regions (UTRs).</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Secondary structure</h4>
+                    <p>The set of base pairs an RNA forms with itself: which nucleotide pairs with which. It is usually drawn in 2D (stems and loops) and is the level most computational tools predict. The full 3D fold is the tertiary structure.</p>
+                </div>
+
+                <h2>Why structure is functional, not decorative</h2>
+                <p>Structure is a regulatory layer that sits on top of sequence. A few of the places it decides biology:</p>
+                <ul>
+                    <li><strong>Non-coding RNAs are structure.</strong> tRNAs, rRNAs, and the spliceosome's snRNAs do their jobs because of precise folds, not coding content.</li>
+                    <li><strong>Riboswitches</strong> are structured segments in the UTRs of some mRNAs that change shape when they bind a small metabolite, switching the gene on or off without any protein involved.</li>
+                    <li><strong>Translation control.</strong> A stable hairpin in the 5' UTR can block the ribosome from scanning, lowering translation; an internal ribosome entry site (IRES) is a structure that recruits the ribosome directly.</li>
+                    <li><strong>Stability and localization.</strong> Structured elements in the 3' UTR are recognized by RNA-binding proteins that set how long the message survives and where in the cell it goes.</li>
+                    <li><strong>Splicing.</strong> Local structure around splice sites can hide or expose them, tuning which exons are included.</li>
+                </ul>
+                <p>So if you only read an mRNA as a sequence, you are missing a whole control system. That is exactly why this track exists.</p>
+
+                <h2>Predicting structure from sequence (the computational part)</h2>
+                <p>Given just the sequence, can we predict how it folds? The dominant approach is <strong>thermodynamic</strong>: every possible base pair and stacked helix has a known free-energy contribution, and the algorithm searches for the structure with the lowest total free energy, the <strong>minimum free energy (MFE)</strong> structure, because the most stable fold is the one most likely to form. This search is solved efficiently with dynamic programming (the Zuker algorithm, 1981).</p>
+                <p>The standard, free, open-source toolkit is the <strong>ViennaRNA package</strong> (its <code class="inline">RNAfold</code> program); <strong>Mfold/UNAFold</strong> is the other classic. Output is often written in <strong>dot-bracket notation</strong>, where a dot is an unpaired base and matching brackets are a base pair:</p>
+                <pre><span class="c"># sequence</span>
+GGGAAACCC
+<span class="c"># predicted secondary structure (dot-bracket): a 3-bp stem closing a loop</span>
+(((...)))</pre>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Minimum free energy (MFE)</h4>
+                    <p>The single predicted structure with the lowest folding free energy, taken as the most thermodynamically stable, and therefore the most probable, fold. Reported in kcal/mol: more negative means more stable.</p>
+                </div>
+
+                <div class="warn">
+                    <h4>⚠️ The MFE structure is a prediction, not the truth</h4>
+                    <p>Real RNA does not always sit in its single lowest-energy state. It samples an <strong>ensemble</strong> of structures, folds while it is still being made (co-transcriptionally), is shaped by bound proteins and the cellular environment, and can form pseudoknots that most fast predictors ignore. Treat a predicted MFE structure as a hypothesis, then test it.</p>
+                </div>
+
+                <h2>Measuring structure in real cells (the experimental part)</h2>
+                <p>Because prediction is imperfect, the field measures structure directly using <strong>chemical probing</strong> followed by sequencing. The idea: use a chemical that reacts only with <em>unpaired, flexible</em> nucleotides, then read out where it reacted.</p>
+                <ul>
+                    <li><strong>SHAPE</strong> reagents acylate the 2'-hydroxyl of flexible (single-stranded) nucleotides regardless of base, marking them.</li>
+                    <li><strong>DMS</strong> methylates unpaired adenines and cytosines specifically.</li>
+                </ul>
+                <p>Sequencing then reports a per-nucleotide "reactivity": high reactivity = likely unpaired, low = likely paired. Transcriptome-wide, in-cell versions such as <strong>SHAPE-seq</strong> and <strong>icSHAPE</strong> let you map structure across thousands of RNAs in living cells, and those reactivities can be fed back in as constraints to make the computational prediction far more accurate.</p>
+
+                <h2>The bridge to the rest of this track</h2>
+                <p>Structure connects directly to the two big themes ahead. RNA-binding proteins often recognize a <em>shape</em>, not just a motif, which is what CLIP-seq maps (next lesson). And chemical modifications change structure: the modification <strong>m6A</strong> weakens base pairing and can act as a structural switch that exposes or hides protein-binding sites (Liu et al., 2015). So the shape you just learned about is itself regulated by the epitranscriptomic marks you will study later in this track.</p>
+
+                <h2>Check your understanding</h2>
+                <div class="quiz">
+                    <div class="quiz-q-src">An RNAfold prediction gives a single MFE structure with ΔG = −22 kcal/mol. A colleague treats this as "the" structure of the RNA in the cell. What is the most accurate critique?</div>
+                    <button data-opt data-correct>The MFE is only the most stable single state; in cells RNA samples an ensemble and is shaped by folding kinetics, proteins, and modifications</button>
+                    <button data-opt>A negative ΔG is impossible, so the prediction is wrong</button>
+                    <button data-opt>RNAfold cannot handle sequences with G–U pairs, so the result is invalid</button>
+                    <button data-opt>The structure is correct because lower free energy always equals the in-cell structure</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> MFE prediction returns the single lowest-energy fold, but real RNA occupies a structural ensemble and is influenced by co-transcriptional folding, bound proteins, the cellular milieu, and modifications. The prediction is a strong hypothesis to test (e.g., with SHAPE), not ground truth.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">In a SHAPE experiment, a stretch of nucleotides shows consistently HIGH reactivity. What does that most likely indicate about those positions?</div>
+                    <button data-opt>They are paired in a stable double helix</button>
+                    <button data-opt data-correct>They are flexible and most likely single-stranded (unpaired)</button>
+                    <button data-opt>They carry an m6A modification</button>
+                    <button data-opt>They are GC-rich and therefore very stable</button>
+                    <div class="quiz-explain"><strong>Right.</strong> SHAPE reagents react with the 2'-OH of flexible, unpaired nucleotides. High reactivity marks single-stranded, accessible regions; paired bases in helices are constrained and react weakly. These reactivities can constrain and improve structure prediction.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A 5' UTR contains a very stable hairpin just upstream of the start codon. Based on this lesson, what functional consequence is most plausible?</div>
+                    <button data-opt data-correct>It can impede ribosome scanning and reduce translation of that mRNA</button>
+                    <button data-opt>It guarantees the mRNA will be spliced more efficiently</button>
+                    <button data-opt>It has no effect because only the coding sequence matters</button>
+                    <button data-opt>It increases the mRNA's GC content and therefore its expression</button>
+                    <div class="quiz-explain"><strong>Exactly.</strong> Stable secondary structure in the 5' UTR can block the scanning ribosome and lower translation efficiency. Structured UTR elements (hairpins, IRESs, riboswitches) are a major post-transcriptional control layer, which is the whole point of studying RNA structure.</div>
+                </div>
+
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Zuker M, Stiegler P. Optimal computer folding of large RNA sequences using thermodynamics and auxiliary information. <em>Nucleic Acids Res</em>, 1981. (The dynamic-programming MFE algorithm.)</li>
+                        <li>Lorenz R, et al. ViennaRNA Package 2.0. <em>Algorithms Mol Biol</em>, 2011. <a href="https://www.tbi.univie.ac.at/RNA/" target="_blank" rel="noopener">ViennaRNA website</a></li>
+                        <li>Spitale RC, et al. Structural imprints in vivo decode RNA regulatory mechanisms (icSHAPE). <em>Nature</em>, 2015.</li>
+                        <li>Liu N, et al. N6-methyladenosine-dependent RNA structural switches regulate RNA–protein interactions. <em>Nature</em>, 2015. (m6A as a structural switch.)</li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: June 2026.</p>
+                </div>
+
+                <a class="next-lesson" href="clip-seq.html" target="_blank" rel="noopener">
+                    <span>Next in Track 4</span>
+                    <h3>RNA–protein interactions: an intro to CLIP-seq →</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
