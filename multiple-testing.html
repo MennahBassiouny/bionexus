@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="When you test 20,000 genes at once, a p-value of 0.05 is not enough. Learn the multiple-testing problem, the difference between family-wise error rate and false discovery rate, and how Bonferroni and Benjamini-Hochberg correction work, with a runnable example.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="The Multiple-Testing Problem | BioNexus Hub">
+    <meta property="og:description" content="Why testing thousands of genes needs correction: FWER vs FDR, Bonferroni, and Benjamini-Hochberg, explained with a runnable example.">
+    <meta property="og:url" content="https://bionexushub.com/multiple-testing.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Multiple-Testing Problem | BioNexus Hub">
+    <meta name="twitter:description" content="FWER vs FDR, Bonferroni, and Benjamini-Hochberg correction for genomics, explained clearly.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>The Multiple-Testing Problem - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.amber { background: rgba(245,158,11,0.12); border-color: transparent; color: #b45309; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .ctable { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.96rem; }
+        .ctable th, .ctable td { border: 1px solid rgba(91,156,248,0.2); padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ctable th { background: rgba(91,156,248,0.1); color: var(--deep-navy); font-weight: 600; }
+        .ctable td { color: var(--text-gray); }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .p { color: #f472b6; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-5" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 5: Statistics &amp; Visualization &nbsp;/&nbsp; The multiple-testing problem</div>
+                <h1>The Multiple-Testing Problem</h1>
+                <p class="promise">A single p-value of 0.05 is a reasonable bar. Run 20,000 of them at once, one per gene, and that same bar will hand you a thousand "discoveries" that are pure noise. This is the single most important statistical idea in genomics, and the reason DESeq2 output has a "padj" column you should trust instead of the raw p-value. This lesson explains the problem and the two standard fixes, then has you implement one yourself.</p>
+                <div class="tags">
+                    <span class="tag amber">🟡 Cross-cutting</span>
+                    <span class="tag">⏱️ ~45 min</span>
+                    <span class="tag green">🌐 Runs in your browser</span>
+                    <span class="tag">🧮 Statistics</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="prereq">
+                    <h4>Before you start</h4>
+                    <ul>
+                        <li>You know what a p-value is. If "p-value" feels shaky, do <a href="stats-essentials.html" target="_blank" rel="noopener">Stats you can't avoid</a> first.</li>
+                        <li>No coding required to follow along, but a runnable Python cell lets you implement the correction yourself.</li>
+                        <li>Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                    </ul>
+                </div>
+
+                <h2>The problem, in one number</h2>
+                <p>Recall what p &lt; 0.05 means: if the null hypothesis is true, you will still get a "significant" result 5% of the time, purely by chance. That is the false-positive rate baked into the threshold. It is acceptable when you run <em>one</em> test. But genomics never runs one test.</p>
+                <p>A typical RNA-seq experiment tests every gene for differential expression, around <strong>20,000 tests</strong> in one analysis. Suppose, in the worst case, that <em>not a single gene truly changed</em>. How many would still cross p &lt; 0.05 by chance alone?</p>
+                <p style="background:rgba(245,158,11,0.1); border-left:4px solid var(--amber); padding:16px 20px; border-radius:8px;"><strong>20,000 × 0.05 = 1,000 false positives.</strong> A thousand genes flagged "significant" from a dataset with zero real signal.</p>
+                <p>If you hand in that gene list, almost all of it could be noise, and you would have no way to tell the real hits from the garbage. That is the multiple-testing (or multiple-comparisons) problem. GWAS is even more extreme: millions of variants tested at once.</p>
+
+                <h2>Two different things you might want to control</h2>
+                <p>The fix depends on what kind of error you are willing to tolerate. There are two formal targets:</p>
+                <table class="ctable">
+                    <thead><tr><th>Target</th><th>What it controls</th><th>Use when</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Family-wise error rate (FWER)</strong></td><td>The probability of making <em>even one</em> false positive across all tests</td><td>A single false positive is costly: clinical decisions, confirmatory studies</td></tr>
+                        <tr><td><strong>False discovery rate (FDR)</strong></td><td>The expected <em>proportion</em> of false positives among the hits you call significant</td><td>Exploratory genomics: you accept some false hits as long as most of your list is real</td></tr>
+                    </tbody>
+                </table>
+                <p>The distinction matters enormously. Controlling FWER is strict: it tries to avoid any false alarm at all, which makes it conservative and prone to missing real effects. Controlling FDR is more permissive and is the right tradeoff for discovery-stage genomics, where you want a gene list that is "mostly true" and will be validated later anyway.</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>False discovery rate (FDR)</h4>
+                    <p>If your significant list is controlled at 5% FDR, you expect about 5% of the genes on that list to be false positives. It is a property of the <em>whole list</em>, not of any one gene. This is exactly what "we report genes at FDR &lt; 0.05" means in a methods section.</p>
+                </div>
+
+                <h2>Fix 1: Bonferroni (controls FWER)</h2>
+                <p>The simplest correction. To keep the family-wise error rate at 0.05 across <em>m</em> tests, only call a result significant if its p-value is below <strong>0.05 / m</strong>. For 20,000 genes, that threshold becomes 0.05 / 20,000 = 0.0000025. A gene now needs an extraordinarily small p-value to survive.</p>
+                <p>Bonferroni is correct, simple, and bulletproof, but <strong>very conservative</strong>: by guarding against even a single false positive, it throws away many genuine effects (false negatives). In GWAS the famous "genome-wide significance" threshold of p &lt; 5×10⁻⁸ is essentially a Bonferroni correction for testing roughly a million independent common variants. For a 20,000-gene RNA-seq study, Bonferroni is usually too strict and you lose real biology.</p>
+
+                <h2>Fix 2: Benjamini-Hochberg (controls FDR)</h2>
+                <p>This is the genomics workhorse, the method behind the <code class="inline">padj</code> (DESeq2) and <code class="inline">FDR</code> (edgeR, limma) columns you will actually use. The Benjamini-Hochberg (BH) procedure (1995) controls the false discovery rate instead of the family-wise error rate, so it is far more powerful while still keeping your hit list honest.</p>
+                <p>The algorithm is surprisingly simple:</p>
+                <ol>
+                    <li>Sort all <em>m</em> p-values from smallest to largest. Give each a rank <em>i</em> (1, 2, 3, …).</li>
+                    <li>For each, compute the "BH critical value" <strong>(i / m) × Q</strong>, where Q is your chosen FDR (say 0.05).</li>
+                    <li>Find the largest rank <em>i</em> where the p-value is still ≤ its critical value.</li>
+                    <li>Call that p-value and <em>everything ranked below it</em> significant.</li>
+                </ol>
+                <p>The "adjusted p-value" (q-value-like number) reported in your results is this procedure expressed per gene, so you can simply filter <code class="inline">padj &lt; 0.05</code> and trust that your list is controlled at 5% FDR.</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Adjusted p-value / q-value</h4>
+                    <p>A p-value that has been rescaled to account for all the other tests. The <code class="inline">padj</code> column in DESeq2 is BH-adjusted. Storey's <strong>q-value</strong> is a closely related quantity: the minimum FDR at which a given test would be called significant. In practice you filter on the adjusted p-value, not the raw one.</p>
+                </div>
+
+                <h3>Implement Benjamini-Hochberg yourself</h3>
+                <p>Below is a small set of 10 p-values. The cell first counts how many pass a naive 0.05 cutoff, then applies BH correction and counts how many survive. Watch how BH is stricter than the raw cutoff but far less brutal than Bonferroni would be. Press Run (first run loads Python in your browser).</p>
+
+                <div class="pycell"><script type="application/x-python">pvalues = [0.001, 0.008, 0.012, 0.021, 0.03,
+           0.04, 0.20, 0.33, 0.51, 0.78]
+m = len(pvalues)
+Q = 0.05  # target FDR
+
+# 1) Naive: how many pass raw p < 0.05?
+naive_hits = sum(p < 0.05 for p in pvalues)
+
+# 2) Bonferroni threshold
+bonf_thresh = 0.05 / m
+bonf_hits = sum(p < bonf_thresh for p in pvalues)
+
+# 3) Benjamini-Hochberg
+ranked = sorted(enumerate(pvalues), key=lambda x: x[1])  # (orig_index, p)
+max_rank_passing = 0
+for rank, (idx, p) in enumerate(ranked, start=1):
+    critical = (rank / m) * Q
+    if p <= critical:
+        max_rank_passing = rank   # keep the LARGEST passing rank
+# everything up to that rank is significant
+bh_hits = max_rank_passing
+
+print(f"Tests run: {m},  target FDR/alpha: {Q}")
+print(f"Naive p < 0.05         -> {naive_hits} 'significant'")
+print(f"Bonferroni p < {bonf_thresh:.4f}  -> {bonf_hits} significant (very strict)")
+print(f"Benjamini-Hochberg FDR -> {bh_hits} significant (the genomics standard)")
+</script></div>
+
+                <p>Try editing the list: add twenty entries of <code class="inline">0.9</code> (null genes) and rerun. The naive count barely moves, but it should: those extra tests are exactly the multiple-testing burden that BH and Bonferroni account for and a raw cutoff ignores.</p>
+
+                <h2>A free diagnostic: the p-value histogram</h2>
+                <p>Before trusting any large set of p-values, plot their histogram. Under the null (nothing real), p-values are <strong>uniformly distributed</strong>, a flat histogram. Real signal shows up as a <strong>spike near zero</strong> on top of that flat background. Two warning shapes:</p>
+                <ul>
+                    <li><strong>A spike near 1, or a hill in the middle:</strong> something is wrong with your test or model (often a mis-specified or overly conservative test). FDR correction on these is meaningless.</li>
+                    <li><strong>Perfectly flat with no spike at zero:</strong> you likely have no real signal, so a long "significant" list after correction should make you suspicious.</li>
+                </ul>
+                <p>This one plot catches more analysis bugs than almost anything else, and you will learn to read it in the next lesson on honest visualization.</p>
+
+                <div class="warn">
+                    <h4>⚠️ The cardinal sins of multiple testing</h4>
+                    <p>Reporting <strong>raw</strong> p-values from a genome-wide screen as if they were significant. Running many tests, then correcting only the ones that "looked promising." And the subtlest one: testing many models or subgroups, reporting only the one that worked, and never disclosing how many you tried (this is "p-hacking," and it silently inflates your real false-positive rate far beyond 0.05).</p>
+                </div>
+
+                <h2>What to actually do</h2>
+                <ol>
+                    <li>For genome-wide discovery (RNA-seq, methylation, screens): report results at an <strong>FDR threshold</strong> using Benjamini-Hochberg. Filter on <code class="inline">padj</code> / adjusted p-value, never the raw p-value.</li>
+                    <li>When a single false positive is genuinely costly, use Bonferroni or another FWER method and accept the loss of power.</li>
+                    <li>Decide the threshold and the correction method <em>before</em> looking at results, and report how many tests were performed.</li>
+                    <li>Always glance at the p-value histogram first.</li>
+                </ol>
+
+                <h2>Check your understanding</h2>
+                <div class="quiz">
+                    <div class="quiz-q-src">A methods section reads: "We tested 18,000 genes and report 1,100 with raw p &lt; 0.05 as differentially expressed." Even before seeing the data, what is the strongest objection?</div>
+                    <button data-opt>None; 1,100 hits out of 18,000 is a strong result</button>
+                    <button data-opt data-correct>About 18,000 × 0.05 = 900 false positives are expected by chance alone, so most of the 1,100 could be noise; they must apply multiple-testing correction (e.g., BH FDR) and report adjusted p-values</button>
+                    <button data-opt>They should have used a p-value threshold of 0.10 to capture more genes</button>
+                    <button data-opt>Raw p-values are always fine as long as the sample size is above 3</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> At 18,000 tests, the 0.05 threshold alone yields roughly 900 false positives even with no true signal, so a raw-p list of 1,100 is largely uninterpretable. The fix is to control the FDR (Benjamini-Hochberg) and report adjusted p-values.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A clinical lab and an exploratory RNA-seq screen both test thousands of hypotheses. The lab chooses Bonferroni; the screen chooses Benjamini-Hochberg. Why is each choice defensible?</div>
+                    <button data-opt>They are interchangeable; the choice is purely stylistic</button>
+                    <button data-opt data-correct>The lab controls FWER (avoiding even one false positive, important when a single error has clinical cost) at the price of power; the screen controls FDR (tolerating a known small fraction of false hits to retain power for discovery)</button>
+                    <button data-opt>Bonferroni is for small studies and BH is for large ones, regardless of context</button>
+                    <button data-opt>BH is simply a more modern and always-superior version of Bonferroni</button>
+                    <div class="quiz-explain"><strong>Exactly.</strong> Bonferroni controls the family-wise error rate, the chance of any false positive, which suits high-stakes confirmatory settings but is conservative. BH controls the false discovery rate, the expected proportion of false hits, trading a little error tolerance for much more power, which fits exploratory genome-wide discovery.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">After differential-expression testing, you plot a histogram of all 20,000 raw p-values and see a roughly flat distribution with a clear spike near 0. What does this most likely indicate?</div>
+                    <button data-opt>The analysis is broken; p-values should never be flat</button>
+                    <button data-opt data-correct>This is the healthy expected shape: the flat part is the null genes (uniform p-values) and the spike near 0 reflects genuinely differentially expressed genes</button>
+                    <button data-opt>A spike near 0 means the experiment failed and should be repeated</button>
+                    <button data-opt>It means every gene is differentially expressed</button>
+                    <div class="quiz-explain"><strong>Right.</strong> Under the null, p-values are uniform (flat). Real signal adds an excess of very small p-values, the spike near 0. This flat-plus-spike shape is exactly what you want to see, and it tells you FDR correction will behave sensibly. A spike near 1 or a central hump would instead signal a modeling problem.</div>
+                </div>
+
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Benjamini Y, Hochberg Y. Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing. <em>J. Royal Statistical Society B</em>, 1995. (The original BH procedure.)</li>
+                        <li>Storey JD, Tibshirani R. Statistical significance for genomewide studies. <em>PNAS</em>, 2003. (q-values.) <a href="https://doi.org/10.1073/pnas.1530509100" target="_blank" rel="noopener">doi:10.1073/pnas.1530509100</a></li>
+                        <li>Noble WS. How does multiple testing correction work? <em>Nature Biotechnology</em>, 2009. (A classic plain-English primer.)</li>
+                        <li>Love MI, Huber W, Anders S. DESeq2. <em>Genome Biology</em>, 2014. (The <code>padj</code> column is BH-adjusted.)</li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: June 2026.</p>
+                </div>
+
+                <a class="next-lesson" href="plots-that-tell-the-truth.html" target="_blank" rel="noopener">
+                    <span>Next in Track 5</span>
+                    <h3>Plots that tell the truth: visualization best practices →</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>

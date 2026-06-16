@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The statistics every bioinformatician actually needs: distributions, the null hypothesis, what a p-value really means (and does not), effect sizes, and why statistical significance is not the same as biological importance.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Stats You Cannot Avoid: p-values, Distributions, Effect Sizes | BioNexus Hub">
+    <meta property="og:description" content="What a p-value really means, the distributions behind genomics, effect sizes, and statistical vs biological significance.">
+    <meta property="og:url" content="https://bionexushub.com/stats-essentials.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Stats You Cannot Avoid | BioNexus Hub">
+    <meta name="twitter:description" content="p-values, distributions, and effect sizes for bioinformatics, explained clearly.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Stats You Cannot Avoid: p-values, Distributions, Effect Sizes - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.amber { background: rgba(245,158,11,0.12); border-color: transparent; color: #b45309; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .ctable { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.96rem; }
+        .ctable th, .ctable td { border: 1px solid rgba(91,156,248,0.2); padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ctable th { background: rgba(91,156,248,0.1); color: var(--deep-navy); font-weight: 600; }
+        .ctable td { color: var(--text-gray); }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .p { color: #f472b6; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-5" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 5: Statistics &amp; Visualization &nbsp;/&nbsp; Stats you can't avoid</div>
+                <h1>Stats You Can't Avoid: p-values, Distributions, and Effect Sizes</h1>
+                <p class="promise">Every differential-expression table, every GWAS hit, every "significant" result you will ever produce rests on a few statistical ideas. Most people never learn them properly and pay for it later with retracted figures and unreproducible claims. This lesson gives you the working understanding: what a distribution is, what a p-value actually means (and the things people wrongly think it means), and why an effect size matters more than a p-value.</p>
+                <div class="tags">
+                    <span class="tag amber">🟡 Cross-cutting</span>
+                    <span class="tag">⏱️ ~1 hr</span>
+                    <span class="tag green">🌐 Runs in your browser</span>
+                    <span class="tag">🧮 Statistics</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="prereq">
+                    <h4>Before you start</h4>
+                    <ul>
+                        <li>Comfortable with basic arithmetic and the idea of an average. No prior statistics needed.</li>
+                        <li>You have seen a results table from an analysis (a volcano plot, a DESeq2 output, a GWAS Manhattan plot) or will soon. This lesson explains the numbers in those tables.</li>
+                        <li>Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                    </ul>
+                </div>
+
+                <h2>Why a biologist has to care about statistics</h2>
+                <p>Biology is noisy. Two genetically identical cells given the identical treatment will not produce identical measurements. So when you see gene X go up 1.4-fold between treated and control, the real question is never "did it change?" (the numbers are always at least slightly different). The question is: <strong>could a difference this big have happened just by chance, given how noisy the measurements are?</strong> Statistics is the toolkit for answering that question honestly. Skip it, and you will confidently report noise as discovery.</p>
+
+                <h2>Distributions: the shape of your data</h2>
+                <p>A <strong>distribution</strong> describes how often each value occurs. It is the single most important concept here, because every statistical test assumes your data follow some distribution, and choosing the wrong one gives wrong answers. Three you will meet constantly:</p>
+                <ul>
+                    <li><strong>Normal (Gaussian, the "bell curve").</strong> Symmetric, described by a mean and a standard deviation. Heights, measurement errors, and many log-transformed quantities are roughly normal. Many classic tests (the t-test) assume it.</li>
+                    <li><strong>Binomial.</strong> Counts of successes out of a fixed number of yes/no trials, like how many of 50 sequencing reads carry the alternate allele. The foundation of variant calling.</li>
+                    <li><strong>Negative binomial.</strong> The workhorse for <strong>RNA-seq counts</strong>. Read counts per gene are non-negative integers and are "overdispersed" (their variance is larger than a simple Poisson would predict because of biological variability between samples). This is exactly why DESeq2 and edgeR model counts with the negative binomial rather than assuming a normal bell curve, and why you should never run a plain t-test on raw counts.</li>
+                </ul>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Standard deviation</h4>
+                    <p>A measure of spread: how far, on average, individual values sit from the mean. Small standard deviation means the data cluster tightly; large means they are spread out. Noise lives here, and statistical tests are essentially comparing the size of an effect against the size of this spread.</p>
+                </div>
+
+                <h2>The null hypothesis and the logic of a test</h2>
+                <p>A hypothesis test does something slightly counterintuitive: it starts by assuming nothing interesting is happening. That assumption is the <strong>null hypothesis</strong> (often written H<sub>0</sub>), for example "this gene's expression is the same in treated and control." You then ask: if the null were true, how surprising is the data I actually observed? If the data would be very unlikely under the null, you have grounds to reject the null in favor of the alternative ("the gene did change").</p>
+                <p>The number that quantifies "how surprising" is the p-value.</p>
+
+                <h2>What a p-value actually is</h2>
+                <p>Here is the precise definition, worth memorizing word for word:</p>
+                <p style="background:rgba(91,156,248,0.08); border-left:4px solid var(--primary-blue); padding:16px 20px; border-radius:8px;"><strong>A p-value is the probability of observing data at least as extreme as what you saw, <em>assuming the null hypothesis is true.</em></strong></p>
+                <p>A small p-value (say 0.001) means: if there were truly no effect, data this extreme would happen only 1 time in 1000. That is surprising enough that most fields agree to "reject the null." The conventional, and entirely arbitrary, threshold is <strong>0.05</strong>, a convention from Ronald Fisher in the 1920s, not a law of nature.</p>
+
+                <div class="warn">
+                    <h4>⚠️ What a p-value is NOT (the misreadings that ruin papers)</h4>
+                    <p>It is <strong>not</strong> the probability that the null hypothesis is true. It is <strong>not</strong> the probability your result happened "by chance." It is <strong>not</strong> a measure of how big or important the effect is. And p = 0.04 versus p = 0.06 is not a meaningful difference in evidence, despite one being "significant" and the other not. The American Statistical Association issued a formal statement in 2016 precisely because these misinterpretations are so widespread and so damaging.</p>
+                </div>
+
+                <h3>See it for yourself: simulate the null</h3>
+                <p>The clearest way to understand a p-value is to build the null world and look. Below, we assume a coin is fair (the null), flip it 100 times in thousands of imaginary experiments, and ask how often we would see a result as extreme as 64 heads. That fraction <em>is</em> the p-value. Press Run (the first run loads Python in your browser and takes a moment).</p>
+
+                <div class="pycell"><script type="application/x-python">import random
+
+observed_heads = 64      # our actual experiment: 64 heads out of 100
+n_flips = 100
+n_experiments = 50000    # imaginary repeats of the experiment under the null
+
+# Under the null, the coin is fair (p = 0.5). Simulate.
+as_extreme = 0
+for _ in range(n_experiments):
+    heads = sum(random.random() < 0.5 for _ in range(n_flips))
+    # two-sided: as far from 50 as our observed result, in either direction
+    if abs(heads - 50) >= abs(observed_heads - 50):
+        as_extreme += 1
+
+p_value = as_extreme / n_experiments
+print(f"Observed: {observed_heads} heads out of {n_flips}")
+print(f"Simulated p-value: {p_value:.4f}")
+print("Interpretation: if the coin were truly fair, a result this")
+print(f"extreme would occur about {p_value*100:.1f}% of the time.")
+</script></div>
+
+                <p>Change <code class="inline">observed_heads</code> to 52 and rerun: the p-value shoots up, because 52 heads is not surprising for a fair coin at all. Change it to 70 and it nearly vanishes. You are watching the definition of a p-value in action.</p>
+
+                <h2>Effect size: the question the p-value ignores</h2>
+                <p>A p-value tells you whether an effect is detectable. It says nothing about whether the effect is <strong>big enough to matter</strong>. With a huge sample, a trivially small difference can be wildly "significant"; with a tiny sample, a large, real effect can miss the 0.05 cutoff. That is why you must always report an <strong>effect size</strong> alongside the p-value.</p>
+                <table class="ctable">
+                    <thead><tr><th>Effect size</th><th>What it measures</th><th>Where you'll see it</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Fold change / log<sub>2</sub> fold change</strong></td><td>How many times larger one group's value is than another's</td><td>RNA-seq, the x-axis of every volcano plot</td></tr>
+                        <tr><td><strong>Cohen's d</strong></td><td>Difference between two means measured in standard deviations</td><td>Comparing continuous measurements between two groups</td></tr>
+                        <tr><td><strong>Odds ratio / relative risk</strong></td><td>How much an exposure changes the odds of an outcome</td><td>GWAS, epidemiology, case-control studies</td></tr>
+                        <tr><td><strong>Correlation coefficient (r)</strong></td><td>Strength and direction of a linear relationship</td><td>Comparing two continuous variables</td></tr>
+                    </tbody>
+                </table>
+                <p>This is why a volcano plot has <em>two</em> axes: effect size (log<sub>2</sub> fold change) on x and statistical significance (−log<sub>10</sub> p) on y. The genes you care about are large on both: a real, big change that is also unlikely to be noise. A gene with a tiny fold change but a microscopic p-value is statistically significant and biologically boring.</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Statistical vs. practical (biological) significance</h4>
+                    <p>"Statistically significant" only means "unlikely under the null." It does not mean large, important, or real-world relevant. A drug that lowers a biomarker by 0.3% with p &lt; 0.0001 is statistically significant and clinically useless. Always ask both "is it detectable?" and "is it big enough to care about?"</p>
+                </div>
+
+                <h2>Sample size, power, and why small studies mislead</h2>
+                <p><strong>Statistical power</strong> is the probability that your study will detect a real effect if one exists. It rises with sample size and with effect size, and falls when the data are noisy. Underpowered studies (too few samples, common in biology where samples are expensive) have two nasty properties: they miss real effects (false negatives), and the "significant" hits they do report are <strong>inflated and often wrong</strong> in direction or magnitude, the "winner's curse." This is a major driver of the reproducibility crisis. Three biological replicates is a starting point for RNA-seq, not a guarantee of adequate power.</p>
+
+                <h2>The mental checklist for any result</h2>
+                <ol>
+                    <li><strong>What is the null hypothesis?</strong> If you can't state it, you can't interpret the p-value.</li>
+                    <li><strong>What is the effect size, and is it biologically meaningful?</strong> Not just the p-value.</li>
+                    <li><strong>Is the test appropriate for the data's distribution?</strong> Counts are not normal; use count-aware methods.</li>
+                    <li><strong>How many tests were run?</strong> One p-value of 0.05 is one thing; 20,000 of them is the subject of the next lesson.</li>
+                </ol>
+
+                <h2>Check your understanding</h2>
+                <div class="quiz">
+                    <div class="quiz-q-src">A reviewer writes: "Your p-value of 0.02 means there is a 98% chance the gene is truly differentially expressed." What is the best response?</div>
+                    <button data-opt data-correct>That is a misinterpretation: the p-value is the probability of data this extreme if the null were true, not the probability that the alternative hypothesis is true</button>
+                    <button data-opt>The reviewer is correct; 1 minus the p-value is the probability the effect is real</button>
+                    <button data-opt>The reviewer is correct only if the sample size is large</button>
+                    <button data-opt>The p-value should be reported as 0.98 instead to reflect this</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> A p-value is computed <em>assuming the null is true</em>; it cannot tell you the probability that the null (or the alternative) is true. Converting "p = 0.02" into "98% chance it's real" is one of the most common and serious statistical errors, flagged explicitly in the ASA's 2016 statement.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Gene A: log<sub>2</sub> fold change 0.05, p = 1e-12. Gene B: log<sub>2</sub> fold change 3.0, p = 0.03. A collaborator wants to follow up only Gene A because its p-value is far smaller. What is the soundest critique?</div>
+                    <button data-opt>Gene A is clearly the better hit; smaller p-value always wins</button>
+                    <button data-opt data-correct>Gene A's effect size is negligible (a ~3.5% change) despite the tiny p-value, likely driven by large sample size; Gene B shows an 8-fold change and is more likely biologically meaningful</button>
+                    <button data-opt>Both genes should be discarded because neither p-value is below 1e-15</button>
+                    <button data-opt>Gene B's result is impossible because a large fold change must give a small p-value</button>
+                    <div class="quiz-explain"><strong>Exactly.</strong> A microscopic p-value with a near-zero effect size usually signals a real-but-trivial difference detected because the study was highly powered. Gene B's log<sub>2</sub>FC of 3.0 is an 8-fold change, biologically substantial. You need both axes; significance alone is not a ranking of importance.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A colleague runs a standard Student's t-test directly on raw RNA-seq read counts and is puzzled that established tools like DESeq2 give different results. What is the core statistical problem?</div>
+                    <button data-opt>The t-test is fine; DESeq2 must have a bug</button>
+                    <button data-opt>Raw counts should always be rounded to the nearest 100 before testing</button>
+                    <button data-opt data-correct>Read counts are non-negative, integer, and overdispersed, so they violate the t-test's normality assumption; count data are better modeled with a negative binomial distribution as DESeq2/edgeR do</button>
+                    <button data-opt>The t-test requires exactly equal sample sizes, which RNA-seq never has</button>
+                    <div class="quiz-explain"><strong>Right.</strong> The t-test assumes roughly normally distributed values. RNA-seq counts are discrete, bounded at zero, and overdispersed (variance &gt; mean). DESeq2 and edgeR model them with the negative binomial and share information across genes to estimate dispersion, which is why they are the field standard and a raw t-test is not.</div>
+                </div>
+
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Wasserstein RL, Lazar NA. The ASA Statement on p-Values: Context, Process, and Purpose. <em>The American Statistician</em>, 2016. <a href="https://doi.org/10.1080/00031305.2016.1154108" target="_blank" rel="noopener">doi:10.1080/00031305.2016.1154108</a></li>
+                        <li>Nuzzo R. Scientific method: Statistical errors. <em>Nature</em>, 2014. (A readable tour of how p-values are misused.)</li>
+                        <li>Halsey LG, et al. The fickle P value generates irreproducible results. <em>Nature Methods</em>, 2015.</li>
+                        <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em>, 2014. (Why counts use the negative binomial.)</li>
+                        <li>Button KS, et al. Power failure: why small sample size undermines the reliability of neuroscience. <em>Nature Reviews Neuroscience</em>, 2013.</li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: June 2026.</p>
+                </div>
+
+                <a class="next-lesson" href="multiple-testing.html" target="_blank" rel="noopener">
+                    <span>Next in Track 5</span>
+                    <h3>The multiple-testing problem →</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
