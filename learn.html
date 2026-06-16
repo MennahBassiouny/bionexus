@@ -458,4 +458,31 @@
             {t:"Project: wrangle a real data file (Bash)", g:"Foundations · Bash", u:"bash-project.html", k:"fasta grep command line ncbi gc project bash"},
             {t:"Set up VS Code", g:"Foundations · Tools", u:"vscode-setup.html", k:"editor ide python extension terminal vscode visual studio code"},
             {t:"Your First RNA-seq Analysis", g:"Track 3 · Flagship", u:"rna-seq-first-analysis.html", k:"deseq pydeseq differential expression volcano rnaseq transcriptomics counts project"},
-            {t:"Sequences, FASTA & FASTQ explained", g:"Track 1", u:"
+            {t:"Sequences, FASTA & FASTQ explained", g:"Track 1", u:"track1-sequences-fasta-fastq.html", k:"fasta fastq quality phred sequence reads format"},
+            {t:"The file-format alphabet soup", g:"Track 1", u:"track1-file-formats.html", k:"sam bam vcf gff gtf bed formats variants alignment annotation"},
+            {t:"Biopython basics", g:"Track 1", u:"track1-biopython-basics.html", k:"seq seqio seqrecord translate reverse complement biopython parse"},
+            {t:"Where the data lives: NCBI, Ensembl, GEO, SRA", g:"Track 1", u:"track1-where-data-lives.html", k:"ncbi ensembl geo sra uniprot entrez database accession fetch download"},
+            {t:"Pandas for biologists", g:"Track 1", u:"track1-pandas-for-biologists.html", k:"pandas dataframe merge groupby tabular data table project"},
+            {t:"Going further: GenBank, big files & joining tables", g:"Track 1", u:"track1-enrichment.html", k:"genbank gzip compressed merge join cds enrichment"},
+            {t:"Resources: datasets & tools", g:"Page", u:"resources.html", k:"datasets tools ncbi colab bioconductor biopython downloads geo"},
+            {t:"About BioNexus Hub", g:"Page", u:"about.html", k:"founder mission instructor story"},
+            {t:"Contact", g:"Page", u:"contact.html", k:"contact email form get in touch"}
+        ];
+        (function(){
+            var inp = document.getElementById('lessonSearch'), out = document.getElementById('searchResults');
+            if (!inp) return;
+            inp.addEventListener('input', function(){
+                var q = inp.value.trim().toLowerCase();
+                if (!q) { out.style.display='none'; out.innerHTML=''; return; }
+                var hits = LESSONS.filter(function(l){ return (l.t + ' ' + l.g + ' ' + l.k).toLowerCase().indexOf(q) !== -1; }).slice(0,8);
+                out.innerHTML = hits.length
+                    ? hits.map(function(l){ return '<li><a href="'+l.u+'" target="_blank" rel="noopener">'+l.t+'<small>'+l.g+'</small></a></li>'; }).join('')
+                    : '<li class="no-res">No lessons match - try another word.</li>';
+                out.style.display = 'block';
+            });
+            document.addEventListener('click', function(e){ if (!e.target.closest('.lesson-search')) out.style.display='none'; });
+        })();
+    </script>
+    <script src="reactions.js" defer></script>
+</body>
+</html>
