@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Free printable bioinformatics cheat sheets: the command line and samtools/bcftools, the file formats (FASTA, FASTQ, SAM/BAM, VCF, GTF, BED), conda and Git commands, and the statistics and DESeq2 quick reference. Save or print as PDF.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Bioinformatics Cheat Sheets | BioNexus Hub">
+    <meta property="og:description" content="Printable quick references: command line & samtools, file formats, conda & Git, and stats & DESeq2.">
+    <meta property="og:url" content="https://bionexushub.com/cheatsheets.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bioinformatics Cheat Sheets | BioNexus Hub">
+    <meta name="twitter:description" content="Printable quick references for command line, file formats, conda/Git, and stats/DESeq2.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Bioinformatics Cheat Sheets - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --deep-navy: #0f172a; --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.6; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; }
+        nav a:hover { color: var(--primary-blue); }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+
+        .page-header { padding: 56px 0 30px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .page-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 12px; }
+        .page-header p { font-size: 1.15rem; color: var(--text-gray); max-width: 760px; margin-bottom: 18px; }
+        .printbtn { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; border: none; padding: 12px 26px; border-radius: 8px; font-weight: 700; font-size: 0.98rem; cursor: pointer; font-family: inherit; }
+        .printbtn:hover { transform: translateY(-2px); }
+        .jump { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+        .jump a { font-size: 0.85rem; font-weight: 600; color: #4c5fd5; background: rgba(91,156,248,0.12); padding: 6px 14px; border-radius: 20px; text-decoration: none; }
+
+        main { flex: 1; padding: 40px 0 70px; }
+        .sheet { background: white; border: 1px solid rgba(91,156,248,0.2); border-radius: 14px; padding: 28px 30px; margin-bottom: 32px; box-shadow: 0 4px 18px rgba(0,0,0,0.05); }
+        .sheet h2 { font-family: 'Crimson Pro', serif; font-size: 1.8rem; color: var(--deep-navy); margin-bottom: 4px; }
+        .sheet .sub { color: var(--text-gray); font-size: 0.96rem; margin-bottom: 18px; }
+        .sheet h3 { font-size: 0.95rem; text-transform: uppercase; letter-spacing: 0.5px; color: var(--primary-purple); margin: 22px 0 10px; }
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 760px) { .grid2 { grid-template-columns: 1fr; } }
+        table.cs { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin-bottom: 8px; }
+        table.cs td { border-bottom: 1px solid #eef2f7; padding: 7px 8px; vertical-align: top; }
+        table.cs td:first-child { white-space: nowrap; width: 42%; }
+        table.cs code { background: rgba(91,156,248,0.1); color: #4c5fd5; padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 0.85em; }
+        table.cs td:last-child { color: var(--text-gray); }
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 8px; padding: 14px 16px; overflow-x: auto; margin: 8px 0 14px; font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.6; }
+        pre .c { color: #64748b; }
+        .note { font-size: 0.88rem; color: var(--text-gray); background: rgba(245,158,11,0.08); border-left: 3px solid #f59e0b; padding: 8px 12px; border-radius: 6px; margin: 8px 0; }
+        .lessonlink { font-size: 0.88rem; margin-top: 10px; }
+        .lessonlink a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .page-header h1 { font-size: 2.2rem; }
+        }
+        @media print {
+            header, .printbtn, .jump, footer, .lessonlink { display: none !important; }
+            .page-header { background: none; padding: 0 0 10px; }
+            .sheet { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; margin-bottom: 16px; }
+            body { background: white; }
+            pre { background: #f1f5f9; color: #0f172a; }
+            pre .c { color: #64748b; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="document.getElementById('nav-menu').classList.toggle('active')">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="faq.html">Help</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Bioinformatics cheat sheets</h1>
+            <p>The commands and formats you will look up again and again, in one place. Free to use, and built to print: hit the button to save the whole set (or any page) as a PDF from your browser.</p>
+            <button class="printbtn" onclick="window.print()">⬇ Print / Save as PDF</button>
+            <div class="jump">
+                <a href="#cli">Command line &amp; samtools</a>
+                <a href="#formats">File formats</a>
+                <a href="#condagit">conda &amp; Git</a>
+                <a href="#stats">Stats &amp; DESeq2</a>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+
+            <!-- ============ CHEAT SHEET 1 ============ -->
+            <section class="sheet" id="cli">
+                <h2>Command line &amp; samtools</h2>
+                <p class="sub">The shell basics plus the genomics toolkit you use daily.</p>
+                <div class="grid2">
+                    <div>
+                        <h3>Navigating &amp; files</h3>
+                        <table class="cs">
+                            <tr><td><code>pwd</code></td><td>print working directory (where am I)</td></tr>
+                            <tr><td><code>ls -lh</code></td><td>list files, human-readable sizes</td></tr>
+                            <tr><td><code>cd dir</code> / <code>cd ..</code></td><td>change directory / go up one</td></tr>
+                            <tr><td><code>mkdir -p a/b</code></td><td>make folders (and parents)</td></tr>
+                            <tr><td><code>cp src dst</code></td><td>copy (use <code>-r</code> for folders)</td></tr>
+                            <tr><td><code>mv src dst</code></td><td>move / rename</td></tr>
+                            <tr><td><code>rm file</code></td><td>delete (no undo, careful)</td></tr>
+                        </table>
+                        <h3>Looking inside &amp; filtering</h3>
+                        <table class="cs">
+                            <tr><td><code>cat / less file</code></td><td>print / page through a file (<code>q</code> to quit)</td></tr>
+                            <tr><td><code>head -n 20</code> / <code>tail</code></td><td>first / last lines</td></tr>
+                            <tr><td><code>wc -l file</code></td><td>count lines</td></tr>
+                            <tr><td><code>grep "pat" file</code></td><td>find lines matching a pattern</td></tr>
+                            <tr><td><code>cmd | cmd2</code></td><td>pipe output into the next command</td></tr>
+                            <tr><td><code>cmd &gt; out.txt</code></td><td>redirect output to a file</td></tr>
+                        </table>
+                    </div>
+                    <div>
+                        <h3>samtools (BAM/SAM)</h3>
+                        <table class="cs">
+                            <tr><td><code>samtools view -b in.sam &gt; out.bam</code></td><td>SAM → BAM</td></tr>
+                            <tr><td><code>samtools sort in.bam -o sorted.bam</code></td><td>sort by position (needed before indexing)</td></tr>
+                            <tr><td><code>samtools index sorted.bam</code></td><td>create the <code>.bai</code> index</td></tr>
+                            <tr><td><code>samtools flagstat in.bam</code></td><td>quick mapping summary</td></tr>
+                            <tr><td><code>samtools view in.bam chr1:1-1000</code></td><td>reads in a region (needs index)</td></tr>
+                            <tr><td><code>samtools depth in.bam</code></td><td>per-base coverage</td></tr>
+                            <tr><td><code>samtools faidx ref.fa</code></td><td>index a FASTA reference</td></tr>
+                        </table>
+                        <h3>bcftools (variants)</h3>
+                        <table class="cs">
+                            <tr><td><code>bcftools mpileup -f ref.fa in.bam</code></td><td>pile up reads vs reference</td></tr>
+                            <tr><td><code>... | bcftools call -mv -Oz -o out.vcf.gz</code></td><td>call variants (<code>-m</code> multiallelic, <code>-v</code> variants only, <code>-Oz</code> gzip)</td></tr>
+                            <tr><td><code>bcftools view in.vcf.gz</code></td><td>view / filter a VCF</td></tr>
+                            <tr><td><code>bcftools stats in.vcf.gz</code></td><td>summary statistics</td></tr>
+                        </table>
+                        <div class="note">Order matters: <strong>sort → index</strong> before region queries. You cannot index an unsorted BAM.</div>
+                    </div>
+                </div>
+                <p class="lessonlink">Full lessons: <a href="bash-basics.html" target="_blank" rel="noopener">Bash basics</a> · <a href="ngs-samtools.html" target="_blank" rel="noopener">The samtools survival kit</a></p>
+            </section>
+
+            <!-- ============ CHEAT SHEET 2 ============ -->
+            <section class="sheet" id="formats">
+                <h2>File formats</h2>
+                <p class="sub">What each bioinformatics file holds, at a glance.</p>
+                <div class="grid2">
+                    <div>
+                        <h3>FASTA — sequences</h3>
+                        <pre>&gt;seq_id description
+ACGTACGTACGTACGT</pre>
+                        <p style="font-size:0.88rem;color:var(--text-gray);margin-bottom:14px;"><code style="font-family:JetBrains Mono">&gt;</code> header line, then the sequence. DNA, RNA, or protein.</p>
+                        <h3>FASTQ — reads + quality</h3>
+                        <pre>@read_id              <span class="c"># 1. name</span>
+ACGTACGT              <span class="c"># 2. sequence</span>
++                     <span class="c"># 3. separator</span>
+IIIIFFFF              <span class="c"># 4. per-base quality</span></pre>
+                        <table class="cs">
+                            <tr><td>Q20</td><td>1 in 100 chance of error (99%)</td></tr>
+                            <tr><td>Q30</td><td>1 in 1000 (99.9%) — common target</td></tr>
+                            <tr><td>Q40</td><td>1 in 10,000 (99.99%)</td></tr>
+                        </table>
+                        <h3>GTF / GFF — gene annotation</h3>
+                        <p style="font-size:0.88rem;color:var(--text-gray);">Tab-delimited features (gene, exon, CDS) with coordinates on a reference. Maps positions to genes.</p>
+                    </div>
+                    <div>
+                        <h3>SAM / BAM — aligned reads</h3>
+                        <p style="font-size:0.88rem;color:var(--text-gray);margin-bottom:6px;">SAM is text; BAM is the compressed binary version. 11 mandatory columns:</p>
+                        <table class="cs">
+                            <tr><td>QNAME</td><td>read name</td></tr>
+                            <tr><td>FLAG</td><td>bitwise info (mapped, paired, strand…)</td></tr>
+                            <tr><td>RNAME / POS</td><td>reference name &amp; 1-based position</td></tr>
+                            <tr><td>MAPQ</td><td>mapping quality</td></tr>
+                            <tr><td>CIGAR</td><td>how the read aligns (M/I/D/S…)</td></tr>
+                            <tr><td>SEQ / QUAL</td><td>the read bases &amp; qualities</td></tr>
+                        </table>
+                        <h3>VCF — variants</h3>
+                        <table class="cs">
+                            <tr><td>CHROM / POS</td><td>where the variant is</td></tr>
+                            <tr><td>REF / ALT</td><td>reference vs alternate allele</td></tr>
+                            <tr><td>QUAL</td><td>confidence the variant is real</td></tr>
+                            <tr><td>FILTER / INFO</td><td>pass/fail &amp; annotations</td></tr>
+                            <tr><td>FORMAT + samples</td><td>per-sample genotypes (e.g. <code>0/1</code>)</td></tr>
+                        </table>
+                        <h3>BED — regions</h3>
+                        <pre>chr1   200   1000   name   <span class="c"># 0-based start</span></pre>
+                        <div class="note">BED is <strong>0-based</strong> start; GTF/VCF are <strong>1-based</strong>. A frequent off-by-one trap.</div>
+                    </div>
+                </div>
+                <p class="lessonlink">Full lessons: <a href="track1-file-formats.html" target="_blank" rel="noopener">File-format alphabet soup</a> · <a href="track1-sequences-fasta-fastq.html" target="_blank" rel="noopener">Sequences, FASTA &amp; FASTQ</a></p>
+            </section>
+
+            <!-- ============ CHEAT SHEET 3 ============ -->
+            <section class="sheet" id="condagit">
+                <h2>conda &amp; Git</h2>
+                <p class="sub">Environments that never break, and version control you can trust.</p>
+                <div class="grid2">
+                    <div>
+                        <h3>conda — environments</h3>
+                        <table class="cs">
+                            <tr><td><code>conda create -n myenv python=3.11</code></td><td>new environment</td></tr>
+                            <tr><td><code>conda activate myenv</code></td><td>turn it on</td></tr>
+                            <tr><td><code>conda install -c bioconda samtools</code></td><td>install a tool from bioconda</td></tr>
+                            <tr><td><code>conda list</code></td><td>what's installed</td></tr>
+                            <tr><td><code>conda deactivate</code></td><td>turn it off</td></tr>
+                            <tr><td><code>conda env export --from-history &gt; environment.yml</code></td><td>save a portable spec</td></tr>
+                            <tr><td><code>conda env create -f environment.yml</code></td><td>recreate it anywhere</td></tr>
+                        </table>
+                        <div class="note">One environment per project. Never install into <code>base</code>. Pin versions that matter.</div>
+                    </div>
+                    <div>
+                        <h3>Git — version control</h3>
+                        <table class="cs">
+                            <tr><td><code>git clone &lt;url&gt;</code></td><td>copy a repo to your machine</td></tr>
+                            <tr><td><code>git status</code></td><td>what changed</td></tr>
+                            <tr><td><code>git add file</code> / <code>git add .</code></td><td>stage changes</td></tr>
+                            <tr><td><code>git commit -m "msg"</code></td><td>save a snapshot</td></tr>
+                            <tr><td><code>git push</code> / <code>git pull</code></td><td>send to / get from GitHub</td></tr>
+                            <tr><td><code>git log --oneline</code></td><td>history</td></tr>
+                            <tr><td><code>git checkout -b feature</code></td><td>new branch</td></tr>
+                        </table>
+                        <pre><span class="c"># .gitignore — never commit these</span>
+*.bam
+data/
+.env        <span class="c"># secrets / keys</span></pre>
+                        <div class="note">The loop: <strong>edit → add → commit → push</strong>. Commit small and often.</div>
+                    </div>
+                </div>
+                <p class="lessonlink">Full lessons: <a href="conda-environments.html" target="_blank" rel="noopener">Conda environments</a> · <a href="git-github.html" target="_blank" rel="noopener">Git &amp; GitHub for scientists</a></p>
+            </section>
+
+            <!-- ============ CHEAT SHEET 4 ============ -->
+            <section class="sheet" id="stats">
+                <h2>Stats &amp; DESeq2</h2>
+                <p class="sub">The numbers you must interpret, and the differential-expression workflow.</p>
+                <div class="grid2">
+                    <div>
+                        <h3>Statistics quick reference</h3>
+                        <table class="cs">
+                            <tr><td><strong>p-value</strong></td><td>probability of data this extreme <em>if the null were true</em>. Not the chance the result is real.</td></tr>
+                            <tr><td><strong>adjusted p / padj / FDR</strong></td><td>p-value corrected for testing thousands of genes (Benjamini-Hochberg). Filter on this, not raw p.</td></tr>
+                            <tr><td><strong>effect size</strong></td><td>how <em>big</em> the change is (e.g. log2 fold change). Always report alongside the p-value.</td></tr>
+                            <tr><td><strong>log2FC = 1</strong></td><td>2× change; <strong>= 3</strong> is 8×. Negative = down.</td></tr>
+                            <tr><td><strong>multiple testing</strong></td><td>20,000 tests at p&lt;0.05 ≈ 1,000 false hits by chance. Always correct.</td></tr>
+                        </table>
+                        <div class="note">A tiny p-value with a near-zero effect size is statistically significant but biologically boring. Use both axes.</div>
+                    </div>
+                    <div>
+                        <h3>DESeq2 workflow (R)</h3>
+                        <pre><span class="c"># 1. load</span>
+library(DESeq2)
+
+<span class="c"># 2. build dataset: counts + sample table</span>
+dds &lt;- DESeqDataSetFromMatrix(
+  countData = counts,
+  colData   = coldata,
+  design    = ~ condition)
+
+<span class="c"># 3. run the analysis</span>
+dds &lt;- DESeq(dds)
+
+<span class="c"># 4. get results (treated vs control)</span>
+res &lt;- results(dds,
+  contrast = c("condition","treated","control"))
+
+<span class="c"># 5. shrink fold changes for ranking/plots</span>
+res &lt;- lfcShrink(dds, coef=2, type="apeglm")
+
+<span class="c"># 6. significant genes</span>
+sig &lt;- subset(res, padj &lt; 0.05)</pre>
+                    </div>
+                </div>
+                <p class="lessonlink">Full lessons: <a href="stats-essentials.html" target="_blank" rel="noopener">Stats you can't avoid</a> · <a href="multiple-testing.html" target="_blank" rel="noopener">The multiple-testing problem</a> · <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">Differential expression with DESeq2</a></p>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script src="reactions.js" defer></script>
+</body>
+</html>

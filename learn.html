@@ -149,6 +149,7 @@
                     <li><a href="minicourses.html">Mini-courses</a></li>
                     <li><a href="resources.html">Resources</a></li>
                     <li><a href="glossary.html">Glossary</a></li>
+                                        <li><a href="faq.html">Help</a></li>
                                         <li><a href="contact.html" class="cta-nav">Contact</a></li>
                 </ul>
             </nav>
@@ -168,7 +169,7 @@
             <div style="background:linear-gradient(135deg, rgba(16,185,129,0.1), rgba(91,156,248,0.1)); border:1px solid rgba(16,185,129,0.3); border-radius:12px; padding:20px 26px; margin-bottom:40px; text-align:center;">
                 <p style="color:#0f172a; font-weight:700; font-size:1.1rem; margin:0 0 6px;">🌐 No install needed, ever, to learn here</p>
                 <p style="color:#475569; margin:0 auto 6px; max-width:760px;">Every hands-on lesson runs free in your browser using <strong>Google Colab</strong> (just a free Google account). You can use any editor you like; our lessons default to Colab so you can start in seconds.</p>
-                <p style="color:#64748b; font-size:0.95rem; margin:0;">Your path: <strong>Stage 1</strong> learn in the browser → <strong>Stage 2</strong> set up your own pro tools (VS Code for Python, RStudio for R) → <strong>Stage 3</strong> work like a pro (Git, conda). New or stuck? <a href="faq.html" style="color:#5b9cf8; font-weight:600;">Help &amp; FAQ →</a></p>
+                <p style="color:#64748b; font-size:0.95rem; margin:0;">Your path: <strong>Stage 1</strong> learn in the browser → <strong>Stage 2</strong> <a href="graduate-to-pro-setup.html" style="color:#5b9cf8;font-weight:600;">set up your own pro tools</a> (VS Code for Python, RStudio for R) → <strong>Stage 3</strong> work like a pro (Git, conda). New or stuck? <a href="faq.html" style="color:#5b9cf8; font-weight:600;">Help &amp; FAQ →</a></p>
             </div>
 
             <!-- Lesson search -->
@@ -431,6 +432,8 @@
 
         // Lesson search
         const LESSONS = [
+            {t:"Cheat sheets (printable quick references)", g:"Reference", u:"cheatsheets.html", k:"cheat sheet command line samtools file formats fastq sam bam vcf conda git deseq2 stats reference printable pdf"},
+            {t:"Graduate from Colab to a professional setup", g:"Foundations", u:"graduate-to-pro-setup.html", k:"vscode rstudio pycharm local install editor ide professional setup colab graduate environment stage"},
             {t:"Mini-course: Sequence Alignment & BLAST (Level 1)", g:"Mini-course", u:"blast-alignment.html", k:"blast alignment homology e-value pairwise needleman wunsch smith waterman msa clustal omega muscle sequence similarity substitution matrix blosum"},
             {t:"Mini-course: Alignment & BLAST — Advanced (Level 2)", g:"Mini-course", u:"blast-alignment-advanced.html", k:"affine gap penalty gotoh karlin altschul e-value statistics psi-blast profile hmm hmmer foldseek remote homology twilight zone low complexity masking dust seg word size heuristic"},
             {t:"What bioinformatics actually is", g:"Introduction", u:"intro-what-is-bioinformatics.html", k:"orientation beginner intro field what is"},
