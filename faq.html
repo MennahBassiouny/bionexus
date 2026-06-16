@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Help and FAQ for complete beginners: is it free, do I need to install anything, what is Google Colab, can I use VS Code instead, and what to do when a code cell shows an error. Friendly answers, no jargon.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Help & FAQ for Beginners | BioNexus Hub">
+    <meta property="og:description" content="Is it free? Do I need to install anything? What is Colab? My code shows an error, now what? Beginner-friendly answers.">
+    <meta property="og:url" content="https://bionexushub.com/faq.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Help & FAQ for Beginners | BioNexus Hub">
+    <meta name="twitter:description" content="Friendly answers to the questions every bioinformatics beginner has.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Help & FAQ for Beginners - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .page-header { padding: 64px 0 40px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .page-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 14px; }
+        .page-header p { font-size: 1.2rem; color: var(--text-gray); max-width: 780px; }
+
+        main { flex: 1; padding: 48px 0 80px; }
+        .faq-body { max-width: 820px; margin: 0 auto; }
+
+        .reassure { background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(91,156,248,0.1)); border: 1px solid rgba(16,185,129,0.3); border-radius: 12px; padding: 24px 28px; margin-bottom: 36px; }
+        .reassure h2 { font-family: 'Crimson Pro', serif; font-size: 1.5rem; color: var(--deep-navy); margin: 0 0 8px; }
+        .reassure p { color: var(--text-gray); margin: 0; font-size: 1.05rem; }
+
+        .qgroup h2 { font-family: 'Crimson Pro', serif; font-size: 1.5rem; color: var(--deep-navy); margin: 40px 0 6px; padding-top: 18px; border-top: 1px solid #e7edf5; }
+        .q { font-family: 'Crimson Pro', serif; font-size: 1.25rem; color: var(--deep-navy); margin: 26px 0 8px; }
+        .faq-body p { color: var(--text-dark); font-size: 1.06rem; margin-bottom: 14px; }
+        .faq-body ul, .faq-body ol { margin: 0 0 16px 24px; }
+        .faq-body li { margin-bottom: 7px; font-size: 1.04rem; color: var(--text-dark); }
+        .faq-body a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+        .faq-body strong { color: var(--deep-navy); }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .cta { background: var(--deep-navy); color: white; border-radius: 12px; padding: 28px 30px; margin-top: 44px; text-align: center; }
+        .cta h3 { font-family: 'Crimson Pro', serif; font-size: 1.5rem; margin-bottom: 8px; }
+        .cta p { color: rgba(255,255,255,0.75); margin-bottom: 18px; }
+        .cta a { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; padding: 13px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-block; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .page-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Help &amp; FAQ for beginners</h1>
+            <p>Brand new and a little nervous? That is completely normal. Here are honest, jargon-free answers to the questions almost every beginner has, including what to do when something goes wrong.</p>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="faq-body">
+
+                <div class="reassure">
+                    <h2>The short version</h2>
+                    <p>BioNexus is <strong>100% free</strong>, you <strong>do not need to install anything</strong>, and you <strong>cannot break your computer</strong>. Every hands-on lesson runs in your web browser using Google Colab. Errors are normal and part of learning. If you get stuck, the feedback button on every page reaches us.</p>
+                </div>
+
+                <div class="qgroup">
+                    <h2>Getting started &amp; cost</h2>
+
+                    <p class="q">Is BioNexus Hub really free?</p>
+                    <p>Yes, completely. There is no paywall, no subscription, and no payment of any kind. You do not even need an account to read the lessons. It was built to make bioinformatics accessible to everyone.</p>
+
+                    <p class="q">I have never written code and barely remember biology. Can I still start?</p>
+                    <p>Yes, this is built for exactly you. Begin with the <a href="learn.html" target="_blank" rel="noopener">Introduction lessons</a>: what bioinformatics is, then the biology a coder needs, then your first 10 lines of Python. Each one assumes you know nothing and explains every term.</p>
+
+                    <p class="q">Do I need to be good at math?</p>
+                    <p>No. You do not need advanced math to start. When a lesson needs a concept (like what a p-value means), it explains it from scratch in plain language.</p>
+                </div>
+
+                <div class="qgroup">
+                    <h2>Running the code (no install needed)</h2>
+
+                    <p class="q">Do I need to install anything on my computer?</p>
+                    <p><strong>No.</strong> Every hands-on lesson runs free in your web browser. Some lessons even run Python right on the page (just press Run). Most use <strong>Google Colab</strong>, a free service that runs code in your browser with nothing to install. Installing software on your own machine is <strong>optional</strong> and only for later, when you want to work locally.</p>
+
+                    <p class="q">What is Google Colab, and is signing into Google safe?</p>
+                    <p>Google Colab is a free Google service that runs coding notebooks in your browser, so you never install Python yourself. When you open a Colab notebook it may ask you to sign in with a <strong>normal, free Google account</strong> (the same kind you would use for Gmail). This is normal and free, you will not be charged. Signing in simply lets Google run the notebook and save your work.</p>
+
+                    <p class="q">Can I use VS Code (or Jupyter, PyCharm) instead of Google Colab?</p>
+                    <p>Yes. <strong>The code is the same wherever you run it, so you can use any editor you like.</strong> We default to Google Colab because it needs zero setup, which is perfect when you are starting out. If you would rather work on your own computer in <strong>VS Code</strong>, Jupyter, or PyCharm, you can, but first you install Python (or R) and the needed packages yourself. See the Foundations <a href="python-install.html" target="_blank" rel="noopener">setup lessons</a> and the <a href="vscode-setup.html" target="_blank" rel="noopener">VS Code guide</a>. In short: <strong>Colab is the easy, no-install path; your own editor is the "when you are ready" path.</strong> You can also download any Colab notebook and open it in VS Code or Jupyter later.</p>
+
+                    <p class="q">Will running code break or harm my computer?</p>
+                    <p>No. Colab runs on Google's servers, not on your machine, so nothing you do there can harm your computer. Experiment freely, the worst that happens is an error message, which you just fix and re-run.</p>
+                </div>
+
+                <div class="qgroup">
+                    <h2>When something goes wrong</h2>
+
+                    <p class="q">A code cell turned red and showed an error. What do I do?</p>
+                    <p>First: do not panic. Errors are completely normal, every programmer, including experts, hits them constantly. They are information, not failure. Try these steps in order:</p>
+                    <ol>
+                        <li><strong>Read the last line</strong> of the red text. It usually names the actual problem (for example "NameError: name 'x' is not defined").</li>
+                        <li><strong>Check for small typos:</strong> a missing quote or bracket, a wrong capital letter, or wrong indentation (spaces at the start of a line).</li>
+                        <li><strong>Did you skip a cell?</strong> If it says something is "not defined," you may have run a later cell before an earlier one. Re-run the lesson from the top.</li>
+                        <li><strong>Restart and run again:</strong> in Colab, choose <code class="inline">Runtime → Restart session and run all</code>.</li>
+                        <li><strong>Search the error:</strong> copy the last line of the red text into Google. Someone has almost always hit the same thing.</li>
+                    </ol>
+
+                    <p class="q">Colab says "runtime disconnected," or an install is taking a long time.</p>
+                    <p>Both are normal. Free Colab disconnects after a period of inactivity, just reconnect and re-run the first (setup) cell. The first time you install packages in a session, especially R/Bioconductor tools, it can take a few minutes; that is expected and only happens once per session.</p>
+
+                    <p class="q">Colab says "too many sessions."</p>
+                    <p>You have other Colab notebooks still running. Open <code class="inline">Runtime → Manage sessions</code>, close the ones you are not using, and try again.</p>
+                </div>
+
+                <div class="qgroup">
+                    <h2>Getting help</h2>
+
+                    <p class="q">Where can I ask a question or report a problem?</p>
+                    <p>Use the <strong>feedback button</strong> at the bottom-right of every page, it reaches us directly. You can also visit the <a href="https://www.facebook.com/bionexushub" target="_blank" rel="noopener">BioNexus Hub Facebook page</a>. For broader community questions, experienced bioinformaticians answer on <a href="https://www.biostars.org/" target="_blank" rel="noopener">Biostars</a> and Stack Overflow, but do not feel you have to start there; a beginner question is always welcome with us first.</p>
+
+                    <p class="q">I still feel overwhelmed. Any advice?</p>
+                    <p>Go slowly and celebrate small wins. You do not need to understand everything at once. Do one short lesson, run one piece of code, and let it sink in. Consistency (a little, often) beats intensity. Everyone who codes today was once exactly where you are.</p>
+                </div>
+
+                <div class="cta">
+                    <h3>Ready to start?</h3>
+                    <p>No account, no install, no pressure. Write your first bit of bioinformatics code in your browser.</p>
+                    <a href="learn.html" target="_blank" rel="noopener">Go to the lessons →</a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+</body>
+</html>
