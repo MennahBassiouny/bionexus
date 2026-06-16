@@ -82,6 +82,7 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="learn.html">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
                     <li><a href="resources.html">Resources</a></li>
                     <li><a href="glossary.html" style="color: var(--primary-blue);">Glossary</a></li>
                     <li><a href="contact.html" class="cta-nav">Contact</a></li>
@@ -167,35 +168,4 @@
                 <div class="term"><h3>Volcano plot</h3><p>A scatter plot of significance versus fold change. The genes that matter fly up into the top corners.</p></div>
                 <div class="term"><h3>z-score</h3><p>Rescaling each gene so a heatmap shows its relative change (up or down versus its own average) rather than its absolute level.</p></div>
             </div>
-            <p class="no-res" id="noRes">No term matches that search. Try another word, or send us a suggestion from the feedback button.</p>
-        </div>
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
-        </div>
-    </footer>
-
-    <script>
-        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
-        (function () {
-            var input = document.getElementById('glossarySearch');
-            var terms = Array.prototype.slice.call(document.querySelectorAll('#terms .term'));
-            var noRes = document.getElementById('noRes');
-            input.addEventListener('input', function () {
-                var q = input.value.trim().toLowerCase();
-                var shown = 0;
-                terms.forEach(function (t) {
-                    var match = t.textContent.toLowerCase().indexOf(q) !== -1;
-                    t.style.display = match ? '' : 'none';
-                    if (match) shown++;
-                });
-                noRes.style.display = shown === 0 ? 'block' : 'none';
-            });
-        })();
-    </script>
-    <script src="reactions.js" defer></script>
-    <script src="interactive.js" defer></script>
-</body>
-</html>
+            <p class="no-res" id="noRes">No term matches that

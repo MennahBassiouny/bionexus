@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Focused, professional bioinformatics mini-courses, each on a single skill and ending with a graded final assessment. Scope is aligned to recognized curricula (ISCB, EMBL-EBI, Galaxy Training) and every lesson cites its primary sources.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Mini-Courses | BioNexus Hub">
+    <meta property="og:description" content="Short, professional, assessed bioinformatics courses, one skill at a time. Sourced to recognized curricula and the primary literature.">
+    <meta property="og:url" content="https://bionexushub.com/minicourses.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Mini-Courses | BioNexus Hub">
+    <meta name="twitter:description" content="Short, professional, assessed bioinformatics courses, one skill at a time.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Mini-Courses - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .page-header { padding: 64px 0 40px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .page-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 14px; }
+        .page-header p { font-size: 1.2rem; color: var(--text-gray); max-width: 780px; }
+
+        main { flex: 1; padding: 48px 0 80px; }
+
+        .how { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-purple); border-radius: 12px; padding: 22px 26px; margin: 0 0 36px; max-width: 1280px; }
+        .how h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-purple); margin-bottom: 8px; }
+        .how p { color: var(--text-gray); font-size: 1rem; margin: 0; }
+
+        .mc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 22px; }
+        .mc-card { display: flex; flex-direction: column; background: white; border: 1px solid rgba(91,156,248,0.2); border-radius: 14px; padding: 26px 28px; transition: all 0.3s ease; }
+        .mc-card.live { border-left: 5px solid var(--primary-purple); }
+        .mc-card.soon { border-left: 5px solid rgba(100,116,139,0.4); opacity: 0.92; }
+        .mc-card:hover { transform: translateY(-4px); box-shadow: 0 10px 26px rgba(91,156,248,0.15); }
+        .mc-meta { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.7px; font-weight: 700; color: var(--primary-purple); margin-bottom: 8px; }
+        .mc-card.soon .mc-meta { color: var(--text-gray); }
+        .mc-card h3 { font-family: 'Crimson Pro', serif; font-size: 1.5rem; color: var(--deep-navy); margin-bottom: 10px; }
+        .mc-card p { color: var(--text-gray); font-size: 1rem; margin-bottom: 18px; flex: 1; }
+        .pill { display: inline-block; font-size: 0.72rem; font-weight: 700; padding: 3px 11px; border-radius: 20px; vertical-align: middle; }
+        .pill.live { background: rgba(16,185,129,0.14); color: #047857; }
+        .pill.soon { background: rgba(100,116,139,0.14); color: var(--text-gray); }
+        .mc-btn { align-self: flex-start; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; padding: 11px 22px; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 0.95rem; transition: transform 0.3s ease; }
+        .mc-btn:hover { transform: translateY(-2px); }
+        .mc-soon-label { align-self: flex-start; color: var(--text-gray); font-weight: 600; font-size: 0.95rem; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .page-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html">Learn</a></li>
+                    <li><a href="minicourses.html" style="color: var(--primary-blue);">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Mini-courses</h1>
+            <p>Short, focused, professional courses, each one skill taken seriously from start to finish and ending with a graded final assessment. Built for people who want depth, not just a tour.</p>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+
+            <div class="how">
+                <h4>How these are built</h4>
+                <p>Each mini-course's scope is mapped to recognized curricula and competency standards (the ISCB bioinformatics core competencies, EMBL-EBI Training, and the Galaxy Training Network). The content is drawn from primary developer documentation and peer-reviewed papers, every citation is checked before publishing, and each course carries a sources box and a "last reviewed" date. Some are fully browser-based; others use professional tools you install once, because the goal is the real skill.</p>
+            </div>
+
+            <div class="mc-grid">
+
+                <div class="mc-card live">
+                    <div class="mc-meta">Sequence analysis · ✅ Graded · ~2 hr</div>
+                    <h3>Sequence Alignment &amp; BLAST <span class="pill live">Live</span></h3>
+                    <p>The most fundamental operation in bioinformatics. Homology, global and local pairwise alignment (Needleman-Wunsch and Smith-Waterman), substitution matrices, running and correctly reading BLAST, and multiple sequence alignment, with a working in-browser alignment demo and a graded final assessment.</p>
+                    <a class="mc-btn" href="blast-alignment.html" target="_blank" rel="noopener">Start the mini-course →</a>
+                </div>
+
+                <div class="mc-card soon">
+                    <div class="mc-meta">Genomics · ✅ Graded · in development</div>
+                    <h3>Genome Browsers &amp; IGV <span class="pill soon">Coming soon</span></h3>
+                    <p>The hands-on skill of actually looking at your data: load a reference, a BAM, and a VCF into IGV, read the pileup, and judge a variant with your own eyes. The visual literacy every NGS analyst needs.</p>
+                    <span class="mc-soon-label">In development</span>
+                </div>
+
+                <div class="mc-card soon">
+                    <div class="mc-meta">Clinical genomics · ✅ Graded · in development</div>
+                    <h3>Variant Annotation &amp; Interpretation <span class="pill soon">Coming soon</span></h3>
+                    <p>What happens after variant calling: annotating a VCF (VEP, ANNOVAR), predicting consequences, and the basics of clinical interpretation (ACMG). The step that turns a variant list into meaning, and the most career-relevant skill for clinical and pharma roles.</p>
+                    <span class="mc-soon-label">In development</span>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+</body>
+</html>

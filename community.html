@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b; --green: #10b981;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        .page-header { padding: 80px 0 50px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); text-align: center; }
+        .page-header h1 { font-family: 'Crimson Pro', serif; font-size: 3.5rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 18px; }
+        .page-header p { font-size: 1.25rem; color: var(--text-gray); max-width: 720px; margin: 0 auto; }
+        main { flex: 1; padding: 60px 0 80px; }
+        .section { max-width: 920px; margin: 0 auto 56px; }
+        .section h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin-bottom: 12px; text-align: center; }
+        .section .lead { color: var(--text-gray); font-size: 1.1rem; text-align: center; max-width: 720px; margin: 0 auto 36px; }
+        .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 22px; }
+        .step { background: white; border-radius: 12px; padding: 28px 26px; box-shadow: 0 4px 18px rgba(0,0,0,0.06); border-top: 4px solid var(--primary-blue); }
+        .step .n { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+        .step h3 { font-family: 'Crimson Pro', serif; font-size: 1.3rem; color: var(--deep-navy); margin-bottom: 8px; }
+        .step p { color: var(--text-gray); font-size: 1rem; }
+        .guidelines { background: white; border: 1px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 30px 34px; }
+        .guidelines h2 { text-align: left; font-size: 1.7rem; margin-bottom: 18px; }
+        .guidelines ul { list-style: none; }
+        .guidelines li { padding: 10px 0 10px 34px; position: relative; color: var(--text-gray); border-top: 1px solid #eef2f7; }
+        .guidelines li:first-of-type { border-top: none; }
+        .guidelines li::before { content: '✓'; position: absolute; left: 0; top: 10px; color: white; background: var(--green); width: 22px; height: 22px; border-radius: 50%; font-size: 0.8rem; display: flex; align-items: center; justify-content: center; }
+        .guidelines li strong { color: var(--deep-navy); }
+        .board { background: white; border-radius: 16px; box-shadow: 0 6px 28px rgba(0,0,0,0.08); padding: 36px 34px; border: 1px solid rgba(91,156,248,0.2); }
+        .board h2 { text-align: left; margin-bottom: 6px; }
+        .board .sub { color: var(--text-gray); margin-bottom: 24px; }
+        .giscus-wrap { min-height: 200px; }
+        .board-fallback { text-align: center; color: var(--text-gray); padding: 30px 16px; font-size: 1rem; }
+        .actions { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; margin-top: 36px; }
+        .btn { padding: 14px 30px; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-block; transition: transform 0.3s ease; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; }
+        .btn-secondary { background: white; color: var(--primary-blue); border: 2px solid var(--primary-blue); }
+        .btn:hover { transform: translateY(-3px); }
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .page-header h1 { font-size: 2.5rem; }
+            .board { padding: 24px 18px; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                    <li><a href="community.html" style="color: var(--primary-blue);">Community</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Join the Community</h1>
+            <p>Ask questions, share your progress, and learn alongside others making their way into bioinformatics. No question is too basic here.</p>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+
+            <!-- How it works -->
+            <section class="section">
+                <h2>How it works</h2>
+                <p class="lead">Our discussion board is powered by GitHub, so your conversations are safe, searchable, and spam-free. Getting started takes a minute.</p>
+                <div class="steps">
+                    <div class="step">
+                        <div class="n">1</div>
+                        <h3>Sign in with GitHub</h3>
+                        <p>Use a free GitHub account to post — no separate sign-up. New to GitHub? Creating an account takes under two minutes.</p>
+                    </div>
+                    <div class="step">
+                        <div class="n">2</div>
+                        <h3>Post or reply</h3>
+                        <p>Ask a question, introduce yourself, or share a win. Add code, screenshots, and links — formatting is supported.</p>
+                    </div>
+                    <div class="step">
+                        <div class="n">3</div>
+                        <h3>Learn together</h3>
+                        <p>Get answers from fellow learners and the BioNexus team, and help others when you can. React, follow up, and grow.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Guidelines -->
+            <section class="section">
+                <div class="guidelines">
+                    <h2>Community guidelines</h2>
+                    <ul>
+                        <li><strong>Be kind and welcoming.</strong> Everyone here is learning — including people switching careers and writing their first line of code. Treat every question with respect.</li>
+                        <li><strong>There are no "dumb" questions.</strong> If you're stuck, someone else is too. Asking helps the whole community.</li>
+                        <li><strong>Search before posting.</strong> A quick look may surface an existing answer — and it keeps the board tidy.</li>
+                        <li><strong>Share enough detail.</strong> Include what you tried, the exact error, and your code or data when asking for help. It gets you better answers, faster.</li>
+                        <li><strong>Pay it forward.</strong> Answer a question when you can. Teaching is one of the best ways to learn.</li>
+                        <li><strong>No spam or self-promotion</strong> unrelated to learning bioinformatics.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Discussion board -->
+            <section class="section">
+                <div class="board">
+                    <h2>The discussion board</h2>
+                    <p class="sub">Jump in below — say hello, ask your first question, or browse what others are talking about.</p>
+                    <div class="giscus-wrap">
+                        <div class="board-fallback" id="board-fallback">Loading the discussion… if it doesn't appear, make sure you're not blocking third-party scripts, or <a href="https://github.com/MennahBassiouny/bionexus/discussions" target="_blank" rel="noopener" style="color: var(--primary-blue); font-weight:600;">open the board on GitHub</a>.</div>
+                        <!-- GISCUS DISCUSSION BOARD -->
+                        <script src="https://giscus.app/client.js"
+                            data-repo="MennahBassiouny/bionexus"
+                            data-repo-id="R_kgDOQpVghw"
+                            data-category="General"
+                            data-category-id="REPLACE_WITH_CATEGORY_ID"
+                            data-mapping="specific"
+                            data-term="BioNexus Hub Community Board"
+                            data-strict="0"
+                            data-reactions-enabled="1"
+                            data-emit-metadata="0"
+                            data-input-position="top"
+                            data-theme="light"
+                            data-lang="en"
+                            data-loading="lazy"
+                            crossorigin="anonymous"
+                            async>
+                        </script>
+                        <!-- END GISCUS -->
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <a class="btn btn-primary" href="https://github.com/MennahBassiouny/bionexus/discussions" target="_blank" rel="noopener">Browse all topics on GitHub →</a>
+                    <a class="btn btn-secondary" href="https://www.facebook.com/bionexushub" target="_blank" rel="noopener">Follow us on Facebook</a>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+        // Hide the fallback once the giscus iframe loads
+        window.addEventListener('message', function (e) {
+            if (e.origin === 'https://giscus.app') {
+                var f = document.getElementById('board-fallback');
+                if (f) f.style.display = 'none';
+            }
+        });
+    </script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
