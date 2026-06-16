@@ -112,6 +112,7 @@
                 <div class="term"><h3>Bioconductor</h3><p>A large collection of R packages built specifically for biological data analysis. DESeq2 lives here.</p></div>
                 <div class="term"><h3>Bioinformatics</h3><p>Using computers and code to make sense of biological data such as DNA, RNA, and proteins.</p></div>
                 <div class="term"><h3>Biopython</h3><p>A free Python toolkit for working with biological sequences and data.</p></div>
+                <div class="term"><h3>BLAST</h3><p>Basic Local Alignment Search Tool: the standard, fast way to search a huge database for sequences similar to your query. You judge a hit by its E-value, not just percent identity.</p></div>
                 <div class="term"><h3>Clustering</h3><p>Grouping samples or genes by how similar they are, so patterns and relationships become visible.</p></div>
                 <div class="term"><h3>conda</h3><p>A tool that installs software and manages separate "environments". Popular in bioinformatics because it can install non-Python command-line tools too.</p></div>
                 <div class="term"><h3>Count matrix</h3><p>A table with one row per gene and one column per sample, where each cell is how many sequencing reads were counted for that gene. The starting point of most RNA-seq analyses.</p></div>
@@ -122,6 +123,7 @@
                 <div class="term"><h3>DNA</h3><p>The molecule that stores the genetic instructions of a cell, written in four letters: A, T, G, C.</p></div>
                 <div class="term"><h3>Ensembl</h3><p>A major public database of genomes and gene annotations.</p></div>
                 <div class="term"><h3>Environment (virtual environment)</h3><p>A self-contained box holding a specific set of software packages, so one project cannot break another.</p></div>
+                <div class="term"><h3>E-value (Expect value)</h3><p>In a BLAST search, how many hits this good you would expect by chance in a database this size. Smaller is more trustworthy: 1e-50 is strong, 2 is meaningless.</p></div>
                 <div class="term"><h3>FASTA</h3><p>A simple text format for storing sequences: a header line starting with "&gt;" followed by the sequence (DNA, RNA, or protein).</p></div>
                 <div class="term"><h3>FASTQ</h3><p>Like FASTA, but each base also carries a quality score showing how confident the sequencer was. The raw output of sequencing.</p></div>
                 <div class="term"><h3>Functional enrichment</h3><p>Asking whether your list of changed genes is unusually full of genes with a shared role (a pathway or function), to learn what biology is changing.</p></div>
@@ -133,10 +135,12 @@
                 <div class="term"><h3>GO (Gene Ontology)</h3><p>A standardized vocabulary describing what genes do: their biological processes, molecular functions, and locations. Used in enrichment analysis.</p></div>
                 <div class="term"><h3>GSEA (Gene Set Enrichment Analysis)</h3><p>A method that scans your whole ranked gene list to see if a group of related genes trends up or down together.</p></div>
                 <div class="term"><h3>Heatmap</h3><p>A grid of coloured cells that shows patterns in data at a glance, for example which genes are high or low across samples.</p></div>
+                <div class="term"><h3>Homology</h3><p>Shared ancestry between sequences. It is an inference (yes or no), not a percentage; high sequence similarity is the evidence for it. "60% homologous" is a misnomer for "60% identical."</p></div>
                 <div class="term"><h3>KEGG</h3><p>A database of biological pathways (chains of interacting genes and molecules). Used in enrichment analysis.</p></div>
                 <div class="term"><h3>LFC shrinkage</h3><p>Pulling unreliable fold changes (often from low-count genes) toward zero, so rankings and plots reflect well-measured effects.</p></div>
                 <div class="term"><h3>log2 fold change</h3><p>How much a gene changed, on a log2 scale. +1 means it doubled, -1 means it halved. The sign is the direction, the size is the magnitude.</p></div>
                 <div class="term"><h3>MA plot</h3><p>A plot of fold change against average expression level. A health check that shows whether changes are spread fairly across genes.</p></div>
+                <div class="term"><h3>Multiple sequence alignment (MSA)</h3><p>Lining up three or more sequences at once to reveal columns conserved across a whole family; conserved columns often mark functionally important residues. Tools: Clustal Omega, MUSCLE.</p></div>
                 <div class="term"><h3>Multiple testing</h3><p>The problem that testing thousands of genes at once produces many false positives by chance, which is why we adjust p-values.</p></div>
                 <div class="term"><h3>NCBI</h3><p>The US National Center for Biotechnology Information, home to many core biological databases.</p></div>
                 <div class="term"><h3>NGS (Next-Generation Sequencing)</h3><p>Modern technology that reads DNA or RNA in millions of short fragments at once.</p></div>
@@ -153,6 +157,7 @@
                 <div class="term"><h3>Sequence</h3><p>The order of letters (bases) in DNA or RNA, or of amino acids in a protein.</p></div>
                 <div class="term"><h3>Single-cell RNA-seq</h3><p>RNA-seq that measures gene activity in individual cells rather than averaged over millions.</p></div>
                 <div class="term"><h3>SRA (Sequence Read Archive)</h3><p>A public NCBI repository of raw sequencing reads.</p></div>
+                <div class="term"><h3>Substitution matrix</h3><p>A scoring table (such as BLOSUM62 or PAM) for how favorable each amino-acid swap is, based on real related proteins. It makes protein alignment more sensitive than raw DNA matching.</p></div>
                 <div class="term"><h3>Transcription</h3><p>The cell copying a gene's DNA into RNA, the first step in using a gene.</p></div>
                 <div class="term"><h3>Transcriptomics</h3><p>The study of all the RNA in a sample: which genes are on, off, up, or down.</p></div>
                 <div class="term"><h3>UniProt</h3><p>A major public database of protein sequences and information.</p></div>
@@ -191,5 +196,6 @@
         })();
     </script>
     <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
 </body>
 </html>

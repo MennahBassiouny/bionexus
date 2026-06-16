@@ -399,6 +399,18 @@
                 </div>
             </section>
 
+            <section id="minicourses" style="margin: 40px 0;">
+                <h2 style="font-family:'Crimson Pro',serif; font-size:2rem; color:#0f172a; margin-bottom:6px;">🎓 Mini-courses</h2>
+                <p style="color:#64748b; max-width:760px; margin-bottom:20px;">Short, focused, professional courses on one skill, each ending with a graded final assessment (certificate-ready). Scope is aligned to recognized curricula (ISCB, EMBL-EBI, Galaxy Training) and every lesson cites its primary sources.</p>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px;">
+                    <a href="blast-alignment.html" target="_blank" rel="noopener" style="display:block; background:white; border:1px solid rgba(91,156,248,0.25); border-left:4px solid #a855f7; border-radius:12px; padding:22px 24px; text-decoration:none;">
+                        <span style="font-size:0.72rem; text-transform:uppercase; letter-spacing:0.6px; color:#a855f7; font-weight:700;">Sequence analysis · ✅ Graded · ~2 hr</span>
+                        <h3 style="font-family:'Crimson Pro',serif; font-size:1.3rem; color:#0f172a; margin:6px 0 6px;">Sequence Alignment &amp; BLAST</h3>
+                        <p style="color:#64748b; font-size:0.98rem; margin:0;">Homology, pairwise alignment, BLAST done right, and multiple sequence alignment, with an in-browser alignment demo.</p>
+                    </a>
+                </div>
+            </section>
+
             <div class="cta-band">
                 <h2>Start with the real thing</h2>
                 <p>The best way to know if bioinformatics is for you is to actually do some. Our flagship project walks you through a complete RNA-seq analysis in a free cloud notebook (Google Colab), so there is nothing to install on your own machine.</p>
@@ -419,6 +431,7 @@
 
         // Lesson search
         const LESSONS = [
+            {t:"Mini-course: Sequence Alignment & BLAST", g:"Mini-course", u:"blast-alignment.html", k:"blast alignment homology e-value pairwise needleman wunsch smith waterman msa clustal omega muscle sequence similarity substitution matrix blosum"},
             {t:"What bioinformatics actually is", g:"Introduction", u:"intro-what-is-bioinformatics.html", k:"orientation beginner intro field what is"},
             {t:"What you'll be able to do in 3 months", g:"Introduction", u:"intro-3-month-map.html", k:"roadmap timeline goals map"},
             {t:"The biology a coder needs", g:"Introduction", u:"intro-biology-for-coders.html", k:"dna gene protein jargon central dogma rna mutation"},
