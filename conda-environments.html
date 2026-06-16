@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Conda environments for bioinformatics: why dependency conflicts happen, how conda and bioconda fix them, creating and exporting reproducible environments with environment.yml, and the mamba speed-up. The skill that stops 'it works on my machine'.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Conda Environments: Never Break Your Setup Again | BioNexus Hub">
+    <meta property="og:description" content="Why dependency conflicts happen and how conda, bioconda, and environment.yml give you reproducible, shareable software setups.">
+    <meta property="og:url" content="https://bionexushub.com/conda-environments.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Conda Environments: Never Break Your Setup Again | BioNexus Hub">
+    <meta name="twitter:description" content="Reproducible, shareable bioinformatics software setups with conda and bioconda.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Conda Environments: Never Break Your Setup Again - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.amber { background: rgba(245,158,11,0.12); border-color: transparent; color: #b45309; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .ctable { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.96rem; }
+        .ctable th, .ctable td { border: 1px solid rgba(91,156,248,0.2); padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ctable th { background: rgba(91,156,248,0.1); color: var(--deep-navy); font-weight: 600; }
+        .ctable td { color: var(--text-gray); }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .p { color: #f472b6; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-6" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 6: Reproducibility &amp; Career &nbsp;/&nbsp; Conda environments</div>
+                <h1>Conda Environments: Never Break Your Setup Again</h1>
+                <p class="promise">Every bioinformatician hits the same wall: you install a new tool and it silently breaks three old ones, or a script that ran last month fails today, or a colleague cannot reproduce your results because their software versions differ. Conda environments solve all of this. This lesson explains why dependency conflicts happen, how conda and bioconda fix them, and how a single environment.yml file makes your whole setup reproducible and shareable.</p>
+                <div class="tags">
+                    <span class="tag amber">🟡 Professional layer</span>
+                    <span class="tag">⏱️ ~1 hr</span>
+                    <span class="tag">💻 Command line</span>
+                    <span class="tag">🔁 Reproducibility</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="prereq">
+                    <h4>Before you start</h4>
+                    <ul>
+                        <li>You are comfortable running commands in a terminal. New to the shell? See the Foundations <a href="bash-basics.html" target="_blank" rel="noopener">Bash basics</a> lesson.</li>
+                        <li>Helpful but not required: you have tried to install a bioinformatics tool and hit an error. That frustration is exactly what this lesson removes.</li>
+                        <li>Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                    </ul>
+                </div>
+
+                <h2>The problem: dependency hell</h2>
+                <p>Bioinformatics tools are built on top of other software: specific versions of Python, R, C libraries, samtools, and so on. The trouble is that different tools want <em>different, conflicting</em> versions of the same dependency. Tool A needs Python 3.8 and an old NumPy; tool B needs Python 3.11 and a new one. Install them into the same place and one of them breaks. Worse, the breakage is often silent: the tool runs but gives subtly wrong answers.</p>
+                <p>The symptoms have a familiar shape:</p>
+                <ul>
+                    <li>"It worked yesterday and I changed nothing" (something updated underneath you).</li>
+                    <li>"It works on my machine but not yours" (your versions differ from a collaborator's).</li>
+                    <li>Installing one tool downgrades another and quietly corrupts an old project.</li>
+                </ul>
+                <p>This is <strong>dependency hell</strong>, and it is the single biggest reason computational analyses fail to reproduce. The fix is to stop installing everything into one shared pile.</p>
+
+                <h2>The solution: isolated environments</h2>
+                <p>A <strong>conda environment</strong> is a self-contained folder with its own Python/R and its own exact set of package versions, isolated from everything else on your computer. You make one environment per project. Inside it, you install whatever versions that project needs; nothing leaks out to break other projects, and nothing else can break it. Switch projects, switch environments, and each one stays exactly as you left it.</p>
+                <p><strong>Conda</strong> is the tool that creates these environments and installs packages into them. It is two things at once: a <em>package manager</em> (it fetches and installs software, resolving the web of dependencies for you) and an <em>environment manager</em> (it keeps those installs isolated).</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Environment</h4>
+                    <p>An isolated software workspace with its own interpreter and package versions. Activating an environment temporarily puts its tools first on your system path, so <code class="inline">python</code> or <code class="inline">samtools</code> means <em>that environment's</em> copy. Deactivate and you are back to normal. Think of it as a clean, labeled lab bench per project.</p>
+                </div>
+
+                <h2>conda vs pip vs venv: what is the difference?</h2>
+                <p>You will have met <code class="inline">pip</code> and <code class="inline">venv</code> in the Python track. Here is how they relate:</p>
+                <table class="ctable">
+                    <thead><tr><th>Tool</th><th>Manages</th><th>Best for</th></tr></thead>
+                    <tbody>
+                        <tr><td><code class="inline">venv</code> + <code class="inline">pip</code></td><td>Python packages only (from PyPI)</td><td>Pure-Python projects</td></tr>
+                        <tr><td><strong>conda</strong></td><td>Python <em>and</em> R, C libraries, and command-line tools (samtools, bwa, bcftools)</td><td>Bioinformatics, where most tools are not Python</td></tr>
+                    </tbody>
+                </table>
+                <p>This is the key reason conda dominates bioinformatics: the field's core tools (aligners, variant callers, samtools) are compiled C/C++ programs, not pip-installable Python packages. Conda can install those too, with all their system libraries, which pip cannot. (You can still use pip <em>inside</em> a conda environment for Python-only packages that are not on conda.)</p>
+
+                <h2>Channels: where packages come from (bioconda)</h2>
+                <p>Conda downloads packages from <strong>channels</strong> (repositories). Two matter enormously:</p>
+                <ul>
+                    <li><strong>conda-forge</strong>: a huge community channel for general-purpose packages.</li>
+                    <li><strong>bioconda</strong>: the channel for bioinformatics software, over 10,000 tools (samtools, bwa, STAR, salmon, and almost anything else you will need), maintained by a large community. Bioconda is the reason "install this genomics tool" is usually a one-line command instead of an afternoon of compiling.</li>
+                </ul>
+                <p>Because of how channel priority works, the recommended one-time setup orders the channels so bioconda and conda-forge resolve correctly:</p>
+                <pre><span class="c"># one-time channel setup (order matters)</span>
+conda config <span class="p">--add</span> channels conda-forge
+conda config <span class="p">--add</span> channels bioconda
+conda config <span class="p">--set</span> channel_priority strict</pre>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Channel</h4>
+                    <p>A repository conda installs packages from. <code class="inline">bioconda</code> is the bioinformatics channel; <code class="inline">conda-forge</code> is the broad community channel. "strict channel priority" tells conda to prefer higher-priority channels consistently, which avoids a class of subtle, hard-to-debug version conflicts.</p>
+                </div>
+
+                <h2>The core workflow (the commands you will actually use)</h2>
+                <p>Day to day, conda comes down to a handful of commands:</p>
+                <pre><span class="c"># create a new environment named "rnaseq" with specific tools + versions</span>
+conda create <span class="p">-n</span> rnaseq python=3.11 samtools=1.19 star salmon
+
+<span class="c"># turn it on (your prompt shows the active env name)</span>
+conda activate rnaseq
+
+<span class="c"># install one more tool into the active env</span>
+conda install multiqc
+
+<span class="c"># list what is installed</span>
+conda list
+
+<span class="c"># turn it off when done</span>
+conda deactivate</pre>
+                <p>Notice you pinned versions (<code class="inline">samtools=1.19</code>). That is deliberate: pinning is what makes a result reproducible months later. The two biggest habits to build are <strong>one environment per project</strong> and <strong>never install into the base environment</strong> (keep base clean so a bad install cannot break conda itself).</p>
+
+                <h2>The reproducibility payoff: environment.yml</h2>
+                <p>Here is where this connects to the rest of Track 6. You can write your entire environment to a single text file, <code class="inline">environment.yml</code>, and commit it to your Git repository. Anyone, including future-you on a new laptop, can recreate the exact setup from it:</p>
+                <pre><span class="c"># environment.yml</span>
+name: rnaseq
+channels:
+  <span class="p">-</span> conda-forge
+  <span class="p">-</span> bioconda
+dependencies:
+  <span class="p">-</span> python=3.11
+  <span class="p">-</span> samtools=1.19
+  <span class="p">-</span> star=2.7.11b
+  <span class="p">-</span> salmon=1.10.3
+  <span class="p">-</span> multiqc=1.21</pre>
+                <pre><span class="c"># export your current environment to a file</span>
+conda env export <span class="p">--from-history</span> &gt; environment.yml
+
+<span class="c"># recreate it anywhere from that file</span>
+conda env create <span class="p">-f</span> environment.yml</pre>
+                <p>This one file is the difference between "trust me, it works" and a result a reviewer can actually rerun. Controlling the compute environment this way is one of the recognized <em>five pillars of computational reproducibility</em> (Ziemann et al., 2023), alongside version control, literate programming, data sharing, and documentation. When a journal or employer asks "is this reproducible?", a committed <code class="inline">environment.yml</code> is a large part of the answer.</p>
+
+                <div class="warn">
+                    <h4>⚠️ Use --from-history, and know the platform caveat</h4>
+                    <p>A plain <code class="inline">conda env export</code> writes every low-level dependency and pins them to your operating system's specific builds, which often will not recreate on a different OS. <code class="inline">--from-history</code> records only the packages you actually asked for, which is far more portable. For bit-for-bit reproducibility across machines, the next step up is a container (Docker), where conda environments are commonly used as the base, see Nüst et al. (2020) on writing reproducible Dockerfiles.</p>
+                </div>
+
+                <h2>Speed: mamba and the modern solver</h2>
+                <p>Conda used to be slow at "solving" the dependency puzzle for big environments. <strong>Mamba</strong> is a drop-in, much faster reimplementation of the solver; you can often just replace <code class="inline">conda</code> with <code class="inline">mamba</code> in the commands above. The good news is that modern conda has adopted the same fast solver (libmamba) by default, so recent installations are already quick. (You may also hear about <strong>pixi</strong>, a newer project-focused tool built on the same ecosystem.) The concepts in this lesson are identical whichever front-end you use.</p>
+
+                <h2>Your habits checklist</h2>
+                <ol>
+                    <li><strong>One environment per project.</strong> Name it after the project.</li>
+                    <li><strong>Keep base clean.</strong> Never <code class="inline">conda install</code> into base.</li>
+                    <li><strong>Pin versions</strong> for anything that matters to your results.</li>
+                    <li><strong>Commit an <code class="inline">environment.yml</code></strong> (exported <code class="inline">--from-history</code>) to your repo, right next to your code.</li>
+                    <li><strong>Set up channels once</strong> with conda-forge + bioconda + strict priority.</li>
+                </ol>
+
+                <h2>Check your understanding</h2>
+                <div class="quiz">
+                    <div class="quiz-q-src">A collaborator cannot reproduce your RNA-seq results: they get slightly different numbers. You both have the same code and raw data. What is the most likely cause and the best preventive fix?</div>
+                    <button data-opt>Their computer is simply faster, which changes the output; nothing can be done</button>
+                    <button data-opt data-correct>You are probably running different software versions; pin versions and share a committed environment.yml so they can recreate your exact environment</button>
+                    <button data-opt>They must re-download the raw data, because data always changes between machines</button>
+                    <button data-opt>Conda cannot help here; the only fix is to email them your whole hard drive</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> Same code and data but different results almost always means a different compute environment, different tool or library versions. Pinning versions and sharing an <code class="inline">environment.yml</code> lets a collaborator rebuild the identical environment, which is exactly the "compute environment control" pillar of reproducibility.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A beginner installs every tool into the conda "base" environment with pip whenever conda is slow. Two months in, multiple projects break. Which combination of habits would best have prevented this?</div>
+                    <button data-opt>Install everything into base, but back up the laptop weekly</button>
+                    <button data-opt data-correct>Use a separate environment per project, keep base clean, prefer conda (bioconda/conda-forge) for tools, and pin versions, mixing unmanaged pip installs into shared base is what caused the conflicts</button>
+                    <button data-opt>Switch entirely to pip and never use conda for anything</button>
+                    <button data-opt>Reinstall the operating system after each project</button>
+                    <div class="quiz-explain"><strong>Exactly.</strong> Cramming tools into base and mixing ad-hoc pip installs is the classic recipe for dependency hell: one install silently changes a dependency another project relied on. Per-project environments, a clean base, conda-first installation, and pinned versions keep each project isolated and stable.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You run <code>conda env export &gt; environment.yml</code> on macOS and send it to a colleague on Linux, who finds it will not build. What is the issue and the better command?</div>
+                    <button data-opt>environment.yml files never work across people; use a screenshot of your packages instead</button>
+                    <button data-opt data-correct>A full export pins OS-specific builds that do not exist on Linux; exporting with conda env export --from-history records only the packages you requested and is far more portable</button>
+                    <button data-opt>The colleague must switch to macOS; conda only works on one OS at a time</button>
+                    <button data-opt>The file failed because environment names cannot be shared between users</button>
+                    <div class="quiz-explain"><strong>Right.</strong> A plain export captures every transitive dependency pinned to your platform's specific builds, which often will not resolve on a different OS. <code class="inline">--from-history</code> records just your explicitly requested packages, making the file portable. For exact cross-platform reproducibility, wrap the environment in a container.</div>
+                </div>
+
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Grüning B, et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. <em>Nature Methods</em> 15, 475–476, 2018. <a href="https://doi.org/10.1038/s41592-018-0046-7" target="_blank" rel="noopener">doi:10.1038/s41592-018-0046-7</a></li>
+                        <li>Ziemann M, Poulain P, Bora A. The five pillars of computational reproducibility: bioinformatics and beyond. <em>Briefings in Bioinformatics</em> 24(6), bbad375, 2023. <a href="https://doi.org/10.1093/bib/bbad375" target="_blank" rel="noopener">doi:10.1093/bib/bbad375</a></li>
+                        <li>Nüst D, et al. Ten simple rules for writing Dockerfiles for reproducible data science. <em>PLOS Computational Biology</em> 16(11): e1008316, 2020. <a href="https://doi.org/10.1371/journal.pcbi.1008316" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1008316</a></li>
+                        <li>Conda documentation: Managing environments. <a href="https://docs.conda.io/projects/conda/en/stable/user-guide/tasks/manage-environments.html" target="_blank" rel="noopener">docs.conda.io</a></li>
+                        <li>Bioconda documentation and tool index. <a href="https://bioconda.github.io/" target="_blank" rel="noopener">bioconda.github.io</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: June 2026.</p>
+                </div>
+
+                <a class="next-lesson" href="portfolio.html" target="_blank" rel="noopener">
+                    <span>Next in Track 6</span>
+                    <h3>Building a portfolio that gets noticed →</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>

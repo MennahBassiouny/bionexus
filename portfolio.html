@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="How to build a bioinformatics portfolio that actually gets you interviews: why a few polished, reproducible projects beat a long resume, what a strong project repo contains, and how your GitHub becomes your real CV, especially when switching careers.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Building a Portfolio That Gets Noticed | BioNexus Hub">
+    <meta property="og:description" content="Why a few polished, reproducible projects beat a long resume, and how to structure a bioinformatics portfolio that gets interviews.">
+    <meta property="og:url" content="https://bionexushub.com/portfolio.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Building a Portfolio That Gets Noticed | BioNexus Hub">
+    <meta name="twitter:description" content="Structure a bioinformatics portfolio that gets you interviews.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Building a Portfolio That Gets Noticed - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.amber { background: rgba(245,158,11,0.12); border-color: transparent; color: #b45309; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .ctable { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.96rem; }
+        .ctable th, .ctable td { border: 1px solid rgba(91,156,248,0.2); padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ctable th { background: rgba(91,156,248,0.1); color: var(--deep-navy); font-weight: 600; }
+        .ctable td { color: var(--text-gray); }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .levelup { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 22px 26px; margin: 28px 0; }
+        .levelup h4 { color: #047857; margin-bottom: 8px; }
+        .levelup p { font-size: 1rem; color: var(--text-gray); margin-bottom: 8px; }
+        .levelup a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-6" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 6: Reproducibility &amp; Career &nbsp;/&nbsp; Building a portfolio</div>
+                <h1>Building a Portfolio That Gets Noticed</h1>
+                <p class="promise">When you are switching into bioinformatics without a traditional CS degree, your portfolio does the talking that your resume cannot. A few polished, reproducible projects on GitHub prove you can actually do the work, which is what hiring managers really want to know. This lesson shows you what a strong portfolio looks like, what goes inside a project that impresses, and how to present it so people stop scrolling.</p>
+                <div class="tags">
+                    <span class="tag amber">🟡 Professional layer</span>
+                    <span class="tag">⏱️ ~45 min</span>
+                    <span class="tag green">🌐 No install needed</span>
+                    <span class="tag">🚀 Career</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="prereq">
+                    <h4>Before you start</h4>
+                    <ul>
+                        <li>You have done at least one project-style lesson on this site (a Track 1, 2, or 3 deliverable is perfect raw material).</li>
+                        <li>You have a GitHub account and know the basics of pushing code. New? Do <a href="git-github.html" target="_blank" rel="noopener">Git &amp; GitHub for scientists</a> first.</li>
+                        <li>Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                    </ul>
+                </div>
+
+                <h2>Why a portfolio beats a resume (especially for career-switchers)</h2>
+                <p>A resume claims you can do things. A portfolio <em>shows</em> it. For someone moving in from the bench, the clinic, or another field, that difference is everything: you may not have the job title yet, but you can have the evidence. A hiring manager looking at a clean, well-documented analysis on your GitHub learns more in two minutes than a page of bullet points could tell them. Your public repositories become your real CV.</p>
+                <p>And the work you have already done on this site, the FASTQ analysis, the RNA-seq walkthrough, the misleading-figure critique, is exactly the raw material. This lesson is about turning those into portfolio pieces.</p>
+
+                <h2>Quality over quantity: three great projects, not thirty</h2>
+                <p>The single most common mistake is a GitHub full of half-finished tutorials and abandoned forks. That signals dabbling, not capability. Far better: <strong>three to five complete, polished projects</strong>, each with a clear question, a clean repository, and a result someone can actually reproduce. One excellent project outweighs twenty graveyards.</p>
+                <p>A strong portfolio usually mixes a few of these project types:</p>
+                <table class="ctable">
+                    <thead><tr><th>Project type</th><th>What it shows</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Reanalysis of public data</strong></td><td>You can take real data (GEO, SRA, TCGA) and run a complete, correct analysis end to end</td></tr>
+                        <tr><td><strong>A small tool or script</strong></td><td>You can write reusable, documented code that solves a real problem</td></tr>
+                        <tr><td><strong>A tutorial or explainer</strong></td><td>You understand a topic deeply enough to teach it, and you communicate well</td></tr>
+                        <tr><td><strong>An open-source contribution</strong></td><td>You can read someone else's codebase and collaborate, exactly what a job is</td></tr>
+                    </tbody>
+                </table>
+                <p>As a career-switcher, your old field is an advantage here. A pharmacist who reanalyzes a drug-response dataset, or a clinician who works with patient-derived expression data, brings domain insight a pure programmer does not. Lean into that overlap.</p>
+
+                <h2>Anatomy of a project repository that impresses</h2>
+                <p>Open any of your project repos and a reviewer should be able to understand it in under a minute. That requires structure:</p>
+                <ul>
+                    <li><strong>A great README.</strong> This is the most important file in the entire repo, and the one beginners neglect most. It should state the question, show a key result or figure, and give the exact steps to reproduce it. If someone reads only the README, they should still get the whole story.</li>
+                    <li><strong>Reproducibility built in.</strong> Commit an <code class="inline">environment.yml</code> (see the <a href="conda-environments.html" target="_blank" rel="noopener">Conda lesson</a>) so anyone can recreate your software setup. A project that only runs on your laptop is not finished.</li>
+                    <li><strong>Clean, commented code.</strong> Sensible file names, a logical folder layout (data, scripts, results), and comments that explain <em>why</em>, not just what.</li>
+                    <li><strong>Visible results.</strong> Include the key figures or a short results write-up in the repo, so a reviewer sees the payoff without running anything.</li>
+                    <li><strong>No secrets or huge data dumps.</strong> Use a <code class="inline">.gitignore</code>; link to where the public data lives rather than committing gigabytes.</li>
+                </ul>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>README</h4>
+                    <p>The front page of a repository (a <code class="inline">README.md</code> file in Markdown) that GitHub displays automatically. It is your project's elevator pitch: what it does, why, a result, and how to run it. A strong README is often the difference between a repo that gets read and one that gets skipped.</p>
+                </div>
+
+                <h2>Show your reasoning, not just your code</h2>
+                <p>Code shows <em>what</em> you did; employers also want to see <em>how you think</em>. A computational notebook (Jupyter or R Markdown) that walks through your analysis, with short narrative explaining each decision and interpreting each result, is far more compelling than a bare script. It demonstrates judgment: why you filtered the way you did, what a plot means, what you would do next. The misleading-figure critique from <a href="plots-that-tell-the-truth.html" target="_blank" rel="noopener">Track 5</a> is a perfect small example of visible reasoning.</p>
+
+                <h2>Make the profile itself work for you</h2>
+                <p>A little presentation goes a long way:</p>
+                <ul>
+                    <li><strong>Pin your best 3 to 6 repos</strong> on your GitHub profile so they appear first.</li>
+                    <li><strong>Add a profile README</strong> (a repo named the same as your username) introducing who you are, your background, and what you are working toward. For a career-switcher this is where you frame the transition as a strength.</li>
+                    <li><strong>Write real repo descriptions</strong> and add topics/tags so projects are findable.</li>
+                    <li><strong>Keep a light online presence</strong> (LinkedIn, and optionally a short blog) that links back to the work. Being able to point to public, reproducible analyses is what turns "I'm learning bioinformatics" into "here is bioinformatics I have done."</li>
+                </ul>
+
+                <div class="warn">
+                    <h4>⚠️ Polish the ones you show</h4>
+                    <p>An unpinned experiment can be rough, that is fine. But every <em>pinned</em> project is a sample of your professional work, so it must run, have a real README, and be reproducible. One broken flagship repo undoes the credibility of five good ones. Curate ruthlessly.</p>
+                </div>
+
+                <div class="levelup">
+                    <h4>🛠️ Your deliverable: ship one portfolio-grade repo</h4>
+                    <p>Take one project you have done here (a Track 1/2/3 deliverable, or the Track 5 figure critique) and bring it to portfolio standard:</p>
+                    <p><strong>1.</strong> Write a README that states the question, shows one key figure, and lists the steps to reproduce.<br>
+                    <strong>2.</strong> Add an <code class="inline">environment.yml</code> and a <code class="inline">.gitignore</code>.<br>
+                    <strong>3.</strong> Turn the analysis into a narrated notebook that explains your reasoning.<br>
+                    <strong>4.</strong> Pin it on your profile and write a one-line description.</p>
+                    <p>Do this for three projects over time and you have a portfolio. See <a href="git-github.html" target="_blank" rel="noopener">Git &amp; GitHub for scientists</a> for the hosting mechanics.</p>
+                </div>
+
+                <h2>Check your understanding</h2>
+                <div class="quiz">
+                    <div class="quiz-q-src">Two candidates apply for an entry bioinformatics role. Candidate A has 28 repos, mostly forked tutorials and unfinished notebooks. Candidate B has 4 repos, each a complete reanalysis with a README, an environment.yml, and figures. Who is the stronger applicant and why?</div>
+                    <button data-opt>Candidate A, because more repositories means more experience</button>
+                    <button data-opt data-correct>Candidate B, because a few complete, reproducible, well-documented projects demonstrate real capability, whereas many half-finished forks signal dabbling</button>
+                    <button data-opt>They are equal; only the resume matters, not the GitHub</button>
+                    <button data-opt>Candidate A, because forking shows familiarity with more tools</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> Hiring managers read depth, not count. Complete projects with a clear question, a strong README, and a reproducible setup prove you can deliver finished work. A wall of abandoned forks signals the opposite. Quality and curation beat quantity every time.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You are polishing a project repo. You have limited time and can improve only one thing. Which gives the biggest return for getting noticed?</div>
+                    <button data-opt>Renaming all your variables to be one character shorter</button>
+                    <button data-opt data-correct>Writing a strong README that states the question, shows a key result, and gives reproduction steps, because it is the first (and often only) thing a reviewer reads</button>
+                    <button data-opt>Adding as many programming languages to the repo as possible</button>
+                    <button data-opt>Deleting the commit history so the project looks newer</button>
+                    <div class="quiz-explain"><strong>Exactly.</strong> The README is the repo's front page and elevator pitch. A reviewer who reads only the README should understand the question, see a result, and know how to reproduce it. It is consistently the highest-leverage thing to get right, and the one beginners most often neglect.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A career-switcher from pharmacy wonders whether to hide their old background and present only generic coding projects. What is the better strategy?</div>
+                    <button data-opt>Hide the old field entirely; employers only want pure programmers</button>
+                    <button data-opt data-correct>Lean into the overlap: a domain-informed project (e.g., reanalyzing a drug-response dataset) showcases insight a pure programmer lacks, and frames the transition as an asset</button>
+                    <button data-opt>Only apply to jobs that ignore prior experience</button>
+                    <button data-opt>Avoid all biology projects and focus on web development instead</button>
+                    <div class="quiz-explain"><strong>Right.</strong> Domain expertise is a differentiator, not a liability. A project that combines your prior field with new computational skills demonstrates exactly the cross-disciplinary judgment bioinformatics teams value, and turns your background into a reason to hire you rather than something to explain away.</div>
+                </div>
+
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Perez-Riverol Y, et al. Ten Simple Rules for Taking Advantage of Git and GitHub. <em>PLOS Computational Biology</em> 12(7): e1004947, 2016. <a href="https://doi.org/10.1371/journal.pcbi.1004947" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1004947</a></li>
+                        <li>Way GP, et al. A field guide to cultivating computational biology. <em>PLOS Biology</em> 19(10): e3001419, 2021. <a href="https://doi.org/10.1371/journal.pbio.3001419" target="_blank" rel="noopener">doi:10.1371/journal.pbio.3001419</a></li>
+                        <li>Ziemann M, Poulain P, Bora A. The five pillars of computational reproducibility: bioinformatics and beyond. <em>Briefings in Bioinformatics</em> 24(6), bbad375, 2023. <a href="https://doi.org/10.1093/bib/bbad375" target="_blank" rel="noopener">doi:10.1093/bib/bbad375</a></li>
+                        <li>GitHub Docs: Managing your profile README. <a href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme" target="_blank" rel="noopener">docs.github.com</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: June 2026.</p>
+                </div>
+
+                <a class="next-lesson" href="career-paths.html" target="_blank" rel="noopener">
+                    <span>Next in Track 6</span>
+                    <h3>Career paths: academia, biotech, pharma, clinical →</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
