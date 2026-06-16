@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Level 2 advanced companion to the Sequence Alignment and BLAST mini-course: affine gap penalties, the Karlin-Altschul statistics behind the E-value, why BLAST is a heuristic (word size, low-complexity masking, missed homologs), and detecting remote homology with PSI-BLAST, profile HMMs (HMMER), and structure search (Foldseek). Ends with a graded assessment.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Sequence Alignment & BLAST — Advanced (Level 2) | BioNexus Hub">
+    <meta property="og:description" content="Affine gaps, E-value statistics, BLAST's heuristic limits, and remote-homology detection (PSI-BLAST, HMMER, Foldseek). The professional depth, with a graded assessment.">
+    <meta property="og:url" content="https://bionexushub.com/blast-alignment-advanced.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sequence Alignment & BLAST — Advanced (Level 2) | BioNexus Hub">
+    <meta name="twitter:description" content="The professional depth behind alignment and BLAST, with a graded assessment.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Sequence Alignment & BLAST — Advanced (Level 2) - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #ede0ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.purple { background: rgba(168,85,247,0.12); border-color: transparent; color: #7c3aed; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .module-tag { display: inline-block; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: var(--primary-purple); background: rgba(168,85,247,0.1); padding: 4px 12px; border-radius: 20px; margin-top: 8px; }
+
+        .objectives { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-purple); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .objectives h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-purple); margin-bottom: 10px; }
+        .objectives ul { margin: 0 0 0 20px; }
+        .objectives li { font-size: 1rem; color: var(--text-gray); margin-bottom: 5px; }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .pro { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .pro h4 { color: #047857; font-size: 0.95rem; margin-bottom: 6px; }
+        .pro p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .xlink { background: rgba(91,156,248,0.08); border: 1px solid rgba(91,156,248,0.3); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .xlink h4 { color: #3b6fd4; font-size: 0.95rem; margin-bottom: 6px; }
+        .xlink p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+        .xlink a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+
+        .ctable { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.95rem; }
+        .ctable th, .ctable td { border: 1px solid rgba(91,156,248,0.2); padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ctable th { background: rgba(91,156,248,0.1); color: var(--deep-navy); font-weight: 600; }
+        .ctable td { color: var(--text-gray); }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .assessment { background: linear-gradient(135deg, rgba(91,156,248,0.1), rgba(168,85,247,0.1)); border: 1px solid rgba(168,85,247,0.3); border-radius: 12px; padding: 24px 28px; margin: 36px 0 8px; }
+        .assessment h2 { margin-top: 0; }
+        .assessment .passmark { font-size: 0.95rem; color: var(--text-gray); margin: 0; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html">Learn</a></li>
+                    <li><a href="minicourses.html" style="color: var(--primary-blue);">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="minicourses.html" target="_blank" rel="noopener">← Mini-courses</a> &nbsp;/&nbsp; Sequence Alignment &amp; BLAST &nbsp;/&nbsp; <strong>Level 2: Advanced</strong></div>
+                <h1>Sequence Alignment &amp; BLAST — Advanced</h1>
+                <p class="promise">You finished the essentials; now the professional depth. This Level 2 companion covers the parts that separate someone who runs BLAST from someone who understands it: affine gap penalties, the statistics that actually produce an E-value, why BLAST is a heuristic that can miss real homologs, and how to find the distant relatives BLAST cannot, using PSI-BLAST, profile HMMs, and structure search.</p>
+                <div class="tags">
+                    <span class="tag purple">🎓 Mini-course · Level 2</span>
+                    <span class="tag">⏱️ ~2 hr</span>
+                    <span class="tag green">🌐 Web tools + optional install</span>
+                    <span class="tag">✅ Graded assessment</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="objectives">
+                    <h4>What you'll be able to do</h4>
+                    <ul>
+                        <li>Explain affine gap penalties and why they model real indels better than a flat penalty.</li>
+                        <li>Describe what an E-value is built from (Karlin-Altschul) and how query length and database size move it.</li>
+                        <li>Explain why BLAST, as a heuristic, can miss true remote homologs, and what low-complexity masking does.</li>
+                        <li>Choose the right tool to detect distant homology: PSI-BLAST, profile HMMs (HMMER), or structure search (Foldseek).</li>
+                    </ul>
+                </div>
+                <div class="prereq">
+                    <h4>Before you start &amp; how it's sourced</h4>
+                    <ul>
+                        <li>Finish <a href="blast-alignment.html" target="_blank" rel="noopener">Level 1: Sequence Alignment &amp; BLAST</a> first. This builds directly on it.</li>
+                        <li>Scope aligned to the ISCB core competencies and EMBL-EBI / Galaxy Training; facts drawn from the primary literature cited at the end.</li>
+                        <li>Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                    </ul>
+                </div>
+
+                <span class="module-tag">Module 1 of 4</span>
+                <h2>Affine gap penalties: not all gaps are equal</h2>
+                <p>In Level 1 the demo charged a flat penalty per gap position. That is biologically wrong. A single insertion or deletion of five bases is <em>one</em> mutational event; five separate one-base gaps are <em>five</em> events, and far less likely. A flat (linear) penalty scores them the same. The fix is an <strong>affine gap penalty</strong>: a larger one-time cost to <em>open</em> a gap, plus a small cost to <em>extend</em> it. This makes one long gap much cheaper than many short ones, which matches how indels actually happen. Gotoh (1982) showed how to compute this efficiently.</p>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Gap-open vs gap-extend</h4>
+                    <p>Two separate penalties. <strong>Gap-open</strong> is paid once when a gap starts (e.g., −10); <strong>gap-extend</strong> is paid for each additional position in that same gap (e.g., −1). Total cost of a gap of length L is: open + (L × extend). This is why aligners cluster indels into single runs rather than scattering them.</p>
+                </div>
+
+                <h3>See the difference (in your browser)</h3>
+                <p>The cell compares the same five gap positions arranged two ways: one 5-base indel versus five scattered single gaps. Watch how affine scoring strongly prefers the single event while a flat penalty is indifferent. Press Run (first run loads Python).</p>
+
+                <div class="pycell"><script type="application/x-python">gap_open, gap_extend = -10, -1   # affine: costly to start, cheap to extend
+flat_gap = -3                    # linear: every gap position costs the same
+
+def affine(gap_runs):   # gap_runs = list of gap lengths
+    return sum(gap_open + gap_extend * L for L in gap_runs)
+def linear(gap_runs):
+    return sum(flat_gap * L for L in gap_runs)
+
+one_long      = [5]            # a single 5-base indel  (one event)
+five_scattered = [1, 1, 1, 1, 1]  # five separate 1-base gaps (five events)
+
+print("Scenario              affine     linear")
+print(f"one 5-base indel      {affine(one_long):>4}      {linear(one_long):>4}")
+print(f"five 1-base gaps      {affine(five_scattered):>4}      {linear(five_scattered):>4}")
+print()
+print("Affine: one long gap (-15) beats five short ones (-55) -> prefers a single event.")
+print("Linear: both score -15 -> it cannot tell one indel from five. That is the problem.")
+</script></div>
+
+                <span class="module-tag">Module 2 of 4</span>
+                <h2>The statistics behind the E-value</h2>
+                <p>In Level 1 you learned to trust the E-value. Here is what it is made of. The <strong>Karlin-Altschul</strong> theory (1990) says that the number of chance high-scoring alignments follows a known distribution, giving the famous form:</p>
+                <pre><span class="c"># Expected number of chance hits scoring at least S</span>
+E = K · m · n · e^(-λS)</pre>
+                <p>where <strong>m</strong> is your query length, <strong>n</strong> is the total database length, <strong>S</strong> is the alignment score, and <strong>K</strong> and <strong>λ</strong> are constants set by the scoring system. Three consequences a professional internalizes:</p>
+                <ul>
+                    <li><strong>Bigger database, worse E-value.</strong> The same alignment becomes less surprising in a larger database (n goes up, E goes up). Your hit's significance is not absolute; it depends on what you searched against.</li>
+                    <li><strong>Longer query, worse E-value</strong> for the same score (m goes up). This is why the <strong>bit score</strong> exists: it is the score rescaled by K and λ so it is comparable across searches.</li>
+                    <li><strong>Score must clear the noise.</strong> Because E falls exponentially in S, a small increase in alignment score sharply drops the E-value.</li>
+                </ul>
+
+                <div class="xlink">
+                    <h4>🔗 Connection: a BLAST search is a multiple-testing problem</h4>
+                    <p>When you BLAST one query against millions of database sequences, you are making millions of comparisons, exactly the situation from the statistics track. The E-value already builds the database size (n) into the calculation, so it <em>is</em> the multiple-testing correction for a single search: it answers "how many hits this good would I expect by chance across this whole database?" See <a href="multiple-testing.html" target="_blank" rel="noopener">The multiple-testing problem</a> for the general principle.</p>
+                </div>
+
+                <span class="module-tag">Module 3 of 4</span>
+                <h2>BLAST is a heuristic, and heuristics miss things</h2>
+                <p>Smith-Waterman is guaranteed to find the optimal local alignment, but it is too slow for huge databases. BLAST trades that guarantee for speed: it first finds short exact (or near-exact) <strong>word</strong> matches, called <em>seeds</em>, and only extends alignments around those seeds. That is the whole trick, and it has a consequence professionals must respect.</p>
+                <ul>
+                    <li><strong>No seed, no hit.</strong> If a true but distant homolog shares <em>no</em> high-scoring word with your query, BLAST never starts an alignment there and the homolog is missed entirely. BLAST is sensitive for close relatives and progressively blind to distant ones.</li>
+                    <li><strong>Word size is a sensitivity knob.</strong> A smaller word size (seed) finds more distant hits but runs slower and returns more noise; a larger word size is faster but less sensitive. The defaults are a compromise, not a law.</li>
+                </ul>
+
+                <div class="warn">
+                    <h4>⚠️ Low-complexity regions produce false hits, and BLAST masks them</h4>
+                    <p>Stretches like <code class="inline">AAAAAAAA</code> or proline-rich runs are "low-complexity": they match many unrelated sequences by chance and generate spurious high-scoring hits. BLAST masks these by default (<strong>DUST</strong> for nucleotides, <strong>SEG</strong> for proteins), replacing them so they cannot seed alignments. Usually correct, but if your real signal lives in a low-complexity region, masking can hide it, so know the masking is happening.</p>
+                </div>
+
+                <span class="module-tag">Module 4 of 4</span>
+                <h2>Finding the homologs BLAST cannot: remote homology</h2>
+                <p>The hardest and most valuable case is the <strong>twilight zone</strong>: below roughly 25 to 30% identity for proteins, true homologs become statistically indistinguishable from random matches by pairwise methods (Rost, 1999). Plain BLAST struggles here. The professional toolkit climbs in sensitivity by using a <em>profile</em>, a position-specific model of a whole family, instead of a single sequence:</p>
+                <table class="ctable">
+                    <thead><tr><th>Method</th><th>Idea</th><th>When to reach for it</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>PSI-BLAST</strong></td><td>Run BLAST, build a position-specific scoring matrix (profile) from the hits, search again, and iterate. Each round pulls in more distant relatives.</td><td>More sensitive than blastp for distant homologs, still in the BLAST family (Altschul 1997).</td></tr>
+                        <tr><td><strong>Profile HMMs / HMMER</strong></td><td>Model a family as a hidden Markov model with per-position match, insert, and delete probabilities. The gold standard for sensitive sequence search (Pfam is built on this).</td><td>When you need maximum sequence-based sensitivity, or to search domain databases (Eddy 2011).</td></tr>
+                        <tr><td><strong>Structure search (Foldseek)</strong></td><td>Structure is conserved far longer than sequence. Foldseek encodes 3D shape as a "structural alphabet" and searches it at BLAST-like speed, now practical thanks to AlphaFold's structures.</td><td>When sequence similarity is gone but you have (or can predict) a structure (van Kempen 2024).</td></tr>
+                    </tbody>
+                </table>
+
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Profile (position-specific scoring)</h4>
+                    <p>Instead of one query sequence, a profile records, for every column of an alignment, how conserved each residue is. A position that is always tryptophan scores a strong reward for tryptophan and heavy penalties otherwise; a variable loop position is lenient. This per-position weighting is why profile methods detect relatives that a single-sequence search misses.</p>
+                </div>
+
+                <div class="pro">
+                    <h4>🛠️ Hands-on (guided): see the sensitivity climb</h4>
+                    <p>Take a protein with well-known distant relatives, for example human lysozyme C (<a href="https://www.uniprot.org/uniprotkb/P61626/entry" target="_blank" rel="noopener">UniProt P61626</a>). Run a normal <code class="inline">blastp</code> against <code class="inline">nr</code> and note how far down the hit list the identity drops toward the twilight zone. Then run the same query with <strong>PSI-BLAST</strong> for two or three iterations. <strong>What you should see:</strong> each iteration recovers additional, more distant homologs that the first pass ranked poorly or missed, because the profile now encodes the whole family, not one sequence. That is remote-homology detection in action.</p>
+                </div>
+
+                <div class="assessment">
+                    <h2>✅ Final assessment (Level 2)</h2>
+                    <p class="passmark">Five questions covering the advanced material. Aim for at least <strong>4 out of 5</strong> correct. These test reasoning, not recall.</p>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-q-src">Under an affine scheme (gap-open −10, gap-extend −1), which is cheaper: one gap of length 5, or five separate gaps of length 1? And what does this preference model biologically?</div>
+                    <button data-opt data-correct>One gap of length 5 (cost −15) is far cheaper than five length-1 gaps (cost −55); it models that a single multi-base indel is one mutational event, not five</button>
+                    <button data-opt>Five separate gaps are cheaper because each is short</button>
+                    <button data-opt>They cost the same, which is the point of affine penalties</button>
+                    <button data-opt>Affine penalties only apply to nucleotides, so the question is undefined for proteins</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> One length-5 gap costs open + 5×extend = −10 + (−5) = −15; five length-1 gaps cost 5 × (−10 + −1) = −55. Affine scoring therefore prefers clustering indels into one event, which matches biology. A flat penalty would score both at −15 and could not distinguish them.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You get a hit at E = 1e-4 searching a small custom database. You repeat the exact search against a database 1,000× larger and the same alignment now shows E ≈ 0.1. What happened, and is it a bug?</div>
+                    <button data-opt>A bug; the E-value for a fixed alignment must never change</button>
+                    <button data-opt data-correct>Expected behavior: in E ≈ K·m·n·e^−λS, the database length n rose ~1000×, so E rose roughly proportionally; the same alignment is less surprising in a much larger search space</button>
+                    <button data-opt>The larger database corrupted the query, lowering the score</button>
+                    <button data-opt>It means the hit became a better match in the larger database</button>
+                    <div class="quiz-explain"><strong>Exactly.</strong> The E-value scales with database size n. A ~1000× larger database inflates E by ~1000× for the same score, here 1e-4 → ~0.1. Significance is relative to what you searched, which is why reporting the database matters and why the bit score (independent of n) is useful for comparison.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A reviewer insists a gene has "no homolog" because blastp returned nothing significant. As an expert, what is the most accurate caution?</div>
+                    <button data-opt>The reviewer is right; if BLAST finds nothing, no homolog exists</button>
+                    <button data-opt data-correct>BLAST is a seed-based heuristic that can miss distant homologs lacking a shared high-scoring word; absence of a BLAST hit is not proof of no homolog, profile methods (PSI-BLAST, HMMER) or structure search (Foldseek) may still find one</button>
+                    <button data-opt>BLAST never misses anything, so the gene must be newly evolved</button>
+                    <button data-opt>The only fix is to lower the percent-identity threshold in blastp</button>
+                    <div class="quiz-explain"><strong>Right.</strong> "No BLAST hit" means "no hit found by this heuristic at these settings," not "no homolog exists." Because BLAST needs a word seed, distant relatives in the twilight zone can be invisible to it while profile HMMs or structure-based search still detect them.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Why does searching with a profile (PSI-BLAST or a profile HMM) detect more remote homologs than searching with a single sequence?</div>
+                    <button data-opt>Profiles ignore the query and just return everything in the database</button>
+                    <button data-opt data-correct>A profile encodes, per position, which residues are conserved across the whole family, so it rewards the residues that actually matter and tolerates the variable ones, recovering relatives a single sequence would score as random</button>
+                    <button data-opt>Profiles are simply run at a lower E-value threshold</button>
+                    <button data-opt>Profiles convert protein sequences to DNA, which is more sensitive</button>
+                    <div class="quiz-explain"><strong>Exactly.</strong> A single-sequence search treats every position equally. A profile captures position-specific conservation (strict at a catalytic residue, lenient in a loop), so it scores the biologically important matches highly and detects family members that fall in the twilight zone for pairwise comparison.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Two proteins share only ~18% sequence identity but have nearly identical 3D folds and the same active-site geometry. What is the best way to detect this relationship, and why?</div>
+                    <button data-opt>blastn, because nucleotide search is most sensitive at low identity</button>
+                    <button data-opt data-correct>Structure-based search (e.g., Foldseek), because structure is conserved far longer than sequence; at ~18% identity the pair is in the twilight zone where sequence methods struggle but structural similarity is still clear</button>
+                    <button data-opt>Nothing can detect it; below 20% identity no relationship is knowable</button>
+                    <button data-opt>A flat-gap global alignment, which is optimized for low-identity pairs</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> At ~18% identity the pair sits in the twilight zone where sequence signal is weak, but conserved fold and active-site geometry are strong evidence of homology. Structure-comparison tools like Foldseek (fast, thanks to AlphaFold structures) are built exactly for this case.</div>
+                </div>
+
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Gotoh O. An improved algorithm for matching biological sequences. <em>J Mol Biol</em> 162(3):705–708, 1982. (Affine gap penalties.)</li>
+                        <li>Karlin S, Altschul SF. Methods for assessing the statistical significance of molecular sequence features using general scoring schemes. <em>PNAS</em> 87:2264–2268, 1990. (The E-value theory.)</li>
+                        <li>Altschul SF, et al. Gapped BLAST and PSI-BLAST: a new generation of protein database search programs. <em>Nucleic Acids Research</em> 25(17):3389–3402, 1997. <a href="https://doi.org/10.1093/nar/25.17.3389" target="_blank" rel="noopener">doi:10.1093/nar/25.17.3389</a></li>
+                        <li>Eddy SR. Accelerated profile HMM searches (HMMER3). <em>PLOS Computational Biology</em> 7(10):e1002195, 2011. <a href="https://doi.org/10.1371/journal.pcbi.1002195" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1002195</a></li>
+                        <li>Rost B. Twilight zone of protein sequence alignments. <em>Protein Engineering</em> 12(2):85–94, 1999.</li>
+                        <li>van Kempen M, et al. Fast and accurate protein structure search with Foldseek. <em>Nature Biotechnology</em> 42:243–246, 2024. <a href="https://doi.org/10.1038/s41587-023-01773-0" target="_blank" rel="noopener">doi:10.1038/s41587-023-01773-0</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: June 2026.</p>
+                </div>
+
+                <a class="next-lesson" href="minicourses.html" target="_blank" rel="noopener">
+                    <span>You finished Level 2</span>
+                    <h3>Back to mini-courses →</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>

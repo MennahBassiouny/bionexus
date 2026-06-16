@@ -150,7 +150,7 @@
     <div class="lesson-header">
         <div class="container">
             <div class="lesson-body">
-                <div class="breadcrumb"><a href="learn.html#minicourses" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Mini-course &nbsp;/&nbsp; Sequence Alignment &amp; BLAST</div>
+                <div class="breadcrumb"><a href="minicourses.html" target="_blank" rel="noopener">← Mini-courses</a> &nbsp;/&nbsp; Sequence Alignment &amp; BLAST &nbsp;/&nbsp; <strong>Level 1: Essentials</strong></div>
                 <h1>Mini-Course: Sequence Alignment &amp; BLAST</h1>
                 <p class="promise">Aligning sequences is the most fundamental operation in bioinformatics, and BLAST is the tool that built the field. This focused, professional mini-course takes you from the idea of homology through how alignment actually works, how to run and correctly read a BLAST search, and how to align many sequences at once. It ends with a graded final assessment that tests real understanding.</p>
                 <div class="tags">
@@ -198,7 +198,12 @@
 
                 <span class="module-tag">Module 2 of 4</span>
                 <h2>How pairwise alignment actually works</h2>
+                <p style="background:rgba(91,156,248,0.07); border-left:3px solid var(--primary-blue); padding:12px 16px; border-radius:8px; font-size:0.98rem;">📘 <strong>New to this?</strong> This module shows what happens under the hood. You can skim it on a first pass and still use BLAST well, the most practical, job-ready skills are in Modules 3 and 4.</p>
                 <p>An alignment is scored: you reward matches, penalise mismatches, and penalise <strong>gaps</strong> (insertions or deletions). The "best" alignment is the one with the highest total score. The breakthrough that made this tractable was <strong>dynamic programming</strong>: instead of trying every possible alignment (astronomically many), you build the optimal alignment from optimal sub-alignments in a scoring matrix.</p>
+                <div class="jargon">
+                    <h4><span>Decode the jargon</span>Dynamic programming</h4>
+                    <p>A problem-solving trick: instead of re-checking every possibility from scratch, you solve tiny sub-problems once, store the answers, and reuse them. For alignment it means filling a grid cell by cell, so the best alignment of two long sequences is assembled from the best alignments of their shorter pieces. You never have to code this yourself, the tools do it; this is just so the word is not a mystery.</p>
+                </div>
                 <ul>
                     <li><strong>Needleman-Wunsch</strong> (1970) is the dynamic-programming algorithm for <em>global</em> alignment.</li>
                     <li><strong>Smith-Waterman</strong> (1981) is the variant for <em>local</em> alignment. It is exact but slow on big databases, which is the gap BLAST was invented to fill.</li>
@@ -210,7 +215,7 @@
                 </div>
 
                 <h3>See dynamic programming run (in your browser)</h3>
-                <p>The cell below is a complete Needleman-Wunsch global aligner in pure Python, no libraries. It fills the scoring matrix, then traces back the optimal alignment. Press Run (the first run loads Python in your browser), then change the sequences or the match/gap scores and watch the alignment change.</p>
+                <p>The cell below is a complete Needleman-Wunsch global aligner in pure Python, no libraries. It fills the scoring matrix, then traces back the optimal alignment. Press Run (the first run loads Python in your browser), then change the sequences or the match/gap scores and watch the alignment change. <strong>You do not need to understand every line of the code</strong>, just press Run and watch the output.</p>
 
                 <div class="pycell"><script type="application/x-python">seq1 = "GATTACA"
 seq2 = "GCATGCU"
@@ -263,6 +268,10 @@ print(a2)
 
                 <h3>Hands-on: run a BLAST search</h3>
                 <p>No install needed for this part. Go to the <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi" target="_blank" rel="noopener">NCBI BLAST</a> site, choose <code class="inline">blastn</code> or <code class="inline">blastp</code>, paste a FASTA sequence, pick a database (start with <code class="inline">nr</code>), and run it. Then read the results, which is the skill most people get wrong.</p>
+                <div class="pro">
+                    <h4>🧪 Try this exact example (recommended for your first time)</h4>
+                    <p>Open <a href="https://www.uniprot.org/uniprotkb/P68871/entry" target="_blank" rel="noopener">UniProt P68871</a> (human hemoglobin subunit beta, "HBB"), copy its protein sequence, and run <code class="inline">blastp</code> against <code class="inline">nr</code>. <strong>What you should see:</strong> the top hit is human beta-globin itself at ~100% identity with an E-value at or near 0; just below it, beta-globins from other mammals (chimp, mouse, and so on), lower percent identity but still tiny E-values. Those lower-identity hits are real homologs, which is exactly the homology-vs-identity point from Module 1.</p>
+                </div>
 
                 <div class="warn">
                     <h4>⚠️ Read the E-value, not just the percent identity</h4>
@@ -347,9 +356,9 @@ print(a2)
                     <p class="reviewed">Last reviewed: June 2026.</p>
                 </div>
 
-                <a class="next-lesson" href="learn.html#minicourses" target="_blank" rel="noopener">
-                    <span>You finished this mini-course</span>
-                    <h3>Back to mini-courses and the roadmap →</h3>
+                <a class="next-lesson" href="blast-alignment-advanced.html" target="_blank" rel="noopener">
+                    <span>Ready for more? Level 2</span>
+                    <h3>Sequence Alignment &amp; BLAST — Advanced →</h3>
                 </a>
 
             </div>
