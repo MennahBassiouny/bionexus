@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BioNexus Hub makes bioinformatics approachable for everyone. Learn Python, R, and the command line from scratch with free, browser-based lessons and real-data projects.">
+    <meta name="description" content="The command line for complete beginners, taught from zero: what the terminal is, the parts of a command, moving around the folder tree, viewing and searching files, and the pipe, with plain definitions and visuals.">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Command-Line Basics for Bioinformatics - BioNexus Hub">
+    <meta property="og:title" content="Command-Line Basics for Complete Beginners - BioNexus Hub">
     <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
     <meta property="og:url" content="https://bionexushub.com/">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Command-Line Basics for Bioinformatics - BioNexus Hub">
+    <meta name="twitter:title" content="Command-Line Basics for Complete Beginners - BioNexus Hub">
     <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
-    <title>Command-Line Basics - BioNexus Hub</title>
+    <title>Command-Line Basics for Complete Beginners - BioNexus Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
@@ -69,6 +69,18 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} .cheat td:first-child{width:auto;} }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:680px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
+        .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
+        .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .dtable code { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 6px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.85em; }
+        .glossary { background:#f1f5f9; border:1px solid rgba(91,156,248,0.2); border-radius:10px; padding:18px 24px; margin:28px 0; }
+        .glossary h4 { color:var(--deep-navy); margin-bottom:8px; font-size:1.1rem; }
+        .glossary dt { font-weight:700; color:var(--deep-navy); margin-top:10px; }
+        .glossary dd { color:var(--text-gray); margin:2px 0 0; }
+        .lesson-body h3 { font-family:'Crimson Pro',serif; font-size:1.4rem; color:var(--deep-navy); margin:30px 0 10px; }
     </style>
 </head>
 <body>
@@ -91,12 +103,12 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Bash series (2 of 3)</div>
-            <h1>Command-Line Basics: Files, Pipes &amp; Text</h1>
-            <p class="promise">The two dozen commands that make the terminal genuinely useful - moving around, handling files, and the pipe trick that turns simple tools into a data-processing assembly line.</p>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Foundations &nbsp;/&nbsp; Bash &nbsp;/&nbsp; Level 1: Basics</div>
+            <h1>Command Line: Level 1 (Basics)</h1>
+            <p class="promise">For complete beginners who have never opened a terminal. We start from what the command line even is, then build moving around, viewing files, searching, and the pipe, one small step at a time, with pictures.</p>
             <div class="tags">
                 <span class="tag green">🟢 Beginner</span>
-                <span class="tag">⏱️ ~1.5 hr</span>
+                <span class="tag">⏱️ ~2 hr</span>
                 <span class="tag">💻 Bash</span>
             </div>
         </div></div>
@@ -105,84 +117,138 @@
     <main>
         <div class="container"><div class="lesson-body">
 
-            <p>Open your terminal (set it up in the <a href="bash-install.html" target="_blank" rel="noopener">install lesson</a> if you haven't). Type each command yourself - muscle memory is the whole game here.</p>
+            <div class="why">
+                <h4>Start here, even if you have never opened a terminal</h4>
+                <p>This lesson assumes nothing. We will explain what the command line even is, then build up moving around, looking at files, searching, and the one idea (the pipe) that makes it powerful, with pictures. Type each command yourself; muscle memory is the whole game here. You cannot break anything by looking.</p>
+            </div>
 
-            <h2>1. Knowing where you are &amp; moving around</h2>
-            <p>The terminal always has a "current folder." Three commands are your eyes and feet:</p>
-            <pre>pwd            <span class="c"># print working directory - where am I?</span>
-ls             <span class="c"># list what's in this folder</span>
+            <h2>What is the command line?</h2>
+            <p>The <strong>command line</strong> (also called the <strong>terminal</strong> or <strong>shell</strong>) is a place where you type commands as text instead of clicking buttons. You type a command, press Enter, and the computer does it and prints the result. It feels old-fashioned, but for data it is faster and far more powerful than a mouse.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="You type a command, the shell runs it, you see the output">
+                    <rect x="14" y="40" width="200" height="74" rx="12" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/>
+                    <text x="114" y="72" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="16" font-weight="700" fill="#0f172a">You type a command</text>
+                    <text x="114" y="94" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="13" fill="#64748b">then press Enter</text>
+                    <text x="234" y="83" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="26" fill="#94a3b8">&#8594;</text>
+                    <rect x="258" y="40" width="180" height="74" rx="12" fill="#f3edff" stroke="#a855f7" stroke-width="2"/>
+                    <text x="348" y="72" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="16" font-weight="700" fill="#0f172a">The shell runs it</text>
+                    <text x="348" y="94" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="13" fill="#64748b">carries out the task</text>
+                    <text x="458" y="83" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="26" fill="#94a3b8">&#8594;</text>
+                    <rect x="482" y="40" width="224" height="74" rx="12" fill="#e9faf2" stroke="#10b981" stroke-width="2"/>
+                    <text x="594" y="72" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="16" font-weight="700" fill="#0f172a">You see the output</text>
+                    <text x="594" y="94" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="13" fill="#64748b">printed back to you</text>
+                </svg>
+                <figcaption>The command line in one picture: a command in, a result out.</figcaption>
+            </figure>
+
+            <h2>The parts of a command</h2>
+            <p>Most commands have the same three parts. Knowing the names makes every example readable.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 560 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The command ls space dash l space Downloads, labelled command, option, argument">
+                    <g font-family="'JetBrains Mono',monospace">
+                    <text x="70" y="56" font-size="26" fill="#5b9cf8">ls</text>
+                    <text x="160" y="56" font-size="26" fill="#a855f7">-l</text>
+                    <text x="250" y="56" font-size="26" fill="#10b981">Downloads</text>
+                    </g>
+                    <g font-family="'Work Sans',sans-serif" font-size="13">
+                    <line x1="78" y1="70" x2="78" y2="92" stroke="#5b9cf8" stroke-width="2"/><text x="78" y="110" text-anchor="middle" fill="#5b9cf8" font-weight="700">command</text><text x="78" y="126" text-anchor="middle" fill="#64748b">what to do</text>
+                    <line x1="172" y1="70" x2="172" y2="92" stroke="#a855f7" stroke-width="2"/><text x="172" y="110" text-anchor="middle" fill="#a855f7" font-weight="700">option</text><text x="172" y="126" text-anchor="middle" fill="#64748b">how to do it</text>
+                    <line x1="305" y1="70" x2="305" y2="92" stroke="#10b981" stroke-width="2"/><text x="305" y="110" text-anchor="middle" fill="#10b981" font-weight="700">argument</text><text x="305" y="126" text-anchor="middle" fill="#64748b">what to act on</text>
+                    </g>
+                </svg>
+                <figcaption>A command (what to do), an option that tweaks it (here, long listing), and an argument (the thing to act on).</figcaption>
+            </figure>
+            <p>Anything after a <code class="inline">#</code> is a comment; commands are <strong>case sensitive</strong> (<code class="inline">ls</code> works, <code class="inline">LS</code> does not).</p>
+
+            <h2>1. Knowing where you are and moving around</h2>
+            <p>The terminal always sits "inside" one folder. Three commands are your eyes and feet.</p>
+            <pre>pwd            <span class="c"># print working directory: where am I?</span>
+ls             <span class="c"># list what is in this folder</span>
 ls -l          <span class="c"># list with details (size, date)</span>
-ls -la         <span class="c"># also show hidden files (those starting with .)</span>
 cd Downloads   <span class="c"># change directory into Downloads</span>
 cd ..          <span class="c"># go up one level</span>
 cd ~           <span class="c"># go to your home folder</span></pre>
-            <div class="why"><h4>Decode the jargon: paths, <code class="inline">.</code> and <code class="inline">..</code></h4><p>A <strong>path</strong> is an address for a file. <code class="inline">.</code> means "here" (current folder), <code class="inline">..</code> means "the folder above," and <code class="inline">~</code> means "my home folder." Master these three and you'll never get lost.</p></div>
+            <p>Files live in a tree of folders. A <strong>path</strong> is the address of a file in that tree.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 520 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A folder tree: home contains project and Downloads; project contains genes.fasta">
+                    <g font-family="'JetBrains Mono',monospace" font-size="14">
+                    <rect x="200" y="14" width="120" height="32" rx="6" fill="#f3edff" stroke="#a855f7" stroke-width="2"/><text x="260" y="35" text-anchor="middle" fill="#0f172a">~ (home)</text>
+                    <line x1="260" y1="46" x2="120" y2="78" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="260" y1="46" x2="400" y2="78" stroke="#cbd5e1" stroke-width="2"/>
+                    <rect x="60" y="78" width="120" height="32" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="120" y="99" text-anchor="middle" fill="#0f172a">project</text>
+                    <rect x="340" y="78" width="120" height="32" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="400" y="99" text-anchor="middle" fill="#0f172a">Downloads</text>
+                    <line x1="120" y1="110" x2="120" y2="142" stroke="#cbd5e1" stroke-width="2"/>
+                    <rect x="50" y="142" width="140" height="32" rx="6" fill="#e9faf2" stroke="#10b981" stroke-width="2"/><text x="120" y="163" text-anchor="middle" fill="#0f172a">genes.fasta</text>
+                    <text x="260" y="196" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="13" fill="#64748b">path to the file:  ~/project/genes.fasta</text>
+                    </g>
+                </svg>
+                <figcaption><code class="inline">~</code> is your home folder, <code class="inline">.</code> means "here", and <code class="inline">..</code> means "the folder above". Master these three and you will never get lost.</figcaption>
+            </figure>
 
-            <h2>2. Creating &amp; handling files and folders</h2>
-            <pre>mkdir project        <span class="c"># make a new folder</span>
+            <h2>2. Creating and handling files and folders</h2>
+            <pre>mkdir project          <span class="c"># make a new folder</span>
 cd project
-touch notes.txt      <span class="c"># create an empty file</span>
+touch notes.txt        <span class="c"># create an empty file</span>
 cp notes.txt copy.txt  <span class="c"># copy</span>
 mv copy.txt final.txt  <span class="c"># move OR rename</span>
-rm final.txt         <span class="c"># remove (careful - no recycle bin!)</span></pre>
-            <div class="why"><h4>⚠️ <code class="inline">rm</code> is forever</h4><p>The command line has no trash can. <code class="inline">rm</code> deletes immediately and permanently. Read the line twice before you run it - especially before <code class="inline">rm -r</code> (which deletes whole folders). This caution is a habit worth building on day one.</p></div>
+rm final.txt           <span class="c"># remove (careful: no recycle bin!)</span></pre>
+            <div class="why"><h4>rm is forever</h4><p>The command line has no trash can. <code class="inline">rm</code> deletes immediately and permanently. Read the line twice before you run it, especially before <code class="inline">rm -r</code> (which deletes whole folders).</p></div>
 
             <h2>3. Looking inside files</h2>
-            <pre>cat file.txt     <span class="c"># dump the whole file to the screen</span>
-head file.txt    <span class="c"># first 10 lines</span>
-head -n 3 file.txt  <span class="c"># first 3 lines</span>
-tail file.txt    <span class="c"># last 10 lines</span>
-less file.txt    <span class="c"># scroll through a big file (press q to quit)</span></pre>
-            <p><code class="inline">head</code> and <code class="inline">less</code> matter enormously in bioinformatics, where a single file can be gigabytes - you never want to <code class="inline">cat</code> a whole genome to your screen.</p>
+            <pre>cat file.txt       <span class="c"># dump the whole file to the screen</span>
+head file.txt      <span class="c"># first 10 lines</span>
+head -n 3 file.txt <span class="c"># first 3 lines</span>
+tail file.txt      <span class="c"># last 10 lines</span>
+less file.txt      <span class="c"># scroll a big file (press q to quit)</span></pre>
+            <p><code class="inline">head</code> and <code class="inline">less</code> matter hugely in bioinformatics, where a single file can be gigabytes. You never want to <code class="inline">cat</code> a whole genome to your screen.</p>
 
-            <h2>4. Searching &amp; counting</h2>
+            <h2>4. Searching and counting</h2>
             <pre>grep <span class="s">"TP53"</span> genes.txt   <span class="c"># print lines containing "TP53"</span>
 grep -c <span class="s">"&gt;"</span> seqs.fasta   <span class="c"># COUNT lines containing "&gt;"</span>
 wc -l file.txt           <span class="c"># count lines in a file</span>
 sort names.txt           <span class="c"># sort lines alphabetically</span>
 sort names.txt | uniq    <span class="c"># sort, then remove duplicates</span></pre>
-            <div class="why"><h4>Why <code class="inline">grep</code> is a bioinformatics superpower</h4><p>FASTA files mark each sequence with a header line starting <code class="inline">&gt;</code>. So <code class="inline">grep -c "&gt;"</code> instantly counts how many sequences are in a file of any size. Tiny command, huge time saver - you'll use it constantly.</p></div>
+            <div class="why"><h4>Why grep is a bioinformatics superpower</h4><p>FASTA files mark each sequence with a header line starting <code class="inline">&gt;</code>. So <code class="inline">grep -c "&gt;"</code> instantly counts how many sequences are in a file of any size. Tiny command, huge time saver.</p></div>
 
-            <h2>5. The pipe <code class="inline">|</code> - the big idea</h2>
+            <h2>5. The pipe: the big idea</h2>
             <p>This is the concept that makes the command line powerful. The <strong>pipe</strong> <code class="inline">|</code> takes the output of one command and feeds it straight into the next, so small tools combine into something bigger.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 640 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="cat feeds grep which feeds wc to count sequences">
+                    <g font-family="'JetBrains Mono',monospace">
+                    <rect x="14" y="34" width="150" height="50" rx="10" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="89" y="58" text-anchor="middle" font-size="15" fill="#0f172a">cat seqs.fasta</text><text x="89" y="74" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="11" fill="#64748b">read the file</text>
+                    <text x="180" y="64" text-anchor="middle" font-size="22" fill="#a855f7">|</text>
+                    <rect x="196" y="34" width="150" height="50" rx="10" fill="#f3edff" stroke="#a855f7" stroke-width="2"/><text x="271" y="58" text-anchor="middle" font-size="15" fill="#0f172a">grep "&gt;"</text><text x="271" y="74" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="11" fill="#64748b">keep header lines</text>
+                    <text x="362" y="64" text-anchor="middle" font-size="22" fill="#a855f7">|</text>
+                    <rect x="378" y="34" width="150" height="50" rx="10" fill="#e9faf2" stroke="#10b981" stroke-width="2"/><text x="453" y="58" text-anchor="middle" font-size="15" fill="#0f172a">wc -l</text><text x="453" y="74" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="11" fill="#64748b">count them</text>
+                    <text x="544" y="64" text-anchor="middle" font-size="22" fill="#94a3b8">=</text>
+                    <rect x="560" y="34" width="70" height="50" rx="10" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/><text x="595" y="64" text-anchor="middle" font-size="15" fill="#0f172a">count</text>
+                    </g>
+                </svg>
+                <figcaption>Read the file, keep the header lines, count them. Each tool does one job; the pipe chains them into an analysis.</figcaption>
+            </figure>
             <pre><span class="c"># "Take the file, keep header lines, then count them"</span>
-cat seqs.fasta | grep <span class="s">"&gt;"</span> | wc -l
+cat seqs.fasta | grep <span class="s">"&gt;"</span> | wc -l</pre>
 
-<span class="c"># "List files, find the .fasta ones, count them"</span>
-ls | grep <span class="s">".fasta"</span> | wc -l</pre>
-            <p>Read a pipe left to right as a sentence: <em>do this, then this, then this.</em> Each tool does one small job well; the pipe chains them into an analysis.</p>
+            <h2>6. Saving output to a file</h2>
+            <pre>grep <span class="s">"&gt;"</span> seqs.fasta &gt; headers.txt   <span class="c"># write results to a NEW file</span>
+grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class="c"># ADD to an existing file</span></pre>
+            <div class="tryit"><strong>Try it:</strong> make a file with <code class="inline">echo "ATGC" &gt; dna.txt</code>, then read it back with <code class="inline">cat dna.txt</code>. You just created and read a file entirely from the keyboard.</div>
 
-            <h2>6. Saving output with <code class="inline">&gt;</code></h2>
-            <pre>grep <span class="s">"&gt;"</span> seqs.fasta &gt; headers.txt   <span class="c"># write results to a new file</span>
-grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class="c"># append to an existing file</span></pre>
-            <div class="tryit">✍️ <strong>Try it:</strong> make a file with <code class="inline">echo "ATGC" &gt; dna.txt</code>, then check it with <code class="inline">cat dna.txt</code>. You just created and read a file entirely from the keyboard.</div>
-
-            <h2>7. A realistic one-liner: summarize a FASTA</h2>
-            <p>Here is the kind of thing you will actually type. Each command does one small job; the pipe chains them into an answer.</p>
-            <pre><span class="c"># How many sequences are in the file?</span>
-grep -c <span class="s">"&gt;"</span> seqs.fasta
-
-<span class="c"># List the sequence names, with the leading "&gt;" stripped off</span>
-grep <span class="s">"&gt;"</span> seqs.fasta | sed <span class="s">'s/&gt;//'</span>
-
-<span class="c"># Are any sequence names duplicated?</span>
-grep <span class="s">"&gt;"</span> seqs.fasta | sort | uniq -d</pre>
-            <div class="why"><h4>FASTQ has four lines per read</h4><p>A FASTQ file stores four lines per sequencing read, so the read count is the line count divided by four: <code class="inline">echo $(( $(wc -l &lt; reads.fastq) / 4 ))</code>. Counting reads is one of the very first checks in any sequencing project.</p></div>
-
-            <h2>Practice exercises</h2>
-            <p>Try each at your own terminal before opening the solution.</p>
-
-            <p><strong>Exercise 1 - Count sequences.</strong> You have a file <code class="inline">genes.fasta</code>. Print how many sequences it contains.</p>
-            <details><summary>Show a worked solution</summary>
-<pre>grep -c <span class="s">"&gt;"</span> genes.fasta</pre></details>
-
-            <p><strong>Exercise 2 - Save the headers.</strong> Write every header line (those starting with <code class="inline">&gt;</code>) into a new file called <code class="inline">names.txt</code>.</p>
-            <details><summary>Show a worked solution</summary>
-<pre>grep <span class="s">"&gt;"</span> genes.fasta &gt; names.txt</pre></details>
-
-            <p><strong>Exercise 3 - Count reads in a FASTQ.</strong> A FASTQ file has four lines per read. Print the number of reads in <code class="inline">reads.fastq</code>.</p>
-            <details><summary>Show a worked solution</summary>
-<pre>echo $(( $(wc -l &lt; reads.fastq) / 4 ))</pre></details>
+            <div class="glossary">
+                <h4>Every key word, in plain English</h4>
+                <dl>
+                    <dt>command line / terminal / shell</dt><dd>the place where you type text commands.</dd>
+                    <dt>command</dt><dd>the word that says what to do (<code class="inline">ls</code>, <code class="inline">cd</code>, <code class="inline">grep</code>).</dd>
+                    <dt>option (flag)</dt><dd>a tweak starting with <code class="inline">-</code>, like <code class="inline">-l</code> or <code class="inline">-c</code>.</dd>
+                    <dt>argument</dt><dd>the thing a command acts on, usually a file or folder.</dd>
+                    <dt>directory</dt><dd>another word for a folder.</dd>
+                    <dt>path</dt><dd>the address of a file in the folder tree.</dd>
+                    <dt>~ &nbsp; . &nbsp; ..</dt><dd>home folder, here, the folder above.</dd>
+                    <dt>pipe (|)</dt><dd>feeds one command's output into the next.</dd>
+                    <dt>&gt; &nbsp; &gt;&gt;</dt><dd>save output to a new file / add to a file.</dd>
+                    <dt>comment</dt><dd>a note after <code class="inline">#</code> that the shell ignores.</dd>
+                </dl>
+            </div>
 
             <h2>Your starter cheat sheet</h2>
             <div class="cheat"><table>
@@ -194,38 +260,45 @@ grep <span class="s">"&gt;"</span> seqs.fasta | sort | uniq -d</pre>
                 <tr><td>cat / head / tail / less</td><td>View a file's contents</td></tr>
                 <tr><td>grep "x" file</td><td>Find lines containing "x"</td></tr>
                 <tr><td>wc -l file</td><td>Count lines</td></tr>
-                <tr><td>sort / uniq</td><td>Sort lines / drop duplicates</td></tr>
                 <tr><td>cmd1 | cmd2</td><td>Pipe: feed output into the next command</td></tr>
                 <tr><td>cmd &gt; file</td><td>Save output to a file</td></tr>
             </table></div>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
+                <div class="quiz-q-src">In <code class="inline">ls -l Downloads</code>, what is <code class="inline">Downloads</code>?</div>
+                <button data-opt data-correct>The argument: the folder the command acts on</button>
+                <button data-opt>The command itself</button>
+                <button data-opt>An option that changes how ls behaves</button>
+                <div class="quiz-explain"><code class="inline">ls</code> is the command, <code class="inline">-l</code> is the option, and <code class="inline">Downloads</code> is the argument (what to act on).</div>
+            </div>
+            <div class="quiz">
                 <div class="quiz-q-src">What does <code class="inline">grep "&gt;" seqs.fasta | wc -l</code> tell you?</div>
                 <button data-opt data-correct>The number of sequences in the file</button>
                 <button data-opt>The total number of bases in the file</button>
                 <button data-opt>The length of the longest sequence</button>
-                <div class="quiz-explain">The number of sequences in the FASTA file - because each sequence has one header line starting with <code class="inline">&gt;</code>, and you're counting those lines.</div>
+                <div class="quiz-explain">Each sequence has one header line starting with <code class="inline">&gt;</code>, so counting those lines counts the sequences.</div>
             </div>
             <div class="quiz">
-                <div class="quiz-q-src">What's the difference between <code class="inline">&gt;</code> and <code class="inline">&gt;&gt;</code>?</div>
-                <button data-opt>They are identical; both append</button>
-                <button data-opt data-correct>&gt; overwrites a file; &gt;&gt; appends to it</button>
-                <button data-opt>&gt; appends to a file; &gt;&gt; overwrites it</button>
-                <div class="quiz-explain"><code class="inline">&gt;</code> creates (or overwrites) a file with the output. <code class="inline">&gt;&gt;</code> adds to the end of an existing file without erasing it. Mix them up and you can overwrite something you meant to keep - another reason to read before you run.</div>
+                <div class="quiz-q-src">What does the pipe <code class="inline">|</code> do?</div>
+                <button data-opt data-correct>Feeds the output of one command into the next</button>
+                <button data-opt>Deletes the file on the left</button>
+                <button data-opt>Runs two commands at the exact same time</button>
+                <div class="quiz-explain">The pipe chains small tools together by passing output along, which is what makes the command line so powerful.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">Why prefer <code class="inline">head</code> or <code class="inline">less</code> over <code class="inline">cat</code> for big files?</div>
-                <button data-opt>cat is faster for files of any size</button>
-                <button data-opt>head and less only work on compressed files</button>
                 <button data-opt data-correct>cat dumps the whole (possibly huge) file; head/less show or scroll part of it</button>
-                <div class="quiz-explain">Because genomic files can be enormous. <code class="inline">cat</code> would flood your screen with millions of lines; <code class="inline">head</code> shows just the top, and <code class="inline">less</code> lets you scroll calmly.</div>
+                <button data-opt>cat only works on compressed files</button>
+                <button data-opt>head and less are faster for every file</button>
+                <div class="quiz-explain">Genomic files can be enormous. <code class="inline">cat</code> floods your screen; <code class="inline">head</code> shows the top and <code class="inline">less</code> lets you scroll.</div>
             </div>
 
             <a class="next-lesson" href="bash-project.html" target="_blank" rel="noopener">
-                <span>Next in the Bash series - the payoff</span>
-                <h3>Project: wrangle a real data file from the command line →</h3>
+                <span>Next in the Bash series, the payoff</span>
+                <h3>Project: wrangle a real data file from the command line &rarr;</h3>
             </a>
+            <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:18px;">Ready for more? <a href="bash-intermediate.html" target="_blank" rel="noopener" style="color:var(--primary-blue); font-weight:600;">Command Line Level 2 (Intermediate)</a> builds straight on this.</p>
 
         </div></div>
     </main>

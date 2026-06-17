@@ -65,6 +65,9 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:680px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
     </style>
 </head>
 <body>
@@ -109,6 +112,21 @@
             <div class="tryit">No memorizing required. Read each idea once, run the cell, change something, run it again. That is the whole method. You can always come back to this page later as a reference.</div>
 
             <h2>1. Comprehensions: a shorter way to build a list</h2>
+            <figure class="viz">
+                <svg viewBox="0 0 600 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A list of sequences transformed by len into a list of lengths">
+                    <g font-family="'JetBrains Mono',monospace" font-size="14">
+                    <rect x="14" y="34" width="180" height="52" rx="8" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/>
+                    <text x="104" y="58" text-anchor="middle" fill="#0f172a">["ATGC","GGG","AT"]</text>
+                    <text x="104" y="76" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="11" fill="#64748b">the original list</text>
+                    <text x="300" y="52" text-anchor="middle" font-size="22" fill="#a855f7">&#8594;</text>
+                    <text x="300" y="78" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="12" fill="#a855f7">len(s) for each</text>
+                    <rect x="406" y="34" width="180" height="52" rx="8" fill="#e9faf2" stroke="#10b981" stroke-width="2"/>
+                    <text x="496" y="58" text-anchor="middle" fill="#0f172a">[4, 3, 2]</text>
+                    <text x="496" y="76" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="11" fill="#64748b">a new list</text>
+                    </g>
+                </svg>
+                <figcaption>A comprehension applies one expression to every item and collects the results into a new list.</figcaption>
+            </figure>
             <p>You already know how to build a list with a loop. A <strong>comprehension</strong> does the same thing in one readable line. Here is the same task written both ways.</p>
             <pre><span class="c"># The familiar way</span>
 seqs = [<span class="s">"ATGC"</span>, <span class="s">"GGGCCC"</span>, <span class="s">"ATATAT"</span>]
@@ -166,6 +184,20 @@ for i, base in enumerate("ATGC*GG"):
 </script></div>
 
             <h2>4. Handling errors without crashing</h2>
+            <figure class="viz">
+                <svg viewBox="0 0 560 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="try runs code; if it works you get a result, if it fails except handles it">
+                    <g font-family="'Work Sans',sans-serif">
+                    <rect x="200" y="14" width="160" height="40" rx="8" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="280" y="39" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">try: run the code</text>
+                    <line x1="280" y1="54" x2="150" y2="92" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="280" y1="54" x2="410" y2="92" stroke="#cbd5e1" stroke-width="2"/>
+                    <text x="200" y="80" font-size="12" fill="#10b981">works</text>
+                    <text x="360" y="80" font-size="12" fill="#ef4444">fails</text>
+                    <rect x="60" y="92" width="180" height="56" rx="8" fill="#e9faf2" stroke="#10b981" stroke-width="2"/><text x="150" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">you get the result</text><text x="150" y="134" text-anchor="middle" font-size="11" fill="#64748b">carry on as normal</text>
+                    <rect x="320" y="92" width="180" height="56" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/><text x="410" y="116" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">except: handle it</text><text x="410" y="134" text-anchor="middle" font-size="11" fill="#64748b">recover, no crash</text>
+                    </g>
+                </svg>
+                <figcaption>try runs your code. If it works you get the result; if it fails, except catches the error so the program keeps going.</figcaption>
+            </figure>
             <p>Real data is messy. A single empty line or odd value can stop a whole script. <code class="inline">try</code> / <code class="inline">except</code> lets your code recover instead of crashing.</p>
             <div class="pycell"><script type="application/x-python">
 def safe_gc(seq):

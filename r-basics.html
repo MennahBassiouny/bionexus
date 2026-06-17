@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BioNexus Hub makes bioinformatics approachable for everyone. Learn Python, R, and the command line from scratch with free, browser-based lessons and real-data projects.">
+    <meta name="description" content="R for complete beginners, taught from zero: what R is, the assignment arrow, data types, vectors, data frames, the tidyverse, and your first ggplot, with plain definitions and visuals.">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="R Basics &amp; Plotting for Biologists - BioNexus Hub">
+    <meta property="og:title" content="R Basics for Complete Beginners - BioNexus Hub">
     <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
     <meta property="og:url" content="https://bionexushub.com/">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="R Basics &amp; Plotting for Biologists - BioNexus Hub">
+    <meta name="twitter:title" content="R Basics for Complete Beginners - BioNexus Hub">
     <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
-    <title>R Basics: Data Frames & Plotting - BioNexus Hub</title>
+    <title>R Basics for Complete Beginners - BioNexus Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
@@ -65,6 +65,18 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:680px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
+        .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
+        .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .dtable code { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 6px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.85em; }
+        .glossary { background:#f1f5f9; border:1px solid rgba(91,156,248,0.2); border-radius:10px; padding:18px 24px; margin:28px 0; }
+        .glossary h4 { color:var(--deep-navy); margin-bottom:8px; font-size:1.1rem; }
+        .glossary dt { font-weight:700; color:var(--deep-navy); margin-top:10px; }
+        .glossary dd { color:var(--text-gray); margin:2px 0 0; }
+        .lesson-body h3 { font-family:'Crimson Pro',serif; font-size:1.4rem; color:var(--deep-navy); margin:30px 0 10px; }
     </style>
 </head>
 <body>
@@ -87,12 +99,12 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (2 of 3)</div>
-            <h1>R Basics: Data Frames &amp; Plotting</h1>
-            <p class="promise">The R you'll use constantly - vectors, data frames, the handful of tidyverse verbs that do 80% of data work, and your first ggplot - built up gently and ready for real data.</p>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Foundations &nbsp;/&nbsp; R &nbsp;/&nbsp; Level 1: Basics</div>
+            <h1>R: Level 1 (Basics)</h1>
+            <p class="promise">For complete beginners with no coding background. We start from what R even is, then build every core idea (data types, vectors, and the data frame) one small step at a time, with pictures.</p>
             <div class="tags">
                 <span class="tag green">🟢 Beginner</span>
-                <span class="tag">⏱️ ~1.5 hr</span>
+                <span class="tag">⏱️ ~2 hr</span>
                 <span class="tag">📊 R · tidyverse</span>
             </div>
         </div></div>
@@ -101,124 +113,226 @@
     <main>
         <div class="container"><div class="lesson-body">
 
-            <p>Open RStudio and type each line into the <strong>Console</strong>. Better yet, open a new R Script (File → New File → R Script) and run lines with Ctrl/Cmd+Enter - that way you keep a record of what you did.</p>
+            <div class="why">
+                <h4>Start here, even if you have never written a line of code</h4>
+                <p>This lesson assumes nothing. We will explain what R even is, then build up every core idea (values, the data types, vectors, and the data frame) one small step at a time, with pictures. By the end you will understand the heart of R. Go slowly. You cannot break anything.</p>
+            </div>
 
-            <h2>1. Vectors - R's basic building block</h2>
-            <p>R loves <strong>vectors</strong>: an ordered set of values of the same type. Most R operations work on whole vectors at once, which is what makes it so good for data.</p>
-            <pre>expression &lt;- <span class="k">c</span>(<span class="o">12.4</span>, <span class="o">8.1</span>, <span class="o">15.7</span>, <span class="o">3.3</span>, <span class="o">9.9</span>)   <span class="c"># c() = "combine"</span>
-mean(expression)     <span class="c"># average → 9.88</span>
-max(expression)      <span class="c"># 15.7</span>
-expression * <span class="o">2</span>       <span class="c"># multiplies EVERY value at once</span>
-length(expression)   <span class="c"># 5</span></pre>
-            <div class="why"><h4>Decode the jargon: <code class="inline">&lt;-</code></h4><p>In R, <code class="inline">&lt;-</code> is the assignment arrow - it means "store this on the right into the name on the left." (<code class="inline">=</code> also works, but R people use the arrow. RStudio types it for you with Alt+−.)</p></div>
+            <h2>What is R, and where do I type it?</h2>
+            <p><strong>R</strong> is a programming language built for working with data and statistics: loading a table, calculating, and drawing graphs. You write R inside <strong>RStudio</strong>, a free program with two places to type: the <strong>Console</strong> (type a line, press Enter, see the answer immediately) and a <strong>Script</strong> (a saved file of lines you run when you choose, so you keep a record of what you did).</p>
+            <figure class="viz">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="You type R, R computes, you get a result or a plot">
+                    <rect x="14" y="40" width="200" height="74" rx="12" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/>
+                    <text x="114" y="72" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="16" font-weight="700" fill="#0f172a">You type R</text>
+                    <text x="114" y="94" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="13" fill="#64748b">in the Console or a Script</text>
+                    <text x="234" y="83" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="26" fill="#94a3b8">&#8594;</text>
+                    <rect x="258" y="40" width="180" height="74" rx="12" fill="#f3edff" stroke="#a855f7" stroke-width="2"/>
+                    <text x="348" y="72" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="16" font-weight="700" fill="#0f172a">R computes</text>
+                    <text x="348" y="94" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="13" fill="#64748b">runs your line</text>
+                    <text x="458" y="83" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="26" fill="#94a3b8">&#8594;</text>
+                    <rect x="482" y="40" width="224" height="74" rx="12" fill="#e9faf2" stroke="#10b981" stroke-width="2"/>
+                    <text x="594" y="72" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="16" font-weight="700" fill="#0f172a">You get a result</text>
+                    <text x="594" y="94" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="13" fill="#64748b">a number, a table, or a plot</text>
+                </svg>
+                <figcaption>R in one picture: data in, an answer or a graph out.</figcaption>
+            </figure>
+            <p>Anything after a <code class="inline">#</code> is a <strong>comment</strong>: a note for humans that R ignores.</p>
+            <pre><span class="o">2</span> + <span class="o">2</span>            <span class="c"># type this in the Console, press Enter  ->  4</span>
+<span class="c"># this whole line is a comment, R skips it</span></pre>
+            <div class="tryit"><strong>Try it:</strong> open RStudio, type a sum in the Console, press Enter. Then change the numbers and try again. That loop (change something, run, see the result) is how you will learn everything here.</div>
 
-            <h2>2. Data frames - the spreadsheet of R</h2>
-            <p>A <strong>data frame</strong> is a table: columns are variables, rows are observations. It's exactly how gene expression tables, sample sheets, and clinical data are shaped.</p>
+            <h2>1. Storing a value: the assignment arrow</h2>
+            <p>To keep a value for later, store it in a name with the <strong>assignment arrow</strong> <code class="inline">&lt;-</code>. Think of the name as a labelled box. (RStudio types the arrow for you with Alt and the minus key.)</p>
+            <figure class="viz">
+                <svg viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The name gc is a box holding the number 41.5">
+                    <text x="260" y="34" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="18" fill="#0f172a">gc &#60;- 41.5</text>
+                    <rect x="150" y="62" width="220" height="78" rx="10" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/>
+                    <text x="260" y="108" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="26" font-weight="600" fill="#0f172a">41.5</text>
+                    <text x="260" y="158" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="14" fill="#64748b">the box is named</text>
+                    <rect x="64" y="88" width="70" height="28" rx="6" fill="#a855f7"/>
+                    <text x="99" y="107" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="15" font-weight="700" fill="#ffffff">gc</text>
+                </svg>
+                <figcaption>The arrow points from the value into the box. Here <code class="inline">gc</code> holds 41.5.</figcaption>
+            </figure>
+            <pre>gc &lt;- <span class="o">41.5</span>      <span class="c"># put 41.5 into a box called gc</span>
+gc            <span class="c"># type the name to see what is inside  ->  41.5</span>
+gc * <span class="o">2</span>        <span class="c"># use it in a calculation  ->  83</span></pre>
+
+            <h2>2. The core data types</h2>
+            <p>Every value in R has a <strong>type</strong>: what kind of thing it is. Three basic ones cover most of your early work. Do not memorize this; it is here to come back to.</p>
+            <table class="dtable">
+                <tr><th>Type</th><th>What it is</th><th>Example</th></tr>
+                <tr><td><strong>numeric</strong></td><td>A number (whole or decimal).</td><td><code>41.5</code></td></tr>
+                <tr><td><strong>character</strong></td><td>Text, always written in quotes.</td><td><code>"TP53"</code></td></tr>
+                <tr><td><strong>logical</strong></td><td>A yes/no value: only <code>TRUE</code> or <code>FALSE</code>.</td><td><code>TRUE</code></td></tr>
+            </table>
+            <p>You usually get a logical by asking a question (a comparison): <code class="inline">==</code> equal, <code class="inline">!=</code> different, <code class="inline">&gt;</code> greater, <code class="inline">&lt;</code> less.</p>
+            <pre>gc &gt; <span class="o">50</span>           <span class="c"># is gc greater than 50?  ->  FALSE</span>
+<span class="s">"ATG"</span> == <span class="s">"ATG"</span>   <span class="c"># are these equal?  ->  TRUE</span></pre>
+            <div class="why"><h4>One arrow or two equals?</h4><p><code class="inline">&lt;-</code> <em>stores</em> a value in a name. <code class="inline">==</code> (two equals signs) <em>asks</em> "are these equal?" and answers TRUE or FALSE. They are different jobs.</p></div>
+
+            <h2>3. Vectors: R's basic building block</h2>
+            <p>R rarely deals with one value at a time. A <strong>vector</strong> is an ordered set of values of the same type, built with <code class="inline">c()</code> ("combine"). Almost every R operation works on a whole vector at once.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 540 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A vector of five numbers with positions 1 to 5">
+                    <g font-family="'JetBrains Mono',monospace">
+                    <rect x="20" y="30" width="92" height="56" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="66" y="66" text-anchor="middle" font-size="19" fill="#0f172a">12.4</text>
+                    <rect x="118" y="30" width="92" height="56" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="164" y="66" text-anchor="middle" font-size="19" fill="#0f172a">8.1</text>
+                    <rect x="216" y="30" width="92" height="56" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="262" y="66" text-anchor="middle" font-size="19" fill="#0f172a">15.7</text>
+                    <rect x="314" y="30" width="92" height="56" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="360" y="66" text-anchor="middle" font-size="19" fill="#0f172a">3.3</text>
+                    <rect x="412" y="30" width="92" height="56" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="458" y="66" text-anchor="middle" font-size="19" fill="#0f172a">9.9</text>
+                    <text x="66" y="110" text-anchor="middle" font-size="16" fill="#a855f7">1</text>
+                    <text x="164" y="110" text-anchor="middle" font-size="16" fill="#a855f7">2</text>
+                    <text x="262" y="110" text-anchor="middle" font-size="16" fill="#a855f7">3</text>
+                    <text x="360" y="110" text-anchor="middle" font-size="16" fill="#a855f7">4</text>
+                    <text x="458" y="110" text-anchor="middle" font-size="16" fill="#a855f7">5</text>
+                    </g>
+                </svg>
+                <figcaption>A vector of expression values. The positions (purple) start at 1, so <code class="inline">expr[1]</code> is 12.4.</figcaption>
+            </figure>
+            <pre>expr &lt;- <span class="k">c</span>(<span class="o">12.4</span>, <span class="o">8.1</span>, <span class="o">15.7</span>, <span class="o">3.3</span>, <span class="o">9.9</span>)
+mean(expr)      <span class="c"># average of all five  ->  9.88</span>
+expr * <span class="o">2</span>        <span class="c"># doubles EVERY value at once</span>
+expr[<span class="o">1</span>]         <span class="c"># the FIRST value  ->  12.4</span></pre>
+            <div class="why"><h4>R counts from 1</h4><p>Unlike many languages, R numbers positions starting at <strong>1</strong>, not 0. So <code class="inline">expr[1]</code> is the first value. If you have seen Python, this is the opposite, and a common thing to trip on.</p></div>
+
+            <h2>4. Data frames: the spreadsheet of R</h2>
+            <p>A <strong>data frame</strong> is a table: each <strong>column</strong> is a variable, each <strong>row</strong> is one observation. Gene tables, sample sheets, and clinical data all have this shape.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 540 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A data frame with columns gene, length_kb, chromosome and four rows">
+                    <g font-family="'JetBrains Mono',monospace" font-size="14">
+                    <rect x="40" y="30" width="150" height="34" fill="#a855f7"/><text x="115" y="52" text-anchor="middle" fill="#fff">gene</text>
+                    <rect x="190" y="30" width="150" height="34" fill="#a855f7"/><text x="265" y="52" text-anchor="middle" fill="#fff">length_kb</text>
+                    <rect x="340" y="30" width="150" height="34" fill="#a855f7"/><text x="415" y="52" text-anchor="middle" fill="#fff">chromosome</text>
+                    <rect x="40" y="64" width="150" height="30" fill="#eef4ff" stroke="#cbd5e1"/><text x="115" y="84" text-anchor="middle" fill="#0f172a">TP53</text>
+                    <rect x="190" y="64" width="150" height="30" fill="#eef4ff" stroke="#cbd5e1"/><text x="265" y="84" text-anchor="middle" fill="#0f172a">19.1</text>
+                    <rect x="340" y="64" width="150" height="30" fill="#eef4ff" stroke="#cbd5e1"/><text x="415" y="84" text-anchor="middle" fill="#0f172a">17</text>
+                    <rect x="40" y="94" width="150" height="30" fill="#f8fafc" stroke="#cbd5e1"/><text x="115" y="114" text-anchor="middle" fill="#0f172a">BRCA1</text>
+                    <rect x="190" y="94" width="150" height="30" fill="#f8fafc" stroke="#cbd5e1"/><text x="265" y="114" text-anchor="middle" fill="#0f172a">81.2</text>
+                    <rect x="340" y="94" width="150" height="30" fill="#f8fafc" stroke="#cbd5e1"/><text x="415" y="114" text-anchor="middle" fill="#0f172a">17</text>
+                    <rect x="40" y="124" width="150" height="30" fill="#eef4ff" stroke="#cbd5e1"/><text x="115" y="144" text-anchor="middle" fill="#0f172a">EGFR</text>
+                    <rect x="190" y="124" width="150" height="30" fill="#eef4ff" stroke="#cbd5e1"/><text x="265" y="144" text-anchor="middle" fill="#0f172a">188.3</text>
+                    <rect x="340" y="124" width="150" height="30" fill="#eef4ff" stroke="#cbd5e1"/><text x="415" y="144" text-anchor="middle" fill="#0f172a">7</text>
+                    <text x="265" y="182" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="13" fill="#64748b">columns = variables &#183; rows = observations</text>
+                    </g>
+                </svg>
+                <figcaption>A data frame. The purple header names each column; every row is one gene.</figcaption>
+            </figure>
             <pre>genes &lt;- data.frame(
-  gene  = <span class="k">c</span>(<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>, <span class="s">"MYC"</span>),
-  length_kb = <span class="k">c</span>(<span class="o">19.1</span>, <span class="o">81.2</span>, <span class="o">188.3</span>, <span class="o">5.3</span>),
-  chromosome = <span class="k">c</span>(<span class="s">"17"</span>, <span class="s">"17"</span>, <span class="s">"7"</span>, <span class="s">"8"</span>)
+  gene       = <span class="k">c</span>(<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>),
+  length_kb  = <span class="k">c</span>(<span class="o">19.1</span>, <span class="o">81.2</span>, <span class="o">188.3</span>),
+  chromosome = <span class="k">c</span>(<span class="s">"17"</span>, <span class="s">"17"</span>, <span class="s">"7"</span>)
 )
-genes            <span class="c"># print the whole table</span>
-head(genes)      <span class="c"># first rows (handy for big tables)</span>
-genes$length_kb  <span class="c"># pull out one column by name with $</span></pre>
+head(genes)        <span class="c"># show the first rows</span>
+genes$length_kb    <span class="c"># pull out one column by name with $</span></pre>
 
-            <h2>3. The tidyverse verbs that do most of the work</h2>
-            <p>Load the tidyverse, then meet five verbs that cover the vast majority of everyday data wrangling. The <code class="inline">|&gt;</code> "pipe" passes the result of one step into the next - read it as "and then."</p>
+            <h2>5. The tidyverse: five verbs that do most of the work</h2>
+            <p>The <strong>tidyverse</strong> is a popular set of R packages for data work. Five verbs cover the vast majority of it. The two you will reach for first are <code class="inline">filter</code> (keep rows) and <code class="inline">select</code> (keep columns). The picture makes the difference obvious.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="filter keeps rows, select keeps columns">
+                    <g font-family="'Work Sans',sans-serif">
+                    <text x="140" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">filter() keeps ROWS</text>
+                    <rect x="40" y="32" width="200" height="24" fill="#e2e8f0"/>
+                    <rect x="40" y="56" width="200" height="24" fill="#d1fae5" stroke="#10b981"/>
+                    <rect x="40" y="80" width="200" height="24" fill="#e2e8f0"/>
+                    <rect x="40" y="104" width="200" height="24" fill="#d1fae5" stroke="#10b981"/>
+                    <text x="320" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">select() keeps COLUMNS</text>
+                    <rect x="320" y="32" width="60" height="96" fill="#e2e8f0"/>
+                    <rect x="380" y="32" width="60" height="96" fill="#dbeafe" stroke="#5b9cf8"/>
+                    <rect x="440" y="32" width="60" height="96" fill="#e2e8f0"/>
+                    <text x="140" y="152" text-anchor="middle" font-size="12" fill="#64748b">keep the rows that match a condition</text>
+                    <text x="410" y="152" text-anchor="middle" font-size="12" fill="#64748b">keep only certain columns</text>
+                    </g>
+                </svg>
+                <figcaption>filter works across rows; select works across columns. The other three: <code class="inline">mutate</code> adds a column, <code class="inline">summarise</code> collapses to a summary, <code class="inline">group_by</code> does it per group.</figcaption>
+            </figure>
             <pre><span class="k">library</span>(tidyverse)
 
 genes |&gt;
-  filter(length_kb &gt; <span class="o">10</span>) |&gt;          <span class="c"># keep rows matching a condition</span>
-  arrange(desc(length_kb))           <span class="c"># sort, largest first</span></pre>
-            <p>The five you'll reach for again and again:</p>
-            <ul>
-                <li><code class="inline">filter()</code> - keep rows that match a condition</li>
-                <li><code class="inline">select()</code> - keep only certain columns</li>
-                <li><code class="inline">mutate()</code> - add or change a column</li>
-                <li><code class="inline">summarise()</code> - collapse to a summary (mean, count…)</li>
-                <li><code class="inline">group_by()</code> - do the above <em>per group</em></li>
-            </ul>
-            <pre><span class="c"># Add a column, then average gene length per chromosome</span>
-genes |&gt;
-  mutate(length_bp = length_kb * <span class="o">1000</span>) |&gt;
-  group_by(chromosome) |&gt;
-  summarise(avg_length = mean(length_kb))</pre>
-            <div class="tryit">✍️ <strong>Try it:</strong> change <code class="inline">filter(length_kb &gt; 10)</code> to <code class="inline">&gt; 50</code>. Which genes survive?</div>
+  filter(length_kb &gt; <span class="o">50</span>) |&gt;     <span class="c"># keep rows where the gene is long</span>
+  arrange(desc(length_kb))         <span class="c"># sort, longest first</span></pre>
+            <div class="why"><h4>The pipe <code class="inline">|&gt;</code></h4><p>The pipe passes the result of one step into the next, so you read top to bottom as a sentence: "take genes, <em>then</em> filter, <em>then</em> sort." It is the backbone of tidyverse code.</p></div>
 
-            <h2>4. Your first plot with ggplot2</h2>
-            <p>ggplot2 (part of the tidyverse) builds plots in layers: start with the data, say what goes on each axis (<code class="inline">aes</code>), then add a <em>geom</em> - the kind of mark to draw.</p>
+            <h2>6. Your first plot with ggplot2</h2>
+            <p><strong>ggplot2</strong> builds a graph in layers: start with the <strong>data</strong>, say what goes on each axis (the <strong>aesthetics</strong>, <code class="inline">aes</code>), then add a <strong>geom</strong>, the kind of mark to draw.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 640 110" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ggplot builds a plot from data plus aesthetics plus a geom">
+                    <g font-family="'Work Sans',sans-serif">
+                    <rect x="14" y="30" width="120" height="50" rx="10" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="74" y="60" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">data</text>
+                    <text x="146" y="60" text-anchor="middle" font-size="20" fill="#94a3b8">+</text>
+                    <rect x="166" y="30" width="150" height="50" rx="10" fill="#f3edff" stroke="#a855f7" stroke-width="2"/><text x="241" y="55" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">aes(x, y)</text><text x="241" y="71" text-anchor="middle" font-size="11" fill="#64748b">which columns map to axes</text>
+                    <text x="328" y="60" text-anchor="middle" font-size="20" fill="#94a3b8">+</text>
+                    <rect x="348" y="30" width="150" height="50" rx="10" fill="#e9faf2" stroke="#10b981" stroke-width="2"/><text x="423" y="55" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">geom_col()</text><text x="423" y="71" text-anchor="middle" font-size="11" fill="#64748b">the kind of mark</text>
+                    <text x="510" y="60" text-anchor="middle" font-size="20" fill="#94a3b8">=</text>
+                    <rect x="530" y="30" width="100" height="50" rx="10" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/><text x="580" y="60" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">a plot</text>
+                    </g>
+                </svg>
+                <figcaption>A ggplot is data plus aesthetics plus a geom. Swap the geom and you get a different chart of the same data.</figcaption>
+            </figure>
             <pre><span class="k">ggplot</span>(genes, aes(x = gene, y = length_kb)) +
   geom_col(fill = <span class="s">"#5b9cf8"</span>) +
   labs(title = <span class="s">"Gene lengths"</span>, y = <span class="s">"Length (kb)"</span>) +
   theme_minimal()</pre>
-            <div class="why"><h4>Why ggplot looks weird at first (the <code class="inline">+</code>)</h4><p>You build a ggplot by <em>adding layers</em> with <code class="inline">+</code>: data, then axes, then geoms, then labels and themes. Once it clicks, it's a wonderfully logical way to compose any figure - and it produces publication-quality plots by default.</p></div>
 
-            <h2>5. Reading your own data</h2>
-            <p>Real data usually arrives as a CSV. Reading it is one line:</p>
+            <h2>7. Reading your own data</h2>
+            <p>Real data usually arrives as a CSV file. Reading it is one line.</p>
             <pre>my_data &lt;- read_csv(<span class="s">"my_file.csv"</span>)
-glimpse(my_data)   <span class="c"># a quick look at columns and types</span></pre>
+glimpse(my_data)   <span class="c"># a quick look at the columns and their types</span></pre>
 
-            <h2>6. A realistic mini-analysis: a results table</h2>
-            <p>Differential-expression output - the kind DESeq2 produces - is just a data frame: one row per gene, with a fold change and an adjusted p-value. Here is the exact pattern you will use to pull the interesting genes out of thousands.</p>
-            <pre>results &lt;- data.frame(
-  gene   = <span class="k">c</span>(<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>, <span class="s">"MYC"</span>, <span class="s">"KRAS"</span>),
-  log2FC = <span class="k">c</span>(<span class="o">2.4</span>, <span class="o">-1.8</span>, <span class="o">0.3</span>, <span class="o">3.1</span>, <span class="o">-2.6</span>),
-  padj   = <span class="k">c</span>(<span class="o">0.001</span>, <span class="o">0.04</span>, <span class="o">0.9</span>, <span class="o">0.0001</span>, <span class="o">0.02</span>)
-)
-
-results |&gt;
-  filter(padj &lt; <span class="o">0.05</span>, abs(log2FC) &gt; <span class="o">1</span>) |&gt;   <span class="c"># significant AND a real effect</span>
-  arrange(desc(log2FC))                          <span class="c"># biggest up-regulation first</span></pre>
-            <div class="why"><h4>This is differential expression in miniature</h4><p>Filtering on both an adjusted p-value (<code class="inline">padj</code>) and an effect size (<code class="inline">log2FC</code>) is exactly how you separate the handful of genes that matter from background noise. Track 3 does this on a real dataset of thousands of genes - with these same two lines.</p></div>
-
-            <h2>Practice exercises</h2>
-            <p>Type these into RStudio and run them. Peek at the solution only after you have tried.</p>
-
-            <p><strong>Exercise 1 - Select by chromosome.</strong> Using the <code class="inline">genes</code> data frame from section 2, keep only the genes on chromosome 17.</p>
-            <details><summary>Show a worked solution</summary>
-<pre>genes |&gt;
-  filter(chromosome == <span class="s">"17"</span>)</pre></details>
-
-            <p><strong>Exercise 2 - Add a flag column.</strong> Add a column <code class="inline">is_long</code> that is TRUE when <code class="inline">length_kb</code> is above 50.</p>
-            <details><summary>Show a worked solution</summary>
-<pre>genes |&gt;
-  mutate(is_long = length_kb &gt; <span class="o">50</span>)</pre></details>
-
-            <p><strong>Exercise 3 - Count the significant genes.</strong> Using the <code class="inline">results</code> table above, how many genes have <code class="inline">padj &lt; 0.05</code>?</p>
-            <details><summary>Show a worked solution</summary>
-<pre>results |&gt;
-  filter(padj &lt; <span class="o">0.05</span>) |&gt;
-  nrow()
-<span class="c"># or, more directly:</span>
-sum(results$padj &lt; <span class="o">0.05</span>)</pre></details>
+            <div class="glossary">
+                <h4>Every key word, in plain English</h4>
+                <dl>
+                    <dt>assignment arrow (&lt;-)</dt><dd>stores a value in a named box.</dd>
+                    <dt>numeric</dt><dd>a number, whole or decimal.</dd>
+                    <dt>character</dt><dd>text, written in quotes.</dd>
+                    <dt>logical</dt><dd>a TRUE or FALSE value.</dd>
+                    <dt>vector</dt><dd>an ordered set of values of the same type, made with <code class="inline">c()</code>.</dd>
+                    <dt>data frame</dt><dd>a table: columns are variables, rows are observations.</dd>
+                    <dt>$</dt><dd>pulls one column out of a data frame by name.</dd>
+                    <dt>tidyverse</dt><dd>a set of R packages for tidy data work.</dd>
+                    <dt>pipe (|&gt;)</dt><dd>passes a result into the next step, read as "and then".</dd>
+                    <dt>filter / select</dt><dd>keep certain rows / keep certain columns.</dd>
+                    <dt>ggplot2</dt><dd>the package for building graphs in layers.</dd>
+                    <dt>geom</dt><dd>the kind of mark a plot draws (bars, points, lines).</dd>
+                    <dt>comment</dt><dd>a note after <code class="inline">#</code> that R ignores.</dd>
+                </dl>
+            </div>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
-                <div class="quiz-q-src">What does the pipe <code class="inline">|&gt;</code> do?</div>
-                <button data-opt data-correct>Passes the left result into the next function, so steps read in order</button>
-                <button data-opt>Runs two functions in parallel</button>
-                <button data-opt>Comments out the rest of the line</button>
-                <div class="quiz-explain">It passes the result of the left-hand side into the first argument of the right-hand side, so you can chain steps in reading order: "take genes, <em>and then</em> filter, <em>and then</em> sort."</div>
+                <div class="quiz-q-src">What does <code class="inline">gc &lt;- 41.5</code> do?</div>
+                <button data-opt data-correct>Stores the value 41.5 in a name called gc</button>
+                <button data-opt>Checks whether gc is less than 41.5</button>
+                <button data-opt>Prints 41.5 to the screen</button>
+                <div class="quiz-explain">The arrow <code class="inline">&lt;-</code> assigns: it puts the value on the right into the name on the left.</div>
             </div>
             <div class="quiz">
-                <div class="quiz-q-src">What's the difference between <code class="inline">filter()</code> and <code class="inline">select()</code>?</div>
-                <button data-opt>Both only remove missing values</button>
-                <button data-opt data-correct>filter() keeps rows; select() keeps columns</button>
-                <button data-opt>filter() keeps columns; select() keeps rows</button>
-                <div class="quiz-explain"><code class="inline">filter()</code> keeps <em>rows</em> (observations) that match a condition; <code class="inline">select()</code> keeps <em>columns</em> (variables). Rows = filter, columns = select.</div>
+                <div class="quiz-q-src">In R, what is <code class="inline">expr[1]</code>?</div>
+                <button data-opt data-correct>The first value in the vector (R counts from 1)</button>
+                <button data-opt>The second value (R counts from 0)</button>
+                <button data-opt>An error; you cannot index a vector</button>
+                <div class="quiz-explain">R numbers positions starting at 1, so <code class="inline">expr[1]</code> is the first element.</div>
             </div>
             <div class="quiz">
-                <div class="quiz-q-src">Why build plots with <code class="inline">+</code> layers?</div>
-                <button data-opt>It adds numbers together inside the plot</button>
-                <button data-opt>It is required to save the plot to disk</button>
-                <button data-opt data-correct>It composes a figure from reusable pieces you can swap</button>
-                <div class="quiz-explain">Because it lets you compose any figure from simple, reusable pieces - swap a <code class="inline">geom_col</code> for a <code class="inline">geom_point</code> and you have a different chart of the same data, with everything else unchanged.</div>
+                <div class="quiz-q-src">What is the difference between <code class="inline">filter()</code> and <code class="inline">select()</code>?</div>
+                <button data-opt data-correct>filter keeps rows; select keeps columns</button>
+                <button data-opt>filter keeps columns; select keeps rows</button>
+                <button data-opt>They both remove missing values only</button>
+                <div class="quiz-explain">Rows are observations (filter) and columns are variables (select). Rows = filter, columns = select.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">A data frame is best described as...</div>
+                <button data-opt data-correct>A table where columns are variables and rows are observations</button>
+                <button data-opt>A single number stored in a box</button>
+                <button data-opt>A type of plot</button>
+                <div class="quiz-explain">A data frame is R's spreadsheet: a table of columns (variables) and rows (observations).</div>
             </div>
 
             <a class="next-lesson" href="r-project.html" target="_blank" rel="noopener">
-                <span>Next in the R series - the payoff</span>
-                <h3>Project: explore a real dataset with R →</h3>
+                <span>Next in the R series, the payoff</span>
+                <h3>Project: explore a real dataset with R &rarr;</h3>
             </a>
+            <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:18px;">Ready for more? <a href="r-intermediate.html" target="_blank" rel="noopener" style="color:var(--primary-blue); font-weight:600;">R Level 2 (Intermediate)</a> builds straight on this.</p>
 
         </div></div>
     </main>
