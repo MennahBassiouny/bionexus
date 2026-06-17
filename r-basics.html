@@ -158,6 +158,40 @@ genes |&gt;
             <pre>my_data &lt;- read_csv(<span class="s">"my_file.csv"</span>)
 glimpse(my_data)   <span class="c"># a quick look at columns and types</span></pre>
 
+            <h2>6. A realistic mini-analysis: a results table</h2>
+            <p>Differential-expression output - the kind DESeq2 produces - is just a data frame: one row per gene, with a fold change and an adjusted p-value. Here is the exact pattern you will use to pull the interesting genes out of thousands.</p>
+            <pre>results &lt;- data.frame(
+  gene   = <span class="k">c</span>(<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>, <span class="s">"MYC"</span>, <span class="s">"KRAS"</span>),
+  log2FC = <span class="k">c</span>(<span class="o">2.4</span>, <span class="o">-1.8</span>, <span class="o">0.3</span>, <span class="o">3.1</span>, <span class="o">-2.6</span>),
+  padj   = <span class="k">c</span>(<span class="o">0.001</span>, <span class="o">0.04</span>, <span class="o">0.9</span>, <span class="o">0.0001</span>, <span class="o">0.02</span>)
+)
+
+results |&gt;
+  filter(padj &lt; <span class="o">0.05</span>, abs(log2FC) &gt; <span class="o">1</span>) |&gt;   <span class="c"># significant AND a real effect</span>
+  arrange(desc(log2FC))                          <span class="c"># biggest up-regulation first</span></pre>
+            <div class="why"><h4>This is differential expression in miniature</h4><p>Filtering on both an adjusted p-value (<code class="inline">padj</code>) and an effect size (<code class="inline">log2FC</code>) is exactly how you separate the handful of genes that matter from background noise. Track 3 does this on a real dataset of thousands of genes - with these same two lines.</p></div>
+
+            <h2>Practice exercises</h2>
+            <p>Type these into RStudio and run them. Peek at the solution only after you have tried.</p>
+
+            <p><strong>Exercise 1 - Select by chromosome.</strong> Using the <code class="inline">genes</code> data frame from section 2, keep only the genes on chromosome 17.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>genes |&gt;
+  filter(chromosome == <span class="s">"17"</span>)</pre></details>
+
+            <p><strong>Exercise 2 - Add a flag column.</strong> Add a column <code class="inline">is_long</code> that is TRUE when <code class="inline">length_kb</code> is above 50.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>genes |&gt;
+  mutate(is_long = length_kb &gt; <span class="o">50</span>)</pre></details>
+
+            <p><strong>Exercise 3 - Count the significant genes.</strong> Using the <code class="inline">results</code> table above, how many genes have <code class="inline">padj &lt; 0.05</code>?</p>
+            <details><summary>Show a worked solution</summary>
+<pre>results |&gt;
+  filter(padj &lt; <span class="o">0.05</span>) |&gt;
+  nrow()
+<span class="c"># or, more directly:</span>
+sum(results$padj &lt; <span class="o">0.05</span>)</pre></details>
+
             <h2>Check your understanding</h2>
             <div class="quiz">
                 <div class="quiz-q-src">What does the pipe <code class="inline">|&gt;</code> do?</div>

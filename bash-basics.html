@@ -157,6 +157,33 @@ ls | grep <span class="s">".fasta"</span> | wc -l</pre>
 grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class="c"># append to an existing file</span></pre>
             <div class="tryit">✍️ <strong>Try it:</strong> make a file with <code class="inline">echo "ATGC" &gt; dna.txt</code>, then check it with <code class="inline">cat dna.txt</code>. You just created and read a file entirely from the keyboard.</div>
 
+            <h2>7. A realistic one-liner: summarize a FASTA</h2>
+            <p>Here is the kind of thing you will actually type. Each command does one small job; the pipe chains them into an answer.</p>
+            <pre><span class="c"># How many sequences are in the file?</span>
+grep -c <span class="s">"&gt;"</span> seqs.fasta
+
+<span class="c"># List the sequence names, with the leading "&gt;" stripped off</span>
+grep <span class="s">"&gt;"</span> seqs.fasta | sed <span class="s">'s/&gt;//'</span>
+
+<span class="c"># Are any sequence names duplicated?</span>
+grep <span class="s">"&gt;"</span> seqs.fasta | sort | uniq -d</pre>
+            <div class="why"><h4>FASTQ has four lines per read</h4><p>A FASTQ file stores four lines per sequencing read, so the read count is the line count divided by four: <code class="inline">echo $(( $(wc -l &lt; reads.fastq) / 4 ))</code>. Counting reads is one of the very first checks in any sequencing project.</p></div>
+
+            <h2>Practice exercises</h2>
+            <p>Try each at your own terminal before opening the solution.</p>
+
+            <p><strong>Exercise 1 - Count sequences.</strong> You have a file <code class="inline">genes.fasta</code>. Print how many sequences it contains.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>grep -c <span class="s">"&gt;"</span> genes.fasta</pre></details>
+
+            <p><strong>Exercise 2 - Save the headers.</strong> Write every header line (those starting with <code class="inline">&gt;</code>) into a new file called <code class="inline">names.txt</code>.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>grep <span class="s">"&gt;"</span> genes.fasta &gt; names.txt</pre></details>
+
+            <p><strong>Exercise 3 - Count reads in a FASTQ.</strong> A FASTQ file has four lines per read. Print the number of reads in <code class="inline">reads.fastq</code>.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>echo $(( $(wc -l &lt; reads.fastq) / 4 ))</pre></details>
+
             <h2>Your starter cheat sheet</h2>
             <div class="cheat"><table>
                 <tr><td>pwd</td><td>Where am I?</td></tr>

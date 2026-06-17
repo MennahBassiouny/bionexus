@@ -173,6 +173,74 @@ print(gc_content("AAATTT"))
         <span class="k">print</span>(line)</pre>
             <div class="why"><h4>Decode the jargon: Biopython</h4><p>For real sequence files (FASTA, FASTQ) you won't parse them by hand - a library called <strong>Biopython</strong> does it for you. You installed it in the previous lesson. You'll use it in the project next.</p></div>
 
+            <h2>8. Putting it together: a quick sequence report</h2>
+            <p>Everything so far - strings, a dictionary, a function, a loop - combines into something that looks like real bioinformatics. Run this, then swap in your own sequence.</p>
+            <div class="pycell"><script type="application/x-python">
+seq = "ATGCGTACGTTAGCCGGATTACAGGT"
+
+def gc_content(s):
+    return round((s.count("G") + s.count("C")) / len(s) * 100, 1)
+
+def reverse_complement(s):
+    pairs = {"A": "T", "T": "A", "G": "C", "C": "G"}
+    return "".join(pairs[base] for base in reversed(s))
+
+counts = {}
+for base in seq:
+    counts[base] = counts.get(base, 0) + 1
+
+print("Length:       ", len(seq))
+print("GC content:   ", gc_content(seq), "%")
+print("Base counts:  ", counts)
+print("Reverse comp: ", reverse_complement(seq))
+print("Transcribed:  ", seq.replace("T", "U"))
+</script></div>
+            <div class="why"><h4>This is the shape of real code</h4><p>A short script that reads a sequence, computes a few numbers, and prints a tidy summary is exactly what day-to-day bioinformatics looks like. The project lesson scales this same pattern up to a real file fetched from NCBI.</p></div>
+
+            <h2>Practice exercises</h2>
+            <p>Try each one in the cell provided before opening the solution. Editing and re-running is the whole point - you cannot break anything.</p>
+
+            <p><strong>Exercise 1 - Reverse complement.</strong> A DNA strand has a partner strand read in the opposite direction, where A pairs with T and G pairs with C. Finish <code class="inline">reverse_complement</code> so it returns the partner of any sequence.</p>
+            <div class="pycell"><script type="application/x-python">
+def reverse_complement(seq):
+    pairs = {"A": "T", "T": "A", "G": "C", "C": "G"}
+    # build the complement of each base, then reverse the result
+    return ""   # replace this with your code
+
+print(reverse_complement("ATGC"))   # expected: GCAT
+</script></div>
+            <details><summary>Show a worked solution</summary>
+<pre>def reverse_complement(seq):
+    pairs = {"A": "T", "T": "A", "G": "C", "C": "G"}
+    return "".join(pairs[base] for base in reversed(seq))
+
+print(reverse_complement("ATGC"))   # GCAT</pre></details>
+
+            <p><strong>Exercise 2 - GC content of many sequences.</strong> Given a list of sequences, print each one next to its GC percentage.</p>
+            <div class="pycell"><script type="application/x-python">
+seqs = ["ATGC", "GGGGCC", "ATATAT", "GCGCGC"]
+
+# loop over seqs and print each sequence with its GC%
+</script></div>
+            <details><summary>Show a worked solution</summary>
+<pre>seqs = ["ATGC", "GGGGCC", "ATATAT", "GCGCGC"]
+
+def gc(s):
+    return round((s.count("G") + s.count("C")) / len(s) * 100, 1)
+
+for s in seqs:
+    print(s, "->", gc(s), "%")</pre></details>
+
+            <p><strong>Exercise 3 - Find the first start codon.</strong> Protein-coding genes usually begin with the codon <code class="inline">ATG</code>. Print the index where <code class="inline">ATG</code> first appears (Python's <code class="inline">.find()</code> helps), or -1 if it is absent.</p>
+            <div class="pycell"><script type="application/x-python">
+seq = "CCAGATGTTTATGAAA"
+
+# find the first ATG and print its position
+</script></div>
+            <details><summary>Show a worked solution</summary>
+<pre>seq = "CCAGATGTTTATGAAA"
+print(seq.find("ATG"))   # 4  (the first ATG starts at index 4)</pre></details>
+
             <h2>Check your understanding</h2>
             <div class="quiz" data-question="Why does dna[1] give the second base, not the first?">
                 <button data-opt data-correct>Python indexes from 0, so the first item is at index 0</button>
