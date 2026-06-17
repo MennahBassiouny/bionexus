@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Level up the command line for bioinformatics: variables and quoting, command substitution, loops, conditionals, writing scripts, file permissions, sed and awk for columns, find, and downloading data. Beginner-friendly, at your own pace.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Command-Line Intermediate for Bioinformatics - BioNexus Hub">
+    <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
+    <meta property="og:url" content="https://bionexushub.com/">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Command-Line Intermediate for Bioinformatics - BioNexus Hub">
+    <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Command-Line Intermediate for Bioinformatics - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.88rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .k { color:#c084fc; } pre .s { color:#86efac; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .tryit { background:rgba(16,185,129,0.08); border-left:4px solid var(--green); border-radius:8px; padding:14px 20px; margin:18px 0; font-size:1rem; color:#065f46; }
+        .cheat { background:white; border:1px solid rgba(91,156,248,0.25); border-radius:10px; padding:8px 24px; margin:18px 0; }
+        .cheat table { width:100%; border-collapse:collapse; }
+        .cheat td { padding:9px 6px; border-bottom:1px solid #eef2f7; font-size:0.98rem; }
+        .cheat td:first-child { font-family:'JetBrains Mono',monospace; color:#4c5fd5; white-space:nowrap; width:140px; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} .cheat td:first-child{width:auto;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="minicourses.html">Mini-courses</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                                <li><a href="faq.html">Help</a></li>
+                                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Foundations &nbsp;/&nbsp; Bash &nbsp;/&nbsp; Level 2: Intermediate</div>
+            <h1>Command Line: Level 2 (Intermediate)</h1>
+            <p class="promise">The next step up at the terminal: variables, loops, conditionals, your first scripts, and sed and awk for real file formats, all taught gently and at your own pace.</p>
+            <div class="tags">
+                <span class="tag">🟡 Intermediate</span>
+                <span class="tag">⏱️ ~2 hr</span>
+                <span class="tag">💻 Bash</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="why">
+                <h4>You are ready for this if...</h4>
+                <p>You have finished <a href="bash-basics.html" target="_blank" rel="noopener">Command-Line Basics</a> and you can move around folders, look inside files, and use <code class="inline">grep</code> and the pipe <code class="inline">|</code>. If that still feels new, go back and practise first. There is no rush here.</p>
+            </div>
+
+            <div class="tryit">No memorizing needed. Type each command at your own terminal, change something, run it again. That is the whole method. Keep this page open as a reference whenever you need it.</div>
+
+            <h2>1. Variables and quoting</h2>
+            <p>A variable is just a name for a value. Set it with <code class="inline">=</code> (no spaces), and read it back with <code class="inline">$</code>.</p>
+            <pre>name=<span class="s">"genes.fasta"</span>
+<span class="k">echo</span> <span class="s">"$name"</span>              <span class="c"># prints: genes.fasta</span>
+<span class="k">echo</span> <span class="s">"I am in $PWD"</span>        <span class="c"># $PWD is the current folder</span></pre>
+            <div class="why"><h4>Always quote your variables</h4><p>Write <code class="inline">"$name"</code>, not <code class="inline">$name</code>. The quotes keep filenames with spaces in one piece. Forgetting them is the single most common beginner bug in shell scripts.</p></div>
+
+            <h2>2. Capture a command's output</h2>
+            <p><strong>Command substitution</strong> with <code class="inline">$( )</code> runs a command and hands you its result to store or print.</p>
+            <pre>count=$(<span class="k">grep</span> -c <span class="s">"&gt;"</span> genes.fasta)
+<span class="k">echo</span> <span class="s">"The file has $count sequences"</span></pre>
+
+            <h2>3. Loops: the same job on many files</h2>
+            <p>This is where the terminal starts to save real time. A <code class="inline">for</code> loop repeats a command for every item you give it.</p>
+            <pre><span class="k">for</span> f <span class="k">in</span> *.fasta; <span class="k">do</span>
+    <span class="k">echo</span> <span class="s">"$f has $(grep -c '&gt;' "$f") sequences"</span>
+<span class="k">done</span></pre>
+            <div class="why"><h4>Read it as a sentence</h4><p>"For each file <code class="inline">f</code> ending in .fasta, do this, then move to the next." One instruction, applied to every matching file, however many there are.</p></div>
+
+            <h2>4. Making decisions: if and test</h2>
+            <pre><span class="k">if</span> [ -f genes.fasta ]; <span class="k">then</span>
+    <span class="k">echo</span> <span class="s">"the file is here"</span>
+<span class="k">else</span>
+    <span class="k">echo</span> <span class="s">"missing"</span>
+<span class="k">fi</span></pre>
+            <div class="why"><h4>Handy tests</h4><p><code class="inline">[ -f file ]</code> is true if a file exists, <code class="inline">[ -d folder ]</code> for a directory, and <code class="inline">[ -z "$x" ]</code> if a string is empty. Mind the spaces inside the brackets: they are required.</p></div>
+
+            <h2>5. Writing a script you can run</h2>
+            <p>Put commands in a <code class="inline">.sh</code> file and you have a reusable tool. The first line (the "shebang") tells the system to run it with bash.</p>
+            <pre><span class="c"># file: count_seqs.sh</span>
+#!/bin/bash
+<span class="c"># count sequences in the FASTA file given as the first argument</span>
+<span class="k">grep</span> -c <span class="s">"&gt;"</span> <span class="s">"$1"</span></pre>
+            <p>Then make it executable and run it:</p>
+            <pre><span class="k">chmod</span> +x count_seqs.sh
+./count_seqs.sh genes.fasta</pre>
+            <div class="why"><h4>What "permissions" mean</h4><p><code class="inline">chmod +x</code> marks a file as runnable. Those number codes you see (like <code class="inline">chmod 755</code>) are just read = 4, write = 2, execute = 1 added up for the owner, group, and everyone else. <code class="inline">755</code> means the owner can do everything and others can read and run.</p></div>
+
+            <h2>6. sed and awk: editing text and columns</h2>
+            <p>Two classic tools that handle most text wrangling. <strong>sed</strong> does find-and-replace; <strong>awk</strong> works with columns, which is perfect for table formats like BED, VCF, and GTF.</p>
+            <pre><span class="c"># sed: strip the leading "&gt;" from FASTA headers</span>
+<span class="k">grep</span> <span class="s">"&gt;"</span> genes.fasta | <span class="k">sed</span> <span class="s">'s/&gt;//'</span>
+
+<span class="c"># awk: print columns 1 and 3 of a table (e.g. a BED file)</span>
+<span class="k">awk</span> <span class="s">'{print $1, $3}'</span> regions.bed
+
+<span class="c"># awk: keep only rows where column 3 is above 1000</span>
+<span class="k">awk</span> <span class="s">'$3 &gt; 1000'</span> regions.bed</pre>
+            <div class="why"><h4>Why awk is everywhere in bioinformatics</h4><p>So many formats are just columns of tab-separated data. <code class="inline">awk</code> lets you pick columns, filter rows, and do quick maths on them without opening anything. A little awk replaces a lot of manual work.</p></div>
+
+            <h2>7. Finding files: find and xargs <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
+            <pre><span class="k">find</span> . -name <span class="s">"*.fastq"</span>          <span class="c"># every FASTQ in this folder and below</span>
+<span class="k">find</span> . -name <span class="s">"*.sam"</span> | <span class="k">xargs</span> <span class="k">rm</span>   <span class="c"># feed the results to another command (careful: rm!)</span></pre>
+            <div class="why"><h4>Look before you delete</h4><p>A <code class="inline">find ... | xargs rm</code> deletes every match with no undo. Run the <code class="inline">find</code> on its own first to see exactly what it lists, then add the <code class="inline">rm</code>.</p></div>
+
+            <h2>8. Getting data and unpacking it <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
+            <pre><span class="k">wget</span> https://example.org/data.tar.gz   <span class="c"># download a file (or: curl -O ...)</span>
+<span class="k">tar</span> -xzf data.tar.gz                    <span class="c"># unpack a .tar.gz archive</span>
+<span class="k">gunzip</span> reads.fastq.gz                  <span class="c"># unzip a single .gz file</span></pre>
+            <div class="why"><h4>When something runs too long</h4><p>Check what is running with <code class="inline">top</code> (press <code class="inline">q</code> to quit) or <code class="inline">ps</code>, and stop a stuck command with <code class="inline">Ctrl-C</code>. Big sequencing files can take a while; that is normal.</p></div>
+
+            <h2>Practice exercises</h2>
+            <p>Try each at your own terminal before opening the solution.</p>
+
+            <p><strong>Exercise 1: loop over files.</strong> Print the name of every <code class="inline">.fasta</code> file in the current folder.</p>
+            <details><summary>Show a worked solution</summary>
+<pre><span class="k">for</span> f <span class="k">in</span> *.fasta; <span class="k">do</span>
+    <span class="k">echo</span> <span class="s">"$f"</span>
+<span class="k">done</span></pre></details>
+
+            <p><strong>Exercise 2: count reads in a FASTQ.</strong> Store the line count of <code class="inline">reads.fastq</code> in a variable, then print the number of reads (lines divided by 4).</p>
+            <details><summary>Show a worked solution</summary>
+<pre>n=$(<span class="k">wc</span> -l &lt; reads.fastq)
+<span class="k">echo</span> $(( n / <span class="o">4</span> ))</pre></details>
+
+            <p><strong>Exercise 3: pick a column.</strong> Use <code class="inline">awk</code> to print just the second column of a table called <code class="inline">table.txt</code>.</p>
+            <details><summary>Show a worked solution</summary>
+<pre><span class="k">awk</span> <span class="s">'{print $2}'</span> table.txt</pre></details>
+
+            <h2>Check your understanding</h2>
+            <div class="quiz">
+                <div class="quiz-q-src">What does <code class="inline">count=$(grep -c "&gt;" genes.fasta)</code> do?</div>
+                <button data-opt data-correct>Runs the grep and stores its result (the sequence count) in count</button>
+                <button data-opt>Renames genes.fasta to count</button>
+                <button data-opt>Counts how many files are called genes.fasta</button>
+                <div class="quiz-explain"><code class="inline">$( )</code> runs the command inside and hands back its output, which you then store in the variable.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Why write <code class="inline">"$f"</code> with quotes inside a loop?</div>
+                <button data-opt data-correct>So filenames containing spaces are still treated as one name</button>
+                <button data-opt>Quotes make the loop run faster</button>
+                <button data-opt>It is only needed for numbers, not filenames</button>
+                <div class="quiz-explain">Without quotes, a filename like <code class="inline">my reads.fastq</code> would be split into two pieces. Quoting keeps it whole.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What does <code class="inline">chmod +x script.sh</code> do?</div>
+                <button data-opt data-correct>Marks the script as executable so you can run it with ./script.sh</button>
+                <button data-opt>Encrypts the script</button>
+                <button data-opt>Deletes the script after it runs</button>
+                <div class="quiz-explain">The <code class="inline">+x</code> adds the "execute" permission, which a file needs before the shell will run it as a program.</div>
+            </div>
+
+            <a class="next-lesson" href="bash-project.html" target="_blank" rel="noopener">
+                <span>Put these skills to work on a real file</span>
+                <h3>Project: wrangle a real data file from the command line &rarr;</h3>
+            </a>
+            <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:18px;">Level 3 (Advanced): script functions, safe error handling, parallel jobs, and working on a remote server is coming next.</p>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
