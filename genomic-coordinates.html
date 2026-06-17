@@ -185,6 +185,20 @@ bed_end   = gtf_end          <span class="c"># the end does not change</span>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
+                <div class="quiz-q-src">GFF/GTF annotation files use which coordinate system?</div>
+                <button data-opt data-correct>1-based, fully closed</button>
+                <button data-opt>0-based, half-open</button>
+                <button data-opt>It depends on the tool</button>
+                <div class="quiz-explain"><strong>Right.</strong> GFF/GTF (and VCF, and the SAM POS column) are 1-based. BED is the 0-based one.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">To convert a 1-based start into a 0-based (BED) start, you...</div>
+                <button data-opt data-correct>Subtract 1 from the start; the end stays the same</button>
+                <button data-opt>Add 1 to both start and end</button>
+                <button data-opt>Subtract 1 from both start and end</button>
+                <div class="quiz-explain"><strong>Correct.</strong> bed_start = start - 1, bed_end = end. The asymmetry is exactly what makes the length come out as end - start.</div>
+            </div>
+            <div class="quiz">
                 <div class="quiz-q-src">A <strong>BED</strong> file uses which coordinate system?</div>
                 <button data-opt data-correct>0-based, half-open</button>
                 <button data-opt>1-based, fully closed</button>

@@ -114,6 +114,11 @@
         .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
         .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
         .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .lesson-body .refs { background:#f1f5f9; border:1px solid rgba(91,156,248,0.2); border-radius:10px; padding:20px 24px; margin:30px 0; }
+        .lesson-body .refs h4 { font-size:0.78rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); margin-bottom:12px; }
+        .lesson-body .refs ol { margin:0 0 0 20px; }
+        .lesson-body .refs li { font-size:0.9rem; color:var(--text-gray); margin-bottom:7px; line-height:1.5; }
+        .lesson-body .refs .reviewed { font-size:0.82rem; color:var(--text-gray); margin-top:12px; font-style:italic; }
     </style>
 </head>
 <body>
@@ -247,6 +252,18 @@ salmon quant -i salmon_index -l A -r sample1.fastq.gz -o sample1_quant
             <div class="why"><h4>The one-line rule</h4><p>Give DESeq2 <strong>raw counts</strong>. Use TPM/CPM only for visualization and quick comparisons, never as the input to differential testing.</p></div>
 
             <h2>Check your understanding</h2>
+            <div class="quiz" data-question="Which route skips full genome alignment and matches reads straight against the transcriptome?">
+                <button data-opt data-correct>salmon (pseudo-alignment)</button>
+                <button data-opt>featureCounts</button>
+                <button data-opt>the STAR aligner</button>
+                <div class="quiz-explain"><strong>Right.</strong> salmon uses pseudo-alignment against the transcriptome, which is fast and light. featureCounts and STAR are the align-then-count route.</div>
+            </div>
+            <div class="quiz" data-question="Besides the BAM, what does featureCounts need to assign reads to genes?">
+                <button data-opt data-correct>An annotation file (GTF) giving each gene's location</button>
+                <button data-opt>A VCF of variants</button>
+                <button data-opt>A list of p-values</button>
+                <div class="quiz-explain"><strong>Correct.</strong> The annotation is the map of where genes are; without it, reads cannot be assigned to genes.</div>
+            </div>
             <div class="quiz" data-question="What is a 'count' in RNA-seq?">
                 <button data-opt data-correct>The number of reads assigned to a given gene in a given sample</button>
                 <button data-opt>The number of genes in the genome</button>

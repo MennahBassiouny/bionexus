@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The RNA-seq big picture, no code required: what RNA-seq measures, why it matters, and the journey from a tube of cells to a list of genes that changed.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Experimental Design for RNA-seq | BioNexus Hub">
+    <meta property="og:description" content="What RNA-seq measures, why it matters, and the journey from cells to a list of changed genes. The mental model before the code.">
+    <meta property="og:url" content="https://bionexushub.com/rna-seq-big-picture.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Experimental Design for RNA-seq | BioNexus Hub">
+    <meta name="twitter:description" content="What RNA-seq measures and the journey from cells to changed genes, no code required.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Experimental Design for RNA-seq - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .bigidea { background: var(--deep-navy); color: white; border-radius: 12px; padding: 28px 32px; margin: 26px 0; }
+        .bigidea p { color: #e2e8f0; font-size: 1.3rem; margin: 0; font-family: 'Crimson Pro', serif; line-height: 1.4; }
+        .bigidea strong { color: #c084fc; }
+
+        .flow { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; margin: 26px 0; }
+        .flow .step { flex: 1 1 130px; background: white; border: 1px solid rgba(91,156,248,0.25); border-top: 3px solid var(--primary-blue); border-radius: 10px; padding: 16px 12px; text-align: center; }
+        .flow .step .ico { font-size: 1.7rem; display: block; }
+        .flow .step .lbl { font-weight: 700; color: var(--deep-navy); font-size: 0.92rem; margin-top: 6px; }
+        .flow .step .sub { font-size: 0.78rem; color: var(--text-gray); margin-top: 2px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        details { background: white; border: 1px solid rgba(91,156,248,0.2); border-radius: 8px; padding: 14px 20px; margin-bottom: 12px; }
+        details summary { font-weight: 600; cursor: pointer; color: var(--deep-navy); }
+        details p { margin: 12px 0 0; color: var(--text-gray); font-size: 1rem; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:640px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
+        .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
+        .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="faq.html">Help</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; Experimental design</div>
+                <h1>Experimental Design for RNA-seq</h1>
+                <p class="promise">The analysis is only as good as the design. Replicates, batch effects, and the confounding trap: the planning that decides whether your RNA-seq study can work at all.</p>
+                <div class="tags">
+                    <span class="tag green">🟢 Beginner</span>
+                    <span class="tag">⏱️ ~25 min</span>
+                    <span class="tag">🧠 Concepts, no code</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain why biological replicates matter, recognize a batch effect and a confounded design, and describe how to plan an RNA-seq experiment so the analysis can actually work.</p>
+            </div>
+
+            <h2>The analysis is only as good as the design</h2>
+            <p>No statistical method can rescue a badly planned experiment. The most common reason an RNA-seq study fails is not the code, it is the design: too few replicates, or a batch effect tangled up with the thing you wanted to measure. The good news is that the rules are simple, and knowing them before you sequence anything is the highest-value half-hour in the whole pipeline.</p>
+
+            <h2><span class="step-num">1</span>Replicates: why you need at least three</h2>
+            <p>A <strong>biological replicate</strong> is a separate, independent sample (a different mouse, a different patient, a different culture). You need several because biology is variable: two untreated samples already differ a little, just by chance. Replicates measure that natural variation, and that is exactly what lets a tool like DESeq2 tell a real treatment effect apart from background noise.</p>
+            <div class="jargon" style="background:linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0;">
+                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">Biological vs technical</span>They are not the same</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">A <strong>biological</strong> replicate is a different individual or sample. A <strong>technical</strong> replicate is the same sample measured twice. Only biological replicates capture the variation that matters for differential expression. The common minimum is <strong>three biological replicates per group</strong>, and more is better.</p>
+            </div>
+
+            <h2><span class="step-num">2</span>Batch effects and the confounding trap</h2>
+            <p>A <strong>batch effect</strong> is a systematic difference between samples that comes from <em>how</em> they were handled, not the biology: samples prepared on different days, by different people, or sequenced on different lanes can differ in ways that look like real signal. The danger is <strong>confounding</strong>: if every treated sample was processed on Monday and every control on Tuesday, you can never tell whether a difference is the treatment or the day.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A confounded design where treatment lines up with batch, versus a balanced design">
+                    <g font-family="'Work Sans',sans-serif" font-size="12">
+                    <text x="140" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">Confounded (bad)</text>
+                    <text x="60" y="44" fill="#64748b">Batch A</text><text x="60" y="92" fill="#64748b">Batch B</text>
+                    <rect x="120" y="32" width="40" height="22" rx="4" fill="#a855f7"/><rect x="165" y="32" width="40" height="22" rx="4" fill="#a855f7"/><rect x="210" y="32" width="40" height="22" rx="4" fill="#a855f7"/>
+                    <rect x="120" y="80" width="40" height="22" rx="4" fill="#10b981"/><rect x="165" y="80" width="40" height="22" rx="4" fill="#10b981"/><rect x="210" y="80" width="40" height="22" rx="4" fill="#10b981"/>
+                    <text x="300" y="48" fill="#b45309">all treated</text><text x="300" y="96" fill="#b45309">all control</text>
+                    <text x="140" y="140" text-anchor="middle" font-size="13" font-weight="700" fill="#047857">Balanced (good)</text>
+                    <text x="60" y="164" fill="#64748b">Batch A</text><text x="60" y="190" fill="#64748b">Batch B</text>
+                    <rect x="120" y="152" width="40" height="20" rx="4" fill="#a855f7"/><rect x="165" y="152" width="40" height="20" rx="4" fill="#10b981"/><rect x="210" y="152" width="40" height="20" rx="4" fill="#a855f7"/>
+                    <rect x="120" y="176" width="40" height="20" rx="4" fill="#10b981"/><rect x="165" y="176" width="40" height="20" rx="4" fill="#a855f7"/><rect x="210" y="176" width="40" height="20" rx="4" fill="#10b981"/>
+                    <text x="300" y="172" fill="#047857">treated &amp; control in</text><text x="300" y="188" fill="#047857">every batch</text>
+                    <rect x="430" y="150" width="18" height="14" fill="#a855f7"/><text x="455" y="162" fill="#64748b">treated</text>
+                    <rect x="430" y="172" width="18" height="14" fill="#10b981"/><text x="455" y="184" fill="#64748b">control</text>
+                    </g>
+                </svg>
+                <figcaption>If treatment lines up perfectly with batch (top), the two cannot be separated. Spread both conditions across every batch (bottom) and the design is recoverable.</figcaption>
+            </figure>
+            <p>Two defenses: <strong>balance and randomize</strong> (put some treated and some control samples in every batch), and when a batch is unavoidable, <strong>record it and include it in the model</strong>, for example a DESeq2 design of <code class="inline">~ batch + condition</code> so the analysis can subtract the batch and still test the condition.</p>
+
+            <h2><span class="step-num">3</span>More replicates beat more depth</h2>
+            <p>People often ask whether to sequence each sample more deeply or to add more samples. For differential expression the answer is usually clear: <strong>more biological replicates</strong> gives you more power to detect real changes than piling extra reads onto a handful of samples. A modest depth across more replicates wins.</p>
+            <div class="why"><h4>A planning checklist</h4><p>Before you sequence: at least 3 biological replicates per group; conditions spread across batches, not confounded with them; any unavoidable batch recorded so it can go in the model; and a clear control group. Get these right and the analysis you learned in the flagship lesson will simply work.</p></div>
+
+            <h2>Check your understanding</h2>
+            <div class="quiz">
+                <div class="quiz-q-src">What is the difference between a biological and a technical replicate?</div>
+                <button data-opt data-correct>Biological = a different individual/sample; technical = the same sample measured again</button>
+                <button data-opt>They are the same thing</button>
+                <button data-opt>Technical replicates are always better for DE</button>
+                <div class="quiz-explain"><strong>Right.</strong> Only biological replicates capture the natural variation that differential expression needs.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">For detecting differential expression, which usually helps more?</div>
+                <button data-opt data-correct>More biological replicates</button>
+                <button data-opt>Much deeper sequencing of just two samples</button>
+                <button data-opt>Neither makes any difference</button>
+                <div class="quiz-explain"><strong>Correct.</strong> More replicates give more power to separate real effects from noise than extra depth on a few samples.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Why do you need biological replicates rather than just sequencing one sample very deeply?</div>
+                <button data-opt data-correct>To measure natural variation, so a real effect can be told apart from noise</button>
+                <button data-opt>Because one sample does not produce enough reads</button>
+                <button data-opt>Replicates are not actually necessary for RNA-seq</button>
+                <div class="quiz-explain"><strong>Right.</strong> Replicates capture how much samples vary naturally, which is what lets the model judge whether a difference is real.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Every treated sample was processed on Monday and every control on Tuesday. What is the problem?</div>
+                <button data-opt data-correct>Treatment is confounded with batch (day), so you cannot tell which caused any difference</button>
+                <button data-opt>Nothing; processing day never matters</button>
+                <button data-opt>You have too many replicates</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> When the condition lines up perfectly with the batch, the two effects cannot be separated. Balance conditions across batches instead.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">A batch effect was unavoidable but you recorded which batch each sample came from. How do you handle it in DESeq2?</div>
+                <button data-opt data-correct>Include batch in the design, e.g. ~ batch + condition</button>
+                <button data-opt>Delete the batch information so it cannot interfere</button>
+                <button data-opt>Nothing can be done once a batch effect exists</button>
+                <div class="quiz-explain"><strong>Correct.</strong> Adding batch to the design lets the model account for it and still test the condition cleanly.</div>
+            </div>
+
+            <a class="next-lesson" href="rna-seq-reads-to-counts.html" target="_blank" rel="noopener">
+                <span>Next in Track 3</span>
+                <h3>From reads to a count matrix &rarr;</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
