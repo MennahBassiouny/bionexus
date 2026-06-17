@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Level up your Python for bioinformatics: comprehensions, enumerate and zip, while loops, error handling, functions, modules, regular expressions, and a first look at NumPy. Beginner-friendly, with runnable examples.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Python Intermediate for Bioinformatics - BioNexus Hub">
+    <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
+    <meta property="og:url" content="https://bionexushub.com/">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Python Basics with Real Biological Data - BioNexus Hub">
+    <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Python Intermediate for Bioinformatics - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.88rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .k { color:#c084fc; } pre .s { color:#86efac; } pre .o { color:#7dd3fc; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .tryit { background:rgba(16,185,129,0.08); border-left:4px solid var(--green); border-radius:8px; padding:14px 20px; margin:18px 0; font-size:1rem; color:#065f46; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="minicourses.html">Mini-courses</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                                <li><a href="faq.html">Help</a></li>
+                                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Foundations &nbsp;/&nbsp; Python &nbsp;/&nbsp; Level 2: Intermediate</div>
+            <h1>Python: Level 2 (Intermediate)</h1>
+            <p class="promise">The next step up: the everyday Python that makes you genuinely productive, comprehensions, cleaner loops, handling messy data without crashing, and organising your code, all taught gently and at your own pace.</p>
+            <div class="tags">
+                <span class="tag">🟡 Intermediate</span>
+                <span class="tag">⏱️ ~2 hr</span>
+                <span class="tag">🐍 Python</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="why">
+                <h4>You are ready for this if...</h4>
+                <p>You have finished <a href="python-basics.html" target="_blank" rel="noopener">Python Basics</a> and you are comfortable with variables, lists, dictionaries, a simple loop, and writing a small function. If any of that feels shaky, there is no rush at all: go back, play with it, and come here whenever you feel like it. Nothing on this page is a race.</p>
+            </div>
+
+            <div class="tryit">No memorizing required. Read each idea once, run the cell, change something, run it again. That is the whole method. You can always come back to this page later as a reference.</div>
+
+            <h2>1. Comprehensions: a shorter way to build a list</h2>
+            <p>You already know how to build a list with a loop. A <strong>comprehension</strong> does the same thing in one readable line. Here is the same task written both ways.</p>
+            <pre><span class="c"># The familiar way</span>
+seqs = [<span class="s">"ATGC"</span>, <span class="s">"GGGCCC"</span>, <span class="s">"ATATAT"</span>]
+lengths = []
+<span class="k">for</span> s <span class="k">in</span> seqs:
+    lengths.append(<span class="k">len</span>(s))
+
+<span class="c"># The same result as a comprehension</span>
+lengths = [<span class="k">len</span>(s) <span class="k">for</span> s <span class="k">in</span> seqs]</pre>
+            <p>Read it right to left: "for each <code class="inline">s</code> in seqs, give me <code class="inline">len(s)</code>." You can build dictionaries the same way. Run this and change the sequences.</p>
+            <div class="pycell"><script type="application/x-python">
+seqs = ["ATGC", "GGGCCC", "ATATAT"]
+
+lengths = [len(s) for s in seqs]
+gc = {s: round((s.count("G") + s.count("C")) / len(s) * 100, 1) for s in seqs}
+
+print(lengths)
+print(gc)
+</script></div>
+            <div class="why"><h4>When NOT to use one</h4><p>Comprehensions are lovely for simple "make a new list from an old one" tasks. If the logic needs several steps or a few <code class="inline">if</code> branches, a normal loop is clearer. Clear beats clever every time.</p></div>
+
+            <h2>2. enumerate and zip: cleaner loops</h2>
+            <p>Two small built-ins remove a lot of clumsy code. <code class="inline">enumerate</code> gives you a counter while you loop; <code class="inline">zip</code> walks two lists together.</p>
+            <div class="pycell"><script type="application/x-python">
+genes = ["TP53", "BRCA1", "EGFR"]
+chrom = ["17", "17", "7"]
+
+# enumerate: number each item (start counting at 1)
+for i, g in enumerate(genes, start=1):
+    print(i, g)
+
+# zip: walk two lists side by side
+for g, c in zip(genes, chrom):
+    print(g, "is on chromosome", c)
+</script></div>
+
+            <h2>3. while loops, break, and continue</h2>
+            <p>A <code class="inline">for</code> loop runs a set number of times. A <strong>while</strong> loop runs until a condition stops being true. <code class="inline">break</code> leaves the loop early; <code class="inline">continue</code> skips to the next turn.</p>
+            <div class="pycell"><script type="application/x-python">
+seq = "ATGNCGTNA"
+clean = ""
+
+for base in seq:
+    if base == "N":      # unknown base
+        continue         # skip it, move to the next base
+    clean += base
+
+print("cleaned:", clean)
+
+# break: stop at the first stop-codon letter "*"
+for i, base in enumerate("ATGC*GG"):
+    if base == "*":
+        print("stop found at position", i)
+        break
+</script></div>
+
+            <h2>4. Handling errors without crashing</h2>
+            <p>Real data is messy. A single empty line or odd value can stop a whole script. <code class="inline">try</code> / <code class="inline">except</code> lets your code recover instead of crashing.</p>
+            <div class="pycell"><script type="application/x-python">
+def safe_gc(seq):
+    try:
+        return round((seq.count("G") + seq.count("C")) / len(seq) * 100, 1)
+    except ZeroDivisionError:
+        return 0.0      # an empty sequence has no GC content
+
+print(safe_gc("GGCC"))   # 100.0
+print(safe_gc(""))       # 0.0 instead of a crash
+</script></div>
+            <div class="why"><h4>Catch only what you expect</h4><p>Name the specific error (here, <code class="inline">ZeroDivisionError</code>) rather than catching everything. A blanket <code class="inline">except</code> can hide real bugs by swallowing errors you actually wanted to see.</p></div>
+
+            <h2>5. Functions that go a little further</h2>
+            <p>You can give a function <strong>default values</strong> so callers can skip arguments, and you can <strong>return more than one value</strong> at once.</p>
+            <div class="pycell"><script type="application/x-python">
+def seq_stats(seq, gc_only=False):
+    gc = round((seq.count("G") + seq.count("C")) / len(seq) * 100, 1)
+    if gc_only:
+        return gc
+    return len(seq), gc      # returns a pair (a tuple)
+
+print(seq_stats("ATGGGC"))             # (6, 66.7)
+length, gc = seq_stats("ATGGGC")       # unpack the pair
+print("length:", length, "GC:", gc)
+print(seq_stats("ATGGGC", gc_only=True))   # just 66.7
+</script></div>
+
+            <h2>6. Splitting code into scripts and modules</h2>
+            <p>So far your code has lived in one notebook or cell. As projects grow, you move it into a <code class="inline">.py</code> <strong>script</strong> you can run from the terminal, and you can keep reusable functions in their own file (a <strong>module</strong>) and import them.</p>
+            <pre><span class="c"># file: seqtools.py  (your own module of helpers)</span>
+<span class="k">def</span> <span class="o">gc_content</span>(seq):
+    <span class="k">return</span> <span class="k">round</span>((seq.count(<span class="s">"G"</span>) + seq.count(<span class="s">"C"</span>)) / <span class="k">len</span>(seq) * <span class="o">100</span>, <span class="o">1</span>)
+
+<span class="c"># file: analyze.py  (uses the helper)</span>
+<span class="k">from</span> seqtools <span class="k">import</span> gc_content
+<span class="k">print</span>(gc_content(<span class="s">"ATGGGC"</span>))</pre>
+            <div class="why"><h4>Why bother</h4><p>One giant file is hard to read and reuse. Small modules let you write a function once and use it in every analysis, which is exactly how real bioinformatics code is organised. When you are ready to work this way, the <a href="graduate-to-pro-setup.html" target="_blank" rel="noopener">graduate-to-a-pro-setup</a> lesson shows you how.</p></div>
+
+            <h2>7. Pattern matching with regular expressions <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
+            <p>A <strong>regular expression</strong> ("regex") is a mini-language for finding patterns in text, perfect for pulling IDs or coordinates out of messy headers. The <code class="inline">re</code> module is built in, so this runs as-is.</p>
+            <div class="pycell"><script type="application/x-python">
+import re
+
+header = ">gene1 TP53 chr17:7565097-7590856"
+
+# find the chromosome number after "chr"
+m = re.search(r"chr(\w+)", header)
+print("chromosome:", m.group(1))
+
+# pull out every number in the line
+print("numbers:", re.findall(r"\d+", header))
+</script></div>
+            <details><summary>What do those symbols mean?</summary>
+<pre>\w   a word character (letter, digit, or underscore)
+\d   a digit
++    one or more of the previous thing
+( )  a group you want to capture and read back
+re.search   find the first match
+re.findall  return every match as a list</pre></details>
+
+            <h2>8. NumPy: fast maths on whole arrays <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
+            <p><strong>NumPy</strong> stores numbers in an <em>array</em> and does maths on the whole thing at once, far faster than a Python loop. This is the engine under pandas and almost every scientific library. (NumPy needs to be installed, so run this one in <a href="https://colab.research.google.com" target="_blank" rel="noopener">Colab</a> rather than the cell above.)</p>
+            <pre><span class="k">import</span> numpy <span class="k">as</span> np
+
+expr = np.array([<span class="o">12.4</span>, <span class="o">8.1</span>, <span class="o">15.7</span>, <span class="o">3.3</span>, <span class="o">9.9</span>])
+<span class="k">print</span>(expr.mean(), expr.max())   <span class="c"># summary numbers in one step</span>
+<span class="k">print</span>(expr * <span class="o">2</span>)                  <span class="c"># doubles every value at once</span>
+<span class="k">print</span>(expr[expr &gt; <span class="o">10</span>])             <span class="c"># keep only values above 10</span></pre>
+
+            <h2>Where this goes next</h2>
+            <p>Two tools turn these basics into real data analysis, and you already have lessons for both:</p>
+            <ul>
+                <li><strong>pandas</strong> for tables of data (expression matrices, sample sheets): <a href="track1-pandas-for-biologists.html" target="_blank" rel="noopener">Pandas for biologists</a></li>
+                <li><strong>Biopython</strong> for real sequence files (FASTA, FASTQ, GenBank): <a href="track1-biopython-basics.html" target="_blank" rel="noopener">Biopython basics</a></li>
+            </ul>
+
+            <h2>Practice exercises</h2>
+            <p>Try each in the cell before opening the solution. You cannot break anything.</p>
+
+            <p><strong>Exercise 1: comprehension.</strong> Given a list of sequences, build a list of just their lengths using a comprehension.</p>
+            <div class="pycell"><script type="application/x-python">
+seqs = ["ATG", "GGGGCC", "AT"]
+
+# build a list of lengths with a comprehension
+</script></div>
+            <details><summary>Show a worked solution</summary>
+<pre>seqs = ["ATG", "GGGGCC", "AT"]
+lengths = [len(s) for s in seqs]
+print(lengths)   # [3, 6, 2]</pre></details>
+
+            <p><strong>Exercise 2: pair two lists.</strong> Print each gene next to its expression value using <code class="inline">zip</code>.</p>
+            <div class="pycell"><script type="application/x-python">
+genes = ["TP53", "BRCA1", "EGFR"]
+expr  = [12.4, 8.1, 15.7]
+
+# print each gene with its expression value
+</script></div>
+            <details><summary>Show a worked solution</summary>
+<pre>for g, e in zip(genes, expr):
+    print(g, e)</pre></details>
+
+            <p><strong>Exercise 3: handle the empty case.</strong> Write <code class="inline">first_base(seq)</code> that returns the first base, or the string <code class="inline">"empty"</code> if the sequence has no bases.</p>
+            <div class="pycell"><script type="application/x-python">
+def first_base(seq):
+    # return seq[0], or "empty" if seq is empty
+    return ""
+
+print(first_base("ATGC"))   # expected: A
+print(first_base(""))       # expected: empty
+</script></div>
+            <details><summary>Show a worked solution</summary>
+<pre>def first_base(seq):
+    try:
+        return seq[0]
+    except IndexError:
+        return "empty"
+
+print(first_base("ATGC"))   # A
+print(first_base(""))       # empty</pre></details>
+
+            <h2>Check your understanding</h2>
+            <div class="quiz" data-question="What does [len(s) for s in seqs] produce?">
+                <button data-opt data-correct>A new list holding the length of each sequence</button>
+                <button data-opt>A single number: the total length of all sequences</button>
+                <button data-opt>Nothing; comprehensions cannot use len()</button>
+                <div class="quiz-explain"><strong>Right.</strong> A list comprehension builds a new list by applying an expression (here <code>len(s)</code>) to every item.</div>
+            </div>
+            <div class="quiz" data-question="Why wrap risky code in try / except?">
+                <button data-opt data-correct>So one bad value can be handled instead of crashing the whole script</button>
+                <button data-opt>It makes the code run faster</button>
+                <button data-opt>It is required around every function in Python</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> Real data is messy; catching the specific error you expect lets the program recover and keep going.</div>
+            </div>
+            <div class="quiz" data-question="What does zip(genes, chrom) let you do?">
+                <button data-opt data-correct>Loop over both lists together, one pair at a time</button>
+                <button data-opt>Compress the lists into a smaller file</button>
+                <button data-opt>Sort both lists alphabetically</button>
+                <div class="quiz-explain"><strong>Correct.</strong> <code>zip</code> pairs up items from two (or more) lists so you can loop over them side by side.</div>
+            </div>
+
+            <a class="next-lesson" href="track1-pandas-for-biologists.html" target="_blank" rel="noopener">
+                <span>Put these skills to work on real tables</span>
+                <h3>Pandas for biologists &rarr;</h3>
+            </a>
+            <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:18px;">Level 3 (Advanced): NumPy in depth, virtual environments, testing, and automation is coming next.</p>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
