@@ -146,7 +146,7 @@
                     <span class="tag green">🟡 Intermediate</span>
                     <span class="tag">⏱️ ~45 min</span>
                     <span class="tag">💻 Command line</span>
-                    <span class="tag green">🌐 Runs in your browser</span>
+                    <span class="tag green">🌐 Runs free in Colab</span>
                 </div>
             </div>
         </div>
@@ -195,7 +195,7 @@
 <span class="p">!</span>fastp --version</pre>
 
                 <h2><span class="step-num">2</span>Trim with one command</h2>
-                <p>The core command takes an input file (<code class="inline">-i</code>) and writes a cleaned output file (<code class="inline">-o</code>). By default fastp auto-detects adapters and trims low-quality bases. The <code class="inline">-h</code> and <code class="inline">-j</code> options save its HTML and JSON reports.</p>
+                <p>The core command takes an input file (<code class="inline">-i</code>) and writes a cleaned output file (<code class="inline">-o</code>). By default fastp auto-detects adapters and trims low-quality bases. The <code class="inline">-h</code> and <code class="inline">-j</code> options save its HTML and JSON reports. One caveat: adapter auto-detection is most reliable for <em>paired-end</em> data (it uses the overlap between mates). For single-end reads it is weaker, so if the report shows reads are still under-trimmed, pass the adapter explicitly with <code class="inline">--adapter_sequence</code>.</p>
                 <pre><span class="p">!</span>fastp -i reads.fastq -o reads.trimmed.fastq -h fastp.html -j fastp.json</pre>
                 <p>As it runs, fastp prints a summary: how many reads went in, how many passed the filters, how many had adapters trimmed, and the quality before and after. That summary <em>is</em> your before-and-after QC.</p>
 
@@ -252,7 +252,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
         </div>
     </footer>
 

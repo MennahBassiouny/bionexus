@@ -142,7 +142,7 @@
                     <span class="tag green">🟡 Intermediate</span>
                     <span class="tag">⏱️ ~1.5 hours</span>
                     <span class="tag">📊 R · DESeq2</span>
-                    <span class="tag green">🌐 Runs in your browser</span>
+                    <span class="tag green">🌐 Runs free in Colab</span>
                 </div>
             </div>
         </div>
@@ -192,7 +192,7 @@
 
                 <h2><span class="step-num">2</span>What DESeq2 actually does (three moves)</h2>
                 <p>When you call <code class="inline">DESeq(dds)</code>, three things happen in sequence. You don't have to do them by hand, but knowing what they are makes the results make sense.</p>
-                <p><strong>Move 1: Normalization (size factors).</strong> Some samples are sequenced more deeply than others, so every gene in them looks "higher" just by accident. DESeq2 computes a <em>size factor</em> per sample and divides it out, so counts become comparable across samples. This corrects for sequencing depth, not for gene length (which is fine, because differential expression compares the same gene across samples).</p>
+                <p><strong>Move 1: Normalization (size factors).</strong> Some samples are sequenced more deeply than others, so every gene in them looks "higher" just by accident. DESeq2 computes a <em>size factor</em> per sample and divides it out, so counts become comparable across samples. This corrects for sequencing depth <em>and</em> for differences in library composition between samples (it does not correct for gene length, which is fine because differential expression compares the same gene across samples). Correcting for composition, not just total counts, is exactly why DESeq2 size factors differ from naive total-count scaling.</p>
                 <p><strong>Move 2: Dispersion estimation.</strong> With only a few replicates per group, the per-gene variability is hard to estimate. DESeq2 borrows strength across all genes: it looks at how variable genes are at each expression level and shrinks each gene's noisy estimate toward that trend. This is why DESeq2 works well even with three replicates, where naive methods fall apart.</p>
                 <p><strong>Move 3: Model and test.</strong> DESeq2 fits a negative binomial model (the right shape for count data) and, for each gene, runs a statistical test asking whether the difference between groups is bigger than the noise. Out comes a <code class="inline">log2FoldChange</code>, a <code class="inline">pvalue</code>, and an adjusted p-value.</p>
 
@@ -306,7 +306,7 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
         </div>
     </footer>
 

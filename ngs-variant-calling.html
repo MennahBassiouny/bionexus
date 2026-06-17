@@ -163,7 +163,7 @@
                     <span class="tag purple">🏆 Capstone</span>
                     <span class="tag green">🟠 Intermediate+</span>
                     <span class="tag">⏱️ ~2 hr</span>
-                    <span class="tag green">🌐 Runs in your browser</span>
+                    <span class="tag green">🌐 Runs free in Colab</span>
                 </div>
             </div>
         </div>
@@ -226,13 +226,17 @@
                 <p>This is everything from the last two lessons, compressed into the standard three lines. Notice how each tool hands off to the next.</p>
                 <pre><span class="p">!</span>bwa index reference.fasta
 <span class="p">!</span>bwa mem reference.fasta sample.fastq <span class="p">|</span> samtools sort -o sample.sorted.bam
-<span class="p">!</span>samtools index sample.sorted.bam</pre>
+<span class="p">!</span>samtools markdup sample.sorted.bam sample.markdup.bam   <span class="c"># flag PCR/optical duplicates</span>
+<span class="p">!</span>samtools index sample.markdup.bam</pre>
+                <div class="why" style="background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:14px 20px; margin:16px 0;"><h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;">Why mark duplicates?</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">PCR and optical duplicates are copies of the same original fragment. Left in, they inflate the apparent support for a position and cause false variant calls, so real pipelines flag them before calling. On <em>paired-end</em> data you run <code class="inline">samtools fixmate -m</code> (on a name-sorted BAM) before the coordinate sort so <code class="inline">markdup</code> has the mate information it needs.</p></div>
 
                 <h2><span class="step-num">3</span>Call variants with bcftools</h2>
                 <p>Calling is two steps piped together. <code class="inline">bcftools mpileup</code> walks the genome and, at every position, gathers the pile of read bases sitting there. <code class="inline">bcftools call</code> then judges each pile and decides whether it's a variant.</p>
-                <pre><span class="p">!</span>bcftools mpileup -f reference.fasta sample.sorted.bam <span class="p">|</span> \
+                <pre><span class="p">!</span>bcftools mpileup -f reference.fasta sample.markdup.bam <span class="p">|</span> \
   bcftools call -mv -Oz -o calls.vcf.gz
-<span class="p">!</span>bcftools index calls.vcf.gz</pre>
+<span class="p">!</span>bcftools norm -f reference.fasta calls.vcf.gz -Oz -o calls.norm.vcf.gz   <span class="c"># left-align indels</span>
+<span class="p">!</span>bcftools index calls.norm.vcf.gz</pre>
+                <p>The extra <code class="inline">bcftools norm</code> step left-aligns and normalises indels so the same insertion or deletion is always written the same way, which matters the moment you compare or annotate variants on real data.</p>
                 <p>The flags read as: <code class="inline">-m</code> use the modern multiallelic caller, <code class="inline">-v</code> output only variant sites (skip positions that match the reference), and <code class="inline">-Oz</code> write a compressed VCF.</p>
 
                 <div class="jargon">
@@ -310,7 +314,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
         </div>
     </footer>
 

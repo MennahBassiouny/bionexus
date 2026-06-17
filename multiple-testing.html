@@ -260,12 +260,12 @@ print(f"Benjamini-Hochberg FDR -> {bh_hits} significant (the genomics standard)"
 
                 <h2>Check your understanding</h2>
                 <div class="quiz">
-                    <div class="quiz-q-src">A methods section reads: "We tested 18,000 genes and report 1,100 with raw p &lt; 0.05 as differentially expressed." Even before seeing the data, what is the strongest objection?</div>
-                    <button data-opt>None; 1,100 hits out of 18,000 is a strong result</button>
-                    <button data-opt data-correct>About 18,000 × 0.05 = 900 false positives are expected by chance alone, so most of the 1,100 could be noise; they must apply multiple-testing correction (e.g., BH FDR) and report adjusted p-values</button>
+                    <div class="quiz-q-src">A methods section reads: "We tested 20,000 genes and report 1,200 with raw p &lt; 0.05 as differentially expressed." Even before seeing the data, what is the strongest objection?</div>
+                    <button data-opt>None; 1,200 hits out of 20,000 is a strong result</button>
+                    <button data-opt data-correct>About 20,000 × 0.05 = 1,000 false positives are expected by chance alone, so most of the 1,200 could be noise; they must apply multiple-testing correction (e.g., BH FDR) and report adjusted p-values</button>
                     <button data-opt>They should have used a p-value threshold of 0.10 to capture more genes</button>
                     <button data-opt>Raw p-values are always fine as long as the sample size is above 3</button>
-                    <div class="quiz-explain"><strong>Correct.</strong> At 18,000 tests, the 0.05 threshold alone yields roughly 900 false positives even with no true signal, so a raw-p list of 1,100 is largely uninterpretable. The fix is to control the FDR (Benjamini-Hochberg) and report adjusted p-values.</div>
+                    <div class="quiz-explain"><strong>Correct.</strong> At 20,000 tests, the 0.05 threshold alone yields roughly 1,000 false positives even with no true signal, so a raw-p list of 1,200 is largely uninterpretable. The fix is to control the FDR (Benjamini-Hochberg) and report adjusted p-values.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">A clinical lab and an exploratory RNA-seq screen both test thousands of hypotheses. The lab chooses Bonferroni; the screen chooses Benjamini-Hochberg. Why is each choice defensible?</div>
@@ -307,7 +307,7 @@ print(f"Benjamini-Hochberg FDR -> {bh_hits} significant (the genomics standard)"
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide.</p>
+            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
         </div>
     </footer>
 
