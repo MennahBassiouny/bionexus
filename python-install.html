@@ -221,6 +221,36 @@ pip install jupyter pandas numpy matplotlib biopython</pre>
                     <button data-opt>git</button>
                 </div>
 
+                <div class="quiz">
+                    <div class="quiz-q-src">During the Windows install, why does the lesson tell you to tick "Add python.exe to PATH"?</div>
+                    <button data-opt data-correct>So you can run Python from any terminal window</button>
+                    <button data-opt>So Python installs faster</button>
+                    <button data-opt>So Python deletes older versions automatically</button>
+                    <div class="quiz-explain">Adding Python to PATH lets the python and pip commands work from any Command Prompt or PowerShell window, which is why the lesson flags it as important.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">What is a virtual environment (like the bionexus one you create)?</div>
+                    <button data-opt>A second monitor for coding</button>
+                    <button data-opt data-correct>An isolated workspace holding its own Python version and packages so projects do not collide</button>
+                    <button data-opt>A website that runs your Python in the cloud</button>
+                    <div class="quiz-explain">A virtual environment is a self-contained box of a Python version and packages, so one project's installs never break another's.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">After activating your environment, how can you tell it is active?</div>
+                    <button data-opt>The screen turns green</button>
+                    <button data-opt>Python prints a warning every time</button>
+                    <button data-opt data-correct>Your prompt starts with (bionexus)</button>
+                    <div class="quiz-explain">When a virtual environment is active, its name appears in parentheses at the start of your prompt, such as (bionexus), and you type deactivate to leave it.</div>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-q-src">On macOS and Linux, what should you type if plain python and pip are not found?</div>
+                    <button data-opt>restart the whole computer first</button>
+                    <button data-opt data-correct>python3 and pip3</button>
+                    <button data-opt>sudo delete python</button>
+                    <div class="quiz-explain">Older Macs and Linux systems may map python to an old version, so the lesson tells you to use python3 and pip3 instead, for example python3 -m venv bionexus.</div>
+                </div>
+
             <a class="next-lesson" href="python-basics.html" target="_blank" rel="noopener"><span>Next in the Python series</span><h3>Python basics with real biological data →</h3></a>
         </div></div>
     </main>

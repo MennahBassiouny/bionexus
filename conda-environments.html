@@ -302,6 +302,20 @@ conda env create <span class="p">-f</span> environment.yml</pre>
                     <p class="reviewed">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz">
+                    <div class="quiz-q-src">Why does conda dominate bioinformatics setups, whereas a pure Python project might happily use only venv and pip?</div>
+                    <button data-opt>conda is the only tool that can install Python packages at all</button>
+                    <button data-opt data-correct>Many core bioinformatics tools (aligners, samtools, variant callers) are compiled C/C++ programs with system libraries, which conda can install alongside Python and R but pip cannot</button>
+                    <button data-opt>pip refuses to run on Linux, the main bioinformatics platform</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> venv and pip manage Python packages from PyPI only. Conda is both a package and environment manager that can install non-Python tools and their C libraries, which is exactly what genomics pipelines need. You can still use pip inside a conda environment for Python-only packages.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">During one-time setup you run the channel commands and finish with <code>conda config --set channel_priority strict</code>. What does strict channel priority help you avoid?</div>
+                    <button data-opt>It speeds up downloads by skipping checksums</button>
+                    <button data-opt>It deletes the base environment to free disk space</button>
+                    <button data-opt data-correct>It makes conda prefer higher-priority channels (like bioconda and conda-forge) consistently, avoiding a class of subtle, hard-to-debug version conflicts</button>
+                    <div class="quiz-explain"><strong>Right.</strong> Strict channel priority tells conda to resolve packages from higher-priority channels first instead of mixing builds across channels, which prevents the kind of inconsistent dependency mixes that cause silent breakage. It is part of the recommended bioconda plus conda-forge setup.</div>
+                </div>
                 <a class="next-lesson" href="portfolio.html" target="_blank" rel="noopener">
                     <span>Next in Track 6</span>
                     <h3>Building a portfolio that gets noticed →</h3>

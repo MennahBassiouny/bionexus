@@ -273,6 +273,20 @@ text(top$log2FoldChange, -log10(top$padj), labels = rownames(top), pos = 3, cex 
                     <p style="font-size:0.82rem;color:#64748b;margin-top:12px;font-style:italic;">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz">
+                <div class="quiz-q-src">On a volcano plot, what does the x-axis (log2 fold change) tell you?</div>
+                <button data-opt data-correct>The size and direction of the change, with negative values meaning down</button>
+                <button data-opt>How many samples were sequenced</button>
+                <button data-opt>The adjusted p-value for each gene</button>
+                <div class="quiz-explain">The x-axis is the log2 fold change: how far left or right a gene sits shows how big the change is, and the sign shows direction. Positive is up in your treatment, negative is down.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">On an MA plot, what sits on the horizontal axis?</div>
+                <button data-opt>The adjusted p-value</button>
+                <button data-opt>The number of replicates</button>
+                <button data-opt data-correct>The average expression level (mean of normalized counts)</button>
+                <div class="quiz-explain">The MA plot puts mean expression (A) on the x-axis and log2 fold change (M) on the y-axis. That lets you see whether fold changes behave sensibly across low- and high-expression genes.</div>
+            </div>
                 <a class="next-lesson" href="rna-seq-heatmaps.html" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
                     <h3>Heatmaps and clustering that mean something →</h3>

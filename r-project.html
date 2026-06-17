@@ -182,6 +182,28 @@ nrow(clean)      <span class="c"># after</span></pre>
                     <button data-opt>Deleting the data</button>
                 </div>
 
+                <div class="quiz">
+                    <div class="quiz-q-src">Why does the lesson start you on penguins instead of gene expression data?</div>
+                    <button data-opt data-correct>Because the load, clean, group, plot skill is identical and penguins avoid biological jargon while you learn the verbs</button>
+                    <button data-opt>Because gene data is illegal to download</button>
+                    <button data-opt>Because R cannot open biological data</button>
+                    <div class="quiz-explain">The wrangling skill is the same on penguins as on an expression table; penguins just let you learn the steps without extra jargon, then the skill transfers.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">What does NA mean in the penguins dataset?</div>
+                    <button data-opt>A type of penguin species</button>
+                    <button data-opt data-correct>A missing (not available) value</button>
+                    <button data-opt>The average of a column</button>
+                    <div class="quiz-explain">NA marks a missing value; many calculations refuse to run with NAs present so you do not get silently wrong answers, which is why the project drops or handles them.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Which function in the project draws the scatter and box plots?</div>
+                    <button data-opt>install.packages()</button>
+                    <button data-opt>drop_na()</button>
+                    <button data-opt data-correct>ggplot()</button>
+                    <div class="quiz-explain">The project builds its figures with ggplot(), adding layers like geom_point() and geom_boxplot() to reveal the structure in the data.</div>
+                </div>
+
             <a class="next-lesson" href="bash-install.html" target="_blank" rel="noopener">
                 <span>Next foundation</span>
                 <h3>Start the Bash series: setting up a terminal →</h3>

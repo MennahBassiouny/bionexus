@@ -296,6 +296,20 @@ print(f"Benjamini-Hochberg FDR -> {bh_hits} significant (the genomics standard)"
                     <p class="reviewed">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz">
+                    <div class="quiz-q-src">In a 20,000-gene RNA-seq study, why is the Bonferroni correction (threshold 0.05 / 20,000) often considered too strict?</div>
+                    <button data-opt>It allows far too many false positives through</button>
+                    <button data-opt data-correct>By guarding against even a single false positive it becomes very conservative, so it discards many genuine effects (false negatives) in discovery-stage genomics</button>
+                    <button data-opt>It can only be applied when fewer than 100 tests are run</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> Bonferroni controls the family-wise error rate, the chance of any false positive at all. That makes it bulletproof but conservative, costing power and discarding real biology, which is why FDR methods are usually preferred for genome-wide discovery.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">In the Benjamini-Hochberg procedure, after sorting m p-values and assigning each a rank i, which p-values are called significant?</div>
+                    <button data-opt>Only the single smallest p-value in the list</button>
+                    <button data-opt>Every p-value below the raw 0.05 cutoff, ignoring the ranks</button>
+                    <button data-opt data-correct>The largest-ranked p-value that is still at or below its critical value (i / m) x Q, plus everything ranked below it</button>
+                    <div class="quiz-explain"><strong>Right.</strong> BH finds the largest rank i where p is at or below (i / m) x Q, then declares that gene and all smaller-ranked p-values significant. This controls the false discovery rate while retaining far more power than Bonferroni.</div>
+                </div>
                 <a class="next-lesson" href="plots-that-tell-the-truth.html" target="_blank" rel="noopener">
                     <span>Next in Track 5</span>
                     <h3>Plots that tell the truth: visualization best practices →</h3>

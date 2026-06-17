@@ -190,6 +190,21 @@
                 <div class="quiz-explain">Because it carries biology-aware methods: <code class="inline">complement</code>, <code class="inline">reverse_complement</code>, <code class="inline">transcribe</code>, <code class="inline">translate</code>. A plain string can't do those.</div>
             </div>
 
+            <div class="quiz">
+                <div class="quiz-q-src">Which Biopython method saves your records back out to a file?</div>
+                <button data-opt data-correct>SeqIO.write()</button>
+                <button data-opt>SeqIO.parse()</button>
+                <button data-opt>SeqIO.save()</button>
+                <div class="quiz-explain"><code class="inline">SeqIO.write()</code> writes records to a file in whatever format you name, completing the read, manipulate, write cycle.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What does a Seq object's <code class="inline">reverse_complement()</code> return?</div>
+                <button data-opt>The sequence with every base capitalized</button>
+                <button data-opt data-correct>The partner strand read 5' to 3' (complement each base, then reverse the order)</button>
+                <button data-opt>The sequence translated into protein</button>
+                <div class="quiz-explain"><code class="inline">reverse_complement()</code> gives the opposite strand: it complements each base (A with T, G with C) and reverses the order. You need it constantly when a gene sits on the other strand.</div>
+            </div>
+
             <a class="next-lesson" href="track1-where-data-lives.html" target="_blank" rel="noopener">
                 <span>Next in Track 1</span>
                 <h3>Where the data lives: NCBI, Ensembl, GEO, SRA →</h3>

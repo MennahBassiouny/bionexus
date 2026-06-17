@@ -256,6 +256,20 @@
                     <p class="reviewed">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz">
+                    <div class="quiz-q-src">What is the fundamental purpose of the UV crosslinking step shared by CLIP-seq methods?</div>
+                    <button data-opt data-correct>To covalently lock RNA-binding proteins onto the RNA they directly contact so the interaction survives purification</button>
+                    <button data-opt>To fragment the genome into short pieces for sequencing</button>
+                    <button data-opt>To add m6A modifications to the bound RNA</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> UV light forms a covalent bond between an RBP and the RNA in direct contact. That crosslink lets you wash stringently and pull down only genuinely bound RNA, giving near-nucleotide resolution rather than loose co-purification.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">In eCLIP, why is a size-matched input (SMInput) control sequenced alongside the IP sample?</div>
+                    <button data-opt>To replace the need for any antibody in the experiment</button>
+                    <button data-opt>To increase the read length of the IP library</button>
+                    <button data-opt data-correct>To reveal background signal from abundant or sticky RNAs so that real binding peaks can be distinguished from noise</button>
+                    <div class="quiz-explain"><strong>Exactly.</strong> Abundant and structured RNAs show up even without specific binding. The size-matched input captures that background, and peaks are called as enrichment of the IP over the input rather than from raw IP coverage alone.</div>
+                </div>
                 <a class="next-lesson" href="epitranscriptomics-m6a.html" target="_blank" rel="noopener">
                     <span>Next in Track 4</span>
                     <h3>Epitranscriptomics 101: m6A and RNA modifications →</h3>

@@ -273,6 +273,20 @@ pheatmap(mat,
                     <p style="font-size:0.82rem;color:#64748b;margin-top:12px;font-style:italic;">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz">
+                <div class="quiz-q-src">After z-scoring a gene, what does a value of 0 mean for one sample?</div>
+                <button data-opt data-correct>That sample is right at the gene's average across all samples</button>
+                <button data-opt>The gene has zero reads in that sample</button>
+                <button data-opt>The gene failed the significance test</button>
+                <div class="quiz-explain">A z-score of 0 means that sample sits exactly at the gene's mean. Positive values are above average (higher than usual) and negative values are below, which is why heatmap colours read as relative up or down.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">What does hierarchical clustering do to the rows and columns of a gene heatmap?</div>
+                <button data-opt>It deletes genes that are not significant</button>
+                <button data-opt data-correct>It reorders them so similar genes and similar samples sit next to each other</button>
+                <button data-opt>It converts the counts into p-values</button>
+                <div class="quiz-explain">Clustering groups genes with similar expression patterns together and samples that look alike together, so blocks of co-regulated genes and related samples become visible as clear patches of colour.</div>
+            </div>
                 <a class="next-lesson" href="rna-seq-enrichment.html" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
                     <h3>Functional enrichment: GO, KEGG, GSEA →</h3>

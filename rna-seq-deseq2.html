@@ -299,6 +299,20 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                     <p style="font-size:0.82rem;color:#64748b;margin-top:12px;font-style:italic;">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz">
+                    <div class="quiz-q-src">In the airway dataset the design is <code class="inline">~ cell + dex</code>. Which column holds the treatment being tested?</div>
+                    <button data-opt>cell - it is listed first in the formula</button>
+                    <button data-opt data-correct>dex - it comes last, so its effect is tested after accounting for cell line</button>
+                    <button data-opt>neither - both are just sample names</button>
+                    <div class="quiz-explain">dex is the dexamethasone treatment, and because it is the last term DESeq2 tests its effect after adjusting for the cell line (cell). Putting cell first lets it soak up cell-line differences so the dex effect is cleaner.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Why does DESeq2 need raw integer counts rather than already-normalized values like TPM?</div>
+                    <button data-opt>Because TPM values are always wrong</button>
+                    <button data-opt data-correct>Its statistical model expects raw counts and does its own normalization internally</button>
+                    <button data-opt>Because raw counts are smaller numbers and easier to store</button>
+                    <div class="quiz-explain">DESeq2 models count noise directly and estimates its own size factors to normalize for depth. Feeding it pre-normalized values like TPM breaks the assumptions its negative-binomial model relies on.</div>
+                </div>
                 <a class="next-lesson" href="rna-seq-volcano-ma.html" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
                     <h3>Reading volcano &amp; MA plots in R →</h3>

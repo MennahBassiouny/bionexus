@@ -199,7 +199,7 @@
                 <table class="ctable">
                     <thead><tr><th>You're writing...</th><th>Use...</th><th>Why</th></tr></thead>
                     <tbody>
-                        <tr><td><strong>Python</strong></td><td><strong>VS Code</strong> (free) — or PyCharm, or Jupyter</td><td>The standard, lightweight editor for Python and the command line. We have a <a href="vscode-setup.html" target="_blank" rel="noopener">setup guide</a>.</td></tr>
+                        <tr><td><strong>Python</strong></td><td><strong>VS Code</strong> (free), or PyCharm, or Jupyter</td><td>The standard, lightweight editor for Python and the command line. We have a <a href="vscode-setup.html" target="_blank" rel="noopener">setup guide</a>.</td></tr>
                         <tr><td><strong>R</strong></td><td><strong>RStudio</strong> (free, from Posit)</td><td>The field-standard environment for R, Bioconductor, and DESeq2. Built for data analysis.</td></tr>
                         <tr><td><strong>Both / notebooks</strong></td><td>VS Code or Jupyter</td><td>Both open <code class="inline">.ipynb</code> notebooks locally, the same format Colab uses.</td></tr>
                         <tr><td><strong>The command line</strong> (samtools, bwa)</td><td>Your terminal + conda</td><td>CLI tools install via conda/bioconda; run them in a terminal (also built into VS Code).</td></tr>
@@ -268,6 +268,28 @@
                         <li>Grüning B, et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. <em>Nature Methods</em> 15, 475–476, 2018. <a href="https://doi.org/10.1038/s41592-018-0046-7" target="_blank" rel="noopener">doi:10.1038/s41592-018-0046-7</a></li>
                     </ol>
                     <p class="reviewed">Last reviewed: June 2026.</p>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-q-src">The lesson describes a professional setup as four pieces. Which set lists them?</div>
+                    <button data-opt data-correct>An editor, a language, an environment manager, and version control</button>
+                    <button data-opt>A printer, a scanner, a webcam, and a microphone</button>
+                    <button data-opt>Four different web browsers</button>
+                    <div class="quiz-explain">The four-part stack is an editor (VS Code or RStudio), a language (Python or R), an environment manager (conda or venv), and version control (Git and GitHub), added over time.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Why does free Colab eventually become limiting for real work, per the lesson?</div>
+                    <button data-opt>The code you wrote in Colab will not run anywhere else</button>
+                    <button data-opt data-correct>It has memory limits and disconnects after inactivity, while local runs as long as your machine does</button>
+                    <button data-opt>Colab deletes your account after one project</button>
+                    <div class="quiz-explain">Bigger data and longer jobs outgrow free Colab's memory limits and inactivity disconnects; a local setup runs as long as your machine does, alongside reproducibility and version-control gains.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">What is the first step the lesson gives for moving a Colab project onto your machine?</div>
+                    <button data-opt>Buy a new computer</button>
+                    <button data-opt>Delete the Colab notebook</button>
+                    <button data-opt data-correct>Get your code by downloading the .ipynb or copying the cells</button>
+                    <div class="quiz-explain">Moving over starts with getting your code: in Colab use File, Download, Download .ipynb, or just copy the code cells, then install the language and recreate the environment.</div>
                 </div>
 
                 <a class="next-lesson" href="conda-environments.html" target="_blank" rel="noopener">

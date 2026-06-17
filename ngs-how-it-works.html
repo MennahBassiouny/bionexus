@@ -319,6 +319,21 @@
                 <div class="quiz-explain">Each base is read many times, so higher coverage gives more confidence. It lets you tell a true difference from the reference (a variant) apart from a random sequencing error.</div>
             </div>
 
+                <div class="quiz">
+                <div class="quiz-q-src">What are paired-end reads, and why are they useful?</div>
+                <button data-opt>Two reads from a single base, doubling the quality score</button>
+                <button data-opt data-correct>Each fragment is read from both ends, giving a known gap that helps placement</button>
+                <button data-opt>Reads joined from two different samples to save money</button>
+                <div class="quiz-explain">Paired-end means each fragment is read from both ends, producing a pair of reads with a known gap between them. That extra information makes it much easier to place a fragment correctly, especially across repetitive regions.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">What file format holds the raw reads that come straight off the sequencer?</div>
+                <button data-opt>VCF</button>
+                <button data-opt>BAM</button>
+                <button data-opt data-correct>FASTQ</button>
+                <div class="quiz-explain">The sequencer outputs raw reads as FASTQ. Later steps turn that into a BAM of mapped reads and finally a VCF of variants, but FASTQ is where the workflow begins.</div>
+            </div>
+
                 <a class="next-lesson" href="ngs-fastqc.html" target="_blank" rel="noopener">
                     <span>Next in Track 2</span>
                     <h3>Quality control with FastQC →</h3>

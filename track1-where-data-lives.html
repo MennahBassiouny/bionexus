@@ -202,6 +202,21 @@ results = Entrez.read(search)
                 <div class="quiz-explain">Reproducibility. A script that fetches by accession can be re-run by anyone to get the identical data, and it scales to hundreds of records without manual clicking.</div>
             </div>
 
+            <div class="quiz">
+                <div class="quiz-q-src">Why does Biopython's Entrez ask you to set <code class="inline">Entrez.email</code> before fetching?</div>
+                <button data-opt data-correct>So NCBI can contact you about heavy usage</button>
+                <button data-opt>So your results are kept private from other users</button>
+                <button data-opt>Because the sequence is emailed to you instead of downloaded</button>
+                <div class="quiz-explain">NCBI just asks for an email so they can reach you about heavy usage. Any working email address is fine.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">You have a paper that mentions accession NM_000518. What is the two-step pattern if you instead only had a gene name?</div>
+                <button data-opt>Translate first, then fetch</button>
+                <button data-opt>Compress the file, then upload it</button>
+                <button data-opt data-correct>Search with esearch to get IDs, then efetch those IDs</button>
+                <div class="quiz-explain">When you lack an accession, <code class="inline">Entrez.esearch</code> finds matching record IDs first, then you fetch those IDs. Search to find, then fetch is the heart of programmatic access.</div>
+            </div>
+
             <a class="next-lesson" href="track1-pandas-for-biologists.html" target="_blank" rel="noopener">
                 <span>Last in Track 1 - the payoff</span>
                 <h3>Pandas for biologists + your Track 1 project →</h3>

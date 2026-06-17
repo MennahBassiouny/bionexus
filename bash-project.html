@@ -187,6 +187,28 @@ awk <span class="s">"BEGIN{printf \"GC%% = %.1f\n\", $gc/$total*100}"</span></pr
                     <button data-opt>Only delete files</button>
                 </div>
 
+                <div class="quiz">
+                    <div class="quiz-q-src">In the long-sequence pipeline, what does grep -v "&gt;" do?</div>
+                    <button data-opt data-correct>Keeps only the lines that are not header lines</button>
+                    <button data-opt>Deletes the whole file</button>
+                    <button data-opt>Counts only the header lines</button>
+                    <div class="quiz-explain">The -v flag inverts the match, so grep -v keeps every line that is not a header, leaving just the sequence lines.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Why does the GC-content step use tr -cd 'GC' rather than tr -d 'GC'?</div>
+                    <button data-opt>Because -cd uploads the file to NCBI</button>
+                    <button data-opt data-correct>Because -cd deletes everything that is not G or C, leaving only G and C to count</button>
+                    <button data-opt>Because -cd sorts the bases alphabetically</button>
+                    <div class="quiz-explain">The -c complements the set, so tr -cd 'GC' deletes every character that is not G or C; what remains is only the G and C bases for wc -c to count.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">The project shows that, before heavy analysis, bioinformaticians spend a lot of time doing what?</div>
+                    <button data-opt>Designing 3D protein models</button>
+                    <button data-opt>Writing long programs in C</button>
+                    <button data-opt data-correct>Interrogating files: how big, how many records, does it contain what I expect</button>
+                    <div class="quiz-explain">Much real work is just inspecting files from the command line (size, record count, contents) before any heavy analysis, which is exactly what this project practices.</div>
+                </div>
+
             <a class="next-lesson" href="learn.html" target="_blank" rel="noopener">
                 <span>You've finished the foundations 🎉</span>
                 <h3>Back to the roadmap - pick your next track →</h3>

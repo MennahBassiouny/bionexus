@@ -250,6 +250,21 @@
                 <div class="quiz-explain">Not automatically. The colours are rough heuristics. Read the actual graph and consider your experiment. Many red flags (like 3' quality drop or adapter content) are routine and simply fixed by trimming.</div>
             </div>
 
+                <div class="quiz">
+                <div class="quiz-q-src">On the FastQC per-base quality plot, where does read quality almost always dip?</div>
+                <button data-opt data-correct>Toward the 3' end (the last bases of each read)</button>
+                <button data-opt>In the exact middle of every read</button>
+                <button data-opt>Only in the very first base</button>
+                <div class="quiz-explain">Quality almost always declines toward the 3' end of a read. A drop into the red zone there is normal and is fixed by trimming those late bases.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">When you have dozens or hundreds of FASTQ files, which tool combines their FastQC reports into one summary?</div>
+                <button data-opt>Trimmomatic</button>
+                <button data-opt data-correct>MultiQC</button>
+                <button data-opt>BWA-MEM</button>
+                <div class="quiz-explain">MultiQC scans a folder of FastQC reports and merges them into a single interactive summary, so you can spot the odd-one-out sample at a glance.</div>
+            </div>
+
                 <a class="next-lesson" href="ngs-trimming.html" target="_blank" rel="noopener">
                     <span>Next in Track 2</span>
                     <h3>Trimming &amp; filtering reads →</h3>

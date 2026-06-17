@@ -241,6 +241,21 @@
                 <div class="quiz-explain">It detects and trims adapters, trims low-quality bases, filters short reads, and produces a before-and-after QC report, all in one fast command. That is why it has become the go-to first step.</div>
             </div>
 
+                <div class="quiz">
+                <div class="quiz-q-src">Which older trimming tools will you still see cited in papers, before fastp became the default?</div>
+                <button data-opt>BWA and Bowtie2</button>
+                <button data-opt>samtools and bcftools</button>
+                <button data-opt data-correct>Trimmomatic and cutadapt</button>
+                <div class="quiz-explain">Trimmomatic and cutadapt are the older alternatives you will meet in the literature. fastp is the modern, beginner-friendly default that bundles their jobs into one command.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">Why is aggressively over-trimming your reads a bad idea?</div>
+                <button data-opt data-correct>It throws away good data and can bias your results</button>
+                <button data-opt>It makes the FASTQ file impossible to align</button>
+                <button data-opt>It permanently deletes the reference genome</button>
+                <div class="quiz-explain">Over-trimming discards good sequence and can bias downstream results. fastp's defaults are sensible for most data; trim to fix real problems you saw in QC, not to chase a perfect-looking report.</div>
+            </div>
+
                 <a class="next-lesson" href="ngs-alignment.html" target="_blank" rel="noopener">
                     <span>Next in Track 2</span>
                     <h3>Read alignment: BWA, HISAT2, STAR →</h3>

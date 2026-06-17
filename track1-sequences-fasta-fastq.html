@@ -219,6 +219,21 @@ rec = <span class="k">next</span>(SeqIO.parse(<span class="s">"demo.fastq"</span
                 <div class="quiz-explain">It means a 1-in-100 chance the base is wrong (99% confident). Decent, but most analyses prefer 30+ (99.9%). You'll learn to read these summaries in the quality-control lesson later.</div>
             </div>
 
+            <div class="quiz">
+                <div class="quiz-q-src">In a FASTQ record, what does line 3 (the line with just a +) do?</div>
+                <button data-opt data-correct>It is a separator between the sequence and the quality scores</button>
+                <button data-opt>It marks the end of the file</button>
+                <button data-opt>It stores a second copy of the sequence</button>
+                <div class="quiz-explain">Line 3 is a separator, just a <code class="inline">+</code>, sitting between the sequence (line 2) and the quality line (line 4). It carries no data of its own.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">In a FASTQ record, how does the length of the quality line compare to the sequence line?</div>
+                <button data-opt data-correct>It is exactly the same length: one quality score per base</button>
+                <button data-opt>It is always shorter, one score per record</button>
+                <button data-opt>It is twice as long as the sequence</button>
+                <div class="quiz-explain">Lines 2 and 4 are always the same length because there is exactly one quality character for every base in the sequence.</div>
+            </div>
+
             <a class="next-lesson" href="track1-file-formats.html" target="_blank" rel="noopener">
                 <span>Next in Track 1</span>
                 <h3>The file-format alphabet soup: SAM/BAM, VCF, GFF, BED →</h3>

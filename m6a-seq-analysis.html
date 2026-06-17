@@ -248,6 +248,20 @@
                     <p class="reviewed">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz">
+                    <div class="quiz-q-src">In a standard MeRIP-seq (m6A-seq) experiment, what does the IP sample contain compared with the input sample?</div>
+                    <button data-opt data-correct>RNA fragments enriched by an anti-m6A antibody, versus the total fragmented transcriptome</button>
+                    <button data-opt>Only DNA, versus only protein</button>
+                    <button data-opt>Genomic reads, versus mitochondrial reads</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> MeRIP fragments RNA, then immunoprecipitates fragments carrying m6A with an antibody (the IP). The input is the matched fragmented RNA without IP. Peaks are regions enriched in IP relative to input.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A standard antibody-based MeRIP-seq peak typically spans roughly a hundred or more nucleotides. What is the practical limitation this creates?</div>
+                    <button data-opt>It tells you the exact methylated adenosine to the single base</button>
+                    <button data-opt>It cannot detect m6A at all</button>
+                    <button data-opt data-correct>It localizes m6A to a region but does not pinpoint the exact methylated base</button>
+                    <div class="quiz-explain"><strong>Right.</strong> MeRIP resolution is set by the RNA fragment size, so a peak marks a window rather than one base. To get single-nucleotide resolution you need methods such as miCLIP rather than standard MeRIP-seq.</div>
+                </div>
                 <a class="next-lesson" href="rna-integrative-analysis.html" target="_blank" rel="noopener">
                     <span>Next in Track 4</span>
                     <h3>Integrative thinking: layering RNA-level evidence →</h3>

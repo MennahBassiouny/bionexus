@@ -203,6 +203,21 @@ chr11  5225464   5227071   HBB</pre>
                 <div class="quiz-explain">GFF or GTF - the annotation formats that map features (genes, exons) onto genome coordinates.</div>
             </div>
 
+            <div class="quiz">
+                <div class="quiz-q-src">Which format is the 0-based oddball, counting positions from 0 instead of 1?</div>
+                <button data-opt>VCF</button>
+                <button data-opt>GFF</button>
+                <button data-opt data-correct>BED</button>
+                <div class="quiz-explain">BED counts positions from 0, while VCF and GFF count from 1. It is the classic trap that catches everyone once.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What is the relationship between SAM and BAM?</div>
+                <button data-opt>They store different information entirely</button>
+                <button data-opt data-correct>BAM is the compressed, binary version of the same information in SAM</button>
+                <button data-opt>SAM is for DNA and BAM is for protein</button>
+                <div class="quiz-explain">BAM is simply the compressed, binary form of SAM, holding the same alignment information far more efficiently. The <code class="inline">samtools</code> program converts between them.</div>
+            </div>
+
             <a class="next-lesson" href="track1-biopython-basics.html" target="_blank" rel="noopener">
                 <span>Next in Track 1</span>
                 <h3>Biopython basics: parse, manipulate, write →</h3>

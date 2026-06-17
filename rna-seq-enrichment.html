@@ -299,6 +299,20 @@ ranks <- sort(ranks, decreasing = TRUE)
                     <p style="font-size:0.82rem;color:#64748b;margin-top:12px;font-style:italic;">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz">
+                <div class="quiz-q-src">Why does an over-representation analysis need a background (universe) gene set?</div>
+                <button data-opt>To make the plot more colourful</button>
+                <button data-opt data-correct>So enrichment is judged against all genes that could have been detected, not the whole genome blindly</button>
+                <button data-opt>Background genes are the final answer themselves</button>
+                <div class="quiz-explain">The test asks whether a function appears in your hit list more than expected by chance. That expectation depends on the pool of genes that could have shown up, so the background should be the genes you actually measured.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">In GSEA, what is the genes ranked by, and why does the order matter?</div>
+                <button data-opt>Alphabetical name, so terms are easy to find</button>
+                <button data-opt data-correct>A statistic like the fold change or signed significance, so coordinated shifts to the top or bottom can be detected</button>
+                <button data-opt>Chromosome position, to map them to the genome</button>
+                <div class="quiz-explain">GSEA needs the whole list ordered by a meaningful metric, such as log2 fold change or a signed score. It then checks whether a gene set clusters near the top (up) or bottom (down) of that ranking.</div>
+            </div>
                 <a class="next-lesson" href="learn.html#track-3" target="_blank" rel="noopener">
                     <span>Track 3</span>
                     <h3>See the full transcriptomics roadmap →</h3>

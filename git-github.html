@@ -242,6 +242,20 @@
                     <div class="quiz-explain"><strong>Exactly.</strong> Keep large data and secrets out of Git. Store big files elsewhere and fetch by accession, and use a <code>.gitignore</code> for anything sensitive.</div>
                 </div>
 
+                <div class="quiz">
+                    <div class="quiz-q-src">In the everyday Git loop, what is the role of <code>git add</code> before you commit?</div>
+                    <button data-opt>It permanently uploads the file to GitHub</button>
+                    <button data-opt data-correct>It stages the specific changes you want to include in the next snapshot</button>
+                    <button data-opt>It writes the commit message for you automatically</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> <code>git add</code> chooses what goes into the snapshot, <code>git commit</code> saves that snapshot with a message, and <code>git push</code> sends it to GitHub. They are three separate steps.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You want to try a risky change to your analysis without touching your working version, then propose it for review. Which Git/GitHub features fit?</div>
+                    <button data-opt>git config and git --version</button>
+                    <button data-opt>.gitignore and git remote</button>
+                    <button data-opt data-correct>A branch (a safe parallel copy) plus a pull request (to propose the changes back for review)</button>
+                    <div class="quiz-explain"><strong>Right.</strong> A branch lets you experiment in a parallel copy without disturbing your main work, and a pull request is how those changes are proposed and reviewed before merging. This is the standard collaboration workflow.</div>
+                </div>
                 <a class="next-lesson" href="learn.html#track-6" target="_blank" rel="noopener">
                     <span>Next in Track 6</span>
                     <h3>Conda environments: never break your setup again →</h3>

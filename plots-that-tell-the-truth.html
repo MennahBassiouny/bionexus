@@ -300,6 +300,20 @@ print("Lesson: never trust a mean without seeing the distribution.")
                     <p class="reviewed">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz">
+                    <div class="quiz-q-src">When drawing a heatmap of log<sub>2</sub> fold changes that range from negative to positive around zero, which color scale is the honest choice?</div>
+                    <button data-opt>A single-hue ramp from light to dark, which hides whether a value is positive or negative</button>
+                    <button data-opt>The rainbow (jet) colormap, because it has the most distinct colors</button>
+                    <button data-opt data-correct>A diverging, perceptually uniform palette centered at zero, so the sign and magnitude of each change are both clear</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> Log fold changes diverge around zero, so a two-hue diverging scale centered at zero shows direction and size faithfully. A single-hue ramp hides the sign, and rainbow maps distort magnitudes because they are not perceptually uniform.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A figure uses dual y-axes to overlay two unrelated time series and "show" they move together. Why is this a misleading-figure red flag?</div>
+                    <button data-opt data-correct>The apparent correlation can be manufactured simply by choosing the two axis scales, so the visual relationship may not reflect the data</button>
+                    <button data-opt>Dual y-axes are impossible to render in matplotlib or ggplot2</button>
+                    <button data-opt>Two axes always use too much ink and lower the data-ink ratio below zero</button>
+                    <div class="quiz-explain"><strong>Right.</strong> With independent scales on each axis you can slide two series into apparent lockstep, implying a correlation the data may not support. It is a classic trick of deceptive figures, which is why dual y-axes are discouraged for comparing series.</div>
+                </div>
                 <a class="next-lesson" href="learn.html#track-6" target="_blank" rel="noopener">
                     <span>You finished Track 5</span>
                     <h3>Next up: Track 6, Reproducibility &amp; Career →</h3>

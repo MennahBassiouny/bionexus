@@ -342,6 +342,21 @@
                 <div class="quiz-explain">Callers produce false positives, particularly where coverage is thin or the region is repetitive. Filtering by quality and depth removes the shakiest calls so that what remains is trustworthy. Skipping this step lets sequencing noise masquerade as biology.</div>
             </div>
 
+                <div class="quiz">
+                <div class="quiz-q-src">In a VCF, what do the REF and ALT columns describe?</div>
+                <button data-opt>REF is the read name and ALT is its quality score</button>
+                <button data-opt data-correct>REF is the base in the reference genome and ALT is the change seen in your sample</button>
+                <button data-opt>REF and ALT both store the chromosome name</button>
+                <div class="quiz-explain">REF is the base the reference genome carries at that position, and ALT is the alternative base observed in your sample, the actual change. POS gives the location and QUAL the caller's confidence.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">What is the difference between a SNP and an indel?</div>
+                <button data-opt data-correct>A SNP is a one-letter change; an indel is a small insertion or deletion of bases</button>
+                <button data-opt>A SNP only occurs in RNA, an indel only in DNA</button>
+                <button data-opt>A SNP is a whole chromosome change; an indel is a single base</button>
+                <div class="quiz-explain">A SNP (single-nucleotide polymorphism) is a single-letter substitution, like an A where the reference has a G. An indel is a small insertion or deletion of bases. Both are common variant types you call in this lesson.</div>
+            </div>
+
                 <a class="next-lesson" href="rna-seq-big-picture.html" target="_blank" rel="noopener">
                     <span>Track 2 complete · keep going</span>
                     <h3>On to Track 3: Transcriptomics &amp; RNA-seq →</h3>

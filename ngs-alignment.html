@@ -279,6 +279,21 @@
                 <div class="quiz-explain">A low mapping rate usually means a mismatch between reads and reference: the wrong species or genome build, heavy adapter or quality contamination that trimming missed, or a contaminated sample. It's worth investigating before trusting anything downstream.</div>
             </div>
 
+                <div class="quiz">
+                <div class="quiz-q-src">What does a low MAPQ (close to 0) usually indicate about a read?</div>
+                <button data-opt>The read has an unusually high per-base quality</button>
+                <button data-opt data-correct>The read could fit several places about equally well, often a repetitive region</button>
+                <button data-opt>The read failed to be sequenced at all</button>
+                <div class="quiz-explain">MAPQ measures how sure the aligner is about a read's position. A value near 0 means the read maps about equally well to several spots, commonly because it falls in a repetitive region, so callers trust it less.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">Which aligners are designed for RNA-seq reads that span across spliced introns?</div>
+                <button data-opt>BWA-MEM and Bowtie2</button>
+                <button data-opt>samtools and bcftools</button>
+                <button data-opt data-correct>HISAT2 and STAR</button>
+                <div class="quiz-explain">HISAT2 and STAR are splice-aware aligners built for RNA-seq, where reads can cross intron boundaries. For plain DNA mapping, BWA-MEM and Bowtie2 are the usual choices.</div>
+            </div>
+
                 <a class="next-lesson" href="ngs-samtools.html" target="_blank" rel="noopener">
                     <span>Next in Track 2</span>
                     <h3>samtools survival kit: sort, index, inspect →</h3>

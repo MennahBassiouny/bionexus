@@ -244,6 +244,20 @@
                     <p style="font-size:0.82rem;color:#64748b;margin-top:12px;font-style:italic;">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz">
+                <div class="quiz-q-src">What does a single number inside the count matrix represent?</div>
+                <button data-opt>The DNA sequence of that gene</button>
+                <button data-opt data-correct>How many sequencing reads were assigned to that gene in that sample</button>
+                <button data-opt>The p-value comparing the two groups</button>
+                <div class="quiz-explain">Each cell is a count: the number of reads that mapped to that gene in that one sample. More reads usually means that gene was more highly expressed.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">Two samples were sequenced to different depths. Why can you not just compare their raw counts directly?</div>
+                <button data-opt>Raw counts are always identical between samples</button>
+                <button data-opt data-correct>A deeper-sequenced sample has more reads overall, so counts must be normalized first</button>
+                <button data-opt>Depth only affects DNA, never RNA</button>
+                <div class="quiz-explain">A sample with more total reads will show higher counts for almost every gene, even with no real biological change. Normalization adjusts for these depth differences so the comparison is fair.</div>
+            </div>
                 <a class="next-lesson" href="rna-seq-experimental-design.html" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
                     <h3>Experimental design for RNA-seq &rarr;</h3>

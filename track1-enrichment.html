@@ -220,6 +220,21 @@ merged.groupby(<span class="s">"condition"</span>)[<span class="s">"gene_count"<
                 <div class="quiz-explain">Merge them on their shared column (e.g., the sample ID) with <code class="inline">pandas.merge</code>, then group and summarize across the combined table.</div>
             </div>
 
+            <div class="quiz">
+                <div class="quiz-q-src">Why can you loop over a 100-million-read FASTQ file without running out of memory?</div>
+                <button data-opt>Python automatically deletes the file as it reads</button>
+                <button data-opt data-correct>SeqIO.parse streams records lazily, holding only one at a time</button>
+                <button data-opt>The file is always small once gzipped</button>
+                <div class="quiz-explain"><code class="inline">SeqIO.parse</code> yields records one at a time rather than building a giant list, so the loop never holds more than a single record in memory.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">In a GenBank record, what does a CDS feature mark?</div>
+                <button data-opt>The compressed data size of the record</button>
+                <button data-opt>The list of all databases the sequence appears in</button>
+                <button data-opt data-correct>The exact part of the sequence that gets translated into protein</button>
+                <div class="quiz-explain">A CDS (coding sequence) feature marks the region that becomes protein. Its <code class="inline">/translation</code> qualifier gives the official protein with no guessing where the gene starts.</div>
+            </div>
+
             <a class="next-lesson" href="learn.html" target="_blank" rel="noopener">
                 <span>That's Track 1, in full</span>
                 <h3>Back to the roadmap - pick your next track →</h3>

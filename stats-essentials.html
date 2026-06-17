@@ -291,6 +291,20 @@ print(f"extreme would occur about {p_value*100:.1f}% of the time.")
                     <p class="reviewed">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz">
+                    <div class="quiz-q-src">Why do tools like DESeq2 and edgeR model RNA-seq read counts with a negative binomial distribution rather than a normal one?</div>
+                    <button data-opt>Because the negative binomial is easier to compute than the normal distribution</button>
+                    <button data-opt>Because read counts are always perfectly symmetric around their mean</button>
+                    <button data-opt data-correct>Because read counts are non-negative integers that are overdispersed (variance larger than a simple Poisson predicts due to biological variability between samples)</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> Gene-level counts are discrete, bounded at zero, and overdispersed, so a normal bell curve fits poorly. The negative binomial captures that extra variance, which is why it is the standard for count-based RNA-seq tools.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A study uses only two replicates per group and reports a single "significant" hit. Why should you be cautious about that hit even if its p-value is below 0.05?</div>
+                    <button data-opt data-correct>Underpowered studies miss real effects and tend to report inflated, sometimes wrong-direction estimates for the hits they do find (the "winner's curse")</button>
+                    <button data-opt>A p-value below 0.05 from any sample size is fully trustworthy</button>
+                    <button data-opt>Two replicates always guarantee adequate statistical power</button>
+                    <div class="quiz-explain"><strong>Right.</strong> Low statistical power both misses true effects and exaggerates the surviving "significant" ones in magnitude or direction. This winner's-curse effect is a key driver of irreproducible results, so small-sample hits deserve extra skepticism and replication.</div>
+                </div>
                 <a class="next-lesson" href="multiple-testing.html" target="_blank" rel="noopener">
                     <span>Next in Track 5</span>
                     <h3>The multiple-testing problem →</h3>

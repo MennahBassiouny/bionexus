@@ -178,6 +178,30 @@ print("GC content:", round(gc, 1), "%")
                 <div class="quiz-explain"><strong>Correct, 0%.</strong> There are no G or C bases at all, so the GC count is zero. Change the cell above to <code>dna = "AAATTTAAA"</code> and run it to see for yourself.</div>
             </div>
 
+            <div class="quiz" data-question="What does len(dna) return for the sequence in this lesson?">
+                <button data-opt>4</button>
+                <button data-opt data-correct>18</button>
+                <button data-opt>50</button>
+                <div class="quiz-explain"><strong>Correct, 18.</strong> The <code>len()</code> function counts the characters in the sequence, and this DNA string has 18 bases.</div>
+            </div>
+            <div class="quiz" data-question="What does dna.count(&quot;G&quot;) do?">
+                <button data-opt>Deletes every G from the sequence</button>
+                <button data-opt data-correct>Counts how many times the letter G appears in the sequence</button>
+                <button data-opt>Turns every G into a C</button>
+                <div class="quiz-explain"><strong>Correct.</strong> The <code>.count()</code> method returns how many times a given letter appears, so <code>dna.count("G")</code> counts the G bases.</div>
+            </div>
+            <div class="quiz" data-question="What does GC content measure?">
+                <button data-opt>The total number of bases in a genome</button>
+                <button data-opt>How many genes an organism has</button>
+                <button data-opt data-correct>The percentage of bases that are G or C</button>
+                <div class="quiz-explain"><strong>Correct.</strong> GC content is the share of bases that are G or C, and it relates to how stable a stretch of DNA is.</div>
+            </div>
+            <div class="quiz" data-question="What does the print() function do?">
+                <button data-opt data-correct>Displays whatever you give it on the screen</button>
+                <button data-opt>Sends your code to a paper printer</button>
+                <button data-opt>Permanently saves a file to disk</button>
+                <div class="quiz-explain"><strong>Correct.</strong> <code>print()</code> simply shows its output on the screen, like when it displayed the DNA sequence back to you.</div>
+            </div>
             <h2>Where to go next</h2>
             <p>You've got two great paths from here. Set up the tools properly on your own machine, or keep building data skills. Either works - pick what excites you.</p>
             <div class="nextsteps">

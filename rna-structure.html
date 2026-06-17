@@ -248,6 +248,20 @@ GGGAAACCC
                     <p class="reviewed">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz">
+                    <div class="quiz-q-src">In dot-bracket notation for an RNA secondary structure, what do matching parentheses such as ( and ) represent?</div>
+                    <button data-opt>A modified nucleotide such as m6A</button>
+                    <button data-opt data-correct>Two nucleotides that are base-paired with each other</button>
+                    <button data-opt>The start and end of the open reading frame</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> In dot-bracket notation a dot is an unpaired base, and a matched pair of parentheses marks two nucleotides that pair together (for example in a stem). It is just a compact text encoding of the secondary structure.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Why is a G-U wobble pair worth knowing about when you reason about RNA folding?</div>
+                    <button data-opt data-correct>It is a stable, allowed pairing in RNA helices beyond the standard A-U and G-C pairs</button>
+                    <button data-opt>It only occurs in DNA, never in RNA</button>
+                    <button data-opt>It signals that the prediction software has crashed</button>
+                    <div class="quiz-explain"><strong>Right.</strong> RNA tolerates the non-Watson-Crick G-U wobble pair, which is common and reasonably stable inside helices. Folding algorithms include it, so real stems often contain G-U pairs alongside A-U and G-C pairs.</div>
+                </div>
                 <a class="next-lesson" href="clip-seq.html" target="_blank" rel="noopener">
                     <span>Next in Track 4</span>
                     <h3>RNA–protein interactions: an intro to CLIP-seq →</h3>

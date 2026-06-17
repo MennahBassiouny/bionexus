@@ -358,6 +358,18 @@ head(res[order(res$padj), ])              <span class="c"># the strongest hits</
                     <p style="font-size:0.82rem;color:#64748b;margin-top:12px;font-style:italic;">Last reviewed: June 2026.</p>
                 </div>
 
+                <div class="quiz" data-question="What does a gene with a log2 fold change of +1 mean?">
+                    <button data-opt data-correct>It roughly doubled in B versus A</button>
+                    <button data-opt>It dropped by half in B versus A</button>
+                    <button data-opt>It gained exactly one extra read</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> On a log2 scale, +1 means twice the level. The positive sign means the gene went <em>up</em> in B compared with A.</div>
+                </div>
+                <div class="quiz" data-question="A gene has a tiny log2 fold change but a very small padj. Is it worth reporting as a key result?">
+                    <button data-opt data-correct>Probably not on its own: the change is statistically clear but biologically tiny</button>
+                    <button data-opt>Yes, a small padj alone always makes a gene important</button>
+                    <button data-opt>No, a small padj means the gene is broken</button>
+                    <div class="quiz-explain"><strong>Right.</strong> A small padj says the difference is real, but a tiny fold change means it is small. Good hits usually need both significance (low padj) and a meaningful size of change.</div>
+                </div>
                 <a class="next-lesson" href="rna-seq-deseq2.html" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
                     <h3>From raw counts to differential expression: going deeper with DESeq2 →</h3>

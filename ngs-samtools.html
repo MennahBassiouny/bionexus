@@ -271,6 +271,21 @@
                 <div class="quiz-explain">Usually not. At 2x, a single sequencing error can masquerade as a variant because so few reads vouch for each position. Most variant-calling work aims for much higher depth (often 30x or more for human germline work) so multiple reads independently confirm each call.</div>
             </div>
 
+                <div class="quiz">
+                <div class="quiz-q-src">Which samtools subcommand reports how many reads cover each position (the coverage)?</div>
+                <button data-opt>samtools sort</button>
+                <button data-opt>samtools view</button>
+                <button data-opt data-correct>samtools depth</button>
+                <div class="quiz-explain">samtools depth reports the number of reads overlapping each position. samtools sort reorders reads and samtools view looks inside or converts the file.</div>
+            </div>
+                <div class="quiz">
+                <div class="quiz-q-src">Why do real pipelines mark PCR duplicates before variant calling?</div>
+                <button data-opt data-correct>Duplicates are copies of one fragment that inflate apparent support and cause false calls</button>
+                <button data-opt>Duplicates make the BAM impossible to index</button>
+                <button data-opt>Marking duplicates converts the BAM back into FASTQ</button>
+                <div class="quiz-explain">PCR and optical duplicates are copies of the same original fragment. Left in, they inflate the apparent evidence at a position and can cause false variant calls, so tools like samtools markdup or Picard flag them first.</div>
+            </div>
+
                 <a class="next-lesson" href="ngs-variant-calling.html" target="_blank" rel="noopener">
                     <span>Next in Track 2 · The capstone</span>
                     <h3>Variant calling: from FASTQ to VCF →</h3>

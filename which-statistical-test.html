@@ -176,69 +176,67 @@
 
             <h2><span class="step-num">2</span>The decision map</h2>
             <figure class="viz">
-                <svg viewBox="0 0 660 425" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A decision tree for choosing a statistical test based on data type, number of groups, and distribution">
-                    <g font-family="'Work Sans',sans-serif" font-size="12.5">
-                    <!-- branch + spine lines (under boxes) -->
-                    <line x1="330" y1="50" x2="180" y2="82" stroke="#cbd5e1" stroke-width="2"/>
-                    <line x1="330" y1="50" x2="505" y2="82" stroke="#cbd5e1" stroke-width="2"/>
-                    <line x1="180" y1="114" x2="180" y2="372" stroke="#e2e8f0" stroke-width="2"/>
-                    <line x1="505" y1="114" x2="505" y2="140" stroke="#e2e8f0" stroke-width="2"/>
-                    <line x1="150" y1="172" x2="110" y2="196" stroke="#cbd5e1" stroke-width="2"/>
-                    <line x1="210" y1="172" x2="260" y2="196" stroke="#cbd5e1" stroke-width="2"/>
-                    <line x1="150" y1="288" x2="110" y2="312" stroke="#cbd5e1" stroke-width="2"/>
-                    <line x1="210" y1="288" x2="260" y2="312" stroke="#cbd5e1" stroke-width="2"/>
-                    <line x1="475" y1="172" x2="435" y2="196" stroke="#cbd5e1" stroke-width="2"/>
-                    <line x1="535" y1="172" x2="580" y2="196" stroke="#cbd5e1" stroke-width="2"/>
-
-                    <!-- root -->
-                    <rect x="250" y="10" width="160" height="40" rx="8" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/>
-                    <text x="330" y="35" text-anchor="middle" font-weight="700" fill="#0f172a">What is your data?</text>
-
-                    <!-- column headers -->
-                    <rect x="30" y="82" width="300" height="32" rx="16" fill="#ede9fe" stroke="#a855f7" stroke-width="2"/>
-                    <text x="180" y="102" text-anchor="middle" font-weight="700" font-size="11" letter-spacing="0.6" fill="#6b21a8">MEASURED NUMBERS</text>
-                    <rect x="360" y="82" width="290" height="32" rx="16" fill="#ede9fe" stroke="#a855f7" stroke-width="2"/>
-                    <text x="505" y="102" text-anchor="middle" font-weight="700" font-size="11" letter-spacing="0.6" fill="#6b21a8">COUNTS IN CATEGORIES</text>
-
-                    <!-- left Q1 -->
-                    <rect x="60" y="140" width="240" height="32" rx="8" fill="#ffffff" stroke="#a855f7" stroke-width="1.5"/>
-                    <text x="180" y="160" text-anchor="middle" font-weight="600" fill="#0f172a">Comparing 2 groups?</text>
-                    <text x="120" y="190" text-anchor="middle" font-size="11" fill="#10b981">normal</text>
-                    <text x="250" y="190" text-anchor="middle" font-size="11" fill="#f59e0b">skewed / small</text>
-                    <rect x="50" y="196" width="120" height="34" rx="6" fill="#e9faf2" stroke="#10b981" stroke-width="2"/>
-                    <text x="110" y="217" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#0f172a">t-test</text>
-                    <rect x="190" y="196" width="140" height="34" rx="6" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>
-                    <text x="260" y="217" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#0f172a">Wilcoxon</text>
-
-                    <!-- left Q2 -->
-                    <rect x="60" y="256" width="240" height="32" rx="8" fill="#ffffff" stroke="#a855f7" stroke-width="1.5"/>
-                    <text x="180" y="276" text-anchor="middle" font-weight="600" fill="#0f172a">3 or more groups?</text>
-                    <text x="120" y="306" text-anchor="middle" font-size="11" fill="#10b981">normal</text>
-                    <text x="252" y="306" text-anchor="middle" font-size="11" fill="#f59e0b">non-normal</text>
-                    <rect x="50" y="312" width="120" height="34" rx="6" fill="#e9faf2" stroke="#10b981" stroke-width="2"/>
-                    <text x="110" y="333" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#0f172a">ANOVA</text>
-                    <rect x="190" y="312" width="140" height="34" rx="6" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>
-                    <text x="260" y="333" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11.5" fill="#0f172a">Kruskal-Wallis</text>
-
-                    <!-- left Q3 -->
-                    <rect x="20" y="372" width="320" height="36" rx="8" fill="#ffffff" stroke="#a855f7" stroke-width="1.5"/>
-                    <text x="180" y="395" text-anchor="middle" font-weight="600" font-size="12" fill="#0f172a">Relationship between 2 numbers? &#8594; correlation</text>
-
-                    <!-- right Q -->
-                    <rect x="380" y="140" width="250" height="32" rx="8" fill="#ffffff" stroke="#a855f7" stroke-width="1.5"/>
-                    <text x="505" y="160" text-anchor="middle" font-weight="600" fill="#0f172a">A table of counts (e.g. 2&#215;2)?</text>
-                    <text x="432" y="190" text-anchor="middle" font-size="11" fill="#10b981">larger counts</text>
-                    <text x="585" y="190" text-anchor="middle" font-size="11" fill="#f59e0b">small counts</text>
-                    <rect x="375" y="196" width="120" height="34" rx="6" fill="#e9faf2" stroke="#10b981" stroke-width="2"/>
-                    <text x="435" y="217" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11.5" fill="#0f172a">chi-square</text>
-                    <rect x="515" y="196" width="130" height="34" rx="6" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>
-                    <text x="580" y="217" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#0f172a">Fisher&#39;s exact</text>
-
-                    <!-- legend -->
-                    <rect x="395" y="300" width="16" height="16" rx="3" fill="#e9faf2" stroke="#10b981" stroke-width="2"/>
-                    <text x="420" y="312" font-size="11.5" fill="#64748b">standard test (roughly normal data)</text>
-                    <rect x="395" y="328" width="16" height="16" rx="3" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>
-                    <text x="420" y="340" font-size="11.5" fill="#64748b">rank-based (skewed / small / ranked)</text>
+                <svg viewBox="0 0 680 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A decision tree for choosing a statistical test based on data type, number of groups, and distribution">
+                    <g font-family="'Work Sans',sans-serif" font-size="12">
+                    <line x1="340" y1="52" x2="340" y2="68" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="180" y1="68" x2="520" y2="68" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="180" y1="68" x2="180" y2="86" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="520" y1="68" x2="520" y2="86" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="180" y1="118" x2="180" y2="128" stroke="#e2e8f0" stroke-width="2"/>
+                    <line x1="180" y1="128" x2="34" y2="128" stroke="#e2e8f0" stroke-width="2"/>
+                    <line x1="34" y1="128" x2="34" y2="403" stroke="#e2e8f0" stroke-width="2"/>
+                    <line x1="34" y1="150" x2="60" y2="150" stroke="#e2e8f0" stroke-width="2"/>
+                    <line x1="34" y1="278" x2="60" y2="278" stroke="#e2e8f0" stroke-width="2"/>
+                    <line x1="34" y1="403" x2="60" y2="403" stroke="#e2e8f0" stroke-width="2"/>
+                    <line x1="185" y1="166" x2="185" y2="178" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="130" y1="178" x2="270" y2="178" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="130" y1="178" x2="130" y2="192" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="270" y1="178" x2="270" y2="192" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="185" y1="294" x2="185" y2="306" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="130" y1="306" x2="270" y2="306" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="130" y1="306" x2="130" y2="320" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="270" y1="306" x2="270" y2="320" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="520" y1="118" x2="520" y2="132" stroke="#e2e8f0" stroke-width="2"/>
+                    <line x1="520" y1="164" x2="520" y2="178" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="460" y1="178" x2="595" y2="178" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="460" y1="178" x2="460" y2="192" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="595" y1="178" x2="595" y2="192" stroke="#cbd5e1" stroke-width="2"/>
+                    <rect x="260" y="12" width="160" height="40" rx="8" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/>
+                    <text x="340" y="37" text-anchor="middle" font-weight="700" font-size="12.5" fill="#0f172a">What is your data?</text>
+                    <rect x="40" y="86" width="280" height="32" rx="16" fill="#ede9fe" stroke="#a855f7" stroke-width="2"/>
+                    <text x="180" y="106" text-anchor="middle" font-weight="700" font-size="11" letter-spacing="0.6" fill="#6b21a8">MEASURED NUMBERS</text>
+                    <rect x="380" y="86" width="280" height="32" rx="16" fill="#ede9fe" stroke="#a855f7" stroke-width="2"/>
+                    <text x="520" y="106" text-anchor="middle" font-weight="700" font-size="11" letter-spacing="0.6" fill="#6b21a8">COUNTS IN CATEGORIES</text>
+                    <rect x="60" y="134" width="250" height="32" rx="8" fill="#ffffff" stroke="#a855f7" stroke-width="1.5"/>
+                    <text x="185" y="154" text-anchor="middle" font-weight="600" fill="#0f172a">Comparing 2 groups?</text>
+                    <text x="130" y="189" text-anchor="middle" font-size="10" fill="#10b981">normal</text>
+                    <text x="270" y="189" text-anchor="middle" font-size="10" fill="#f59e0b">skewed / small</text>
+                    <rect x="70" y="192" width="120" height="34" rx="6" fill="#e9faf2" stroke="#10b981" stroke-width="2"/>
+                    <text x="130" y="213" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#0f172a">t-test</text>
+                    <rect x="205" y="192" width="130" height="34" rx="6" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>
+                    <text x="270" y="213" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#0f172a">Wilcoxon</text>
+                    <rect x="60" y="262" width="250" height="32" rx="8" fill="#ffffff" stroke="#a855f7" stroke-width="1.5"/>
+                    <text x="185" y="282" text-anchor="middle" font-weight="600" fill="#0f172a">3 or more groups?</text>
+                    <text x="130" y="317" text-anchor="middle" font-size="10" fill="#10b981">normal</text>
+                    <text x="270" y="317" text-anchor="middle" font-size="10" fill="#f59e0b">non-normal</text>
+                    <rect x="70" y="320" width="120" height="34" rx="6" fill="#e9faf2" stroke="#10b981" stroke-width="2"/>
+                    <text x="130" y="341" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#0f172a">ANOVA</text>
+                    <rect x="205" y="320" width="130" height="34" rx="6" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>
+                    <text x="270" y="341" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11.5" fill="#0f172a">Kruskal-Wallis</text>
+                    <rect x="60" y="386" width="300" height="34" rx="8" fill="#ffffff" stroke="#a855f7" stroke-width="1.5"/>
+                    <text x="210" y="407" text-anchor="middle" font-weight="600" font-size="11.5" fill="#0f172a">Relationship between 2 numbers? &#8594; correlation</text>
+                    <rect x="400" y="132" width="240" height="32" rx="8" fill="#ffffff" stroke="#a855f7" stroke-width="1.5"/>
+                    <text x="520" y="152" text-anchor="middle" font-weight="600" fill="#0f172a">A table of counts (e.g. 2&#215;2)?</text>
+                    <text x="460" y="189" text-anchor="middle" font-size="10" fill="#10b981">larger counts</text>
+                    <text x="595" y="189" text-anchor="middle" font-size="10" fill="#f59e0b">small counts</text>
+                    <rect x="400" y="192" width="120" height="34" rx="6" fill="#e9faf2" stroke="#10b981" stroke-width="2"/>
+                    <text x="460" y="213" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11.5" fill="#0f172a">chi-square</text>
+                    <rect x="535" y="192" width="120" height="34" rx="6" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>
+                    <text x="595" y="213" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="11" fill="#0f172a">Fisher&#39;s exact</text>
+                    <rect x="420" y="322" width="18" height="18" rx="3" fill="#e9faf2" stroke="#10b981" stroke-width="2"/>
+                    <text x="446" y="335" font-size="11.5" fill="#64748b">standard test (roughly normal data)</text>
+                    <rect x="420" y="352" width="18" height="18" rx="3" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>
+                    <text x="446" y="365" font-size="11.5" fill="#64748b">rank-based (skewed / small / ranked)</text>
                     </g>
                 </svg>
                 <figcaption>Follow your data down the tree. Green = standard (roughly normal) data; amber = the rank-based version for skewed, small, or ranked data.</figcaption>
