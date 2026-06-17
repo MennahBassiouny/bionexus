@@ -304,6 +304,20 @@ glimpse(my_data)   <span class="c"># a quick look at the columns and their types
                 <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">mean(c(12.4, 8.1, 15.7, 3.3, 9.9))</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">9.88</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">expr["EGFR"]</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">15.7</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">nrow(genes)</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">3   (three rows)</td></tr></table></div>
             <h2>Check your understanding</h2>
             <div class="quiz">
+                <div class="quiz-q-src">What does the pipe <code class="inline">|&gt;</code> do?</div>
+                <button data-opt data-correct>Passes the result on its left into the next function, so steps read top to bottom</button>
+                <button data-opt>Runs two functions at the same time</button>
+                <button data-opt>Comments out the rest of the line</button>
+                <div class="quiz-explain"><strong>Right.</strong> Read it as "and then": take the data, then filter, then sort.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">How do you pull a single column out of a data frame by name?</div>
+                <button data-opt data-correct>With the dollar sign, e.g. genes$length_kb</button>
+                <button data-opt>With a slash, e.g. genes/length_kb</button>
+                <button data-opt>With a dot, e.g. genes.length_kb</button>
+                <div class="quiz-explain"><strong>Correct.</strong> <code>$</code> selects a named column from a data frame (or a named element from a list).</div>
+            </div>
+            <div class="quiz">
                 <div class="quiz-q-src">You have a data frame <code class="inline">genes</code> and want only the rows on chromosome 17. Which line is correct?</div>
                 <button data-opt data-correct>genes |&gt; filter(chromosome == "17")</button>
                 <button data-opt>genes |&gt; select(chromosome == "17")</button>

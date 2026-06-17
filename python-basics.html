@@ -362,6 +362,12 @@ print(gc_content("AAATTT"))   # 0.0
             </div>
 
             <h2>Check your understanding</h2>
+            <div class="quiz" data-question="Which data type would you use to store how many times each base appears, like A:10, C:7, G:9?">
+                <button data-opt data-correct>A dictionary, because it stores labelled key-to-value pairs</button>
+                <button data-opt>A list, because the values are in order</button>
+                <button data-opt>A string, because bases are letters</button>
+                <div class="quiz-explain"><strong>Right.</strong> A dictionary maps each key (a base) to a value (its count), which is exactly the labelled-lookup job dictionaries are for.</div>
+            </div>
             <div class="quiz" data-question="You start with an empty dictionary, counts = {}, then loop over a sequence doing counts[base] += 1. The first base raises a KeyError. Why, and what is the clean fix?">
                 <button data-opt data-correct>The key does not exist yet the first time you see a base; use counts[base] = counts.get(base, 0) + 1</button>
                 <button data-opt>Dictionaries cannot count letters; you must use a list instead</button>

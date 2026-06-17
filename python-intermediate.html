@@ -333,6 +333,24 @@ print(first_base("ATGC"))   # A
 print(first_base(""))       # empty</pre></details>
 
             <h2>Check your understanding</h2>
+            <div class="quiz" data-question="What does <code>break</code> do inside a loop?">
+                <button data-opt data-correct>Stops the loop immediately and moves on to the code after it</button>
+                <button data-opt>Skips the rest of the current turn but keeps looping</button>
+                <button data-opt>Restarts the loop from the beginning</button>
+                <div class="quiz-explain"><strong>Correct.</strong> <code>break</code> exits the loop entirely. (The one that skips just the current turn is <code>continue</code>.)</div>
+            </div>
+            <div class="quiz" data-question="A function ends with <code>return len(seq), gc</code>. What do you get back when you call it?">
+                <button data-opt data-correct>Two values together (a tuple) that you can unpack into two variables</button>
+                <button data-opt>Only the first value, len(seq)</button>
+                <button data-opt>An error; a function can only return one thing</button>
+                <div class="quiz-explain"><strong>Right.</strong> Returning comma-separated values gives back a tuple, so <code>length, gc = seq_stats(...)</code> unpacks both at once.</div>
+            </div>
+            <div class="quiz" data-question="Why move reusable functions into their own .py module and import them?">
+                <button data-opt data-correct>So you can write the function once and reuse it across many scripts without copying</button>
+                <button data-opt>Because Python refuses to run functions in the same file as other code</button>
+                <button data-opt>It makes the functions run faster</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> A module lets one tested function serve every analysis, which is how real bioinformatics code is organised.</div>
+            </div>
             <div class="quiz" data-question="You loop over many files to compute GC content, but one file is empty and the script crashes with ZeroDivisionError. What is the soundest fix?">
                 <button data-opt data-correct>Wrap the calculation in try / except ZeroDivisionError (or check the length first) so one empty file does not stop the whole run</button>
                 <button data-opt>Delete every empty file by hand before running</button>

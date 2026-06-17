@@ -252,6 +252,27 @@ mean_or_zero(<span class="k">c</span>())             <span class="c"># 0</span><
                 <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">sapply(c("ATG","GG","ATATAT"), nchar)</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">3 2 6</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">apply(m, 1, sum)</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">12 9   (m from section 3)</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">mean_or_zero(c(2,4,6))</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">4</td></tr></table></div>
             <h2>Check your understanding</h2>
             <div class="quiz">
+                <div class="quiz-q-src">What does <code class="inline">left_join()</code> do?</div>
+                <button data-opt data-correct>Matches two tables on a shared column and combines their columns</button>
+                <button data-opt>Stacks one table on top of another</button>
+                <button data-opt>Removes rows that contain missing values</button>
+                <div class="quiz-explain"><strong>Right.</strong> A join lines up rows by a shared id (for example sample_id) and glues the columns together.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Where do most bioinformatics R packages, such as DESeq2, come from?</div>
+                <button data-opt data-correct>Bioconductor, installed with BiocManager::install()</button>
+                <button data-opt>CRAN, installed with install.packages()</button>
+                <button data-opt>They are built into base R</button>
+                <div class="quiz-explain"><strong>Correct.</strong> Everyday packages come from CRAN, but DESeq2, edgeR, limma and most genomics tools live on Bioconductor.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">How does a list differ from a vector in R?</div>
+                <button data-opt data-correct>A list can hold a mix of types and objects; a vector holds values of one type</button>
+                <button data-opt>A list can only hold numbers</button>
+                <button data-opt>There is no difference</button>
+                <div class="quiz-explain"><strong>Right.</strong> A vector is all-one-type; a list is a flexible container, which is why a data frame is really a list of equal-length vectors.</div>
+            </div>
+            <div class="quiz">
                 <div class="quiz-q-src">You want the average expression per chromosome from a data frame. Which tidyverse pattern does it?</div>
                 <button data-opt data-correct>df |&gt; group_by(chromosome) |&gt; summarise(mean_expr = mean(expr))</button>
                 <button data-opt>df |&gt; filter(chromosome) |&gt; mean(expr)</button>

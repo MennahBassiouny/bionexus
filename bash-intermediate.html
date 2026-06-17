@@ -234,6 +234,27 @@
                 <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">count=$(grep -c "&gt;" genes.fasta); echo $count</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the sequence count</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">echo $(( $(wc -l &lt; reads.fastq) / 4 ))</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the number of reads</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">awk '{print $2}' table.txt</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the second column</td></tr></table></div>
             <h2>Check your understanding</h2>
             <div class="quiz">
+                <div class="quiz-q-src">What does <code class="inline">awk '{print $2}' table.txt</code> do?</div>
+                <button data-opt data-correct>Prints the second column of every line</button>
+                <button data-opt>Prints the second line of the file</button>
+                <button data-opt>Counts how many columns the file has</button>
+                <div class="quiz-explain"><strong>Right.</strong> In awk, <code>$2</code> is the second field (column) of each line.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What does the first line of a script, <code class="inline">#!/bin/bash</code> (the "shebang"), do?</div>
+                <button data-opt data-correct>Tells the system to run the file with bash</button>
+                <button data-opt>Is just a comment with no effect</button>
+                <button data-opt>Deletes the script after it runs</button>
+                <div class="quiz-explain"><strong>Correct.</strong> The shebang names the interpreter, so <code>./script.sh</code> knows to run with bash.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">You want every <code class="inline">.fastq</code> file in this folder and all folders below it. Which command?</div>
+                <button data-opt data-correct>find . -name "*.fastq"</button>
+                <button data-opt>ls *.fastq</button>
+                <button data-opt>grep .fastq</button>
+                <div class="quiz-explain"><strong>Right.</strong> <code>find</code> searches recursively down the folder tree; <code>ls *.fastq</code> only looks in the current folder.</div>
+            </div>
+            <div class="quiz">
                 <div class="quiz-q-src">Your loop <code class="inline">for f in *.fasta; do mv $f data/; done</code> fails on a file named <code class="inline">my reads.fasta</code>. What is the fix?</div>
                 <button data-opt data-correct>Quote the variable: mv "$f" data/, so the space in the filename does not split it into two arguments</button>
                 <button data-opt>Rename every file to remove spaces before looping</button>

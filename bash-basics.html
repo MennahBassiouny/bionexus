@@ -270,6 +270,20 @@ grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class=
                 <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">grep -c "&gt;" genes.fasta</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the number of sequences</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">echo "ATGC" &gt; dna.txt &amp;&amp; cat dna.txt</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">ATGC</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">wc -l &lt; reads.fastq</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the number of lines</td></tr></table></div>
             <h2>Check your understanding</h2>
             <div class="quiz">
+                <div class="quiz-q-src">What does <code class="inline">~</code> mean in a path?</div>
+                <button data-opt data-correct>Your home folder</button>
+                <button data-opt>The folder you are currently in</button>
+                <button data-opt>The folder one level up</button>
+                <div class="quiz-explain"><strong>Right.</strong> <code>~</code> is home, <code>.</code> is here, and <code>..</code> is the folder above.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What is the difference between <code class="inline">&gt;</code> and <code class="inline">&gt;&gt;</code> when saving output?</div>
+                <button data-opt data-correct>&gt; creates or overwrites a file; &gt;&gt; adds to the end of an existing file</button>
+                <button data-opt>They are identical</button>
+                <button data-opt>&gt; appends; &gt;&gt; overwrites</button>
+                <div class="quiz-explain"><strong>Correct.</strong> A single <code>&gt;</code> replaces the file's contents; <code>&gt;&gt;</code> appends, leaving what was already there.</div>
+            </div>
+            <div class="quiz">
                 <div class="quiz-q-src">To count reads in a FASTQ file, a colleague runs <code class="inline">grep "&gt;" reads.fastq | wc -l</code> and gets 0. Why is this wrong for FASTQ?</div>
                 <button data-opt data-correct>FASTQ headers start with @, not &gt;, and a read spans four lines; count lines and divide by four</button>
                 <button data-opt>grep cannot be used on sequencing files at all</button>
