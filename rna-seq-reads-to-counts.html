@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="The bridge between NGS and RNA-seq: how sequencing reads become a gene-count matrix, the two routes (align then featureCounts, or salmon then tximport), and why raw counts go into DESeq2. Beginner-friendly, with diagrams.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="From Reads to a Count Matrix - BioNexus Hub">
+    <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
+    <meta property="og:url" content="https://bionexushub.com/">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="From Reads to a Count Matrix - BioNexus Hub">
+    <meta name="twitter:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line with browser-based lessons and real-data projects.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>From Reads to a Count Matrix - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .colab-cta { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; background: var(--deep-navy); color: white; border-radius: 12px; padding: 26px 30px; margin: 28px 0; }
+        .colab-cta div p:first-child { font-weight: 700; font-size: 1.15rem; margin-bottom: 4px; }
+        .colab-cta div p:last-child { color: rgba(255,255,255,0.7); font-size: 0.95rem; margin: 0; }
+        .colab-btn { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; padding: 14px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; white-space: nowrap; transition: transform 0.3s ease; }
+        .colab-btn:hover { transform: translateY(-2px); }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .k { color: #c084fc; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .step-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; font-weight: 700; font-size: 0.95rem; margin-right: 10px; vertical-align: middle; }
+
+        .levelup { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.3); border-radius: 10px; padding: 22px 26px; margin: 28px 0; }
+        .levelup h4 { color: #b45309; margin-bottom: 8px; }
+        .levelup p { font-size: 1rem; color: var(--text-gray); margin-bottom: 8px; }
+        .levelup a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+
+        details { background: white; border: 1px solid rgba(91,156,248,0.2); border-radius: 8px; padding: 14px 20px; margin-bottom: 12px; }
+        details summary { font-weight: 600; cursor: pointer; color: var(--deep-navy); }
+        details p { margin: 12px 0 0; color: var(--text-gray); font-size: 1rem; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:640px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
+        .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
+        .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                                        <li><a href="faq.html">Help</a></li>
+                                        <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; Reads to counts</div>
+                <h1>From Reads to a Count Matrix</h1>
+                <p class="promise">The step nobody explains: how raw sequencing reads turn into the table of gene counts that every RNA-seq analysis starts from. The bridge between the NGS track and the RNA-seq flagship.</p>
+                <div class="tags">
+                    <span class="tag green">🟢 Beginner</span>
+                    <span class="tag">⏱️ ~40 min</span>
+                    <span class="tag">🧬 RNA-seq</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain what a "count" is and where the count matrix that DESeq2 needs actually comes from, describe the two standard routes (align-then-count, and direct quantification), and say why raw counts, not TPM, go into differential-expression analysis.</p>
+            </div>
+
+            <h2>The missing middle</h2>
+            <p>The NGS track took you from raw reads to an aligned <strong>BAM</strong> file. The RNA-seq flagship <em>starts</em> from a finished table of gene counts. This lesson is the bridge between them: how sequencing reads become that table. It is the step almost every beginner is unsure about, and once you see it, the whole RNA-seq pipeline clicks together.</p>
+
+            <h2><span class="step-num">1</span>What is a "count"?</h2>
+            <p>A <strong>count</strong> is simply the number of sequencing reads that came from a given gene in a given sample. More reads from a gene means that gene was more highly expressed. To turn reads into counts, software needs two things: your reads, and an <strong>annotation</strong> (a file that says where each gene sits on the genome). It then assigns each read to the gene it overlaps and tallies them up.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 620 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Reads landing on two genes are tallied into a counts table">
+                    <g font-family="'Work Sans',sans-serif">
+                    <text x="120" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">reads landing on genes</text>
+                    <rect x="20" y="40" width="200" height="22" rx="4" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="120" y="56" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#0f172a">GENE A</text>
+                    <rect x="30" y="68" width="40" height="8" rx="2" fill="#a855f7"/><rect x="80" y="68" width="40" height="8" rx="2" fill="#a855f7"/><rect x="130" y="68" width="40" height="8" rx="2" fill="#a855f7"/><rect x="60" y="80" width="40" height="8" rx="2" fill="#a855f7"/>
+                    <rect x="20" y="110" width="200" height="22" rx="4" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="120" y="126" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#0f172a">GENE B</text>
+                    <rect x="40" y="138" width="40" height="8" rx="2" fill="#10b981"/>
+                    <text x="300" y="95" text-anchor="middle" font-size="24" fill="#94a3b8">&#8594;</text>
+                    <text x="300" y="118" text-anchor="middle" font-size="12" fill="#64748b">assign &amp; tally</text>
+                    <text x="470" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">count matrix</text>
+                    <g font-family="'JetBrains Mono',monospace" font-size="13">
+                    <rect x="380" y="40" width="100" height="28" fill="#a855f7"/><text x="430" y="59" text-anchor="middle" fill="#fff">gene</text>
+                    <rect x="480" y="40" width="120" height="28" fill="#a855f7"/><text x="540" y="59" text-anchor="middle" fill="#fff">sample 1</text>
+                    <rect x="380" y="68" width="100" height="26" fill="#eef4ff" stroke="#cbd5e1"/><text x="430" y="86" text-anchor="middle" fill="#0f172a">GENE A</text>
+                    <rect x="480" y="68" width="120" height="26" fill="#eef4ff" stroke="#cbd5e1"/><text x="540" y="86" text-anchor="middle" fill="#0f172a">4</text>
+                    <rect x="380" y="94" width="100" height="26" fill="#f8fafc" stroke="#cbd5e1"/><text x="430" y="112" text-anchor="middle" fill="#0f172a">GENE B</text>
+                    <rect x="480" y="94" width="120" height="26" fill="#f8fafc" stroke="#cbd5e1"/><text x="540" y="112" text-anchor="middle" fill="#0f172a">1</text>
+                    </g>
+                    </g>
+                </svg>
+                <figcaption>Each read is assigned to the gene it overlaps, and the tallies become one column (one sample) of the count matrix.</figcaption>
+            </figure>
+            <div class="jargon">
+                <h4><span>Decode the jargon</span>Annotation (GTF/GFF)</h4>
+                <p>An <strong>annotation</strong> file (usually a <code class="inline">.gtf</code> or <code class="inline">.gff</code>) is the map that lists every gene and exon and where it sits on the genome. Counting needs it to know which gene a read belongs to. You download it from Ensembl or GENCODE for your species, the same place you get the reference genome.</p>
+            </div>
+
+            <h2><span class="step-num">2</span>The two routes from reads to counts</h2>
+            <p>There are two standard ways to get counts. They reach the same kind of table by different paths.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two routes: align then featureCounts, or salmon then tximport, both reaching a count matrix">
+                    <g font-family="'Work Sans',sans-serif" font-size="12.5">
+                    <rect x="20" y="96" width="90" height="40" rx="8" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="65" y="120" text-anchor="middle" font-weight="700" fill="#0f172a">FASTQ reads</text>
+                    <line x1="110" y1="106" x2="160" y2="56" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="110" y1="126" x2="160" y2="176" stroke="#cbd5e1" stroke-width="2"/>
+                    <rect x="160" y="36" width="150" height="40" rx="8" fill="#f3edff" stroke="#a855f7" stroke-width="2"/><text x="235" y="54" text-anchor="middle" font-weight="700" fill="#0f172a">Route A: align</text><text x="235" y="69" text-anchor="middle" fill="#64748b">STAR / HISAT2 &#8594; BAM</text>
+                    <rect x="330" y="36" width="160" height="40" rx="8" fill="#f3edff" stroke="#a855f7" stroke-width="2"/><text x="410" y="54" text-anchor="middle" font-weight="700" fill="#0f172a">featureCounts</text><text x="410" y="69" text-anchor="middle" fill="#64748b">+ annotation (GTF)</text>
+                    <line x1="310" y1="56" x2="330" y2="56" stroke="#cbd5e1" stroke-width="2"/>
+                    <rect x="160" y="156" width="150" height="40" rx="8" fill="#e9faf2" stroke="#10b981" stroke-width="2"/><text x="235" y="174" text-anchor="middle" font-weight="700" fill="#0f172a">Route B: salmon</text><text x="235" y="189" text-anchor="middle" fill="#64748b">vs transcriptome</text>
+                    <rect x="330" y="156" width="160" height="40" rx="8" fill="#e9faf2" stroke="#10b981" stroke-width="2"/><text x="410" y="174" text-anchor="middle" font-weight="700" fill="#0f172a">tximport</text><text x="410" y="189" text-anchor="middle" fill="#64748b">to gene counts</text>
+                    <line x1="310" y1="176" x2="330" y2="176" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="490" y1="56" x2="540" y2="106" stroke="#cbd5e1" stroke-width="2"/>
+                    <line x1="490" y1="176" x2="540" y2="126" stroke="#cbd5e1" stroke-width="2"/>
+                    <rect x="540" y="96" width="90" height="40" rx="8" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/><text x="585" y="114" text-anchor="middle" font-weight="700" fill="#0f172a">count</text><text x="585" y="129" text-anchor="middle" font-weight="700" fill="#0f172a">matrix</text>
+                    </g>
+                </svg>
+                <figcaption>Route A aligns reads to the genome and counts them against the annotation. Route B skips full alignment and matches reads straight to the transcriptome. Both end at a count matrix.</figcaption>
+            </figure>
+
+            <h3>Route A: align, then count</h3>
+            <p>This is the classic route. You align reads to the genome (Track 2 taught the idea), then hand the BAM and an annotation to <strong>featureCounts</strong>, which assigns each read to a gene.</p>
+            <pre><span class="c"># align (a splice-aware aligner; STAR shown conceptually), then count</span>
+featureCounts -a annotation.gtf -o counts.txt sample1.bam sample2.bam
+<span class="c"># counts.txt now has one row per gene and one column per sample</span></pre>
+
+            <h3>Route B: quantify directly (the fast modern default)</h3>
+            <p><strong>salmon</strong> skips the slow step of placing every read on the genome. It matches reads straight against the list of known transcripts (the <em>transcriptome</em>), a trick called <strong>pseudo-alignment</strong>, then you collapse transcript estimates to gene-level counts in R with <code class="inline">tximport</code>.</p>
+            <pre><span class="c"># build an index once, then quantify each sample</span>
+salmon index -t transcripts.fa -i salmon_index
+salmon quant -i salmon_index -l A -r sample1.fastq.gz -o sample1_quant
+<span class="c"># then in R: tximport() reads the quant files into a gene-level count matrix</span></pre>
+            <div class="jargon">
+                <h4><span>Decode the jargon</span>Pseudo-alignment</h4>
+                <p>Instead of working out the exact position of every read on the genome, <strong>pseudo-alignment</strong> just figures out which transcripts a read is compatible with. That is all you need to count expression, and it is dramatically faster and lighter, which is why salmon and kallisto are the common modern choice.</p>
+            </div>
+
+            <h2><span class="step-num">3</span>Which route should a beginner use?</h2>
+            <table class="dtable">
+                <tr><th></th><th>Route A: align + featureCounts</th><th>Route B: salmon</th></tr>
+                <tr><td><strong>Speed / compute</strong></td><td>Slower, needs more memory</td><td>Fast, light, laptop-friendly</td></tr>
+                <tr><td><strong>You also get</strong></td><td>A genome alignment (BAM) you can view in IGV</td><td>Just the quantification</td></tr>
+                <tr><td><strong>Good when</strong></td><td>You need the alignment too, or study novel transcripts</td><td>You only need expression counts (most of the time)</td></tr>
+            </table>
+            <p>For a first RNA-seq analysis, <strong>salmon</strong> is the friendliest default. If you have already aligned your reads for another reason, featureCounts on the BAM is just as valid.</p>
+
+            <h2><span class="step-num">4</span>Why raw counts, not TPM, go into DESeq2</h2>
+            <p>You will also see expression reported as <strong>TPM</strong>, <strong>CPM</strong>, or <strong>FPKM</strong>. These are <em>normalized</em> values, adjusted so you can compare a gene fairly across samples or against other genes. They are great for looking at and plotting, but differential-expression tools like DESeq2 want the <strong>raw integer counts</strong>, because the statistical model needs to know the actual number of reads (the count size carries the uncertainty). DESeq2 does its own normalization internally. So: raw counts in, and let the tool normalize.</p>
+            <div class="why"><h4>The one-line rule</h4><p>Give DESeq2 <strong>raw counts</strong>. Use TPM/CPM only for visualization and quick comparisons, never as the input to differential testing.</p></div>
+
+            <h2>Check your understanding</h2>
+            <div class="quiz" data-question="What is a 'count' in RNA-seq?">
+                <button data-opt data-correct>The number of reads assigned to a given gene in a given sample</button>
+                <button data-opt>The number of genes in the genome</button>
+                <button data-opt>The length of a gene in base pairs</button>
+                <div class="quiz-explain"><strong>Right.</strong> A count is reads-per-gene-per-sample; more reads means higher expression of that gene.</div>
+            </div>
+            <div class="quiz" data-question="Besides the reads, what does counting need in order to know which gene a read belongs to?">
+                <button data-opt data-correct>An annotation (GTF/GFF) that says where each gene sits</button>
+                <button data-opt>A list of p-values</button>
+                <button data-opt>The DESeq2 results table</button>
+                <div class="quiz-explain"><strong>Correct.</strong> The annotation is the map of gene locations; without it the software cannot assign reads to genes.</div>
+            </div>
+            <div class="quiz" data-question="You are about to run DESeq2. Which values should you give it?">
+                <button data-opt data-correct>The raw integer counts; DESeq2 normalizes internally</button>
+                <button data-opt>TPM values, because they are already normalized</button>
+                <button data-opt>FPKM values rounded to whole numbers</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> Differential-expression models need the raw counts; the count size carries the statistical uncertainty. TPM/CPM are for plotting, not for testing.</div>
+            </div>
+
+            <a class="next-lesson" href="rna-seq-first-analysis.html" target="_blank" rel="noopener">
+                <span>Now you have a count matrix, analyze it</span>
+                <h3>Your First RNA-seq Analysis &rarr;</h3>
+            </a>
+
+            <div class="refs">
+                <h4>Sources</h4>
+                <ol>
+                    <li>Liao Y, Smyth GK, Shi W. featureCounts: an efficient general-purpose program for assigning sequence reads to genomic features. <em>Bioinformatics</em> 30:923-930, 2014.</li>
+                    <li>Patro R, Duggal G, Love MI, Irizarry RA, Kingsford C. Salmon provides fast and bias-aware quantification of transcript expression. <em>Nature Methods</em> 14:417-419, 2017.</li>
+                    <li>Soneson C, Love MI, Robinson MD. Differential analyses for RNA-seq: transcript-level estimates improve gene-level inferences (tximport). <em>F1000Research</em> 4:1521, 2015.</li>
+                </ol>
+                <p class="reviewed">Last reviewed: June 2026.</p>
+            </div>
+
+        </div></div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
