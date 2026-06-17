@@ -280,6 +280,41 @@
                     <p>For human germline work, the field standard is the <strong>GATK</strong> Best Practices pipeline, which adds duplicate marking, base-quality recalibration, and joint genotyping. bcftools (what you used here) is lighter, faster, and excellent for many projects, especially microbial genomes and quick analyses. Same concepts, more rigor. Try the pipeline next on a small real dataset, like an <em>E. coli</em> run from the <a href="https://www.ebi.ac.uk/ena/browser/home" target="_blank" rel="noopener">ENA</a>.</p>
                 </div>
 
+                <h2 style="border-top:2px solid rgba(91,156,248,0.2); padding-top:40px;">Now do it on real data: E. coli from the ENA</h2>
+                <p>The toy run above is honest about being a rehearsal. Here is the same pipeline on a <strong>real sequencing run</strong> of <em>E. coli</em>, downloaded from the European Nucleotide Archive (ENA). Everything runs in Colab; the download and alignment take a few minutes, not seconds, because this is real data. The reads are a real isolate from the Lenski long-term evolution experiment (run <code class="inline">SRR2584866</code>), and the reference is the standard <em>E. coli</em> K-12 genome.</p>
+                <pre><span class="p">!</span>apt-get -qq install -y bwa samtools bcftools fastp
+
+<span class="c"># 1. Reference genome (E. coli K-12 MG1655)</span>
+<span class="p">!</span>wget -q https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/GCF_000005845.2_ASM584v2_genomic.fna.gz
+<span class="p">!</span>gunzip -f GCF_000005845.2_ASM584v2_genomic.fna.gz <span class="p">&amp;&amp;</span> mv GCF_000005845.2_ASM584v2_genomic.fna ecoli.fasta
+
+<span class="c"># 2. A real paired-end sequencing run from the ENA</span>
+<span class="p">!</span>wget -q https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_1.fastq.gz
+<span class="p">!</span>wget -q https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_2.fastq.gz
+
+<span class="c"># 3. QC and trim (paired-end: fastp auto-detects adapters from the read overlap)</span>
+<span class="p">!</span>fastp -i SRR2584866_1.fastq.gz -I SRR2584866_2.fastq.gz -o r1.fq.gz -O r2.fq.gz -h fastp.html
+
+<span class="c"># 4. Align, then fixmate -> sort -> markdup (the real paired-end dedup flow)</span>
+<span class="p">!</span>bwa index ecoli.fasta
+<span class="p">!</span>bwa mem ecoli.fasta r1.fq.gz r2.fq.gz <span class="p">|</span> samtools sort -n -o namesorted.bam
+<span class="p">!</span>samtools fixmate -m namesorted.bam fixmate.bam
+<span class="p">!</span>samtools sort -o sorted.bam fixmate.bam
+<span class="p">!</span>samtools markdup sorted.bam markdup.bam <span class="p">&amp;&amp;</span> samtools index markdup.bam
+
+<span class="c"># 5. How well did the reads ACTUALLY map? (this number will not be 100%)</span>
+<span class="p">!</span>samtools flagstat markdup.bam
+
+<span class="c"># 6. Call and normalise</span>
+<span class="p">!</span>bcftools mpileup -f ecoli.fasta markdup.bam <span class="p">|</span> bcftools call -mv -Oz -o ecoli.vcf.gz
+<span class="p">!</span>bcftools norm -f ecoli.fasta ecoli.vcf.gz -Oz -o ecoli.norm.vcf.gz <span class="p">&amp;&amp;</span> bcftools index ecoli.norm.vcf.gz
+<span class="p">!</span>bcftools stats ecoli.norm.vcf.gz <span class="p">|</span> grep <span class="s">"number of records:"</span></pre>
+
+                <div class="why" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.35); border-radius:10px; padding:16px 20px; margin:18px 0;">
+                    <h4 style="color:#b45309; font-size:0.95rem; margin-bottom:8px;">What real data breaks (that the toy run hid)</h4>
+                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">Look at <code class="inline">flagstat</code>: the mapping rate is high but <strong>not 100%</strong>, because real reads include contamination, low-quality ends, and repeats that map ambiguously. <code class="inline">markdup</code> now flags a real percentage of duplicates. There is <strong>no planted answer key</strong>; you judge each call by its depth (<code class="inline">DP</code>) and quality (<code class="inline">QUAL</code>) instead of checking it against a list. And you get hundreds of variants, some multi-allelic and some indels, which is exactly why the <code class="inline">norm</code> step matters. This is the gap between "ran the notebook" and "ran an analysis," and you just crossed it.</p>
+                </div>
+
                 <h2>Check your understanding</h2>
                 <div class="quiz">
                 <div class="quiz-q-src">What is the difference between a sequencing error and a variant?</div>

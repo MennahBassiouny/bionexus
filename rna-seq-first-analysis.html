@@ -297,6 +297,29 @@ res.head(10)</pre>
                     <p>The columns (<code class="inline">log2FoldChange</code>, <code class="inline">pvalue</code>, <code class="inline">padj</code>) and how you read them are exactly the same as the R version above.</p>
                 </details>
 
+                <h2 style="border-top:2px solid rgba(91,156,248,0.2); padding-top:40px;">Now do it on real data: the airway dataset</h2>
+                <p>The example matrix above kept things fast so you could see the workflow. Here is the <strong>same analysis on a real published experiment</strong>: the <strong>airway</strong> study (Himes et al., 2014, GEO accession GSE52778), human airway smooth-muscle cells treated with dexamethasone, a steroid used in asthma. In R, the Bioconductor <code class="inline">airway</code> package ships this exact dataset ready to load, so it is fully reproducible. Run this in Colab with an R runtime, or in RStudio.</p>
+                <pre><span class="c"># install once (a few minutes the first time)</span>
+<span class="k">if</span> (!requireNamespace(<span class="s">"BiocManager"</span>, quietly = <span class="k">TRUE</span>)) install.packages(<span class="s">"BiocManager"</span>)
+BiocManager::install(<span class="k">c</span>(<span class="s">"airway"</span>, <span class="s">"DESeq2"</span>))
+
+<span class="k">library</span>(airway); <span class="k">library</span>(DESeq2)
+data(<span class="s">"airway"</span>)                              <span class="c"># a real RNA-seq dataset, ready to use</span>
+airway$dex &lt;- relevel(airway$dex, <span class="s">"untrt"</span>)   <span class="c"># make "untreated" the baseline</span>
+
+<span class="c"># note the design: cell line is a batch term, treatment is what we test</span>
+dds &lt;- DESeqDataSet(airway, design = ~ cell + dex)
+dds &lt;- DESeq(dds)
+res &lt;- results(dds)
+
+summary(res)                              <span class="c"># how many genes up/down at padj &lt; 0.1</span>
+head(res[order(res$padj), ])              <span class="c"># the strongest hits</span></pre>
+
+                <div class="why" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.35); border-radius:10px; padding:16px 20px; margin:18px 0;">
+                    <h4 style="color:#b45309; font-size:0.95rem; margin-bottom:8px;">What real data adds (that the example hid)</h4>
+                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">This matrix has roughly <strong>64,000 genes</strong>, most of them barely expressed, so filtering and the negative-binomial model earn their keep. The design is <code class="inline">~ cell + dex</code>, not just <code class="inline">~ dex</code>: real experiments have structure (here, four cell lines), and ignoring it would bury the signal. The adjusted p-value does real work, thousands of genes cross raw p &lt; 0.05 but far fewer survive FDR. And you can sanity-check the biology: top hits like <code class="inline">DUSP1</code>, <code class="inline">KLF15</code>, and <code class="inline">PER1</code> are known dexamethasone-responsive genes, so a correct pipeline recovers known biology.</p>
+                </div>
+
                 <h2>Check your understanding</h2>
                 <div class="quiz" data-question="A gene has a log2 fold change of −2. What does that mean?">
                     <button data-opt data-correct>It dropped to one-quarter of its level in B versus A</button>
