@@ -228,7 +228,18 @@
             <details><summary>Show a worked solution</summary>
 <pre><span class="k">awk</span> <span class="s">'{print $2}'</span> table.txt</pre></details>
 
+            <div class="why" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px 20px; margin:22px 0;">
+                <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;">Check yourself</h4>
+                <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">R and the terminal do not run in this page, so here is what correct output looks like. Type each one and compare.</p>
+                <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">count=$(grep -c "&gt;" genes.fasta); echo $count</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the sequence count</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">echo $(( $(wc -l &lt; reads.fastq) / 4 ))</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the number of reads</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">awk '{print $2}' table.txt</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the second column</td></tr></table></div>
             <h2>Check your understanding</h2>
+            <div class="quiz">
+                <div class="quiz-q-src">Your loop <code class="inline">for f in *.fasta; do mv $f data/; done</code> fails on a file named <code class="inline">my reads.fasta</code>. What is the fix?</div>
+                <button data-opt data-correct>Quote the variable: mv "$f" data/, so the space in the filename does not split it into two arguments</button>
+                <button data-opt>Rename every file to remove spaces before looping</button>
+                <button data-opt>Loops cannot handle .fasta files; use find instead</button>
+                <div class="quiz-explain"><strong>Right.</strong> Without quotes the shell splits <code>my reads.fasta</code> into two words. <code>"$f"</code> keeps the filename whole.</div>
+            </div>
             <div class="quiz">
                 <div class="quiz-q-src">What does <code class="inline">count=$(grep -c "&gt;" genes.fasta)</code> do?</div>
                 <button data-opt data-correct>Runs the grep and stores its result (the sequence count) in count</button>

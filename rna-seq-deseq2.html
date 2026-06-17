@@ -262,6 +262,10 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                     <p><a href="resources.html" target="_blank" rel="noopener">Find dataset links in Resources →</a></p>
                 </div>
 
+                <div class="why" style="background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:16px 20px; margin:22px 0;">
+                    <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;">The statistics behind that padj column</h4>
+                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">Why a raw p-value of 0.05 is not enough when you test thousands of genes at once, and what the adjustment actually does, is the subject of <a href="stats-essentials.html" target="_blank" rel="noopener">Statistics essentials</a> and <a href="multiple-testing.html" target="_blank" rel="noopener">The multiple-testing problem</a>. You do not need them to finish here, but they are the "why" behind trusting padj over the raw p-value.</p>
+                </div>
                 <h2>Check your understanding</h2>
                 <div class="quiz">
                     <div class="quiz-q-src">In the design <code class="inline">~ batch + condition</code>, which effect is being tested?</div>

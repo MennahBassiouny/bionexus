@@ -184,6 +184,10 @@
                     </ul>
                 </div>
 
+                <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                    <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: take raw sequencing reads through alignment to a list of variants (a VCF), mark duplicates, and judge a called variant by its depth and quality.</p>
+                </div>
                 <h2>What "calling a variant" means</h2>
                 <p>Every person's genome differs from the reference at millions of spots. A <strong>variant</strong> is one of those differences: a single letter changed (a SNP), or a few letters inserted or deleted (an indel). <strong>Variant calling</strong> is the process of reading the stacked-up reads at each position and deciding, statistically, "the reference says A here, but the reads clearly say G, so this sample carries a variant."</p>
                 <p>The skill is knowing the difference between a real variant and a sequencing error. One read disagreeing with the reference is probably noise. Twenty reads all agreeing on the same change is a variant. A variant caller does exactly this reasoning, position by position, across the whole genome.</p>

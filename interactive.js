@@ -140,6 +140,7 @@
     if (!gSummaryEl || gQuizAnswered < gQuizTotal) return;
     var pct = Math.round(gQuizCorrect / gQuizTotal * 100);
     var pass = pct >= 70;
+    if (pass) { try { localStorage.setItem('bnx-quizpass-' + (location.pathname.split('/').pop() || 'index.html'), '1'); } catch (e) {} }
     gSummaryEl.className = 'quiz-summary show ' + (pass ? 'pass' : 'fail');
     gSummaryEl.innerHTML = 'Lesson check: you scored ' + gQuizCorrect + ' of ' + gQuizTotal + ' (' + pct + '%).' +
       '<span class="sub">' + (pass

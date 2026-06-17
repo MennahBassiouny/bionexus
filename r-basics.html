@@ -298,7 +298,18 @@ glimpse(my_data)   <span class="c"># a quick look at the columns and their types
                 </dl>
             </div>
 
+            <div class="why" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px 20px; margin:22px 0;">
+                <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;">Check yourself</h4>
+                <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">R and the terminal do not run in this page, so here is what correct output looks like. Type each one and compare.</p>
+                <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">mean(c(12.4, 8.1, 15.7, 3.3, 9.9))</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">9.88</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">expr["EGFR"]</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">15.7</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">nrow(genes)</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">3   (three rows)</td></tr></table></div>
             <h2>Check your understanding</h2>
+            <div class="quiz">
+                <div class="quiz-q-src">You have a data frame <code class="inline">genes</code> and want only the rows on chromosome 17. Which line is correct?</div>
+                <button data-opt data-correct>genes |&gt; filter(chromosome == "17")</button>
+                <button data-opt>genes |&gt; select(chromosome == "17")</button>
+                <button data-opt>genes |&gt; filter(chromosome = "17")</button>
+                <div class="quiz-explain"><strong>Correct.</strong> <code>filter()</code> keeps rows by a condition, and a condition uses two equals signs (<code>==</code>). <code>select()</code> is for columns, and a single <code>=</code> would be an assignment.</div>
+            </div>
             <div class="quiz">
                 <div class="quiz-q-src">What does <code class="inline">gc &lt;- 41.5</code> do?</div>
                 <button data-opt data-correct>Stores the value 41.5 in a name called gc</button>

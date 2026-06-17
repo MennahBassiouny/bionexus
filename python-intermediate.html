@@ -290,7 +290,11 @@ expr = np.array([<span class="o">12.4</span>, <span class="o">8.1</span>, <span 
             <div class="pycell"><script type="application/x-python">
 seqs = ["ATG", "GGGGCC", "AT"]
 
-# build a list of lengths with a comprehension
+lengths = []   # build a list of the lengths using a comprehension
+
+# self-check (do not edit): this passes when your answer is right
+assert lengths == [3, 6, 2], "Not yet: lengths should be [3, 6, 2]."
+print("Exercise 1 passed!")
 </script></div>
             <details><summary>Show a worked solution</summary>
 <pre>seqs = ["ATG", "GGGGCC", "AT"]
@@ -314,8 +318,9 @@ def first_base(seq):
     # return seq[0], or "empty" if seq is empty
     return ""
 
-print(first_base("ATGC"))   # expected: A
-print(first_base(""))       # expected: empty
+# self-check (do not edit):
+assert first_base("ATGC") == "A" and first_base("") == "empty", "Not yet: return the first base, or 'empty' for an empty string."
+print("Exercise 3 passed!")
 </script></div>
             <details><summary>Show a worked solution</summary>
 <pre>def first_base(seq):
@@ -328,6 +333,12 @@ print(first_base("ATGC"))   # A
 print(first_base(""))       # empty</pre></details>
 
             <h2>Check your understanding</h2>
+            <div class="quiz" data-question="You loop over many files to compute GC content, but one file is empty and the script crashes with ZeroDivisionError. What is the soundest fix?">
+                <button data-opt data-correct>Wrap the calculation in try / except ZeroDivisionError (or check the length first) so one empty file does not stop the whole run</button>
+                <button data-opt>Delete every empty file by hand before running</button>
+                <button data-opt>Ignore it; the script is supposed to crash on bad data</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> Real data is messy. Catching the specific error lets the loop skip the bad file and keep processing the rest.</div>
+            </div>
             <div class="quiz" data-question="What does [len(s) for s in seqs] produce?">
                 <button data-opt data-correct>A new list holding the length of each sequence</button>
                 <button data-opt>A single number: the total length of all sequences</button>

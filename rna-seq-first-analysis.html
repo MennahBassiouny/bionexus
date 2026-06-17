@@ -161,6 +161,10 @@
                     </ul>
                 </div>
 
+                <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                    <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: load a gene-count matrix, run a differential-expression analysis with DESeq2, and read which genes changed, in which direction, and how confidently.</p>
+                </div>
                 <h2>The question we're actually answering</h2>
                 <p>Before any code, let's be clear on what RNA-seq is <em>for</em>. Every cell carries the same DNA, but at any moment it's only reading some of those genes. The genes a cell is actively "reading" get transcribed into <strong>RNA</strong>. So if you measure how much RNA there is for each gene, you get a snapshot of what the cell is actually <em>doing</em>.</p>
                 <p>RNA-seq is the technology that counts that RNA, gene by gene, across thousands of genes at once. The classic experiment compares two groups - say, <strong>untreated cells vs. cells given a drug</strong> - and asks a deceptively simple question:</p>
@@ -320,6 +324,10 @@ head(res[order(res$padj), ])              <span class="c"># the strongest hits</
                     <p style="font-size:1rem; color:var(--text-gray); margin:0;">This matrix has roughly <strong>64,000 genes</strong>, most of them barely expressed, so filtering and the negative-binomial model earn their keep. The design is <code class="inline">~ cell + dex</code>, not just <code class="inline">~ dex</code>: real experiments have structure (here, four cell lines), and ignoring it would bury the signal. The adjusted p-value does real work, thousands of genes cross raw p &lt; 0.05 but far fewer survive FDR. And you can sanity-check the biology: top hits like <code class="inline">DUSP1</code>, <code class="inline">KLF15</code>, and <code class="inline">PER1</code> are known dexamethasone-responsive genes, so a correct pipeline recovers known biology.</p>
                 </div>
 
+                <div class="why" style="background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:16px 20px; margin:22px 0;">
+                    <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;">The statistics behind that padj column</h4>
+                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">Why a raw p-value of 0.05 is not enough when you test thousands of genes at once, and what the adjustment actually does, is the subject of <a href="stats-essentials.html" target="_blank" rel="noopener">Statistics essentials</a> and <a href="multiple-testing.html" target="_blank" rel="noopener">The multiple-testing problem</a>. You do not need them to finish here, but they are the "why" behind trusting padj over the raw p-value.</p>
+                </div>
                 <h2>Check your understanding</h2>
                 <div class="quiz" data-question="A gene has a log2 fold change of −2. What does that mean?">
                     <button data-opt data-correct>It dropped to one-quarter of its level in B versus A</button>

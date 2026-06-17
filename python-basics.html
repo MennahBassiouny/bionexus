@@ -362,6 +362,12 @@ print(gc_content("AAATTT"))   # 0.0
             </div>
 
             <h2>Check your understanding</h2>
+            <div class="quiz" data-question="You start with an empty dictionary, counts = {}, then loop over a sequence doing counts[base] += 1. The first base raises a KeyError. Why, and what is the clean fix?">
+                <button data-opt data-correct>The key does not exist yet the first time you see a base; use counts[base] = counts.get(base, 0) + 1</button>
+                <button data-opt>Dictionaries cannot count letters; you must use a list instead</button>
+                <button data-opt>You forgot to import the counting module</button>
+                <div class="quiz-explain"><strong>Right.</strong> += needs the key to already hold a number. <code>counts.get(base, 0)</code> returns 0 when the base has not been seen yet, so the very first count works.</div>
+            </div>
             <div class="quiz" data-question="What is a variable?">
                 <button data-opt data-correct>A named box that stores a piece of data for later use</button>
                 <button data-opt>A type of error in your code</button>

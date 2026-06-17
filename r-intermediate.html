@@ -246,7 +246,18 @@ names(expr[expr &gt; <span class="o">10</span>])</pre></details>
 mean_or_zero(<span class="k">c</span>(<span class="o">2</span>, <span class="o">4</span>, <span class="o">6</span>))   <span class="c"># 4</span>
 mean_or_zero(<span class="k">c</span>())             <span class="c"># 0</span></pre></details>
 
+            <div class="why" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px 20px; margin:22px 0;">
+                <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;">Check yourself</h4>
+                <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">R and the terminal do not run in this page, so here is what correct output looks like. Type each one and compare.</p>
+                <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">sapply(c("ATG","GG","ATATAT"), nchar)</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">3 2 6</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">apply(m, 1, sum)</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">12 9   (m from section 3)</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">mean_or_zero(c(2,4,6))</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">4</td></tr></table></div>
             <h2>Check your understanding</h2>
+            <div class="quiz">
+                <div class="quiz-q-src">You want the average expression per chromosome from a data frame. Which tidyverse pattern does it?</div>
+                <button data-opt data-correct>df |&gt; group_by(chromosome) |&gt; summarise(mean_expr = mean(expr))</button>
+                <button data-opt>df |&gt; filter(chromosome) |&gt; mean(expr)</button>
+                <button data-opt>df |&gt; select(chromosome, expr) |&gt; arrange(expr)</button>
+                <div class="quiz-explain"><strong>Right.</strong> <code>group_by</code> splits rows into groups (one per chromosome) and <code>summarise</code> collapses each group to one value, here the mean.</div>
+            </div>
             <div class="quiz">
                 <div class="quiz-q-src">What does <code class="inline">expr[expr &gt; 10]</code> return?</div>
                 <button data-opt data-correct>The elements of expr whose value is greater than 10</button>

@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Privacy policy for BioNexus Hub: what data is collected (email only if you submit it, anonymous reactions and analytics, local progress), what is not, and your choices.">
+    <meta name="description" content="A running changelog of updates to BioNexus Hub, newest first, so learners can see the platform is maintained and current.">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Privacy Policy | BioNexus Hub">
+    <meta property="og:title" content="Changelog | BioNexus Hub">
     <meta property="og:description" content="Is it free? Do I need to install anything? What is Colab? My code shows an error, now what? Beginner-friendly answers.">
     <meta property="og:url" content="https://bionexushub.com/faq.html">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Privacy Policy | BioNexus Hub">
+    <meta name="twitter:title" content="Changelog | BioNexus Hub">
     <meta name="twitter:description" content="Friendly answers to the questions every bioinformatics beginner has.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
-    <title>Privacy Policy - BioNexus Hub</title>
+    <title>Changelog - BioNexus Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -104,8 +104,8 @@
 
     <div class="page-header">
         <div class="container">
-            <h1>Privacy Policy</h1>
-            <p>How BioNexus Hub handles your data. The short answer: as little as possible.</p>
+            <h1>Changelog</h1>
+            <p>What has changed on the site, and when. Updated as the platform grows.</p>
         </div>
     </div>
 
@@ -113,48 +113,27 @@
         <div class="container">
             <div style="max-width:820px; margin:0 auto;">
 
-                <p style="color:var(--text-gray); font-size:0.95rem;">Last updated: June 2026</p>
+                <p style="color:var(--text-gray); font-size:0.95rem;">A running record of what changes on BioNexus Hub, so you can see the site is maintained and current. Newest first.</p>
 
-                <div style="background:rgba(16,185,129,0.08); border-left:4px solid var(--green); border-radius:8px; padding:16px 20px; margin:18px 0;">
-                    <strong>The short version:</strong> BioNexus Hub is free and works without an account. We do not sell your data. We only receive an email address if you choose to send us one, lesson reactions are anonymous, and your lesson progress stays in your own browser.
-                </div>
-
-                <h2>What we collect, and why</h2>
-                <p>We try to collect as little as possible. Here is everything:</p>
+                <h2>June 2026</h2>
                 <ul>
-                    <li><strong>Your email, only if you give it to us.</strong> If you sign up for updates, use the feedback button, or send the contact form, those forms (run on Microsoft Forms) record the email and message you type. We use it only to reply to you or to send the updates you asked for.</li>
-                    <li><strong>Lesson reactions (anonymous).</strong> When you tap the like or dislike button on a lesson, we store an anonymous count (using Supabase). No name, email, or identity is attached.</li>
-                    <li><strong>Anonymous usage analytics.</strong> We use Microsoft Clarity to see, in aggregate, which pages are visited and which links are clicked, so we can improve the lessons. This is anonymous and is never used to identify you personally.</li>
-                    <li><strong>Your progress stays on your device.</strong> When you tap "mark this lesson complete," that is saved in your browser's local storage. It is never sent to us, and clearing your browser data removes it.</li>
+                    <li><strong>Beginner rebuild of the foundations.</strong> Python, R, and the command-line Level 1 lessons were rewritten from zero for people with no coding background, with diagrams and a plain-English definition for every term.</li>
+                    <li><strong>A Level 2 for each language.</strong> New Intermediate lessons for Python, R, and the command line, with worked-solution exercises.</li>
+                    <li><strong>Scored lesson checks.</strong> Every lesson's quiz now adds up to a "Lesson check" with a 70% pass mark, so you can tell whether the ideas landed.</li>
+                    <li><strong>Self-checking exercises.</strong> The Python practice exercises now tell you when your own answer is correct, and the R and command-line lessons show the exact output you should expect.</li>
+                    <li><strong>Real data, not just rehearsals.</strong> The variant-calling lesson now walks through a real E. coli run from the ENA, and the RNA-seq flagship runs the real airway dataset end to end, each with a note on what real data breaks that the toy examples hid.</li>
+                    <li><strong>Privacy policy.</strong> A clear, plain-language <a href="privacy.html" target="_blank" rel="noopener">privacy policy</a> covering what little data the site touches.</li>
+                    <li><strong>Accuracy pass.</strong> Corrected the DESeq2 normalization wording (it also corrects for library composition), added duplicate marking and indel normalization to the variant pipeline, and relabeled "runs in your browser" to "runs free in Colab" where the code runs in Colab rather than in the page.</li>
+                    <li><strong>More visuals.</strong> Diagrams added across the foundation lessons, by request, so concepts are shown, not just described.</li>
                 </ul>
 
-                <h2>What we do not collect</h2>
-                <p>There are no user accounts and no passwords. We do not ask for or store payment information, and we never sell, rent, or trade your information to anyone.</p>
-
-                <h2>The third-party services we rely on</h2>
-                <p>Because this is a small, free project, a few outside services make it work. Each has its own privacy policy:</p>
+                <h2>Earlier</h2>
                 <ul>
-                    <li><strong>GitHub Pages</strong> hosts the website.</li>
-                    <li><strong>Microsoft Forms and Microsoft Clarity</strong> handle the contact and feedback forms and the anonymous analytics.</li>
-                    <li><strong>Supabase</strong> stores the anonymous lesson reactions.</li>
-                    <li><strong>Google Colab</strong> is used only if you choose to open a notebook to run code; your use of it is governed by Google's own privacy policy, not ours.</li>
-                    <li><strong>External links</strong> (for example NCBI, EMBL-EBI, Bioconductor) take you to other sites that have their own policies.</li>
+                    <li>Built the full roadmap: Foundations plus Tracks on data handling, NGS, RNA-seq, RNA biology, statistics, and reproducibility and career skills.</li>
+                    <li>Added in-browser runnable Python cells, a sequence-alignment and BLAST mini-course with a graded final assessment, printable-free cheat sheets, a glossary, and a beginner Help and FAQ.</li>
                 </ul>
 
-                <h2>Cookies and local storage</h2>
-                <p>We keep these to a minimum. The analytics service may set cookies to measure usage anonymously, and your lesson progress is kept in your browser's local storage. You can clear both at any time through your browser settings.</p>
-
-                <h2>Your choices</h2>
-                <p>You stay in control. You can use every lesson without sending us anything. If you would rather not share an email, simply do not submit the forms. If you have already sent us an email and want it removed, contact us (below) and we will delete it. You can clear your saved progress at any time by clearing your browser data.</p>
-
-                <h2>Children</h2>
-                <p>BioNexus Hub is general educational content and is not directed at children under 13, and we do not knowingly collect personal information from them. If you believe a child has sent us personal information, contact us and we will remove it.</p>
-
-                <h2>Changes to this policy</h2>
-                <p>If we change how we handle data, we will update this page and the "last updated" date at the top.</p>
-
-                <h2>Contact</h2>
-                <p>Questions about privacy, or want data removed? Use the feedback button at the bottom-right of any page, the <a href="contact.html" target="_blank" rel="noopener">contact form</a>, or message us on the <a href="https://www.facebook.com/bionexushub" target="_blank" rel="noopener">BioNexus Hub Facebook page</a>.</p>
+                <p style="color:var(--text-gray); font-size:0.95rem; margin-top:24px;">Spotted something out of date or wrong? Use the feedback button on any page, it reaches us directly.</p>
 
             </div>
         </div>
@@ -162,7 +141,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="changelog.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Changelog</a> &middot; <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
         </div>
     </footer>
 
