@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="BioNexus Hub makes bioinformatics approachable for everyone. Learn Python, R, and the command line from scratch with free, browser-based lessons and real-data projects.">
+    <meta name="description" content="Python for complete beginners, taught from zero: what Python is, variables, every core data type (string, integer, float, boolean, list, dictionary), operators, if/else decisions, loops, and functions, with plain definitions and visuals.">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
@@ -65,6 +65,18 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:680px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
+        .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
+        .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .dtable code { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 6px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.85em; }
+        .glossary { background:#f1f5f9; border:1px solid rgba(91,156,248,0.2); border-radius:10px; padding:18px 24px; margin:28px 0; }
+        .glossary h4 { color:var(--deep-navy); margin-bottom:8px; font-size:1.1rem; }
+        .glossary dt { font-weight:700; color:var(--deep-navy); margin-top:10px; }
+        .glossary dd { color:var(--text-gray); margin:2px 0 0; }
+        .lesson-body h3 { font-family:'Crimson Pro',serif; font-size:1.4rem; color:var(--deep-navy); margin:30px 0 10px; }
     </style>
 </head>
 <body>
@@ -87,9 +99,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Python series (2 of 3)</div>
-            <h1>Python Basics for Bioinformatics</h1>
-            <p class="promise">The core Python you'll actually use - variables, lists, dictionaries, loops, functions, and reading files - taught with DNA and genes instead of abstract examples.</p>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Foundations &nbsp;/&nbsp; Python &nbsp;/&nbsp; Level 1: Basics</div>
+            <h1>Python: Level 1 (Basics)</h1>
+            <p class="promise">For complete beginners with no coding background. We start from what Python even is, then build every core idea (data types, decisions, loops, and functions) one small step at a time, with pictures.</p>
             <div class="tags">
                 <span class="tag green">🟢 Beginner</span>
                 <span class="tag">⏱️ ~1.5 hr</span>
@@ -101,170 +113,291 @@
     <main>
         <div class="container"><div class="lesson-body">
 
-            <p>You've got Python installed (if not, do the <a href="python-install.html" target="_blank" rel="noopener">install lesson</a> first). Now let's learn just enough to be dangerous. Follow along in whichever tool you set up in the install lesson - <strong>VS Code, PyCharm, Jupyter, or Google Colab</strong> all work equally well here. If you're working in a terminal, activate your environment first (<code class="inline">bionexus\Scripts\activate</code> on Windows, <code class="inline">source bionexus/bin/activate</code> on Mac/Linux) and type <code class="inline">python</code> to start. Whichever you choose, type each example yourself - that's how it sticks.</p>
+            <div class="why">
+                <h4>Start here, even if you have never written a line of code</h4>
+                <p>This lesson assumes nothing. We will explain what Python even is, then build up every core idea (data, decisions, repetition, and reusable recipes) one small step at a time, with pictures. By the end you will understand the heart of the language. Go slowly. You cannot break anything.</p>
+            </div>
 
-            <h2>1. Variables &amp; strings</h2>
-            <p>A variable is a name for a piece of data. In bioinformatics, a DNA sequence is just a <strong>string</strong> - text made of A, C, G, and T.</p>
-            <pre>dna = <span class="s">"ATGCGTACGTTAG"</span>
-<span class="k">print</span>(dna)
-<span class="k">print</span>(<span class="k">len</span>(dna))        <span class="c"># length of the sequence → 13</span>
-<span class="k">print</span>(dna.count(<span class="s">"G"</span>))   <span class="c"># how many G's → 3</span>
-<span class="k">print</span>(dna[<span class="o">0</span>])           <span class="c"># first base (counting starts at 0!) → A</span></pre>
-            <div class="why"><h4>Decode the jargon: zero-indexing</h4><p>Python counts from 0, not 1. So <code class="inline">dna[0]</code> is the first base and <code class="inline">dna[1]</code> is the second. This trips up everyone at first - biologists especially, since we usually call the first base "position 1." Just remember: code starts at zero.</p></div>
+            <h2>What is Python, and what is "code"?</h2>
+            <p><strong>Python</strong> is a programming language: a set of words and rules for writing instructions that a computer can follow. <strong>Code</strong> is just those instructions written as plain text. You write the steps, Python reads them top to bottom, and the computer carries them out and shows you the result.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="You write code, Python reads it, the computer produces a result">
+                    <rect x="14" y="40" width="195" height="74" rx="12" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/>
+                    <text x="111" y="72" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="16" font-weight="700" fill="#0f172a">You write code</text>
+                    <text x="111" y="94" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="13" fill="#64748b">instructions, as text</text>
+                    <text x="232" y="83" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="26" fill="#94a3b8">&#8594;</text>
+                    <rect x="255" y="40" width="195" height="74" rx="12" fill="#f3edff" stroke="#a855f7" stroke-width="2"/>
+                    <text x="352" y="72" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="16" font-weight="700" fill="#0f172a">Python reads it</text>
+                    <text x="352" y="94" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="13" fill="#64748b">line by line, in order</text>
+                    <text x="473" y="83" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="26" fill="#94a3b8">&#8594;</text>
+                    <rect x="496" y="40" width="210" height="74" rx="12" fill="#e9faf2" stroke="#10b981" stroke-width="2"/>
+                    <text x="601" y="72" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="16" font-weight="700" fill="#0f172a">You see a result</text>
+                    <text x="601" y="94" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="13" fill="#64748b">on the screen</text>
+                </svg>
+                <figcaption>Programming in one picture: code in, result out.</figcaption>
+            </figure>
+            <p>The simplest instruction is <code class="inline">print</code>, which means "show this on the screen." Anything after a <code class="inline">#</code> is a <strong>comment</strong>: a note for humans that Python ignores.</p>
+            <pre><span class="k">print</span>(<span class="s">"Hello, bioinformatics!"</span>)   <span class="c"># this line prints a message</span>
+<span class="c"># this whole line is a comment, Python skips it</span></pre>
+            <div class="tryit"><strong>Try it:</strong> run this, then change the text inside the quotes and run it again. That loop (change something, run, see what happens) is how you will learn everything here.</div>
+            <div class="pycell"><script type="application/x-python">
+print("Hello, bioinformatics!")   # this line prints a message
+# this whole line is a comment, Python skips it
+</script></div>
 
-            <h2>2. Doing real work with strings</h2>
-            <pre><span class="c"># GC content: the fraction of bases that are G or C - a real, useful metric</span>
-gc = (dna.count(<span class="s">"G"</span>) + dna.count(<span class="s">"C"</span>)) / <span class="k">len</span>(dna)
-<span class="k">print</span>(<span class="k">round</span>(gc * <span class="o">100</span>, <span class="o">1</span>), <span class="s">"% GC"</span>)
+            <h2>1. Variables: named boxes that hold data</h2>
+            <p>A <strong>variable</strong> is a name you give to a piece of data so you can use it later. Think of it as a labelled box. The equals sign <code class="inline">=</code> means "put the value on the right into the box named on the left."</p>
+            <figure class="viz">
+                <svg viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The variable dna is a box holding the text ATGC">
+                    <text x="260" y="34" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="18" fill="#0f172a">dna = "ATGC"</text>
+                    <rect x="150" y="62" width="220" height="78" rx="10" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/>
+                    <text x="260" y="108" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="24" font-weight="600" fill="#0f172a">"ATGC"</text>
+                    <text x="260" y="158" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="14" fill="#64748b">the box is named</text>
+                    <rect x="60" y="88" width="78" height="28" rx="6" fill="#a855f7"/>
+                    <text x="99" y="107" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="15" font-weight="700" fill="#ffffff">dna</text>
+                </svg>
+                <figcaption>A variable is a labelled box. Here the box <code class="inline">dna</code> holds the text "ATGC".</figcaption>
+            </figure>
+            <pre>dna = <span class="s">"ATGC"</span>        <span class="c"># put the text "ATGC" into a box called dna</span>
+<span class="k">print</span>(dna)            <span class="c"># show what is in the box  ->  ATGC</span></pre>
+            <div class="why"><h4>Naming rules, kept simple</h4><p>A name can use letters, numbers, and underscores, but cannot start with a number or contain spaces. Pick names that describe the data: <code class="inline">dna</code>, <code class="inline">gene_count</code>, <code class="inline">gc_percent</code>. Good names make code read almost like English.</p></div>
 
-<span class="c"># Replace lets us transcribe DNA → RNA (T becomes U)</span>
-rna = dna.replace(<span class="s">"T"</span>, <span class="s">"U"</span>)
-<span class="k">print</span>(rna)</pre>
-            <div class="tryit">✍️ <strong>Try it:</strong> change the <code class="inline">dna</code> string and re-run. What GC content do you get for a sequence of all A's and T's?</div>
+            <h2>2. The core data types (the heart of the language)</h2>
+            <p>Every piece of data in Python has a <strong>type</strong>: what kind of thing it is. There are six you must know. Here they are in plain English. Do not memorize this table; just know it is here to come back to.</p>
+            <table class="dtable">
+                <tr><th>Type</th><th>What it is</th><th>Example</th></tr>
+                <tr><td><strong>str</strong> (string)</td><td>Text: letters, words, a DNA sequence. Always written in quotes.</td><td><code>"ATGC"</code></td></tr>
+                <tr><td><strong>int</strong> (integer)</td><td>A whole number, with no decimal point.</td><td><code>42</code></td></tr>
+                <tr><td><strong>float</strong></td><td>A number with a decimal point.</td><td><code>66.7</code></td></tr>
+                <tr><td><strong>bool</strong> (boolean)</td><td>A yes/no value: only <code>True</code> or <code>False</code>.</td><td><code>True</code></td></tr>
+                <tr><td><strong>list</strong></td><td>An ordered collection of several values in one box.</td><td><code>["TP53", "EGFR"]</code></td></tr>
+                <tr><td><strong>dict</strong> (dictionary)</td><td>A set of labelled pairs: each label (key) points to a value.</td><td><code>{"A": 10, "G": 7}</code></td></tr>
+            </table>
+            <p>You can ask Python the type of anything with <code class="inline">type()</code>. Run this:</p>
+            <div class="pycell"><script type="application/x-python">
+print(type("ATGC"))   # str  (text)
+print(type(42))       # int  (whole number)
+print(type(66.7))     # float (decimal)
+print(type(True))     # bool (True/False)
+</script></div>
 
-            <h2>3. Lists - ordered collections</h2>
+            <h3>2a. Text (strings)</h3>
+            <p>A <strong>string</strong> is text in quotes. A DNA sequence is just a string. Python gives strings handy abilities: count letters, measure length, and pick out single characters by position.</p>
+            <pre>dna = <span class="s">"ATGCGT"</span>
+<span class="k">len</span>(dna)            <span class="c"># length: how many letters  ->  6</span>
+dna.count(<span class="s">"G"</span>)      <span class="c"># how many G's  ->  2</span>
+dna[<span class="o">0</span>]              <span class="c"># the FIRST letter  ->  A</span></pre>
+            <p>That last line is the tricky one for everyone at first: Python counts positions starting from <strong>0</strong>, not 1. Here is the picture:</p>
+            <figure class="viz">
+                <svg viewBox="0 0 540 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The string ATGCGT with positions numbered 0 to 5">
+                    <g font-family="'JetBrains Mono',monospace">
+                    <rect x="40" y="30" width="70" height="56" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="75" y="67" text-anchor="middle" font-size="24" fill="#0f172a">A</text>
+                    <rect x="115" y="30" width="70" height="56" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="150" y="67" text-anchor="middle" font-size="24" fill="#0f172a">T</text>
+                    <rect x="190" y="30" width="70" height="56" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="225" y="67" text-anchor="middle" font-size="24" fill="#0f172a">G</text>
+                    <rect x="265" y="30" width="70" height="56" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="300" y="67" text-anchor="middle" font-size="24" fill="#0f172a">C</text>
+                    <rect x="340" y="30" width="70" height="56" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="375" y="67" text-anchor="middle" font-size="24" fill="#0f172a">G</text>
+                    <rect x="415" y="30" width="70" height="56" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="450" y="67" text-anchor="middle" font-size="24" fill="#0f172a">T</text>
+                    <text x="75" y="110" text-anchor="middle" font-size="16" fill="#a855f7">0</text>
+                    <text x="150" y="110" text-anchor="middle" font-size="16" fill="#a855f7">1</text>
+                    <text x="225" y="110" text-anchor="middle" font-size="16" fill="#a855f7">2</text>
+                    <text x="300" y="110" text-anchor="middle" font-size="16" fill="#a855f7">3</text>
+                    <text x="375" y="110" text-anchor="middle" font-size="16" fill="#a855f7">4</text>
+                    <text x="450" y="110" text-anchor="middle" font-size="16" fill="#a855f7">5</text>
+                    </g>
+                </svg>
+                <figcaption>Each letter has a position (in purple). Counting starts at 0, so <code class="inline">dna[0]</code> is "A" and <code class="inline">dna[2]</code> is "G".</figcaption>
+            </figure>
+
+            <h3>2b. Numbers (int and float) and the maths operators</h3>
+            <p>Whole numbers are <strong>int</strong>; numbers with a decimal point are <strong>float</strong>. Python does maths with familiar symbols, called <strong>operators</strong>.</p>
+            <table class="dtable">
+                <tr><th>Operator</th><th>Meaning</th><th>Example</th></tr>
+                <tr><td><code>+ - *</code></td><td>add, subtract, multiply</td><td><code>3 * 4</code> &#8594; 12</td></tr>
+                <tr><td><code>/</code></td><td>divide (gives a float)</td><td><code>9 / 2</code> &#8594; 4.5</td></tr>
+                <tr><td><code>**</code></td><td>power (to the exponent)</td><td><code>2 ** 3</code> &#8594; 8</td></tr>
+                <tr><td><code>%</code></td><td>remainder after dividing</td><td><code>7 % 3</code> &#8594; 1</td></tr>
+            </table>
+            <p>A real example: GC content is the fraction of a sequence that is G or C, as a percentage.</p>
+            <div class="pycell"><script type="application/x-python">
+dna = "ATGCGC"
+gc = (dna.count("G") + dna.count("C")) / len(dna) * 100
+print(gc)            # 66.66...
+print(round(gc, 1)) # rounded: 66.7
+</script></div>
+
+            <h3>2c. Booleans (True/False) and comparisons</h3>
+            <p>A <strong>boolean</strong> is a yes/no value: <code class="inline">True</code> or <code class="inline">False</code>. You usually get one by <em>comparing</em> two things. These comparisons are the questions your code asks.</p>
+            <table class="dtable">
+                <tr><th>Comparison</th><th>Asks</th></tr>
+                <tr><td><code>==</code></td><td>are they equal? (note: two equals signs)</td></tr>
+                <tr><td><code>!=</code></td><td>are they different?</td></tr>
+                <tr><td><code>&gt;</code> &nbsp; <code>&lt;</code></td><td>greater than, less than</td></tr>
+                <tr><td><code>&gt;=</code> &nbsp; <code>&lt;=</code></td><td>greater-or-equal, less-or-equal</td></tr>
+            </table>
+            <div class="pycell"><script type="application/x-python">
+gc = 66.7
+print(gc > 50)       # True
+print(gc == 100)     # False
+print("ATG" == "ATG")  # True
+</script></div>
+            <div class="why"><h4>One equals or two?</h4><p><code class="inline">=</code> (one) <em>stores</em> a value in a variable. <code class="inline">==</code> (two) <em>asks</em> "are these equal?" and answers True or False. Mixing them up is the most common early mistake, and now you know the difference.</p></div>
+
+            <h2>3. Making decisions: if, elif, else</h2>
+            <p>Comparisons become useful when code <em>acts</em> on the answer. An <code class="inline">if</code> statement runs a block only when its question is True. <code class="inline">elif</code> ("else if") and <code class="inline">else</code> handle the other cases. The indentation (the spaces at the start of a line) is how Python knows which lines belong inside.</p>
+            <pre>gc = <span class="o">66.7</span>
+
+<span class="k">if</span> gc &gt; <span class="o">60</span>:
+    <span class="k">print</span>(<span class="s">"GC-rich"</span>)
+<span class="k">elif</span> gc &lt; <span class="o">40</span>:
+    <span class="k">print</span>(<span class="s">"AT-rich"</span>)
+<span class="k">else</span>:
+    <span class="k">print</span>(<span class="s">"balanced"</span>)</pre>
+            <div class="pycell"><script type="application/x-python">
+gc = 66.7
+
+if gc > 60:
+    print("GC-rich")
+elif gc < 40:
+    print("AT-rich")
+else:
+    print("balanced")
+</script></div>
+
+            <h2>4. Lists: many values in one box</h2>
+            <p>A <strong>list</strong> holds several values in order, inside square brackets. Like strings, list items have positions starting at 0.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 560 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A list of four gene names with positions 0 to 3">
+                    <g font-family="'JetBrains Mono',monospace">
+                    <rect x="20" y="30" width="120" height="56" rx="6" fill="#f3edff" stroke="#a855f7" stroke-width="2"/><text x="80" y="65" text-anchor="middle" font-size="17" fill="#0f172a">"TP53"</text>
+                    <rect x="150" y="30" width="120" height="56" rx="6" fill="#f3edff" stroke="#a855f7" stroke-width="2"/><text x="210" y="65" text-anchor="middle" font-size="17" fill="#0f172a">"BRCA1"</text>
+                    <rect x="280" y="30" width="120" height="56" rx="6" fill="#f3edff" stroke="#a855f7" stroke-width="2"/><text x="340" y="65" text-anchor="middle" font-size="17" fill="#0f172a">"EGFR"</text>
+                    <rect x="410" y="30" width="120" height="56" rx="6" fill="#f3edff" stroke="#a855f7" stroke-width="2"/><text x="470" y="65" text-anchor="middle" font-size="17" fill="#0f172a">"MYC"</text>
+                    <text x="80" y="110" text-anchor="middle" font-size="16" fill="#5b9cf8">0</text>
+                    <text x="210" y="110" text-anchor="middle" font-size="16" fill="#5b9cf8">1</text>
+                    <text x="340" y="110" text-anchor="middle" font-size="16" fill="#5b9cf8">2</text>
+                    <text x="470" y="110" text-anchor="middle" font-size="16" fill="#5b9cf8">3</text>
+                    </g>
+                </svg>
+                <figcaption>A list of gene names. <code class="inline">genes[1]</code> is "BRCA1".</figcaption>
+            </figure>
             <pre>genes = [<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>, <span class="s">"MYC"</span>]
-<span class="k">print</span>(genes[<span class="o">1</span>])          <span class="c"># BRCA1</span>
-genes.append(<span class="s">"KRAS"</span>)     <span class="c"># add one to the end</span>
-<span class="k">print</span>(<span class="k">len</span>(genes))        <span class="c"># 5</span></pre>
+genes[<span class="o">1</span>]            <span class="c"># "BRCA1"</span>
+<span class="k">len</span>(genes)          <span class="c"># 4</span>
+genes.append(<span class="s">"KRAS"</span>)  <span class="c"># add one to the end</span></pre>
 
-            <h2>4. Dictionaries - labelled lookups</h2>
-            <p>A dictionary stores key → value pairs. Perfect for things like "how many of each base?"</p>
+            <h2>5. Dictionaries: labelled lookups</h2>
+            <p>A <strong>dictionary</strong> stores pairs: each <strong>key</strong> (a label) points to a <strong>value</strong>. It is perfect for "how many of each?" Instead of a position, you look things up by their label.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 480 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A dictionary mapping bases A, C, G, T to counts">
+                    <g font-family="'JetBrains Mono',monospace" font-size="18">
+                    <rect x="40" y="20" width="60" height="34" rx="6" fill="#a855f7"/><text x="70" y="44" text-anchor="middle" fill="#fff">"A"</text>
+                    <text x="120" y="44" font-size="20" fill="#94a3b8">&#8594;</text>
+                    <rect x="150" y="20" width="60" height="34" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="180" y="44" text-anchor="middle" fill="#0f172a">10</text>
+                    <rect x="40" y="68" width="60" height="34" rx="6" fill="#a855f7"/><text x="70" y="92" text-anchor="middle" fill="#fff">"C"</text>
+                    <text x="120" y="92" font-size="20" fill="#94a3b8">&#8594;</text>
+                    <rect x="150" y="68" width="60" height="34" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="180" y="92" text-anchor="middle" fill="#0f172a">7</text>
+                    <rect x="40" y="116" width="60" height="34" rx="6" fill="#a855f7"/><text x="70" y="140" text-anchor="middle" fill="#fff">"G"</text>
+                    <text x="120" y="140" font-size="20" fill="#94a3b8">&#8594;</text>
+                    <rect x="150" y="116" width="60" height="34" rx="6" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="180" y="140" text-anchor="middle" fill="#0f172a">9</text>
+                    <text x="290" y="92" font-family="'Work Sans',sans-serif" font-size="14" fill="#64748b">key &#8594; value</text>
+                    </g>
+                </svg>
+                <figcaption>Each key (a base) points to its value (a count). You look up <code class="inline">counts["G"]</code> to get 9.</figcaption>
+            </figure>
             <pre>counts = {<span class="s">"A"</span>: <span class="o">10</span>, <span class="s">"C"</span>: <span class="o">7</span>, <span class="s">"G"</span>: <span class="o">9</span>, <span class="s">"T"</span>: <span class="o">12</span>}
-<span class="k">print</span>(counts[<span class="s">"G"</span>])       <span class="c"># 9</span>
-counts[<span class="s">"N"</span>] = <span class="o">2</span>          <span class="c"># add an "unknown base" entry</span></pre>
+counts[<span class="s">"G"</span>]          <span class="c"># look up G's count  ->  9</span>
+counts[<span class="s">"N"</span>] = <span class="o">2</span>        <span class="c"># add a new pair</span></pre>
 
-            <h2>5. Loops - do something to each item</h2>
+            <h2>6. Loops: do something to every item</h2>
+            <p>A <strong>loop</strong> repeats an instruction for each item in a collection, so you write it once and Python applies it to everything. This is the moment programming starts saving you real time.</p>
             <pre><span class="k">for</span> gene <span class="k">in</span> genes:
-    <span class="k">print</span>(gene, <span class="s">"has"</span>, <span class="k">len</span>(gene), <span class="s">"letters"</span>)
+    <span class="k">print</span>(gene, <span class="s">"has"</span>, <span class="k">len</span>(gene), <span class="s">"letters"</span>)</pre>
+            <p>You can loop over the letters of a sequence too. Here we count each base by hand:</p>
+            <div class="pycell"><script type="application/x-python">
+dna = "ATGCGTAC"
+tally = {}                       # an empty dictionary to fill
+for base in dna:
+    tally[base] = tally.get(base, 0) + 1
+print(tally)
+</script></div>
+            <div class="why"><h4>Why loops matter</h4><p>A genome has millions of bases. You will never process them by hand. You write the instruction once, and the loop applies it to everything, whether that is 8 letters or 8 million.</p></div>
 
-<span class="c"># Count each base in a sequence by looping</span>
-tally = {}
-<span class="k">for</span> base <span class="k">in</span> dna:
-    tally[base] = tally.get(base, <span class="o">0</span>) + <span class="o">1</span>
-<span class="k">print</span>(tally)</pre>
-            <div class="why"><h4>Why loops matter</h4><p>A genome has millions of bases. You'll never process them by hand - you write the instruction <em>once</em> and the loop applies it to everything. This is the moment programming starts paying off.</p></div>
-
-            <h2>6. Functions - reusable recipes</h2>
-            <p>When you do something more than once, wrap it in a function so you can reuse it.</p>
-            <pre><span class="k">def</span> <span class="o">gc_content</span>(seq):
-    <span class="s">"""Return the GC percentage of a DNA sequence."""</span>
-    g = seq.count(<span class="s">"G"</span>) + seq.count(<span class="s">"C"</span>)
-    <span class="k">return</span> <span class="k">round</span>(g / <span class="k">len</span>(seq) * <span class="o">100</span>, <span class="o">1</span>)
-
-<span class="k">print</span>(gc_content(<span class="s">"ATGCGCGC"</span>))   <span class="c"># 75.0</span>
-<span class="k">print</span>(gc_content(<span class="s">"AAATTT"</span>))     <span class="c"># 0.0</span></pre>
-            <p><strong>Your turn.</strong> Run this in your browser, then edit the sequences (or the function) and run again.</p>
+            <h2>7. Functions: your own reusable recipes</h2>
+            <p>A <strong>function</strong> is a named recipe: you define the steps once, then reuse it with different inputs. <code class="inline">def</code> starts the recipe, and <code class="inline">return</code> hands back the answer.</p>
             <div class="pycell"><script type="application/x-python">
 def gc_content(seq):
-    """Return the GC percentage of a DNA sequence."""
     g = seq.count("G") + seq.count("C")
     return round(g / len(seq) * 100, 1)
 
-print(gc_content("ATGCGCGC"))
-print(gc_content("AAATTT"))
+print(gc_content("ATGCGC"))   # 66.7
+print(gc_content("AAATTT"))   # 0.0
 </script></div>
+            <div class="why"><h4>This is the shape of real code</h4><p>Reading data into variables, deciding with <code class="inline">if</code>, repeating with a loop, and wrapping reusable steps in a function: that is the core of Python, and of almost every bioinformatics script you will ever read.</p></div>
 
-            <h2>7. Reading a file</h2>
-            <p>Real data lives in files. Here's the pattern for reading one line by line:</p>
+            <h2>8. Reading a file (a first look)</h2>
+            <p>Real data lives in files. The pattern for reading one, line by line, is short. You will use proper tools (like Biopython) for real sequence files later, but this is the shape of it.</p>
             <pre><span class="k">with</span> <span class="k">open</span>(<span class="s">"sequence.txt"</span>) <span class="k">as</span> f:
     <span class="k">for</span> line <span class="k">in</span> f:
         line = line.strip()      <span class="c"># remove the invisible newline</span>
         <span class="k">print</span>(line)</pre>
-            <div class="why"><h4>Decode the jargon: Biopython</h4><p>For real sequence files (FASTA, FASTQ) you won't parse them by hand - a library called <strong>Biopython</strong> does it for you. You installed it in the previous lesson. You'll use it in the project next.</p></div>
 
-            <h2>8. Putting it together: a quick sequence report</h2>
-            <p>Everything so far - strings, a dictionary, a function, a loop - combines into something that looks like real bioinformatics. Run this, then swap in your own sequence.</p>
-            <div class="pycell"><script type="application/x-python">
-seq = "ATGCGTACGTTAGCCGGATTACAGGT"
-
-def gc_content(s):
-    return round((s.count("G") + s.count("C")) / len(s) * 100, 1)
-
-def reverse_complement(s):
-    pairs = {"A": "T", "T": "A", "G": "C", "C": "G"}
-    return "".join(pairs[base] for base in reversed(s))
-
-counts = {}
-for base in seq:
-    counts[base] = counts.get(base, 0) + 1
-
-print("Length:       ", len(seq))
-print("GC content:   ", gc_content(seq), "%")
-print("Base counts:  ", counts)
-print("Reverse comp: ", reverse_complement(seq))
-print("Transcribed:  ", seq.replace("T", "U"))
-</script></div>
-            <div class="why"><h4>This is the shape of real code</h4><p>A short script that reads a sequence, computes a few numbers, and prints a tidy summary is exactly what day-to-day bioinformatics looks like. The project lesson scales this same pattern up to a real file fetched from NCBI.</p></div>
-
-            <h2>Practice exercises</h2>
-            <p>Try each one in the cell provided before opening the solution. Editing and re-running is the whole point - you cannot break anything.</p>
-
-            <p><strong>Exercise 1 - Reverse complement.</strong> A DNA strand has a partner strand read in the opposite direction, where A pairs with T and G pairs with C. Finish <code class="inline">reverse_complement</code> so it returns the partner of any sequence.</p>
-            <div class="pycell"><script type="application/x-python">
-def reverse_complement(seq):
-    pairs = {"A": "T", "T": "A", "G": "C", "C": "G"}
-    # build the complement of each base, then reverse the result
-    return ""   # replace this with your code
-
-print(reverse_complement("ATGC"))   # expected: GCAT
-</script></div>
-            <details><summary>Show a worked solution</summary>
-<pre>def reverse_complement(seq):
-    pairs = {"A": "T", "T": "A", "G": "C", "C": "G"}
-    return "".join(pairs[base] for base in reversed(seq))
-
-print(reverse_complement("ATGC"))   # GCAT</pre></details>
-
-            <p><strong>Exercise 2 - GC content of many sequences.</strong> Given a list of sequences, print each one next to its GC percentage.</p>
-            <div class="pycell"><script type="application/x-python">
-seqs = ["ATGC", "GGGGCC", "ATATAT", "GCGCGC"]
-
-# loop over seqs and print each sequence with its GC%
-</script></div>
-            <details><summary>Show a worked solution</summary>
-<pre>seqs = ["ATGC", "GGGGCC", "ATATAT", "GCGCGC"]
-
-def gc(s):
-    return round((s.count("G") + s.count("C")) / len(s) * 100, 1)
-
-for s in seqs:
-    print(s, "->", gc(s), "%")</pre></details>
-
-            <p><strong>Exercise 3 - Find the first start codon.</strong> Protein-coding genes usually begin with the codon <code class="inline">ATG</code>. Print the index where <code class="inline">ATG</code> first appears (Python's <code class="inline">.find()</code> helps), or -1 if it is absent.</p>
-            <div class="pycell"><script type="application/x-python">
-seq = "CCAGATGTTTATGAAA"
-
-# find the first ATG and print its position
-</script></div>
-            <details><summary>Show a worked solution</summary>
-<pre>seq = "CCAGATGTTTATGAAA"
-print(seq.find("ATG"))   # 4  (the first ATG starts at index 4)</pre></details>
+            <div class="glossary">
+                <h4>Every key word, in plain English</h4>
+                <dl>
+                    <dt>variable</dt><dd>a named box that holds a piece of data.</dd>
+                    <dt>string (str)</dt><dd>text, written in quotes.</dd>
+                    <dt>integer (int)</dt><dd>a whole number.</dd>
+                    <dt>float</dt><dd>a number with a decimal point.</dd>
+                    <dt>boolean (bool)</dt><dd>a True or False value.</dd>
+                    <dt>list</dt><dd>an ordered collection of values in square brackets.</dd>
+                    <dt>dictionary (dict)</dt><dd>labelled key-to-value pairs in curly braces.</dd>
+                    <dt>index</dt><dd>the position of an item, counting from 0.</dd>
+                    <dt>operator</dt><dd>a symbol that does something, like <code class="inline">+</code> or <code class="inline">==</code>.</dd>
+                    <dt>comparison</dt><dd>a question like "is this bigger?" that answers True or False.</dd>
+                    <dt>if / elif / else</dt><dd>run different code depending on a True/False question.</dd>
+                    <dt>loop</dt><dd>repeat an instruction for every item in a collection.</dd>
+                    <dt>function</dt><dd>a named, reusable recipe defined with <code class="inline">def</code>.</dd>
+                    <dt>comment</dt><dd>a note after <code class="inline">#</code> that Python ignores.</dd>
+                </dl>
+            </div>
 
             <h2>Check your understanding</h2>
-            <div class="quiz" data-question="Why does dna[1] give the second base, not the first?">
-                <button data-opt data-correct>Python indexes from 0, so the first item is at index 0</button>
-                <button data-opt>Python skips the first character of every string</button>
-                <button data-opt>dna[1] is actually the first base; the docs are wrong</button>
-                <div class="quiz-explain"><strong>Right.</strong> Python counts from 0. The first item is at index 0, the second at index 1, and so on.</div>
+            <div class="quiz" data-question="What is a variable?">
+                <button data-opt data-correct>A named box that stores a piece of data for later use</button>
+                <button data-opt>A type of error in your code</button>
+                <button data-opt>A number that can never change</button>
+                <div class="quiz-explain"><strong>Right.</strong> A variable is a name attached to a value, like the box <code>dna</code> holding "ATGC".</div>
+            </div>
+            <div class="quiz" data-question="Which type would you use for a DNA sequence like ATGC?">
+                <button data-opt data-correct>A string (str), because it is text in quotes</button>
+                <button data-opt>An integer (int), because it has letters</button>
+                <button data-opt>A boolean (bool), because DNA is either there or not</button>
+                <div class="quiz-explain"><strong>Correct.</strong> Text, including a DNA sequence, is a string: characters inside quotes.</div>
+            </div>
+            <div class="quiz" data-question="Why does dna[0] give the first letter, not dna[1]?">
+                <button data-opt data-correct>Python counts positions starting from 0</button>
+                <button data-opt>dna[0] is empty; the first letter is always dna[1]</button>
+                <button data-opt>It is a bug; both give the same letter</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> Indexing starts at 0, so position 0 is the first item, position 1 the second, and so on.</div>
+            </div>
+            <div class="quiz" data-question="What is the difference between = and == ?">
+                <button data-opt data-correct>= stores a value in a variable; == asks whether two things are equal</button>
+                <button data-opt>They are identical and interchangeable</button>
+                <button data-opt>== stores a value; = compares two values</button>
+                <div class="quiz-explain"><strong>Correct.</strong> One equals sign assigns; two equals signs compare and give True or False.</div>
             </div>
             <div class="quiz" data-question="When should you write a function?">
-                <button data-opt data-correct>When you do the same operation more than once</button>
-                <button data-opt>Only when your program is over 100 lines long</button>
-                <button data-opt>Never - functions just make code slower</button>
-                <div class="quiz-explain"><strong>Exactly.</strong> A function lets you write the logic once and reuse it with different inputs - clearer, shorter, and less error-prone.</div>
-            </div>
-            <div class="quiz" data-question="What is the difference between a list and a dictionary?">
-                <button data-opt data-correct>A list is accessed by position; a dictionary by key/label</button>
-                <button data-opt>A dictionary can only hold words, a list only numbers</button>
-                <button data-opt>There is no real difference; they are interchangeable</button>
-                <div class="quiz-explain"><strong>Correct.</strong> A list is an ordered sequence you access by position (<code>genes[0]</code>). A dictionary stores labelled pairs you access by key (<code>counts["G"]</code>). Use a list for "things in order," a dictionary for "look this up by name."</div>
+                <button data-opt data-correct>When you want to reuse the same steps with different inputs</button>
+                <button data-opt>Only when a program is over 100 lines long</button>
+                <button data-opt>Never; functions make code slower</button>
+                <div class="quiz-explain"><strong>Right.</strong> A function lets you write the logic once and reuse it, which keeps code short and clear.</div>
             </div>
 
             <a class="next-lesson" href="python-project.html" target="_blank" rel="noopener">
-                <span>Next in the Python series - the payoff</span>
-                <h3>Project: analyze a real DNA sequence →</h3>
+                <span>Next in the Python series, the payoff</span>
+                <h3>Project: analyze a real DNA sequence &rarr;</h3>
             </a>
+            <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:18px;">Ready for more? <a href="python-intermediate.html" target="_blank" rel="noopener" style="color:var(--primary-blue); font-weight:600;">Python Level 2 (Intermediate)</a> builds straight on this.</p>
 
         </div></div>
     </main>
