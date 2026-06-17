@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Where biological data lives and how to fetch it programmatically: NCBI Entrez E-utilities, Ensembl BioMart and REST, UniProt. ID types and mapping (symbol, ENSG, Entrez, RefSeq). A BioNexus Hub lesson.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Biological Databases and APIs - BioNexus Hub">
+    <meta property="og:description" content="NCBI, Ensembl and UniProt, ID types and why mapping matters, plus fetching data politely.">
+    <meta property="og:url" content="https://bionexushub.com/databases-and-apis.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Biological Databases and APIs - BioNexus Hub">
+    <meta name="twitter:description" content="NCBI, Ensembl and UniProt, ID types and why mapping matters, plus fetching data politely.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Biological Databases and APIs - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; --amber:#f59e0b; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+        .lesson-body h2 .badge { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; background:rgba(91,156,248,0.14); color:#3b6fd4; padding:4px 10px; border-radius:12px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.82rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .h { color:#fbbf24; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .cheat { background:white; border:1px solid rgba(91,156,248,0.25); border-radius:10px; padding:8px 24px; margin:22px 0; }
+        .cheat table { width:100%; border-collapse:collapse; }
+        .cheat td { padding:11px 6px; border-bottom:1px solid #eef2f7; font-size:0.98rem; vertical-align:top; }
+        .cheat td:first-child { font-family:'JetBrains Mono',monospace; color:#4c5fd5; font-weight:600; white-space:nowrap; }
+        .cheat tr:last-child td { border-bottom:none; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:600px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
+        .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
+        .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .lesson-body .refs { background:#f1f5f9; border:1px solid rgba(91,156,248,0.2); border-radius:10px; padding:20px 24px; margin:30px 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="minicourses.html">Mini-courses</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                                <li><a href="faq.html">Help</a></li>
+                                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data &nbsp;/&nbsp; Databases and APIs</div>
+            <h1>Biological Databases and APIs</h1>
+            <p class="promise">Most of the data you will ever need already exists in a public database. The skill is knowing where each kind of data lives, how to fetch it programmatically, and how to translate between the many ID systems without losing genes along the way.</p>
+            <div class="tags">
+                <span class="tag green">🟢 Beginner</span>
+                <span class="tag">⏱️ ~32 min</span>
+                <span class="tag green">🌐 Just reading</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: name the major databases (NCBI, Ensembl, UniProt) and what each holds, recognise the common gene ID types (symbol, Ensembl ENSG, Entrez/NCBI gene ID, RefSeq NM_), explain why ID mapping matters, and fetch records politely with an API while respecting etiquette.</p>
+            </div>
+
+            <h2>Where the data lives</h2>
+            <p>Public bioinformatics data is spread across a few large hubs, each with a focus. You rarely download whole databases; instead you query them through an <strong>API</strong> (an application programming interface), which lets your script ask for exactly the records you need.</p>
+            <table class="dtable">
+                <tr><th>Database</th><th>Holds</th><th>How to access</th></tr>
+                <tr><td><strong>NCBI</strong></td><td>GenBank and RefSeq sequences, SRA reads, dbSNP variants, PubMed</td><td>Entrez E-utilities</td></tr>
+                <tr><td><strong>Ensembl</strong></td><td>Genes, transcripts, annotation, comparative genomics</td><td>BioMart and a REST API</td></tr>
+                <tr><td><strong>UniProt</strong></td><td>Protein sequences and functional annotation</td><td>REST API and a mapping tool</td></tr>
+            </table>
+            <div class="why"><h4>RefSeq vs GenBank</h4><p>GenBank is the raw submitted record; RefSeq is NCBI's curated, non-redundant reference set (RefSeq transcript IDs start with <code class="inline">NM_</code> for mRNAs). When you want a single canonical record per gene, you usually want RefSeq.</p></div>
+
+            <h2><span class="step-num">1</span>ID types and why mapping matters</h2>
+            <p>The same gene is named differently in different systems, and tools only join data when the IDs match exactly. A gene symbol is human-friendly but ambiguous and changes over time; the stable database IDs are what you should key your analysis on.</p>
+            <table class="dtable">
+                <tr><th>ID type</th><th>Example</th><th>Source</th></tr>
+                <tr><td>Gene symbol</td><td>TP53</td><td>HGNC (human-friendly, can change)</td></tr>
+                <tr><td>Ensembl gene ID</td><td>ENSG00000141510</td><td>Ensembl (stable)</td></tr>
+                <tr><td>Entrez / NCBI gene ID</td><td>7157</td><td>NCBI (a number)</td></tr>
+                <tr><td>RefSeq transcript</td><td>NM_000546</td><td>NCBI RefSeq</td></tr>
+                <tr><td>UniProt accession</td><td>P04637</td><td>UniProt (protein)</td></tr>
+            </table>
+            <p>Joining two datasets that use different ID systems requires mapping one to the other. Common tools are <strong>Ensembl BioMart</strong> and, in R, the <code class="inline">org.Hs.eg.db</code> annotation package.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 560 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="An ID mapping flow from gene symbol to Ensembl gene ID to UniProt accession">
+                    <g font-family="'JetBrains Mono',monospace" font-size="13">
+                    <rect x="20" y="45" width="130" height="40" rx="6" fill="#dbeafe" stroke="#5b9cf8" stroke-width="2"/>
+                    <text x="85" y="70" text-anchor="middle" fill="#0f172a">TP53</text>
+                    <rect x="215" y="45" width="180" height="40" rx="6" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+                    <text x="305" y="70" text-anchor="middle" fill="#0f172a">ENSG00000141510</text>
+                    <rect x="450" y="45" width="90" height="40" rx="6" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+                    <text x="495" y="70" text-anchor="middle" fill="#0f172a">P04637</text>
+                    </g>
+                    <g stroke="#64748b" stroke-width="2" fill="none">
+                    <line x1="150" y1="65" x2="210" y2="65" marker-end="url(#ar)"/>
+                    <line x1="395" y1="65" x2="445" y2="65" marker-end="url(#ar)"/>
+                    </g>
+                    <defs><marker id="ar" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker></defs>
+                    <g font-family="'Work Sans',sans-serif" font-size="11" fill="#64748b">
+                    <text x="85" y="105" text-anchor="middle" fill="#5b9cf8">symbol</text>
+                    <text x="305" y="105" text-anchor="middle" fill="#a855f7">Ensembl gene</text>
+                    <text x="495" y="105" text-anchor="middle" fill="#10b981">UniProt</text>
+                    </g>
+                </svg>
+                <figcaption>A typical mapping path: a gene symbol resolves to a stable Ensembl gene ID, which maps to a UniProt protein accession.</figcaption>
+            </figure>
+
+            <h2><span class="step-num">2</span>Fetching politely: API etiquette</h2>
+            <p>Public APIs are a shared resource. Good citizenship keeps them fast for everyone and keeps you from being blocked.</p>
+            <ul>
+                <li><strong>Identify yourself:</strong> for NCBI Entrez, always set <code class="inline">Entrez.email</code> (and an API key for higher limits).</li>
+                <li><strong>Respect rate limits:</strong> without a key, NCBI allows only a few requests per second, so batch your queries instead of looping one ID at a time.</li>
+                <li><strong>Cache results:</strong> save what you download so a re-run does not hit the server again.</li>
+            </ul>
+
+            <h2><span class="step-num">3</span>Worked example: Biopython Entrez efetch</h2>
+            <p>This snippet (shown for illustration, not meant to be run as-is) fetches a nucleotide record from NCBI with Biopython. Note the email set up front, which Entrez requires.</p>
+            <pre><span class="c"># illustration only -- set a real email before running</span>
+<span class="h">from</span> Bio <span class="h">import</span> Entrez, SeqIO
+
+Entrez.email = <span class="h">"you@example.com"</span>   <span class="c"># required etiquette</span>
+
+handle = Entrez.efetch(
+    db=<span class="h">"nucleotide"</span>,
+    id=<span class="h">"NM_000546"</span>,        <span class="c"># RefSeq mRNA for TP53</span>
+    rettype=<span class="h">"gb"</span>,
+    retmode=<span class="h">"text"</span>,
+)
+record = SeqIO.read(handle, <span class="h">"genbank"</span>)
+handle.close()
+<span class="h">print</span>(record.id, len(record.seq))</pre>
+            <div class="why"><h4>Why set Entrez.email</h4><p>If a query misbehaves, NCBI uses the email to contact you before blocking your traffic. Leaving it unset is both impolite and a fast way to get rate-limited.</p></div>
+
+            <h2>Check your understanding</h2>
+            <div class="quiz">
+                <div class="quiz-q-src">Which database is the place to look for protein sequences and functional annotation?</div>
+                <button data-opt data-correct>UniProt</button>
+                <button data-opt>dbSNP</button>
+                <button data-opt>SRA</button>
+                <div class="quiz-explain"><strong>Right.</strong> UniProt is the protein resource. dbSNP holds variants and SRA holds raw sequencing reads, both at NCBI.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Which of these is an Ensembl gene ID?</div>
+                <button data-opt data-correct>ENSG00000141510</button>
+                <button data-opt>NM_000546</button>
+                <button data-opt>7157</button>
+                <div class="quiz-explain"><strong>Correct.</strong> Ensembl gene IDs start with ENSG. NM_ is a RefSeq transcript; 7157 is an Entrez/NCBI gene ID.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Why should you avoid keying an analysis on gene symbols alone?</div>
+                <button data-opt data-correct>Symbols are ambiguous and change over time, unlike stable database IDs</button>
+                <button data-opt>Symbols cannot be typed into a script</button>
+                <button data-opt>Symbols are only used for proteins</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> Gene symbols get renamed and can be ambiguous. Stable IDs like ENSG or Entrez gene IDs are safer keys for joining data.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">When using NCBI Entrez via Biopython, what must you set before fetching?</div>
+                <button data-opt data-correct>Entrez.email</button>
+                <button data-opt>The genome build</button>
+                <button data-opt>A BED file path</button>
+                <div class="quiz-explain"><strong>Right.</strong> NCBI requires Entrez.email so they can reach you before blocking misbehaving traffic. An API key raises your rate limit further.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Your dataset uses gene symbols and another uses Entrez IDs. What do you need to join them?</div>
+                <button data-opt data-correct>An ID mapping (for example via BioMart or org.Hs.eg.db)</button>
+                <button data-opt>A genome chain file</button>
+                <button data-opt>To sort both files with sort -k1,1 -k2,2n</button>
+                <div class="quiz-explain"><strong>Correct.</strong> Tools only match identical IDs, so you map one system to the other. Ensembl BioMart or the R package org.Hs.eg.db both do this.</div>
+            </div>
+
+            <a class="next-lesson" href="track1-where-data-lives.html" target="_blank" rel="noopener">
+                <span>Next in Track 1</span>
+                <h3>Where the data lives: NCBI, Ensembl, GEO, SRA &rarr;</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>

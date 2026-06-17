@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="What a reference FASTA is and why aligners need an index for fast lookup. Build indexes with bwa index, samtools faidx and STAR genomeGenerate, and pair the genome with matching annotation. A BioNexus Hub lesson.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Reference Genomes and Indexing - BioNexus Hub">
+    <meta property="og:description" content="Why aligners index the genome first, the files each tool creates, and matching the right build.">
+    <meta property="og:url" content="https://bionexushub.com/reference-genomes.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Reference Genomes and Indexing - BioNexus Hub">
+    <meta name="twitter:description" content="Why aligners index the genome first, the files each tool creates, and matching the right build.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Reference Genomes and Indexing - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; --amber:#f59e0b; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+        .lesson-body h2 .badge { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; background:rgba(91,156,248,0.14); color:#3b6fd4; padding:4px 10px; border-radius:12px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.82rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .h { color:#fbbf24; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .cheat { background:white; border:1px solid rgba(91,156,248,0.25); border-radius:10px; padding:8px 24px; margin:22px 0; }
+        .cheat table { width:100%; border-collapse:collapse; }
+        .cheat td { padding:11px 6px; border-bottom:1px solid #eef2f7; font-size:0.98rem; vertical-align:top; }
+        .cheat td:first-child { font-family:'JetBrains Mono',monospace; color:#4c5fd5; font-weight:600; white-space:nowrap; }
+        .cheat tr:last-child td { border-bottom:none; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:600px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
+        .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
+        .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .lesson-body .refs { background:#f1f5f9; border:1px solid rgba(91,156,248,0.2); border-radius:10px; padding:20px 24px; margin:30px 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="minicourses.html">Mini-courses</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                                <li><a href="faq.html">Help</a></li>
+                                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 2: Reading and processing sequencing data &nbsp;/&nbsp; Reference genomes and indexing</div>
+            <h1>Reference Genomes and Indexing</h1>
+            <p class="promise">Before an aligner can place a single read, it builds an index of the reference, the same way a textbook has an index so you do not read every page to find one word. Here is what a reference FASTA is, why the index matters, and the files each tool creates.</p>
+            <div class="tags">
+                <span class="tag green">🟢 Beginner</span>
+                <span class="tag">⏱️ ~30 min</span>
+                <span class="tag green">🌐 Just reading</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: describe what a reference FASTA holds, explain why aligners need an index for fast lookup, name the tools that build indexes (bwa index, samtools faidx, STAR) and the files they create, and understand why the genome must be paired with matching annotation and the correct build.</p>
+            </div>
+
+            <h2>What a reference FASTA is</h2>
+            <p>A reference genome is distributed as a <strong>FASTA</strong> file: plain text, one header line per chromosome (starting with <code class="inline">&gt;</code>) followed by the sequence. It is the agreed-upon backbone that your reads get compared against during alignment.</p>
+            <pre><span class="c"># ref.fa  -- a reference FASTA</span>
+<span class="h">&gt;chr1</span>
+ACGTACGTACGTTTGGCCAA...
+<span class="h">&gt;chr2</span>
+TTGGCCAAACGTACGTACGT...</pre>
+            <p>A FASTA on its own is just a long string of letters. To actually search it quickly, the aligner first turns it into an index.</p>
+
+            <h2><span class="step-num">1</span>Why aligners need an index</h2>
+            <p>A sequencing run produces millions of short reads, and each one must be located somewhere in a genome of billions of bases. Scanning the whole genome for every read would be hopelessly slow. So aligners build an <strong>index</strong> first: a precomputed data structure that lets them jump straight to candidate locations, exactly like the index at the back of a book lets you find a topic without reading every page.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Short reads being placed onto a long reference genome line using an index for fast lookup">
+                    <g font-family="'Work Sans',sans-serif" font-size="13">
+                    <text x="20" y="40" fill="#5b9cf8" font-weight="700">reads</text>
+                    <text x="20" y="160" fill="#a855f7" font-weight="700">reference</text>
+                    </g>
+                    <rect x="120" y="26" width="60" height="18" rx="3" fill="#dbeafe" stroke="#5b9cf8" stroke-width="2"/>
+                    <rect x="240" y="26" width="60" height="18" rx="3" fill="#dbeafe" stroke="#5b9cf8" stroke-width="2"/>
+                    <rect x="380" y="26" width="60" height="18" rx="3" fill="#dbeafe" stroke="#5b9cf8" stroke-width="2"/>
+                    <rect x="100" y="150" width="420" height="22" rx="4" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+                    <g stroke="#10b981" stroke-width="2" fill="none" stroke-dasharray="4 3">
+                    <line x1="150" y1="44" x2="160" y2="150"/>
+                    <line x1="270" y1="44" x2="300" y2="150"/>
+                    <line x1="410" y1="44" x2="430" y2="150"/>
+                    </g>
+                    <text x="310" y="200" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="12" fill="#10b981">The index says where each read belongs, so no full scan is needed.</text>
+                </svg>
+                <figcaption>Reads (blue) are placed onto the reference (purple) by jumping to candidate spots via the index, not by scanning the whole genome each time.</figcaption>
+            </figure>
+
+            <h2><span class="step-num">2</span>The tools and the files they make</h2>
+            <p>Different aligners use different index structures, so each ships its own index builder. You run the indexer once per reference, then reuse the index for every alignment.</p>
+            <table class="dtable">
+                <tr><th>Command</th><th>Purpose</th><th>Files it creates</th></tr>
+                <tr><td><strong>bwa index ref.fa</strong></td><td>Index for the BWA aligner</td><td>.amb, .ann, .bwt, .pac, .sa</td></tr>
+                <tr><td><strong>samtools faidx ref.fa</strong></td><td>Lightweight FASTA index for random base lookup</td><td>.fai</td></tr>
+                <tr><td><strong>STAR --runMode genomeGenerate</strong></td><td>Index for the STAR RNA-seq aligner</td><td>a genome directory of index files</td></tr>
+            </table>
+            <div class="why"><h4>Two different "indexes"</h4><p>The <code class="inline">.fai</code> from samtools is a small lookup table so tools can grab any region instantly; the <code class="inline">bwa index</code> files are a larger structure the aligner needs to place reads. You often build both, because many pipelines use samtools alongside the aligner.</p></div>
+
+            <h2><span class="step-num">3</span>Worked example: build the indexes</h2>
+            <p>Here is the minimal setup before aligning with BWA. Run these once for a given reference.</p>
+            <pre><span class="c"># build the BWA index -> ref.fa.amb .ann .bwt .pac .sa</span>
+bwa index ref.fa
+
+<span class="c"># build the samtools FASTA index -> ref.fa.fai</span>
+samtools faidx ref.fa
+
+<span class="c"># check the files that were created</span>
+ls ref.fa*
+<span class="c"># ref.fa  ref.fa.amb  ref.fa.ann  ref.fa.bwt  ref.fa.fai  ref.fa.pac  ref.fa.sa</span></pre>
+
+            <h2><span class="step-num">4</span>Match the genome, annotation, and build</h2>
+            <p>The reference rarely travels alone. To know which gene or exon a read landed in, you pair the FASTA with an <strong>annotation</strong> file (a GTF or GFF) that lists feature coordinates. The catch: the annotation coordinates only make sense on the exact same build, and the chromosome names must match too. Mixing a hg38 FASTA with an hg19 GTF, or <code class="inline">chr1</code> against <code class="inline">1</code>, gives silently wrong results.</p>
+            <div class="why"><h4>Why STAR needs the GTF at index time</h4><p>STAR can take the annotation GTF when it builds the index, so it knows where splice junctions are and can map reads that span exon boundaries. That only works if the FASTA and GTF are the same build with matching chromosome names.</p></div>
+
+            <h2>Check your understanding</h2>
+            <div class="quiz">
+                <div class="quiz-q-src">Why do aligners build an index of the reference before aligning?</div>
+                <button data-opt data-correct>So they can jump to candidate locations instead of scanning the whole genome per read</button>
+                <button data-opt>To convert the genome to 1-based coordinates</button>
+                <button data-opt>To compress the reads into a BAM file</button>
+                <div class="quiz-explain"><strong>Right.</strong> An index is like a book index: it lets the aligner find where a read belongs fast, without scanning billions of bases every time.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Which command builds a lightweight FASTA index (.fai) for random region lookup?</div>
+                <button data-opt data-correct>samtools faidx ref.fa</button>
+                <button data-opt>bwa index ref.fa</button>
+                <button data-opt>STAR --runMode genomeGenerate</button>
+                <div class="quiz-explain"><strong>Correct.</strong> samtools faidx makes the small .fai index. bwa index and STAR build larger structures for their own aligners.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Which set of files does <code class="inline">bwa index ref.fa</code> create?</div>
+                <button data-opt data-correct>.amb, .ann, .bwt, .pac, .sa</button>
+                <button data-opt>.fai only</button>
+                <button data-opt>.bam and .bai</button>
+                <div class="quiz-explain"><strong>Right.</strong> bwa index produces .amb, .ann, .bwt, .pac and .sa. The .fai comes from samtools faidx; .bam/.bai are alignment outputs.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What is a reference genome distributed as?</div>
+                <button data-opt data-correct>A FASTA file with one header per chromosome</button>
+                <button data-opt>A FASTQ file of reads</button>
+                <button data-opt>A VCF of variants</button>
+                <div class="quiz-explain"><strong>Correct.</strong> The reference is a FASTA: a header line per sequence (starting with &gt;) followed by the bases. FASTQ holds reads; VCF holds variants.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Why must the annotation GTF match the genome build and chromosome naming?</div>
+                <button data-opt data-correct>Coordinates and names only line up on the same build, or features are silently wrong</button>
+                <button data-opt>GTF files cannot be read otherwise</button>
+                <button data-opt>The aligner refuses to start without a matching email</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> A GTF's coordinates are tied to one build, and chr1 must match chr1. Mixing builds or naming styles gives wrong gene assignments with no error.</div>
+            </div>
+
+            <a class="next-lesson" href="ngs-alignment.html" target="_blank" rel="noopener">
+                <span>Next in Track 2</span>
+                <h3>Read alignment &rarr;</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>

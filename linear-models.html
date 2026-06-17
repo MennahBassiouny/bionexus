@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Linear models and regression for biologists: how a slope and intercept describe an outcome, why t-tests and ANOVA are special cases of one linear model, and how to read lm() output in R.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Linear Models and Regression for Biologists | BioNexus Hub">
+    <meta property="og:description" content="Regression, slopes and intercepts, and why the t-test and ANOVA are just linear models, explained for biologists with R examples.">
+    <meta property="og:url" content="https://bionexushub.com/linear-models.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Linear Models and Regression for Biologists | BioNexus Hub">
+    <meta name="twitter:description" content="Slopes, intercepts, and why familiar tests are all linear models underneath, with lm() in R.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Linear Models and Regression for Biologists - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.amber { background: rgba(245,158,11,0.12); border-color: transparent; color: #b45309; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .ctable { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.96rem; }
+        .ctable th, .ctable td { border: 1px solid rgba(91,156,248,0.2); padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ctable th { background: rgba(91,156,248,0.1); color: var(--deep-navy); font-weight: 600; }
+        .ctable td { color: var(--text-gray); }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .p { color: #f472b6; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:640px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
+        .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
+        .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">&#9776;</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="faq.html">Help</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-5" target="_blank" rel="noopener">&#8592; Roadmap</a> &nbsp;/&nbsp; Track 5: Statistics &amp; Visualization &nbsp;/&nbsp; Linear models</div>
+                <h1>Linear Models and Regression for Biologists</h1>
+                <p class="promise">One idea unifies the t-test, ANOVA, and regression: the linear model. Learn how a slope and intercept describe your data, what each coefficient means, and how to read lm() output in R.</p>
+                <div class="tags">
+                    <span class="tag green">&#x1F7E2; Beginner</span>
+                    <span class="tag">&#x23F1;&#xFE0F; ~30 min</span>
+                    <span class="tag">&#x1F9EE; Statistics</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: read a simple regression as a slope and intercept, interpret a coefficient in a multiple regression, recognize that the t-test and ANOVA are special cases of a linear model, and fit and read <code class="inline">lm()</code> in R.</p>
+            </div>
+
+            <h2>Regression is just a recipe for predicting an outcome</h2>
+            <p>A regression model describes one <strong>outcome</strong> (the thing you measured, like gene expression) as a function of one or more <strong>predictors</strong> (the things you think explain it, like drug dose or genotype). It does not prove cause; it summarizes how the outcome tends to change as the predictors change.</p>
+            <p>The simplest version, <strong>simple linear regression</strong>, fits a straight line through your data. That line has just two numbers:</p>
+            <p style="text-align:center; font-size:1.15rem;"><code class="inline">y = b0 + b1 &times; x</code></p>
+            <ul>
+                <li><strong>b1, the slope:</strong> how much the outcome <code class="inline">y</code> changes for each one-unit increase in the predictor <code class="inline">x</code>. If <code class="inline">b1 = 2</code>, then y goes up by 2 for every extra unit of x.</li>
+                <li><strong>b0, the intercept:</strong> the predicted value of <code class="inline">y</code> when <code class="inline">x</code> is zero. It sets where the line crosses the vertical axis.</li>
+            </ul>
+
+            <h2><span class="step-num">1</span>Seeing the slope and intercept</h2>
+            <figure class="viz">
+                <svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A scatter plot of measured points with a fitted straight regression line, labeling the intercept where the line crosses the vertical axis and the slope as rise over run">
+                    <g font-family="'Work Sans',sans-serif" font-size="12">
+                    <line x1="80" y1="40" x2="80" y2="350" stroke="#0f172a" stroke-width="2"/>
+                    <line x1="80" y1="350" x2="620" y2="350" stroke="#0f172a" stroke-width="2"/>
+                    <text x="50" y="200" text-anchor="middle" transform="rotate(-90 50 200)" fill="#0f172a" font-weight="600">expression (y)</text>
+                    <text x="350" y="392" text-anchor="middle" fill="#0f172a" font-weight="600">dose (x)</text>
+                    <circle cx="140" cy="300" r="5" fill="#5b9cf8"/>
+                    <circle cx="200" cy="288" r="5" fill="#5b9cf8"/>
+                    <circle cx="250" cy="250" r="5" fill="#5b9cf8"/>
+                    <circle cx="300" cy="262" r="5" fill="#5b9cf8"/>
+                    <circle cx="360" cy="210" r="5" fill="#5b9cf8"/>
+                    <circle cx="410" cy="188" r="5" fill="#5b9cf8"/>
+                    <circle cx="470" cy="160" r="5" fill="#5b9cf8"/>
+                    <circle cx="520" cy="120" r="5" fill="#5b9cf8"/>
+                    <circle cx="570" cy="108" r="5" fill="#5b9cf8"/>
+                    <line x1="110" y1="318" x2="600" y2="96" stroke="#a855f7" stroke-width="3"/>
+                    <circle cx="80" cy="330" r="5" fill="#10b981"/>
+                    <text x="96" y="335" font-size="11.5" fill="#047857" font-weight="600">b0 (intercept): y when x = 0</text>
+                    <line x1="430" y1="178" x2="520" y2="178" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 3"/>
+                    <line x1="520" y1="178" x2="520" y2="135" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4 3"/>
+                    <text x="436" y="170" font-size="11" fill="#b45309" font-weight="600">run</text>
+                    <text x="528" y="160" font-size="11" fill="#b45309" font-weight="600">rise</text>
+                    <text x="395" y="240" font-size="11.5" fill="#6b21a8" font-weight="700">slope b1 = rise / run</text>
+                    </g>
+                </svg>
+                <figcaption>The fitted line (purple) summarizes the cloud of measured points (blue). The intercept is where it crosses x = 0; the slope is rise over run, how much y moves per unit of x.</figcaption>
+            </figure>
+            <p>Each real point sits a little above or below the line. Those gaps are the <strong>residuals</strong>. Regression chooses the slope and intercept that make those residuals as small as possible overall (the "least squares" fit).</p>
+
+            <h2><span class="step-num">2</span>Multiple regression: holding the others constant</h2>
+            <p>Real biology rarely has one cause. <strong>Multiple regression</strong> just adds more predictors:</p>
+            <p style="text-align:center; font-size:1.1rem;"><code class="inline">y = b0 + b1&times;x1 + b2&times;x2 + ...</code></p>
+            <p>Now each coefficient has a precise meaning: it is that predictor's effect on the outcome <strong>holding the other predictors constant</strong>. So <code class="inline">b1</code> is the change in <code class="inline">y</code> per unit of <code class="inline">x1</code> among samples that share the same <code class="inline">x2</code>. This is how you adjust for a confounder such as batch, sex, or age: put it in the model, and the other coefficients describe effects beyond it.</p>
+
+            <h2><span class="step-num">3</span>The big idea: your favorite tests are linear models</h2>
+            <p>Here is the insight that makes everything click. Many tests you already know are <strong>special cases of one linear model</strong>, differing only in what kind of predictor you feed it.</p>
+            <table class="dtable">
+                <tr><th>Familiar test</th><th>Is really a linear model with...</th><th>What the slope means</th></tr>
+                <tr><td>Two-group t-test</td><td>one binary (0/1) predictor</td><td>the difference in group means</td></tr>
+                <tr><td>One-way ANOVA</td><td>one categorical predictor (several groups)</td><td>each group's mean vs a reference group</td></tr>
+                <tr><td>ANCOVA</td><td>one categorical plus one numeric predictor</td><td>group difference adjusted for the numeric covariate</td></tr>
+                <tr><td>Pearson correlation</td><td>one numeric predictor (standardized)</td><td>the strength of the linear relationship</td></tr>
+            </table>
+            <p>When you compare two groups with a t-test, you are fitting <code class="inline">y = b0 + b1&times;group</code> where group is 0 for one group and 1 for the other. The intercept <code class="inline">b0</code> is the first group's mean, and the slope <code class="inline">b1</code> is exactly how much the second group differs. ANOVA is the same idea with a categorical predictor that has more than two levels. Learn the linear model once and these tests stop being separate things to memorize.</p>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">Why this matters in bioinformatics</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">The workhorse RNA-seq tools, DESeq2, edgeR, and limma, are all <strong>generalized linear models</strong> underneath: linear models extended to handle count data and non-normal noise. The "design formula" you write for them, such as <code class="inline">~ condition + batch</code>, is exactly the predictor list of a linear model. Understanding lm() is the foundation for understanding those tools.</p></div>
+
+            <h2><span class="step-num">4</span>Worked example: fitting lm() in R</h2>
+            <p>Suppose you measured a gene's expression at several drug doses and want to know how strongly expression tracks dose. In R you fit the model and read its summary:</p>
+            <pre><span class="c"># expression measured across a range of doses</span>
+fit <span class="p">&lt;-</span> <span class="p">lm</span>(expression <span class="p">~</span> dose)
+<span class="p">summary</span>(fit)
+
+<span class="c"># Coefficients:</span>
+<span class="c">#               Estimate  Std. Error  t value  Pr(&gt;|t|)</span>
+<span class="c"># (Intercept)     5.20       0.41      12.7    1.1e-06</span>
+<span class="c"># dose            0.85       0.12       7.1    9.3e-05   &lt;- slope b1</span>
+<span class="c">#</span>
+<span class="c"># Multiple R-squared: 0.78</span></pre>
+            <p>How to read it:</p>
+            <ul>
+                <li>The <strong>dose estimate (0.85)</strong> is the slope: expression rises by about 0.85 units for every one-unit increase in dose.</li>
+                <li>Its <strong>p-value (9.3e-05)</strong> tests whether that slope differs from zero. Small p means dose is associated with expression more than you would expect by chance.</li>
+                <li>The <strong>(Intercept) 5.20</strong> is the predicted expression at dose zero.</li>
+                <li><strong>R-squared (0.78)</strong> is the fraction of variation in expression that the model explains: here about 78 percent.</li>
+            </ul>
+            <p>To run a t-test as a linear model instead, you would write <code class="inline">lm(expression ~ group)</code> with a two-level group, and the group coefficient is the difference in means.</p>
+
+            <h2><span class="step-num">5</span>A quick word on assumptions</h2>
+            <p>Linear models trust two things, and it is worth a glance before believing the numbers. First, that the relationship is <strong>roughly linear</strong> (a straight line is a fair summary, not a curve). Second, that the <strong>residuals</strong> are reasonably symmetric, similar in spread across the range, and not strongly patterned. A quick <code class="inline">plot(fit)</code> in R shows residual plots that flag obvious problems. If the relationship curves, you may need to transform a variable or use a different model.</p>
+            <div class="warn"><h4>Common trap</h4><p>The intercept is only meaningful if <code class="inline">x = 0</code> is a real, sensible value. For a dose that never reaches zero, the intercept is just a mathematical anchor for the line, not a quantity to interpret on its own.</p></div>
+
+            <h2>Check your understanding</h2>
+            <div class="quiz">
+                <div class="quiz-q-src">In the model y = b0 + b1*x, what does the slope b1 represent?</div>
+                <button data-opt data-correct>How much y changes for each one-unit increase in x</button>
+                <button data-opt>The value of y when x equals zero</button>
+                <button data-opt>The total number of data points in the sample</button>
+                <div class="quiz-explain"><strong>Right.</strong> The slope is the change in the outcome per one-unit change in the predictor. The intercept b0 is the value of y when x is zero.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">In a multiple regression, what does a single coefficient describe?</div>
+                <button data-opt data-correct>That predictor's effect while holding the other predictors constant</button>
+                <button data-opt>The effect of all predictors added together</button>
+                <button data-opt>The error left over after fitting the line</button>
+                <div class="quiz-explain"><strong>Correct.</strong> Each coefficient in a multiple regression is the effect of its predictor with the other predictors held fixed, which is how you adjust for confounders like batch or age.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Which statement about familiar tests and linear models is true?</div>
+                <button data-opt data-correct>A two-group t-test is a linear model with one binary predictor, and ANOVA is one with a categorical predictor</button>
+                <button data-opt>Linear models and t-tests are completely unrelated methods</button>
+                <button data-opt>ANOVA can never be written as a regression</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> The t-test and ANOVA are special cases of the linear model, differing only in whether the predictor is binary or categorical.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">In R, which command fits a simple linear regression of expression on dose and shows its coefficients?</div>
+                <button data-opt data-correct>fit &lt;- lm(expression ~ dose); summary(fit)</button>
+                <button data-opt>cor(expression, dose) only</button>
+                <button data-opt>table(expression, dose)</button>
+                <div class="quiz-explain"><strong>Right.</strong> The <code class="inline">lm()</code> function fits the model and <code class="inline">summary()</code> reports the coefficients, p-values, and R-squared.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Why does understanding lm() help with RNA-seq tools like DESeq2, edgeR, and limma?</div>
+                <button data-opt data-correct>They are generalized linear models, and their design formula is the linear model's predictor list</button>
+                <button data-opt>They avoid statistics entirely and just sort genes by fold change</button>
+                <button data-opt>They are unrelated to regression and use no model at all</button>
+                <div class="quiz-explain"><strong>Correct.</strong> Those tools are generalized linear models built for count data; the design formula you write is exactly the predictor structure of a linear model.</div>
+            </div>
+
+            <a class="next-lesson" href="which-statistical-test.html" target="_blank" rel="noopener">
+                <span>Next in Track 5</span>
+                <h3>Which statistical test should I use? &rarr;</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>

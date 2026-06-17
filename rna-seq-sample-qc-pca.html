@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Sample QC and PCA for RNA-seq: use a vst transform and PCA to spot batch effects, outliers, and swapped labels before differential expression.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Sample QC and PCA for RNA-seq | BioNexus Hub">
+    <meta property="og:description" content="Transform counts with vst, run PCA, and read the plot to catch batch effects, outliers, and mislabeled samples before testing genes.">
+    <meta property="og:url" content="https://bionexushub.com/rna-seq-sample-qc-pca.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sample QC and PCA for RNA-seq | BioNexus Hub">
+    <meta name="twitter:description" content="vst plus PCA to catch batch effects and outliers before differential expression.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Sample QC and PCA for RNA-seq - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .bigidea { background: var(--deep-navy); color: white; border-radius: 12px; padding: 28px 32px; margin: 26px 0; }
+        .bigidea p { color: #e2e8f0; font-size: 1.3rem; margin: 0; font-family: 'Crimson Pro', serif; line-height: 1.4; }
+        .bigidea strong { color: #c084fc; }
+
+        .flow { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; margin: 26px 0; }
+        .flow .step { flex: 1 1 130px; background: white; border: 1px solid rgba(91,156,248,0.25); border-top: 3px solid var(--primary-blue); border-radius: 10px; padding: 16px 12px; text-align: center; }
+        .flow .step .ico { font-size: 1.7rem; display: block; }
+        .flow .step .lbl { font-weight: 700; color: var(--deep-navy); font-size: 0.92rem; margin-top: 6px; }
+        .flow .step .sub { font-size: 0.78rem; color: var(--text-gray); margin-top: 2px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        details { background: white; border: 1px solid rgba(91,156,248,0.2); border-radius: 8px; padding: 14px 20px; margin-bottom: 12px; }
+        details summary { font-weight: 600; cursor: pointer; color: var(--deep-navy); }
+        details p { margin: 12px 0 0; color: var(--text-gray); font-size: 1rem; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:640px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
+        .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
+        .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
+    </style>
+</head>
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">&larr; Roadmap</a> &nbsp;/&nbsp; Track 3: Differential expression &nbsp;/&nbsp; Sample QC and PCA</div>
+                <h1>Sample QC and PCA for RNA-seq</h1>
+                <p class="promise">Before you test a single gene, check your samples. Learn how a vst transform plus PCA reveals batch effects, outliers, and swapped labels, so you catch problems before they wreck the analysis.</p>
+                <div class="tags">
+                    <span class="tag green">&#x1F7E2; Beginner</span>
+                    <span class="tag">&#x23F1;&#xFE0F; ~20 min</span>
+                    <span class="tag">&#x1F9E0; Concepts + R</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain why you transform counts before PCA, read a PCA plot to spot batch effects and outliers, describe what PC1 and PC2 represent, and use a sample-to-sample distance heatmap as a second check.</p>
+            </div>
+
+            <h2>Check the samples before you test the genes</h2>
+            <p>Differential expression assumes your samples are what their labels say they are. Sample quality control is the step where you confirm that. A few minutes of plotting can reveal an outlier sample, a batch effect, or two labels that got swapped at the bench, any of which would quietly corrupt every gene-level result downstream. The two workhorse checks are a PCA plot and a sample-to-sample distance heatmap.</p>
+
+            <h2><span class="step-num">1</span>Transform the counts first</h2>
+            <p>Raw counts are unsuitable for PCA because their variance grows with the mean: highly expressed genes show big swings just because they are big, and they would dominate the plot. DESeq2 fixes this with a <strong>variance stabilizing transform</strong> (<code class="inline">vst</code>), or <code class="inline">rlog</code> for small datasets. After the transform, a gene's spread no longer depends so strongly on how highly it is expressed, so PCA reflects genuine differences between samples rather than just the loudest genes.</p>
+            <div class="jargon" style="background:linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0;">
+                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">vst vs rlog</span>Which transform</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">Both stabilize variance. <strong>vst</strong> is fast and the usual choice; <strong>rlog</strong> can behave better on very small or very uneven datasets but is slower. Either way, the transform is for QC and visualization only, the differential test still runs on raw counts.</p>
+            </div>
+
+            <h2><span class="step-num">2</span>Read the PCA plot</h2>
+            <p>PCA finds the directions in which your samples differ most and projects them onto a 2D plane. <strong>PC1</strong> is the direction of largest variance and <strong>PC2</strong> the next largest. The hope is simple: samples should cluster by <strong>biological condition</strong>. If instead they cluster by processing day or sequencing lane, you are looking at a <strong>batch effect</strong>. If one sample sits far from everything else, it is an <strong>outlier</strong>. And if a sample lands firmly in the wrong group, suspect a <strong>swapped label</strong>.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 560 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A PCA scatter plot with two clusters of samples colored by condition and one outlier flagged in amber">
+                    <g font-family="'Work Sans',sans-serif" font-size="12">
+                    <line x1="60" y1="280" x2="520" y2="280" stroke="#94a3b8" stroke-width="1.5"/>
+                    <line x1="60" y1="280" x2="60" y2="40" stroke="#94a3b8" stroke-width="1.5"/>
+                    <text x="290" y="308" text-anchor="middle" fill="#64748b">PC1 (largest variance)</text>
+                    <text x="24" y="160" text-anchor="middle" fill="#64748b" transform="rotate(-90 24 160)">PC2</text>
+                    <ellipse cx="170" cy="170" rx="70" ry="55" fill="rgba(168,85,247,0.08)" stroke="#a855f7" stroke-dasharray="4 4"/>
+                    <ellipse cx="410" cy="150" rx="70" ry="55" fill="rgba(16,185,129,0.08)" stroke="#10b981" stroke-dasharray="4 4"/>
+                    <circle cx="150" cy="160" r="8" fill="#a855f7"/><circle cx="185" cy="185" r="8" fill="#a855f7"/><circle cx="175" cy="150" r="8" fill="#a855f7"/>
+                    <circle cx="400" cy="140" r="8" fill="#10b981"/><circle cx="425" cy="165" r="8" fill="#10b981"/><circle cx="395" cy="170" r="8" fill="#10b981"/>
+                    <circle cx="300" cy="70" r="9" fill="#f59e0b" stroke="#b45309" stroke-width="2"/>
+                    <text x="300" y="56" text-anchor="middle" fill="#b45309" font-weight="700">outlier</text>
+                    <text x="170" y="245" text-anchor="middle" fill="#7c3aed" font-weight="700">control cluster</text>
+                    <text x="410" y="225" text-anchor="middle" fill="#047857" font-weight="700">treated cluster</text>
+                    <rect x="380" y="40" width="14" height="14" fill="#a855f7"/><text x="400" y="52" fill="#64748b">control</text>
+                    <rect x="455" y="40" width="14" height="14" fill="#10b981"/><text x="475" y="52" fill="#64748b">treated</text>
+                    </g>
+                </svg>
+                <figcaption>Good sign: the two conditions form separate clusters along PC1. Warning sign: the amber point sits far from both groups, a likely outlier to investigate before testing.</figcaption>
+            </figure>
+            <p>When the plot looks like the one above, with conditions separated and one stray point, you investigate the stray sample rather than deleting it on sight. Sometimes it is a genuine biological extreme; sometimes it is failed library prep or a mislabel. The point of QC is to ask the question early.</p>
+
+            <h2><span class="step-num">3</span>The distance heatmap as a second check</h2>
+            <p>A <strong>sample-to-sample distance heatmap</strong> computes how different every pair of samples is across all genes and draws the result as a grid, usually with clustering. Replicates of the same condition should look most similar to each other (small distances, a tight block on the diagonal). If a sample is closer to the wrong group than to its own replicates, that agrees with what PCA hinted at, and two checks pointing the same way is a strong signal.</p>
+            <table class="dtable">
+                <thead>
+                    <tr><th>What you see</th><th>Likely meaning</th><th>What to do</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Clusters split by condition</td><td>Healthy design; biology is the dominant signal</td><td>Proceed to differential expression</td></tr>
+                    <tr><td>Clusters split by batch / lane / day</td><td>Batch effect dominates</td><td>Model the batch (e.g. ~ batch + dex)</td></tr>
+                    <tr><td>One sample far from all others</td><td>Outlier or failed prep</td><td>Investigate; consider removing if technical</td></tr>
+                    <tr><td>A sample sits firmly in the wrong group</td><td>Possible swapped label</td><td>Trace the sample back to the metadata</td></tr>
+                </tbody>
+            </table>
+            <div class="why"><h4>One-line summary</h4><p>Transform counts with vst (or rlog), run PCA, and hope samples cluster by condition. Clustering by batch means a batch effect; a lone far point means an outlier; a sample in the wrong group means a possible swapped label. Confirm with a distance heatmap.</p></div>
+
+            <h2>A worked example</h2>
+            <p>In DESeq2 the whole check is a few lines. You build the dataset, transform with <code class="inline">vst</code>, then call <code class="inline">plotPCA</code>, coloring points by the treatment column (<code class="inline">dex</code> in the airway dataset).</p>
+            <pre><code>library(DESeq2)
+
+# dds built from RAW counts, airway design ~ cell + dex
+dds &lt;- DESeqDataSetFromMatrix(countData = counts_raw,
+                              colData   = sample_info,
+                              design    = ~ cell + dex)
+
+# variance stabilizing transform for QC / visualization only
+vsd &lt;- vst(dds, blind = TRUE)
+
+# PCA colored by the treatment column; look for two clusters
+plotPCA(vsd, intgroup = "dex")
+
+# Second check: sample-to-sample distance heatmap
+sampleDists &lt;- dist(t(assay(vsd)))      # distances across all genes
+mat &lt;- as.matrix(sampleDists)
+pheatmap::pheatmap(mat,
+                   clustering_distance_rows = sampleDists,
+                   clustering_distance_cols = sampleDists)
+</code></pre>
+
+            <h2>Check your understanding</h2>
+            <div class="quiz">
+                <div class="quiz-q-src">Why transform counts with vst (or rlog) before running PCA?</div>
+                <button data-opt data-correct>To stabilize variance so highly expressed genes do not dominate the plot</button>
+                <button data-opt>Because PCA cannot read integer values</button>
+                <button data-opt>To convert counts into p-values</button>
+                <div class="quiz-explain"><strong>Right.</strong> Raw count variance grows with the mean; the transform evens this out so PCA reflects real sample differences, not just the loudest genes.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">On a PCA plot, what does PC1 represent?</div>
+                <button data-opt data-correct>The direction of largest variance among the samples</button>
+                <button data-opt>The first sample in the dataset</button>
+                <button data-opt>The p-value of the most significant gene</button>
+                <div class="quiz-explain"><strong>Correct.</strong> PC1 is the axis along which samples differ most; PC2 captures the next largest amount of variance.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Your samples cluster by sequencing lane instead of by biological condition. What does this indicate?</div>
+                <button data-opt data-correct>A batch effect, where a technical factor dominates the variation</button>
+                <button data-opt>That the experiment worked perfectly</button>
+                <button data-opt>That you should delete all the samples</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> Clustering by a technical factor like lane signals a batch effect; record it and model it (for example ~ batch + dex).</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">One sample sits far from every other point on the PCA. What is the right first move?</div>
+                <button data-opt data-correct>Investigate it as a possible outlier or failed prep before deciding anything</button>
+                <button data-opt>Immediately delete it without checking</button>
+                <button data-opt>Ignore it; outliers never matter</button>
+                <div class="quiz-explain"><strong>Right.</strong> A lone far point may be a real extreme or a technical failure; the QC step exists so you ask that question early rather than later.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What does a sample-to-sample distance heatmap add on top of PCA?</div>
+                <button data-opt data-correct>A second, independent view of which samples resemble each other across all genes</button>
+                <button data-opt>It replaces the need to run the differential test</button>
+                <button data-opt>It converts raw counts into TPM</button>
+                <div class="quiz-explain"><strong>Correct.</strong> The heatmap is a complementary check; when it agrees with PCA about an outlier or batch split, the signal is much stronger.</div>
+            </div>
+
+            <a class="next-lesson" href="rna-seq-batch-effects.html" target="_blank" rel="noopener">
+                <span>Next in Track 3</span>
+                <h3>Correcting batch effects in RNA-seq &rarr;</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>

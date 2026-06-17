@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Statistical power and sample size for biologists: what power means, why underpowered studies miss real effects and exaggerate the ones they find, and how to choose n with a power analysis in R before you run the experiment.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Statistical Power and Sample Size | BioNexus Hub">
+    <meta property="og:description" content="What power is, why underpowered studies mislead, and how to pick a sample size with a power analysis in R before the study.">
+    <meta property="og:url" content="https://bionexushub.com/power-and-sample-size.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Statistical Power and Sample Size | BioNexus Hub">
+    <meta name="twitter:description" content="Power, sample size, the winner's curse, and a power analysis in R, explained for biologists.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Statistical Power and Sample Size - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.amber { background: rgba(245,158,11,0.12); border-color: transparent; color: #b45309; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .ctable { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.96rem; }
+        .ctable th, .ctable td { border: 1px solid rgba(91,156,248,0.2); padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ctable th { background: rgba(91,156,248,0.1); color: var(--deep-navy); font-weight: 600; }
+        .ctable td { color: var(--text-gray); }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .p { color: #f472b6; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:640px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
+        .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
+        .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">&#9776;</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="faq.html">Help</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-5" target="_blank" rel="noopener">&#8592; Roadmap</a> &nbsp;/&nbsp; Track 5: Statistics &amp; Visualization &nbsp;/&nbsp; Power and sample size</div>
+                <h1>Statistical Power and Sample Size</h1>
+                <p class="promise">Power is your chance of catching a real effect. Learn what drives it, why too-small studies both miss and mislead, and how to choose your sample size with a power analysis in R before you collect a single sample.</p>
+                <div class="tags">
+                    <span class="tag green">&#x1F7E2; Beginner</span>
+                    <span class="tag">&#x23F1;&#xFE0F; ~28 min</span>
+                    <span class="tag">&#x1F9EE; Statistics</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: define statistical power, name the four levers that raise it, explain why underpowered studies both miss and exaggerate effects, and run a power analysis in R to choose a sample size before the experiment.</p>
+            </div>
+
+            <h2>What power actually is</h2>
+            <p><strong>Statistical power</strong> is the probability that your study detects a real effect when one truly exists. Put another way, it is one minus the false-negative rate: if an effect is real and your power is 0.8, you have an 80 percent chance of finding it and a 20 percent chance of missing it (a false negative, or "Type II error").</p>
+            <p>Most fields aim for power of at least <strong>0.8</strong>. A study with power well below that is "underpowered": even when the biology is real, the experiment is more likely than not to come up empty.</p>
+
+            <h2><span class="step-num">1</span>The four levers that raise power</h2>
+            <p>Power goes up when any of these improve:</p>
+            <table class="dtable">
+                <tr><th>Lever</th><th>Power rises when...</th><th>Why</th></tr>
+                <tr><td>Effect size</td><td>the true effect is larger</td><td>a bigger difference is easier to see above the noise</td></tr>
+                <tr><td>Sample size (n)</td><td>you collect more samples</td><td>more data sharpens the estimate and shrinks chance variation</td></tr>
+                <tr><td>Variability</td><td>the measurements are less noisy</td><td>tighter data makes a real difference stand out</td></tr>
+                <tr><td>Alpha</td><td>you allow a less strict alpha</td><td>a looser significance threshold is easier to cross (but raises false positives)</td></tr>
+            </table>
+            <p>You usually cannot change the true effect size or the biology's variability much, and loosening alpha trades away false-positive control. That leaves <strong>sample size as the main lever you actually control</strong>. In sequencing experiments, that means adding <strong>biological replicates</strong>.</p>
+
+            <h2><span class="step-num">2</span>More samples push the curve past 0.8</h2>
+            <figure class="viz">
+                <svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A power curve showing statistical power on the vertical axis rising as sample size increases on the horizontal axis, crossing the 0.8 target line at a sample size around 16 per group">
+                    <g font-family="'Work Sans',sans-serif" font-size="12">
+                    <line x1="80" y1="40" x2="80" y2="350" stroke="#0f172a" stroke-width="2"/>
+                    <line x1="80" y1="350" x2="620" y2="350" stroke="#0f172a" stroke-width="2"/>
+                    <text x="46" y="200" text-anchor="middle" transform="rotate(-90 46 200)" fill="#0f172a" font-weight="600">power</text>
+                    <text x="350" y="395" text-anchor="middle" fill="#0f172a" font-weight="600">sample size per group (n)</text>
+                    <text x="64" y="354" text-anchor="end" font-size="10" fill="#64748b">0</text>
+                    <text x="64" y="222" text-anchor="end" font-size="10" fill="#64748b">0.5</text>
+                    <line x1="76" y1="218" x2="80" y2="218" stroke="#0f172a" stroke-width="2"/>
+                    <text x="64" y="138" text-anchor="end" font-size="10" fill="#64748b">0.8</text>
+                    <line x1="76" y1="134" x2="80" y2="134" stroke="#0f172a" stroke-width="2"/>
+                    <text x="64" y="56" text-anchor="end" font-size="10" fill="#64748b">1.0</text>
+                    <line x1="80" y1="134" x2="620" y2="134" stroke="#10b981" stroke-width="1.5" stroke-dasharray="6 4"/>
+                    <text x="612" y="126" text-anchor="end" font-size="11" fill="#047857" font-weight="600">target 0.8</text>
+                    <path d="M 80 338 C 180 320, 250 250, 320 170 C 360 128, 420 92, 500 72 C 550 62, 600 58, 620 56" fill="none" stroke="#5b9cf8" stroke-width="3"/>
+                    <line x1="338" y1="134" x2="338" y2="350" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="4 3"/>
+                    <circle cx="338" cy="134" r="5" fill="#a855f7"/>
+                    <text x="346" y="172" font-size="11" fill="#6b21a8" font-weight="600">n that reaches 0.8</text>
+                    <text x="120" y="320" font-size="10.5" fill="#b45309">underpowered: likely to miss a real effect</text>
+                    </g>
+                </svg>
+                <figcaption>Power climbs with sample size and levels off near 1. The dashed green line is the usual 0.8 target; the smallest n that crosses it is the sample size you want.</figcaption>
+            </figure>
+
+            <h2><span class="step-num">3</span>Why underpowered studies are doubly dangerous</h2>
+            <p>An underpowered study does two bad things, not one.</p>
+            <p><strong>First, it misses real effects.</strong> That is the obvious cost: low power means most true findings slip through undetected, wasting the experiment.</p>
+            <p><strong>Second, the "significant" hits it does report tend to be wrong.</strong> When power is low, only an unusually large random bump clears the significance threshold, so the effects that survive are <strong>exaggerated in size, and sometimes even wrong in their direction (sign)</strong>. This is the <strong>winner's curse</strong>: the published effect from a small study is often bigger than the truth, and fails to replicate. Low power therefore hurts both sensitivity and the trustworthiness of whatever does turn up.</p>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">In practice: RNA-seq replicates</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">Adding <strong>biological replicates</strong> is the main lever for power. For RNA-seq, <strong>3 replicates per group is a common practical minimum</strong>, and more is better, especially for detecting smaller fold changes or working with noisy tissue. Technical replicates do not substitute for biological ones.</p></div>
+
+            <h2><span class="step-num">4</span>Do the power analysis before the study</h2>
+            <p>Power, effect size, sample size, and alpha are linked: fix any three and the fourth is determined. A <strong>power analysis</strong> uses that link, before you collect data, to solve for the sample size that will give you adequate power for the effect you care about. You do this with the R <code class="inline">pwr</code> package, or by simulation for more complex designs.</p>
+            <div class="warn"><h4>Never report post-hoc power</h4><p>"Post-hoc power" computed from your own observed p-value tells you nothing new: it is just the p-value re-expressed, and a non-significant result will always look underpowered. Plan power <strong>before</strong> the study using an effect size you decide in advance, not after the fact from your own result.</p></div>
+
+            <h2><span class="step-num">5</span>Worked example: solving for n in R</h2>
+            <p>Suppose you want power of 0.8 at the usual alpha of 0.05, and you care about a moderately large effect (Cohen's d of 0.8). Ask the <code class="inline">pwr</code> package how many samples per group that needs:</p>
+            <pre><span class="c"># install.packages("pwr"); library(pwr)</span>
+pwr<span class="p">::</span><span class="p">pwr.t.test</span>(d <span class="p">=</span> <span class="s">0.8</span>, power <span class="p">=</span> <span class="s">0.8</span>, sig.level <span class="p">=</span> <span class="s">0.05</span>)
+
+<span class="c">#      Two-sample t test power calculation</span>
+<span class="c">#               n = 25.5      &lt;- per group, round UP to 26</span>
+<span class="c">#               d = 0.8</span>
+<span class="c">#       sig.level = 0.05</span>
+<span class="c">#           power = 0.8</span></pre>
+            <p>How to read it:</p>
+            <ul>
+                <li>You leave out <code class="inline">n</code> and the function solves for it. Here it returns about <strong>25.5 per group</strong>, which you always <strong>round up to 26</strong> so you do not fall short of the target.</li>
+                <li>Want to detect a <em>smaller</em> effect? Lower <code class="inline">d</code> and the required <code class="inline">n</code> rises sharply, which is exactly why subtle effects need big studies.</li>
+                <li>The same function works in reverse: give it <code class="inline">n</code> and it returns the power you would have, useful for checking a planned design.</li>
+            </ul>
+
+            <h2>Check your understanding</h2>
+            <div class="quiz">
+                <div class="quiz-q-src">What does statistical power measure?</div>
+                <button data-opt data-correct>The probability of detecting a real effect when it truly exists</button>
+                <button data-opt>The probability that a result is a false positive</button>
+                <button data-opt>The size of the p-value you will obtain</button>
+                <div class="quiz-explain"><strong>Right.</strong> Power is the chance of finding a real effect, equal to one minus the false-negative (Type II error) rate.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Which change will increase the power of a study?</div>
+                <button data-opt data-correct>Adding more samples (a larger sample size)</button>
+                <button data-opt>Increasing the variability of the measurements</button>
+                <button data-opt>Shrinking the true effect size</button>
+                <div class="quiz-explain"><strong>Correct.</strong> Power rises with larger effect size, larger sample size, lower variability, and a less strict alpha. Sample size is usually the lever you control.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Besides missing real effects, what else does an underpowered study tend to do?</div>
+                <button data-opt data-correct>Exaggerate the effects it does report, sometimes even getting the sign wrong (the winner's curse)</button>
+                <button data-opt>Guarantee that every significant result is correct</button>
+                <button data-opt>Make the p-values smaller than they should be every time</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> When power is low, only unusually large random bumps reach significance, so reported effects are inflated and can even point the wrong way.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">For an RNA-seq experiment, what is a commonly cited practical minimum number of biological replicates per group?</div>
+                <button data-opt data-correct>3 per group, with more being better</button>
+                <button data-opt>1 per group is plenty</button>
+                <button data-opt>Technical replicates instead of biological ones</button>
+                <div class="quiz-explain"><strong>Right.</strong> Three biological replicates per group is a common minimum for RNA-seq, and adding more improves power, especially for smaller effects.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">When should you do a power analysis, and which value should you not report?</div>
+                <button data-opt data-correct>Before the study, to choose n; do not report post-hoc power from your own p-value</button>
+                <button data-opt>After the study, computing post-hoc power from your p-value</button>
+                <button data-opt>Never, since power cannot be calculated in advance</button>
+                <div class="quiz-explain"><strong>Correct.</strong> Plan power before collecting data using a pre-specified effect size. Post-hoc power from your own result just restates the p-value and is uninformative.</div>
+            </div>
+
+            <a class="next-lesson" href="stats-essentials.html" target="_blank" rel="noopener">
+                <span>Next in Track 5</span>
+                <h3>The statistics you cannot avoid &rarr;</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>

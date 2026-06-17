@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A gentle intro to single-cell RNA-seq: how it differs from bulk, what barcodes and UMIs do, why the matrix is sparse, and the standard QC to clustering pipeline.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Single-cell RNA-seq: A Gentle Intro | BioNexus Hub">
+    <meta property="og:description" content="Bulk averages over cells; single-cell measures each one. Barcodes, UMIs, sparse matrices, and the standard pipeline, as an orientation.">
+    <meta property="og:url" content="https://bionexushub.com/single-cell-rna-seq-intro.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Single-cell RNA-seq: A Gentle Intro | BioNexus Hub">
+    <meta name="twitter:description" content="Barcodes, UMIs, sparse matrices, and the QC to UMAP pipeline, as a beginner orientation.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Single-cell RNA-seq: A Gentle Intro - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .bigidea { background: var(--deep-navy); color: white; border-radius: 12px; padding: 28px 32px; margin: 26px 0; }
+        .bigidea p { color: #e2e8f0; font-size: 1.3rem; margin: 0; font-family: 'Crimson Pro', serif; line-height: 1.4; }
+        .bigidea strong { color: #c084fc; }
+
+        .flow { display: flex; flex-wrap: wrap; gap: 10px; align-items: stretch; margin: 26px 0; }
+        .flow .step { flex: 1 1 130px; background: white; border: 1px solid rgba(91,156,248,0.25); border-top: 3px solid var(--primary-blue); border-radius: 10px; padding: 16px 12px; text-align: center; }
+        .flow .step .ico { font-size: 1.7rem; display: block; }
+        .flow .step .lbl { font-weight: 700; color: var(--deep-navy); font-size: 0.92rem; margin-top: 6px; }
+        .flow .step .sub { font-size: 0.78rem; color: var(--text-gray); margin-top: 2px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        details { background: white; border: 1px solid rgba(91,156,248,0.2); border-radius: 8px; padding: 14px 20px; margin-bottom: 12px; }
+        details summary { font-weight: 600; cursor: pointer; color: var(--deep-navy); }
+        details p { margin: 12px 0 0; color: var(--text-gray); font-size: 1rem; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:640px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
+        .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
+        .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
+    </style>
+</head>
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">&larr; Roadmap</a> &nbsp;/&nbsp; Track 3: Differential expression &nbsp;/&nbsp; Single-cell intro</div>
+                <h1>Single-cell RNA-seq: A Gentle Intro</h1>
+                <p class="promise">Bulk RNA-seq averages over many cells; single-cell measures each one. A no-pressure orientation to barcodes, UMIs, sparse matrices, and the standard pipeline, so the field stops feeling like a wall of jargon.</p>
+                <div class="tags">
+                    <span class="tag green">&#x1F7E2; Beginner</span>
+                    <span class="tag">&#x23F1;&#xFE0F; ~22 min</span>
+                    <span class="tag">&#x1F9E0; Orientation, light code</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: contrast bulk and single-cell RNA-seq, explain what cell barcodes and UMIs do, describe why the cells-by-genes matrix is sparse, and name the high-level steps of a standard single-cell pipeline and its main tools.</p>
+            </div>
+
+            <p style="background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.35); border-radius:10px; padding:14px 18px;"><strong>What this lesson is:</strong> an orientation that gives you the mental map and the vocabulary. It is not a full how-to, and you will not run a real dataset here. The goal is that the next tutorial you open feels familiar rather than overwhelming.</p>
+
+            <h2>Bulk vs single-cell: averages vs individuals</h2>
+            <p>Ordinary <strong>bulk RNA-seq</strong> grinds up a whole sample and measures the average expression across all the cells in it. That average hides which cell types were present and what each was doing. <strong>Single-cell RNA-seq</strong> (scRNA-seq) measures each cell separately, so instead of one averaged profile you get thousands of individual profiles. That resolution is what lets you discover cell types, see rare populations, and watch cells move through states that an average would blur together.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 560 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bulk RNA-seq produces one averaged column of expression while single-cell produces many per-cell columns">
+                    <g font-family="'Work Sans',sans-serif" font-size="12">
+                    <text x="120" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">Bulk: one averaged column</text>
+                    <text x="40" y="60" fill="#64748b">geneA</text><text x="40" y="90" fill="#64748b">geneB</text><text x="40" y="120" fill="#64748b">geneC</text>
+                    <rect x="120" y="48" width="40" height="24" fill="#5b9cf8"/><text x="140" y="65" text-anchor="middle" fill="#fff" font-size="11">12</text>
+                    <rect x="120" y="78" width="40" height="24" fill="#5b9cf8"/><text x="140" y="95" text-anchor="middle" fill="#fff" font-size="11">7</text>
+                    <rect x="120" y="108" width="40" height="24" fill="#5b9cf8"/><text x="140" y="125" text-anchor="middle" fill="#fff" font-size="11">3</text>
+                    <text x="140" y="160" text-anchor="middle" font-size="11" fill="#64748b">one sample</text>
+                    <text x="140" y="176" text-anchor="middle" font-size="11" fill="#64748b">(average of all cells)</text>
+                    <text x="400" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">Single-cell: many columns</text>
+                    <text x="300" y="60" fill="#64748b">geneA</text><text x="300" y="90" fill="#64748b">geneB</text><text x="300" y="120" fill="#64748b">geneC</text>
+                    <g>
+                    <rect x="350" y="48" width="22" height="24" fill="#a855f7"/><rect x="376" y="48" width="22" height="24" fill="#a855f7" opacity="0.4"/><rect x="402" y="48" width="22" height="24" fill="#a855f7"/><rect x="428" y="48" width="22" height="24" fill="#a855f7" opacity="0.2"/><rect x="454" y="48" width="22" height="24" fill="#a855f7"/>
+                    <rect x="350" y="78" width="22" height="24" fill="#10b981" opacity="0.2"/><rect x="376" y="78" width="22" height="24" fill="#10b981"/><rect x="402" y="78" width="22" height="24" fill="#10b981" opacity="0.3"/><rect x="428" y="78" width="22" height="24" fill="#10b981"/><rect x="454" y="78" width="22" height="24" fill="#10b981" opacity="0.2"/>
+                    <rect x="350" y="108" width="22" height="24" fill="#5b9cf8" opacity="0.3"/><rect x="376" y="108" width="22" height="24" fill="#5b9cf8" opacity="0.15"/><rect x="402" y="108" width="22" height="24" fill="#5b9cf8"/><rect x="428" y="108" width="22" height="24" fill="#5b9cf8" opacity="0.2"/><rect x="454" y="108" width="22" height="24" fill="#5b9cf8" opacity="0.4"/>
+                    </g>
+                    <text x="413" y="160" text-anchor="middle" font-size="11" fill="#64748b">one column per cell</text>
+                    <text x="413" y="176" text-anchor="middle" font-size="11" fill="#64748b">faded blocks = zeros (dropouts)</text>
+                    </g>
+                </svg>
+                <figcaption>Bulk gives you a single averaged profile; single-cell gives you one profile per cell, with many empty entries because most genes are not detected in any given cell.</figcaption>
+            </figure>
+
+            <h2><span class="step-num">1</span>How droplet platforms tag each cell</h2>
+            <p>The most common technology is droplet-based, with <strong>10x Genomics</strong> as the dominant example. Each cell is captured in a tiny droplet alongside a bead carrying two kinds of short DNA tags. A <strong>cell barcode</strong> is shared by everything from one droplet, so afterward you can tell which reads came from which cell. A <strong>UMI</strong> (unique molecular identifier) tags each individual RNA molecule before amplification, so when PCR makes many copies you can collapse them back to one and remove duplicates. Barcodes answer which cell; UMIs answer how many real molecules.</p>
+            <div class="jargon" style="background:linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0;">
+                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">Barcode vs UMI</span>Two different jobs</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">A <strong>cell barcode</strong> identifies which cell a read belongs to. A <strong>UMI</strong> identifies which original molecule a read came from, so PCR duplicates can be removed and each molecule is counted once. Together they turn raw reads into an honest count per gene per cell.</p>
+            </div>
+
+            <h2><span class="step-num">2</span>The output: a sparse cells-by-genes matrix</h2>
+            <p>The result of processing is a big <strong>cells-by-genes matrix</strong> of counts: thousands of cells, tens of thousands of genes. It is <strong>very sparse</strong>, meaning most entries are zero. This is partly biology (a given cell only expresses a fraction of all genes) and partly a sampling limit called <strong>dropout</strong>, where a gene is truly present but no molecule of it happened to be captured. Sparsity is the defining feature of single-cell data and shapes every method built for it.</p>
+
+            <h2><span class="step-num">3</span>The standard pipeline at a high level</h2>
+            <p>Almost every analysis follows the same arc. You do not need to memorize the details now, just recognize the shape.</p>
+            <table class="dtable">
+                <thead>
+                    <tr><th>Step</th><th>What it does</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Quality control</td><td>Filter low-quality cells and likely doublets; check the percentage of mitochondrial reads, which is high in dying cells</td></tr>
+                    <tr><td>Normalization</td><td>Put cells on a comparable scale despite different total counts</td></tr>
+                    <tr><td>Highly variable genes</td><td>Keep the genes that vary most across cells, since they carry the signal</td></tr>
+                    <tr><td>PCA</td><td>Reduce to a handful of dimensions that capture the main variation</td></tr>
+                    <tr><td>Graph-based clustering</td><td>Group similar cells with Leiden or Louvain clustering</td></tr>
+                    <tr><td>UMAP</td><td>Project to 2D for visualization, so clusters can be seen</td></tr>
+                    <tr><td>Label clusters</td><td>Name each cluster by its marker genes (known cell-type signatures)</td></tr>
+                </tbody>
+            </table>
+            <p>The two dominant toolkits are <strong>Seurat</strong> in R and <strong>Scanpy</strong> in Python. They cover this same pipeline with slightly different commands; learning one makes the other easy to read.</p>
+            <div class="why"><h4>One-line summary</h4><p>Single-cell RNA-seq measures each cell instead of an average. Droplet platforms use cell barcodes to mark which cell and UMIs to remove PCR duplicates, producing a sparse cells-by-genes matrix. The pipeline runs QC, normalize, pick variable genes, PCA, cluster, UMAP, then label by markers, in Seurat or Scanpy.</p></div>
+
+            <h2>A worked example: the Scanpy step list</h2>
+            <p>This is a high-level sketch of the Scanpy commands that match the pipeline above. It is here to make the structure concrete, not to run as is; a real analysis needs your own data and tuned parameters.</p>
+            <pre><code># High-level Scanpy outline (Python) -- orientation, not a runnable script
+import scanpy as sc
+
+adata = sc.read_10x_mtx("filtered_feature_bc_matrix/")   # cells x genes (sparse)
+
+# 1. Quality control: filter cells/genes, check mitochondrial percent
+adata.var["mt"] = adata.var_names.str.startswith("MT-")
+sc.pp.calculate_qc_metrics(adata, qc_vars=["mt"], inplace=True)
+sc.pp.filter_cells(adata, min_genes=200)
+sc.pp.filter_genes(adata, min_cells=3)
+
+# 2. Normalize
+sc.pp.normalize_total(adata, target_sum=1e4)
+sc.pp.log1p(adata)
+
+# 3. Highly variable genes
+sc.pp.highly_variable_genes(adata, n_top_genes=2000)
+
+# 4. PCA
+sc.pp.pca(adata)
+
+# 5. Graph-based clustering (Leiden)
+sc.pp.neighbors(adata)
+sc.tl.leiden(adata)
+
+# 6. UMAP for visualization
+sc.tl.umap(adata)
+sc.pl.umap(adata, color="leiden")
+
+# 7. Label clusters by marker genes
+sc.tl.rank_genes_groups(adata, "leiden", method="wilcoxon")
+</code></pre>
+
+            <h2>Check your understanding</h2>
+            <div class="quiz">
+                <div class="quiz-q-src">What is the core difference between bulk and single-cell RNA-seq?</div>
+                <button data-opt data-correct>Bulk averages expression over many cells; single-cell measures each cell separately</button>
+                <button data-opt>Single-cell can only measure one gene at a time</button>
+                <button data-opt>Bulk is newer and more detailed than single-cell</button>
+                <div class="quiz-explain"><strong>Right.</strong> Single-cell resolution reveals cell types and states that a bulk average blends together.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What is the job of a cell barcode in a droplet platform like 10x Genomics?</div>
+                <button data-opt data-correct>It marks which cell each read came from</button>
+                <button data-opt>It removes PCR duplicates</button>
+                <button data-opt>It measures gene length</button>
+                <div class="quiz-explain"><strong>Correct.</strong> The cell barcode is shared by all reads from one droplet, so reads can be assigned back to their cell.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What does a UMI do?</div>
+                <button data-opt data-correct>Tags each original molecule so PCR duplicates can be collapsed and counted once</button>
+                <button data-opt>Identifies which cell a read belongs to</button>
+                <button data-opt>Sorts cells into clusters</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> The UMI lets you tell true molecules apart from amplification copies, giving an honest count per gene per cell.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Why is the single-cell cells-by-genes matrix so sparse?</div>
+                <button data-opt data-correct>Each cell expresses only a fraction of genes, and many present genes are missed (dropout)</button>
+                <button data-opt>The sequencer deletes most of the data on purpose</button>
+                <button data-opt>Sparse matrices are required by Python, not by biology</button>
+                <div class="quiz-explain"><strong>Right.</strong> Most entries are zero because of real biology plus dropout, the sampling limit where a present gene is not captured.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Which step comes near the end of the standard single-cell pipeline?</div>
+                <button data-opt data-correct>Labeling clusters by their marker genes</button>
+                <button data-opt>Capturing cells in droplets</button>
+                <button data-opt>Removing PCR duplicates with UMIs</button>
+                <div class="quiz-explain"><strong>Correct.</strong> After QC, normalization, variable-gene selection, PCA, clustering, and UMAP, you assign identities to clusters using known marker genes.</div>
+            </div>
+
+            <a class="next-lesson" href="rna-seq-big-picture.html" target="_blank" rel="noopener">
+                <span>Next in Track 3</span>
+                <h3>The RNA-seq big picture &rarr;</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A reference genome comes in builds: GRCh37/hg19 vs GRCh38/hg38 vs T2T-CHM13. The same position has different coordinates in each build. Convert with liftOver or CrossMap. A BioNexus Hub lesson.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Genome Builds and liftOver - BioNexus Hub">
+    <meta property="og:description" content="Why the same position differs across hg19, hg38 and T2T, and how to lift coordinates safely.">
+    <meta property="og:url" content="https://bionexushub.com/genome-builds.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Genome Builds and liftOver - BioNexus Hub">
+    <meta name="twitter:description" content="Why the same position differs across hg19, hg38 and T2T, and how to lift coordinates safely.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Genome Builds and liftOver - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root { --primary-blue:#5b9cf8; --primary-purple:#a855f7; --light-blue:#7db4ff; --deep-navy:#0f172a; --soft-white:#f8fafc; --text-dark:#1e293b; --text-gray:#64748b; --green:#10b981; --amber:#f59e0b; }
+        body { font-family:'Work Sans',sans-serif; line-height:1.7; color:var(--text-dark); background:var(--soft-white); min-height:100vh; display:flex; flex-direction:column; }
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        header { position:sticky; top:0; z-index:1000; background:rgba(248,250,252,0.95); backdrop-filter:blur(12px); border-bottom:1px solid rgba(91,156,248,0.2); }
+        .nav-container { display:flex; justify-content:space-between; align-items:center; padding:20px 24px; max-width:1280px; margin:0 auto; }
+        .logo-img { height:50px; width:auto; }
+        nav ul { display:flex; gap:32px; list-style:none; align-items:center; }
+        nav a { color:var(--text-dark); text-decoration:none; font-weight:500; font-size:0.95rem; transition:color 0.3s; position:relative; }
+        nav a::after { content:''; position:absolute; bottom:-4px; left:0; width:0; height:2px; background:linear-gradient(90deg,var(--primary-blue),var(--primary-purple)); transition:width 0.3s; }
+        nav a:hover { color:var(--primary-blue); } nav a:hover::after { width:100%; }
+        .cta-nav { background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white!important; padding:10px 24px; border-radius:6px; font-weight:600; }
+        .cta-nav::after { display:none; }
+        .lesson-header { padding:64px 0 44px; background:linear-gradient(135deg,var(--soft-white) 0%,#e0e7ff 100%); }
+        .breadcrumb { font-size:0.9rem; color:var(--text-gray); margin-bottom:18px; }
+        .breadcrumb a { color:var(--primary-blue); text-decoration:none; }
+        .lesson-header h1 { font-family:'Crimson Pro',serif; font-size:3rem; font-weight:700; color:var(--deep-navy); margin-bottom:16px; line-height:1.15; }
+        .promise { font-size:1.25rem; color:var(--text-gray); max-width:760px; margin-bottom:24px; }
+        .tags { display:flex; flex-wrap:wrap; gap:10px; }
+        .tag { background:white; border:1px solid rgba(91,156,248,0.25); padding:7px 15px; border-radius:20px; font-size:0.85rem; font-weight:600; }
+        .tag.green { background:rgba(16,185,129,0.12); border-color:transparent; color:#047857; }
+        main { flex:1; padding:52px 0 80px; }
+        .lesson-body { max-width:820px; margin:0 auto; }
+        .lesson-body h2 { font-family:'Crimson Pro',serif; font-size:2rem; color:var(--deep-navy); margin:46px 0 16px; display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
+        .lesson-body h2 .badge { font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; background:rgba(91,156,248,0.14); color:#3b6fd4; padding:4px 10px; border-radius:12px; }
+        .lesson-body p { font-size:1.08rem; margin-bottom:18px; }
+        .lesson-body ul,.lesson-body ol { margin:0 0 18px 24px; } .lesson-body li { margin-bottom:8px; font-size:1.08rem; }
+        .lesson-body strong { color:var(--deep-navy); }
+        code.inline { background:rgba(91,156,248,0.12); color:#4c5fd5; padding:2px 7px; border-radius:5px; font-family:'JetBrains Mono',monospace; font-size:0.86em; }
+        pre { background:#0f172a; color:#e2e8f0; border-radius:10px; padding:18px 20px; overflow-x:auto; margin:16px 0; font-family:'JetBrains Mono',monospace; font-size:0.82rem; line-height:1.6; }
+        pre .c { color:#64748b; } pre .h { color:#fbbf24; }
+        .why { background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0; }
+        .why h4 { color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px; }
+        .why p { font-size:1rem; color:var(--text-gray); margin:0; }
+        .cheat { background:white; border:1px solid rgba(91,156,248,0.25); border-radius:10px; padding:8px 24px; margin:22px 0; }
+        .cheat table { width:100%; border-collapse:collapse; }
+        .cheat td { padding:11px 6px; border-bottom:1px solid #eef2f7; font-size:0.98rem; vertical-align:top; }
+        .cheat td:first-child { font-family:'JetBrains Mono',monospace; color:#4c5fd5; font-weight:600; white-space:nowrap; }
+        .cheat tr:last-child td { border-bottom:none; }
+        details { background:white; border:1px solid rgba(91,156,248,0.2); border-radius:8px; padding:14px 20px; margin-bottom:12px; }
+        details summary { font-weight:600; cursor:pointer; color:var(--deep-navy); }
+        details p { margin:12px 0 0; color:var(--text-gray); font-size:1rem; }
+        .next-lesson { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:12px; padding:24px 28px; margin-top:40px; text-decoration:none; transition:all 0.3s; }
+        .next-lesson:hover { border-color:var(--primary-blue); transform:translateY(-3px); box-shadow:0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; color:var(--text-gray); }
+        .next-lesson h3 { font-family:'Crimson Pro',serif; font-size:1.35rem; color:var(--deep-navy); margin-top:4px; }
+        footer { background:var(--deep-navy); color:white; padding:40px 0 30px; text-align:center; }
+        footer p { color:rgba(255,255,255,0.6); }
+        .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
+        @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
+        .viz { margin:24px 0; text-align:center; }
+        .viz svg { width:100%; max-width:600px; height:auto; }
+        .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
+        .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
+        .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .lesson-body .refs { background:#f1f5f9; border:1px solid rgba(91,156,248,0.2); border-radius:10px; padding:20px 24px; margin:30px 0; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav><ul id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="learn.html" style="color:var(--primary-blue);">Learn</a></li>
+                <li><a href="minicourses.html">Mini-courses</a></li>
+                <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                                <li><a href="faq.html">Help</a></li>
+                                <li><a href="contact.html" class="cta-nav">Contact</a></li>
+            </ul></nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container"><div class="lesson-body">
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data &nbsp;/&nbsp; Genome builds and liftOver</div>
+            <h1>Genome Builds and liftOver</h1>
+            <p class="promise">The reference genome is not a single fixed thing: it comes in versions called builds. The same gene sits at different coordinates in hg19 and hg38, so a position without its build is half a sentence. Here is how to keep them straight and convert safely.</p>
+            <div class="tags">
+                <span class="tag green">🟢 Beginner</span>
+                <span class="tag">⏱️ ~28 min</span>
+                <span class="tag green">🌐 Just reading</span>
+            </div>
+        </div></div>
+    </div>
+
+    <main>
+        <div class="container"><div class="lesson-body">
+
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain what a genome build is, name the common human builds (GRCh37/hg19, GRCh38/hg38, T2T-CHM13), understand why a coordinate is meaningless without its build, convert coordinates between builds with liftOver or CrossMap, and spot the chr-prefix naming mismatch.</p>
+            </div>
+
+            <h2>A reference genome has versions</h2>
+            <p>A reference genome is one agreed-upon sequence that everyone aligns their reads against, so results are comparable. But the reference is improved over time as sequencing gets better and gaps are filled. Each released version is a <strong>build</strong> (also called an assembly). For human, the two you will meet constantly are <strong>GRCh37</strong> (UCSC calls it <strong>hg19</strong>) and the newer <strong>GRCh38</strong> (<strong>hg38</strong>). The very newest, gapless build is <strong>T2T-CHM13</strong> (telomere-to-telomere).</p>
+            <p>The crucial consequence: when the assembly changes, sequence is added, removed, and shifted, so the same base of DNA gets a different coordinate in each build. A position like <code class="inline">chr7:55,249,071</code> means one thing in hg19 and a different thing in hg38.</p>
+
+            <h2><span class="step-num">1</span>The same gene, different numbers</h2>
+            <p>Consider the gene EGFR. It is the same gene in every build, but its coordinates differ because the surrounding assembly shifted. This is exactly why you must always record which build your coordinates use.</p>
+            <table class="dtable">
+                <tr><th>Build</th><th>UCSC name</th><th>EGFR start (chr7, approx.)</th></tr>
+                <tr><td><strong>GRCh37</strong></td><td>hg19</td><td>chr7:55,086,725</td></tr>
+                <tr><td><strong>GRCh38</strong></td><td>hg38</td><td>chr7:55,019,017</td></tr>
+                <tr><td><strong>T2T-CHM13</strong></td><td>chm13v2.0</td><td>different again (newest, gapless)</td></tr>
+            </table>
+            <figure class="viz">
+                <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The same gene shown at two different coordinate positions on the hg19 and hg38 builds">
+                    <g font-family="'Work Sans',sans-serif" font-size="13">
+                    <text x="20" y="52" fill="#5b9cf8" font-weight="700">hg19</text>
+                    <text x="20" y="132" fill="#a855f7" font-weight="700">hg38</text>
+                    </g>
+                    <line x1="100" y1="60" x2="540" y2="60" stroke="#cbd5e1"/>
+                    <line x1="100" y1="140" x2="540" y2="140" stroke="#cbd5e1"/>
+                    <rect x="300" y="46" width="70" height="28" rx="4" fill="#dbeafe" stroke="#5b9cf8" stroke-width="2"/>
+                    <text x="335" y="65" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="12" fill="#0f172a">EGFR</text>
+                    <rect x="240" y="126" width="70" height="28" rx="4" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/>
+                    <text x="275" y="145" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="12" fill="#0f172a">EGFR</text>
+                    <line x1="335" y1="74" x2="275" y2="126" stroke="#10b981" stroke-width="2" stroke-dasharray="4 3"/>
+                    <g font-family="'JetBrains Mono',monospace" font-size="11" fill="#64748b">
+                    <text x="335" y="40" text-anchor="middle" fill="#5b9cf8">~55,086,725</text>
+                    <text x="275" y="172" text-anchor="middle" fill="#a855f7">~55,019,017</text>
+                    </g>
+                    <text x="320" y="192" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="12" fill="#10b981">Same gene, shifted coordinate. liftOver follows the dashed line.</text>
+                </svg>
+                <figcaption>EGFR is the same gene in both builds, but its coordinate differs. Converting between builds is called lifting over.</figcaption>
+            </figure>
+
+            <h2><span class="step-num">2</span>Converting between builds: liftOver and CrossMap</h2>
+            <p>You cannot just subtract a fixed number to go from hg19 to hg38; the offset varies along the genome. Instead you use a <strong>chain file</strong>, which records how each region maps from one build to the other, together with a tool that applies it. The two common tools are UCSC <strong>liftOver</strong> and <strong>CrossMap</strong>.</p>
+            <pre><span class="c"># UCSC liftOver: input.bed -> hg38, plus an unmapped file for regions that don't lift</span>
+liftOver input.bed hg19ToHg38.over.chain.gz output.bed unmapped.bed
+
+<span class="c"># CrossMap does the same job and also handles BAM, VCF, GFF</span>
+CrossMap bed hg19ToHg38.over.chain.gz input.bed output.bed</pre>
+            <div class="why"><h4>Why some regions do not lift</h4><p>If a stretch of DNA was rearranged or is missing in the target build, it has no clean mapping, so liftOver drops it into the <code class="inline">unmapped</code> file instead of guessing. Always check that file; silently losing features is a common mistake.</p></div>
+
+            <h2><span class="step-num">3</span>The chr-prefix naming trap</h2>
+            <p>Builds also differ in how chromosomes are named. <strong>UCSC</strong> writes <code class="inline">chr1</code>, <code class="inline">chrX</code>; <strong>Ensembl</strong> writes <code class="inline">1</code>, <code class="inline">X</code> with no "chr". The underlying sequence can be identical, but a tool comparing <code class="inline">chr1</code> to <code class="inline">1</code> finds zero matches because the strings differ. If your overlaps mysteriously come back empty, check the chromosome names first.</p>
+            <pre><span class="c"># strip the chr prefix to match Ensembl-style names</span>
+sed 's/^chr//' ucsc_style.bed &gt; ensembl_style.bed
+
+<span class="c"># or add it to go the other way</span>
+sed 's/^/chr/' ensembl_style.bed &gt; ucsc_style.bed</pre>
+
+            <h2>Check your understanding</h2>
+            <div class="quiz">
+                <div class="quiz-q-src">Which UCSC name corresponds to the GRCh38 human build?</div>
+                <button data-opt data-correct>hg38</button>
+                <button data-opt>hg19</button>
+                <button data-opt>chm13</button>
+                <div class="quiz-explain"><strong>Right.</strong> GRCh38 is hg38; GRCh37 is hg19. T2T-CHM13 is the newer, gapless assembly.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Why does the same DNA position have a different coordinate in hg19 vs hg38?</div>
+                <button data-opt data-correct>The assembly changed, so sequence was added, removed and shifted</button>
+                <button data-opt>Coordinates are random in each release</button>
+                <button data-opt>hg38 uses 0-based and hg19 uses 1-based</button>
+                <div class="quiz-explain"><strong>Correct.</strong> Each build is a revised assembly; insertions, deletions and rearrangements move coordinates, which is why you must record the build.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">What do you need, besides a tool, to convert coordinates between two builds?</div>
+                <button data-opt data-correct>A chain file describing how regions map between the builds</button>
+                <button data-opt>A constant offset to add to every position</button>
+                <button data-opt>The original FASTQ reads</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> liftOver and CrossMap both apply a chain file, because the offset between builds varies along the genome.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">Your overlaps between a UCSC file and an Ensembl file come back empty. What should you check first?</div>
+                <button data-opt data-correct>Chromosome naming: chr1 (UCSC) vs 1 (Ensembl)</button>
+                <button data-opt>Whether the files are sorted alphabetically by gene</button>
+                <button data-opt>Whether the FASTA is gzipped</button>
+                <div class="quiz-explain"><strong>Right.</strong> UCSC uses a chr prefix, Ensembl does not. The strings differ, so no chromosome matches. Normalise the names first.</div>
+            </div>
+            <div class="quiz">
+                <div class="quiz-q-src">After a liftOver, why should you inspect the unmapped output file?</div>
+                <button data-opt data-correct>Some regions have no clean mapping and were dropped, not converted</button>
+                <button data-opt>It contains the converted coordinates you actually want</button>
+                <button data-opt>It lists the chain file version</button>
+                <div class="quiz-explain"><strong>Correct.</strong> Regions that were rearranged or are missing in the target build cannot be lifted, so they go to the unmapped file. Ignoring it silently loses features.</div>
+            </div>
+
+            <a class="next-lesson" href="reference-genomes.html" target="_blank" rel="noopener">
+                <span>Next in Track 1</span>
+                <h3>Reference genomes and indexing &rarr;</h3>
+            </a>
+
+        </div></div>
+    </main>
+
+    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
+    <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
