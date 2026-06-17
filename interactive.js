@@ -31,6 +31,11 @@
     '.quiz-explain{margin-top:6px;padding:13px 16px;border-radius:9px;background:rgba(91,156,248,0.08);color:#475569;font:0.96rem/1.5 "Work Sans",sans-serif;display:none;}' +
     '.quiz-explain.show{display:block;}' +
     '.quiz-explain strong{color:#0f172a;}' +
+    '.quiz-summary{margin:26px 0 8px;padding:18px 22px;border-radius:12px;font:600 1.05rem "Work Sans",sans-serif;display:none;}' +
+    '.quiz-summary.show{display:block;}' +
+    '.quiz-summary.pass{background:rgba(16,185,129,0.1);border:1px solid #10b981;color:#047857;}' +
+    '.quiz-summary.fail{background:rgba(245,158,11,0.1);border:1px solid #f59e0b;color:#b45309;}' +
+    '.quiz-summary .sub{display:block;font-weight:400;font-size:0.92rem;color:#475569;margin-top:6px;}' +
     '.ngsstrip{display:flex;flex-wrap:wrap;align-items:center;gap:6px;background:#fff;border:1px solid rgba(91,156,248,0.2);border-radius:10px;padding:10px 14px;margin:0 0 26px;font-family:"Work Sans",sans-serif;}' +
     '.ngsstrip .lab{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#64748b;margin-right:2px;}' +
     '.ngsstrip a.step,.ngsstrip span.step{font-size:0.82rem;font-weight:600;text-decoration:none;padding:5px 11px;border-radius:7px;white-space:nowrap;}' +
@@ -130,7 +135,19 @@
   }
 
   /* ---------- Quiz ---------- */
-  function buildQuiz(quiz) {
+  var gQuizTotal = 0, gQuizAnswered = 0, gQuizCorrect = 0, gSummaryEl = null;
+  function updateQuizSummary() {
+    if (!gSummaryEl || gQuizAnswered < gQuizTotal) return;
+    var pct = Math.round(gQuizCorrect / gQuizTotal * 100);
+    var pass = pct >= 70;
+    gSummaryEl.className = 'quiz-summary show ' + (pass ? 'pass' : 'fail');
+    gSummaryEl.innerHTML = 'Lesson check: you scored ' + gQuizCorrect + ' of ' + gQuizTotal + ' (' + pct + '%).' +
+      '<span class="sub">' + (pass
+        ? 'Passed (70% or above). You can mark this lesson complete at the bottom of the page.'
+        : 'Aim for at least 70%. Re-read the sections you missed, then reload the page to retry the questions.') + '</span>';
+    gSummaryEl.scrollIntoView({behavior:'smooth', block:'nearest'});
+  }
+  function buildQuiz(quiz, onFirstAnswer) {
     var question = quiz.getAttribute('data-question') || '';
     var qsrcEl = quiz.querySelector('.quiz-q-src');
     var qsrcHTML = qsrcEl ? qsrcEl.innerHTML : '';
@@ -176,6 +193,7 @@
           }
         }
         if (explainHTML) explain.classList.add('show');
+        if (onFirstAnswer) onFirstAnswer(isCorrect);
       });
       quiz.appendChild(btn);
     });
@@ -231,7 +249,15 @@
     var root = document.body;
     if (root) root.classList.add('bnx-ix');
     for (var i = 0; i < cells.length; i++) buildPyCell(cells[i]);
-    for (var k = 0; k < quizzes.length; k++) buildQuiz(quizzes[k]);
+    gQuizTotal = quizzes.length; gQuizAnswered = 0; gQuizCorrect = 0;
+    var onQ = function (correct) { gQuizAnswered++; if (correct) gQuizCorrect++; updateQuizSummary(); };
+    for (var k = 0; k < quizzes.length; k++) buildQuiz(quizzes[k], onQ);
+    if (quizzes.length) {
+      gSummaryEl = document.createElement('div');
+      gSummaryEl.className = 'quiz-summary';
+      var lastQ = quizzes[quizzes.length - 1];
+      lastQ.parentNode.insertBefore(gSummaryEl, lastQ.nextSibling);
+    }
     for (var s = 0; s < strips.length; s++) buildNgsStrip(strips[s]);
   }
 
