@@ -310,7 +310,7 @@
 <span class="p">!</span>samtools flagstat markdup.bam
 
 <span class="c"># 6. Call and normalise</span>
-<span class="p">!</span>bcftools mpileup -f ecoli.fasta markdup.bam <span class="p">|</span> bcftools call -mv -Oz -o ecoli.vcf.gz
+<span class="p">!</span>bcftools mpileup -f ecoli.fasta markdup.bam <span class="p">|</span> bcftools call -mv --ploidy 1 -Oz -o ecoli.vcf.gz
 <span class="p">!</span>bcftools norm -f ecoli.fasta ecoli.vcf.gz -Oz -o ecoli.norm.vcf.gz <span class="p">&amp;&amp;</span> bcftools index ecoli.norm.vcf.gz
 <span class="p">!</span>bcftools stats ecoli.norm.vcf.gz <span class="p">|</span> grep <span class="s">"number of records:"</span></pre>
 

@@ -273,7 +273,7 @@ abline(h = -log10(0.05), lty = 2, col = <span class="s">"#64748b"</span>)   <spa
                 <div class="levelup">
                     <h4>🔶 Level up: run it on a real published dataset</h4>
                     <p>Ready to use real biology? A great next dataset is the <strong>airway</strong> experiment (Himes et al., 2014, GEO accession <strong>GSE52778</strong>): human airway smooth-muscle cells treated with dexamethasone, a steroid used in asthma. It's the classic teaching dataset for exactly this workflow.</p>
-                    <p>The only thing that changes is <em>where the count matrix comes from</em> - load airway counts and metadata instead of the example files, set the <code class="inline">design</code> to <code class="inline">~ treatment</code>, and every other step is identical. That repeatability is the whole point. (Handy bonus: in R, the <code class="inline">airway</code> Bioconductor package ships this exact dataset ready to load.)</p>
+                    <p>The only thing that changes is <em>where the count matrix comes from</em> - load airway counts and metadata instead of the example files, set the <code class="inline">design</code> to <code class="inline">~ cell + dex</code> (the treatment column in the airway data is named <code class="inline">dex</code>), and every other step is identical. That repeatability is the whole point. (Handy bonus: in R, the <code class="inline">airway</code> Bioconductor package ships this exact dataset ready to load.)</p>
                     <p><a href="resources.html" target="_blank" rel="noopener">Find dataset links in Resources →</a></p>
                 </div>
 
