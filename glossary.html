@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="author" content="BioNexus Hub">
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Plain-language definitions of the bioinformatics terms used across BioNexus Hub: from FASTQ and DESeq2 to p-values, batch effects, and PCA. Look up any jargon in seconds.">
     <link rel="icon" type="image/png" href="favicon.png">
@@ -108,40 +110,59 @@
             <div class="terms" id="terms">
                 <div class="term"><h3>Adjusted p-value (padj)</h3><p>A p-value corrected for the fact that thousands of genes are tested at once. It is the number you trust when deciding whether a gene's change is real. A common cutoff is below 0.05.</p></div>
                 <div class="term"><h3>Alignment</h3><p>Working out where each short sequencing read came from in a reference genome, like finding where a puzzle piece fits.</p></div>
+                <div class="term"><h3>ANOVA</h3><p>Analysis of variance: a test for whether the averages of three or more groups differ. The rank-based version for non-normal data is the Kruskal-Wallis test.</p></div>
                 <div class="term"><h3>BAM</h3><p>The compressed, computer-friendly version of a SAM file (aligned reads). Same information, much smaller.</p></div>
                 <div class="term"><h3>Batch effect</h3><p>A systematic technical difference between groups of samples that were processed at different times, by different people, or on different machines, with nothing to do with the biology. If ignored, it can look like a real result.</p></div>
                 <div class="term"><h3>BED</h3><p>A simple text format that lists regions of a genome (chromosome, start, end). Often used to mark features of interest.</p></div>
+                <div class="term"><h3>bedtools</h3><p>A fast command-line toolkit for genome arithmetic: finding overlaps between sets of regions, merging them, and similar interval operations on BED files.</p></div>
                 <div class="term"><h3>Bioconductor</h3><p>A large collection of R packages built specifically for biological data analysis. DESeq2 lives here.</p></div>
                 <div class="term"><h3>Bioinformatics</h3><p>Using computers and code to make sense of biological data such as DNA, RNA, and proteins.</p></div>
+                <div class="term"><h3>BioMart</h3><p>A query tool (part of Ensembl) for pulling and mapping gene, transcript, and protein IDs in bulk.</p></div>
                 <div class="term"><h3>Biopython</h3><p>A free Python toolkit for working with biological sequences and data.</p></div>
                 <div class="term"><h3>BLAST</h3><p>Basic Local Alignment Search Tool: the standard, fast way to search a huge database for sequences similar to your query. You judge a hit by its E-value, not just percent identity.</p></div>
+                <div class="term"><h3>chi-square test</h3><p>A test for whether counts across categories differ from what you would expect by chance. For small counts, use Fisher's exact test instead.</p></div>
+                <div class="term"><h3>CIGAR</h3><p>A short code in a SAM/BAM record describing how a read lines up to the reference: matches (M), insertions (I), deletions (D), soft-clips (S), and skipped regions (N).</p></div>
                 <div class="term"><h3>Clustering</h3><p>Grouping samples or genes by how similar they are, so patterns and relationships become visible.</p></div>
                 <div class="term"><h3>conda</h3><p>A tool that installs software and manages separate "environments". Popular in bioinformatics because it can install non-Python command-line tools too.</p></div>
+                <div class="term"><h3>Confounding</h3><p>When two effects are tangled together so you cannot tell them apart, for example if every treated sample was processed on a different day than the controls.</p></div>
                 <div class="term"><h3>Count matrix</h3><p>A table with one row per gene and one column per sample, where each cell is how many sequencing reads were counted for that gene. The starting point of most RNA-seq analyses.</p></div>
+                <div class="term"><h3>CPM (counts per million)</h3><p>Read counts scaled by library size so samples sequenced to different depths can be compared. It does not correct for gene length.</p></div>
                 <div class="term"><h3>DESeq2</h3><p>The standard R/Bioconductor package for finding genes that change between conditions (differential expression).</p></div>
                 <div class="term"><h3>Design formula</h3><p>A short recipe (like <code>~ condition</code>) that tells DESeq2 which sample features to model and what comparison you care about.</p></div>
                 <div class="term"><h3>Differential expression</h3><p>Finding which genes are more or less active between two conditions, for example treated versus untreated cells.</p></div>
                 <div class="term"><h3>Dispersion</h3><p>A measure of how much a gene's counts bounce around between replicates of the same group. Noisy genes need a bigger change before they are called significant.</p></div>
                 <div class="term"><h3>DNA</h3><p>The molecule that stores the genetic instructions of a cell, written in four letters: A, T, G, C.</p></div>
+                <div class="term"><h3>Effect size</h3><p>How big a difference is, not just whether it is statistically significant. A tiny effect can be significant in a large study yet not matter in practice.</p></div>
                 <div class="term"><h3>Ensembl</h3><p>A major public database of genomes and gene annotations.</p></div>
+                <div class="term"><h3>Entrez</h3><p>NCBI's search and retrieval system (and its E-utilities API) for fetching sequences and records programmatically.</p></div>
                 <div class="term"><h3>Environment (virtual environment)</h3><p>A self-contained box holding a specific set of software packages, so one project cannot break another.</p></div>
                 <div class="term"><h3>E-value (Expect value)</h3><p>In a BLAST search, how many hits this good you would expect by chance in a database this size. Smaller is more trustworthy: 1e-50 is strong, 2 is meaningless.</p></div>
                 <div class="term"><h3>FASTA</h3><p>A simple text format for storing sequences: a header line starting with "&gt;" followed by the sequence (DNA, RNA, or protein).</p></div>
                 <div class="term"><h3>FASTQ</h3><p>Like FASTA, but each base also carries a quality score showing how confident the sequencer was. The raw output of sequencing.</p></div>
+                <div class="term"><h3>Fisher's exact test</h3><p>A test for a small table of category counts (often 2x2), used when counts are too small for a chi-square test.</p></div>
+                <div class="term"><h3>FLAG</h3><p>A number in a SAM/BAM record that packs several yes/no facts about a read (paired, mapped, reverse strand, duplicate) into one value.</p></div>
+                <div class="term"><h3>FPKM</h3><p>Fragments per kilobase per million: an expression unit correcting for sequencing depth and gene length. TPM is usually preferred for comparing across samples.</p></div>
                 <div class="term"><h3>Functional enrichment</h3><p>Asking whether your list of changed genes is unusually full of genes with a shared role (a pathway or function), to learn what biology is changing.</p></div>
                 <div class="term"><h3>Gene</h3><p>A stretch of DNA that carries the instructions to make a product, usually a protein.</p></div>
                 <div class="term"><h3>GenBank</h3><p>NCBI's richly annotated sequence format and database.</p></div>
                 <div class="term"><h3>Genome</h3><p>The complete set of DNA in an organism.</p></div>
+                <div class="term"><h3>Genome build</h3><p>A specific version of a reference genome, such as GRCh37/hg19 or GRCh38/hg38. The same position has different coordinates in different builds, so always record which one you used.</p></div>
                 <div class="term"><h3>GEO (Gene Expression Omnibus)</h3><p>A public NCBI repository of gene-expression datasets you can download and reanalyze.</p></div>
                 <div class="term"><h3>GFF / GTF</h3><p>Text formats that describe where genes, exons, and other features sit on a genome (annotation).</p></div>
                 <div class="term"><h3>GO (Gene Ontology)</h3><p>A standardized vocabulary describing what genes do: their biological processes, molecular functions, and locations. Used in enrichment analysis.</p></div>
                 <div class="term"><h3>GSEA (Gene Set Enrichment Analysis)</h3><p>A method that scans your whole ranked gene list to see if a group of related genes trends up or down together.</p></div>
                 <div class="term"><h3>Heatmap</h3><p>A grid of coloured cells that shows patterns in data at a glance, for example which genes are high or low across samples.</p></div>
                 <div class="term"><h3>Homology</h3><p>Shared ancestry between sequences. It is an inference (yes or no), not a percentage; high sequence similarity is the evidence for it. "60% homologous" is a misnomer for "60% identical."</p></div>
+                <div class="term"><h3>Index (genome index)</h3><p>A precomputed lookup structure that lets an aligner find where a read belongs without scanning the whole genome, like the index at the back of a book.</p></div>
                 <div class="term"><h3>KEGG</h3><p>A database of biological pathways (chains of interacting genes and molecules). Used in enrichment analysis.</p></div>
+                <div class="term"><h3>Kruskal-Wallis test</h3><p>The rank-based alternative to ANOVA, for comparing three or more groups when the data is not roughly normal.</p></div>
                 <div class="term"><h3>LFC shrinkage</h3><p>Pulling unreliable fold changes (often from low-count genes) toward zero, so rankings and plots reflect well-measured effects.</p></div>
+                <div class="term"><h3>liftOver</h3><p>A tool that converts genomic coordinates from one genome build to another using a chain file.</p></div>
+                <div class="term"><h3>Linear model (regression)</h3><p>A model that describes an outcome as a straight-line function of one or more predictors. Many familiar tests, including the t-test and ANOVA, are special cases of it.</p></div>
                 <div class="term"><h3>log2 fold change</h3><p>How much a gene changed, on a log2 scale. +1 means it doubled, -1 means it halved. The sign is the direction, the size is the magnitude.</p></div>
                 <div class="term"><h3>MA plot</h3><p>A plot of fold change against average expression level. A health check that shows whether changes are spread fairly across genes.</p></div>
+                <div class="term"><h3>MAPQ</h3><p>Mapping quality: how confident the aligner is that a read is in the right place. A low value (near 0) often means the read maps equally well to several spots.</p></div>
+                <div class="term"><h3>Median-of-ratios</h3><p>The normalization DESeq2 uses on raw counts to correct for differences in sequencing depth between samples.</p></div>
                 <div class="term"><h3>Multiple sequence alignment (MSA)</h3><p>Lining up three or more sequences at once to reveal columns conserved across a whole family; conserved columns often mark functionally important residues. Tools: Clustal Omega, MUSCLE.</p></div>
                 <div class="term"><h3>Multiple testing</h3><p>The problem that testing thousands of genes at once produces many false positives by chance, which is why we adjust p-values.</p></div>
                 <div class="term"><h3>NCBI</h3><p>The US National Center for Biotechnology Information, home to many core biological databases.</p></div>
@@ -150,23 +171,31 @@
                 <div class="term"><h3>p-value</h3><p>The probability of seeing a difference this big by chance alone. Small means surprising. For many-gene tests, use the adjusted p-value instead.</p></div>
                 <div class="term"><h3>pandas</h3><p>A Python library for working with tables of data, like a programmable spreadsheet.</p></div>
                 <div class="term"><h3>PCA (Principal Component Analysis)</h3><p>A way to squeeze many measurements into two axes so you can see, at a glance, which samples group together.</p></div>
+                <div class="term"><h3>Pearson correlation</h3><p>A measure of how strongly two numeric variables move together in a straight line. For non-linear or ranked relationships, use Spearman.</p></div>
                 <div class="term"><h3>pip</h3><p>Python's package installer; it fetches and installs Python libraries.</p></div>
+                <div class="term"><h3>Power (statistical power)</h3><p>The chance a study detects a real effect if one exists. It rises with bigger effects, more samples, and less noise. Underpowered studies miss real effects and exaggerate the ones they report.</p></div>
                 <div class="term"><h3>Reads</h3><p>The short sequences a sequencing machine produces, each one a fragment of the original DNA or RNA.</p></div>
                 <div class="term"><h3>Reference genome</h3><p>A standard, agreed-upon genome sequence that new reads are compared against.</p></div>
+                <div class="term"><h3>Replicate (biological vs technical)</h3><p>A biological replicate is a separate sample (a different animal or culture); a technical replicate is the same sample measured again. Differential expression needs biological replicates.</p></div>
                 <div class="term"><h3>RNA</h3><p>A molecule transcribed from DNA. Measuring RNA tells you which genes a cell is actively using.</p></div>
                 <div class="term"><h3>RNA-seq</h3><p>Sequencing the RNA in a sample to measure how active each gene is.</p></div>
                 <div class="term"><h3>SAM</h3><p>A text format that stores aligned reads (where each read mapped on the genome). BAM is its compressed form.</p></div>
                 <div class="term"><h3>Sequence</h3><p>The order of letters (bases) in DNA or RNA, or of amino acids in a protein.</p></div>
                 <div class="term"><h3>Single-cell RNA-seq</h3><p>RNA-seq that measures gene activity in individual cells rather than averaged over millions.</p></div>
+                <div class="term"><h3>Spearman correlation</h3><p>A rank-based measure of whether two variables rise and fall together, robust to outliers and to non-linear but consistent relationships.</p></div>
                 <div class="term"><h3>SRA (Sequence Read Archive)</h3><p>A public NCBI repository of raw sequencing reads.</p></div>
                 <div class="term"><h3>Substitution matrix</h3><p>A scoring table (such as BLOSUM62 or PAM) for how favorable each amino-acid swap is, based on real related proteins. It makes protein alignment more sensitive than raw DNA matching.</p></div>
+                <div class="term"><h3>t-test</h3><p>A test for whether the averages of two groups differ. The rank-based version for small or skewed data is the Wilcoxon test.</p></div>
+                <div class="term"><h3>TPM (transcripts per million)</h3><p>An expression unit correcting for both sequencing depth and gene length that sums to the same total in every sample, which makes it good for comparing across samples. Do not feed TPM to DESeq2; it needs raw counts.</p></div>
                 <div class="term"><h3>Transcription</h3><p>The cell copying a gene's DNA into RNA, the first step in using a gene.</p></div>
                 <div class="term"><h3>Transcriptomics</h3><p>The study of all the RNA in a sample: which genes are on, off, up, or down.</p></div>
+                <div class="term"><h3>UMI (unique molecular identifier)</h3><p>A short random tag added to each molecule before PCR (common in single-cell RNA-seq) so duplicate copies can be collapsed and counted once.</p></div>
                 <div class="term"><h3>UniProt</h3><p>A major public database of protein sequences and information.</p></div>
                 <div class="term"><h3>Variance-stabilizing transformation (vst)</h3><p>A transform that puts genes on a comparable scale before plotting or clustering, so high-count genes do not dominate.</p></div>
                 <div class="term"><h3>VCF (Variant Call Format)</h3><p>A text format that lists differences (variants) between a sample's DNA and the reference genome.</p></div>
                 <div class="term"><h3>venv</h3><p>Python's built-in tool for creating virtual environments.</p></div>
                 <div class="term"><h3>Volcano plot</h3><p>A scatter plot of significance versus fold change. The genes that matter fly up into the top corners.</p></div>
+                <div class="term"><h3>Wilcoxon test</h3><p>The rank-based alternative to the t-test, for comparing two groups when the data is small or not normally distributed. Also called Mann-Whitney.</p></div>
                 <div class="term"><h3>z-score</h3><p>Rescaling each gene so a heatmap shows its relative change (up or down versus its own average) rather than its absolute level.</p></div>
             </div>
             <p class="no-res" id="noRes">No term matches that search. Try another word, or send us a suggestion from the feedback button.</p>
@@ -175,7 +204,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 BioNexus Hub. Building a community for bioinformatics learners worldwide. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
         </div>
     </footer>
 
