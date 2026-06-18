@@ -160,6 +160,10 @@
                         <li>You do not need the heavy statistics. We'll explain the ideas in plain language and point at the math without drowning in it.</li>
                     </ul>
                 </div>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: load a count matrix and sample table into DESeq2 in R, run the standard differential-expression workflow with a design like ~ cell + dex, and interpret the results table including log2 fold change and adjusted p-values.</p>
+            </div>
 
                 <h2>Where we left off</h2>
                 <p>In the flagship project you took a count matrix and a metadata table, ran two lines of DESeq2, and got a results table plus a volcano plot. That was the speed run. This lesson slows down and answers the questions that actually make you good at this: <strong>what is the design formula doing, what happens inside <code class="inline">DESeq()</code>, and how do I trust the numbers that come out?</strong></p>

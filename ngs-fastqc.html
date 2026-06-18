@@ -169,6 +169,10 @@
                         <li>A free Google account to run the Colab notebook. Any term new? Check the <a href="glossary.html" target="_blank" rel="noopener">Glossary</a>.</li>
                     </ul>
                 </div>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: install and run FastQC on a set of reads, interpret the main modules of the FastQC report (per-base quality, adapter content, and more), and decide what a red or warning module actually means for your data.</p>
+            </div>
 
                 <h2>Garbage in, garbage out</h2>
                 <p>Raw sequencing reads are never perfect. The machine makes mistakes (more often toward the end of each read), leftover <strong>adapter</strong> sequence can cling to the reads, and sometimes a whole run just goes wrong. If you feed bad reads into alignment and variant calling, you get confident-looking nonsense. <strong>Quality control</strong> is the cheap, fast step that catches these problems before they cost you hours.</p>

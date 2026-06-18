@@ -171,6 +171,10 @@
                         <li>Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                     </ul>
                 </div>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain what read alignment does and why a reference index is needed, build an index and align reads with a tool like BWA-MEM, read the basic fields of the resulting SAM file, and run a quick sanity check on how many reads mapped.</p>
+            </div>
 
                 <h2>What alignment actually does</h2>
                 <p>A sequencer hands you millions of short reads, but it does not tell you where in the genome each one came from. Alignment (also called mapping) answers exactly that question: for every read, it finds the spot on a known <strong>reference genome</strong> that the read matches best, and records that position.</p>

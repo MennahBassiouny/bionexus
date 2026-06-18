@@ -159,6 +159,10 @@
                         <li>A little R, and a free Google account to run the Colab notebook.</li>
                     </ul>
                 </div>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: build a heatmap of expression in R, understand how clustering groups genes and samples, and choose scaling and gene selection so the figure shows real structure rather than noise.</p>
+            </div>
 
                 <h2>First rule: never heatmap raw counts</h2>
                 <p>It's tempting to throw your count matrix straight into a heatmap, but it will mislead you. Raw counts span an enormous range (some genes have tens of reads, others tens of thousands), and they depend on how deeply each sample was sequenced. A heatmap of raw counts just shows you a handful of very high-count genes and hides everything else.</p>
