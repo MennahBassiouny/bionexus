@@ -288,17 +288,6 @@ print(f"Benjamini-Hochberg FDR -> {bh_hits} significant (the genomics standard)"
                     <div class="quiz-explain"><strong>Right.</strong> Under the null, p-values are uniform (flat). Real signal adds an excess of very small p-values, the spike near 0. This flat-plus-spike shape is exactly what you want to see, and it tells you FDR correction will behave sensibly. A spike near 1 or a central hump would instead signal a modeling problem.</div>
                 </div>
 
-                <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
-                    <ol>
-                        <li>Benjamini Y, Hochberg Y. Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing. <em>J. Royal Statistical Society B</em>, 1995. (The original BH procedure.)</li>
-                        <li>Storey JD, Tibshirani R. Statistical significance for genomewide studies. <em>PNAS</em>, 2003. (q-values.) <a href="https://doi.org/10.1073/pnas.1530509100" target="_blank" rel="noopener">doi:10.1073/pnas.1530509100</a></li>
-                        <li>Noble WS. How does multiple testing correction work? <em>Nature Biotechnology</em>, 2009. (A classic plain-English primer.)</li>
-                        <li>Korthauer K, et al. A practical guide to methods controlling false discoveries in computational biology. <em>Genome Biology</em> 20, 118, 2019. (Modern, covariate-aware FDR methods benchmarked across RNA-seq, single-cell, microbiome, ChIP-seq, and GWAS.) <a href="https://doi.org/10.1186/s13059-019-1716-1" target="_blank" rel="noopener">doi:10.1186/s13059-019-1716-1</a></li>
-                        <li>Love MI, Huber W, Anders S. DESeq2. <em>Genome Biology</em>, 2014. (The <code>padj</code> column is BH-adjusted.)</li>
-                    </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
-                </div>
 
                 <div class="quiz">
                     <div class="quiz-q-src">In a 20,000-gene RNA-seq study, why is the Bonferroni correction (threshold 0.05 / 20,000) often considered too strict?</div>
@@ -313,6 +302,17 @@ print(f"Benjamini-Hochberg FDR -> {bh_hits} significant (the genomics standard)"
                     <button data-opt>Every p-value below the raw 0.05 cutoff, ignoring the ranks</button>
                     <button data-opt data-correct>The largest-ranked p-value that is still at or below its critical value (i / m) x Q, plus everything ranked below it</button>
                     <div class="quiz-explain"><strong>Right.</strong> BH finds the largest rank i where p is at or below (i / m) x Q, then declares that gene and all smaller-ranked p-values significant. This controls the false discovery rate while retaining far more power than Bonferroni.</div>
+                </div>
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Benjamini Y, Hochberg Y. Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing. <em>J. Royal Statistical Society B</em>, 1995. (The original BH procedure.)</li>
+                        <li>Storey JD, Tibshirani R. Statistical significance for genomewide studies. <em>PNAS</em>, 2003. (q-values.) <a href="https://doi.org/10.1073/pnas.1530509100" target="_blank" rel="noopener">doi:10.1073/pnas.1530509100</a></li>
+                        <li>Noble WS. How does multiple testing correction work? <em>Nature Biotechnology</em>, 2009. (A classic plain-English primer.)</li>
+                        <li>Korthauer K, et al. A practical guide to methods controlling false discoveries in computational biology. <em>Genome Biology</em> 20, 118, 2019. (Modern, covariate-aware FDR methods benchmarked across RNA-seq, single-cell, microbiome, ChIP-seq, and GWAS.) <a href="https://doi.org/10.1186/s13059-019-1716-1" target="_blank" rel="noopener">doi:10.1186/s13059-019-1716-1</a></li>
+                        <li>Love MI, Huber W, Anders S. DESeq2. <em>Genome Biology</em>, 2014. (The <code>padj</code> column is BH-adjusted.)</li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: June 2026.</p>
                 </div>
                 <a class="next-lesson" href="plots-that-tell-the-truth.html" target="_blank" rel="noopener">
                     <span>Next in Track 5</span>

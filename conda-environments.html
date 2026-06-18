@@ -294,17 +294,6 @@ conda env create <span class="p">-f</span> environment.yml</pre>
                     <div class="quiz-explain"><strong>Right.</strong> A plain export captures every transitive dependency pinned to your platform's specific builds, which often will not resolve on a different OS. <code class="inline">--from-history</code> records just your explicitly requested packages, making the file portable. For exact cross-platform reproducibility, wrap the environment in a container.</div>
                 </div>
 
-                <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
-                    <ol>
-                        <li>Grüning B, et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. <em>Nature Methods</em> 15, 475–476, 2018. <a href="https://doi.org/10.1038/s41592-018-0046-7" target="_blank" rel="noopener">doi:10.1038/s41592-018-0046-7</a></li>
-                        <li>Ziemann M, Poulain P, Bora A. The five pillars of computational reproducibility: bioinformatics and beyond. <em>Briefings in Bioinformatics</em> 24(6), bbad375, 2023. <a href="https://doi.org/10.1093/bib/bbad375" target="_blank" rel="noopener">doi:10.1093/bib/bbad375</a></li>
-                        <li>Nüst D, et al. Ten simple rules for writing Dockerfiles for reproducible data science. <em>PLOS Computational Biology</em> 16(11): e1008316, 2020. <a href="https://doi.org/10.1371/journal.pcbi.1008316" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1008316</a></li>
-                        <li>Conda documentation: Managing environments. <a href="https://docs.conda.io/projects/conda/en/stable/user-guide/tasks/manage-environments.html" target="_blank" rel="noopener">docs.conda.io</a></li>
-                        <li>Bioconda documentation and tool index. <a href="https://bioconda.github.io/" target="_blank" rel="noopener">bioconda.github.io</a></li>
-                    </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
-                </div>
 
                 <div class="quiz">
                     <div class="quiz-q-src">Why does conda dominate bioinformatics setups, whereas a pure Python project might happily use only venv and pip?</div>
@@ -319,6 +308,17 @@ conda env create <span class="p">-f</span> environment.yml</pre>
                     <button data-opt>It deletes the base environment to free disk space</button>
                     <button data-opt data-correct>It makes conda prefer higher-priority channels (like bioconda and conda-forge) consistently, avoiding a class of subtle, hard-to-debug version conflicts</button>
                     <div class="quiz-explain"><strong>Right.</strong> Strict channel priority tells conda to resolve packages from higher-priority channels first instead of mixing builds across channels, which prevents the kind of inconsistent dependency mixes that cause silent breakage. It is part of the recommended bioconda plus conda-forge setup.</div>
+                </div>
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Grüning B, et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. <em>Nature Methods</em> 15, 475–476, 2018. <a href="https://doi.org/10.1038/s41592-018-0046-7" target="_blank" rel="noopener">doi:10.1038/s41592-018-0046-7</a></li>
+                        <li>Ziemann M, Poulain P, Bora A. The five pillars of computational reproducibility: bioinformatics and beyond. <em>Briefings in Bioinformatics</em> 24(6), bbad375, 2023. <a href="https://doi.org/10.1093/bib/bbad375" target="_blank" rel="noopener">doi:10.1093/bib/bbad375</a></li>
+                        <li>Nüst D, et al. Ten simple rules for writing Dockerfiles for reproducible data science. <em>PLOS Computational Biology</em> 16(11): e1008316, 2020. <a href="https://doi.org/10.1371/journal.pcbi.1008316" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1008316</a></li>
+                        <li>Conda documentation: Managing environments. <a href="https://docs.conda.io/projects/conda/en/stable/user-guide/tasks/manage-environments.html" target="_blank" rel="noopener">docs.conda.io</a></li>
+                        <li>Bioconda documentation and tool index. <a href="https://bioconda.github.io/" target="_blank" rel="noopener">bioconda.github.io</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: June 2026.</p>
                 </div>
                 <a class="next-lesson" href="portfolio.html" target="_blank" rel="noopener">
                     <span>Next in Track 6</span>

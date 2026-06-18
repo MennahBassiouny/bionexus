@@ -277,19 +277,6 @@ print(f"extreme would occur about {p_value*100:.1f}% of the time.")
                     <div class="quiz-explain"><strong>Right.</strong> The t-test assumes roughly normally distributed values. RNA-seq counts are discrete, bounded at zero, and overdispersed (variance &gt; mean). DESeq2 and edgeR model them with the negative binomial and share information across genes to estimate dispersion, which is why they are the field standard and a raw t-test is not.</div>
                 </div>
 
-                <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
-                    <ol>
-                        <li>Wasserstein RL, Lazar NA. The ASA Statement on p-Values: Context, Process, and Purpose. <em>The American Statistician</em>, 2016. <a href="https://doi.org/10.1080/00031305.2016.1154108" target="_blank" rel="noopener">doi:10.1080/00031305.2016.1154108</a></li>
-                        <li>Amrhein V, Greenland S, McShane B. Retire statistical significance. <em>Nature</em> 567, 305–307, 2019. (One of the most-discussed statistics commentaries ever, signed by 800+ scientists.) <a href="https://doi.org/10.1038/d41586-019-00857-9" target="_blank" rel="noopener">doi:10.1038/d41586-019-00857-9</a></li>
-                        <li>Wasserstein RL, Schirm AL, Lazar NA. Moving to a World Beyond "p &lt; 0.05". <em>The American Statistician</em> 73(sup1), 1–19, 2019. <a href="https://doi.org/10.1080/00031305.2019.1583913" target="_blank" rel="noopener">doi:10.1080/00031305.2019.1583913</a></li>
-                        <li>Nuzzo R. Scientific method: Statistical errors. <em>Nature</em>, 2014. (A readable tour of how p-values are misused.)</li>
-                        <li>Halsey LG, et al. The fickle P value generates irreproducible results. <em>Nature Methods</em>, 2015.</li>
-                        <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em>, 2014. (Why counts use the negative binomial.)</li>
-                        <li>Button KS, et al. Power failure: why small sample size undermines the reliability of neuroscience. <em>Nature Reviews Neuroscience</em>, 2013.</li>
-                    </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
-                </div>
 
                 <div class="quiz">
                     <div class="quiz-q-src">Why do tools like DESeq2 and edgeR model RNA-seq read counts with a negative binomial distribution rather than a normal one?</div>
@@ -304,6 +291,19 @@ print(f"extreme would occur about {p_value*100:.1f}% of the time.")
                     <button data-opt>A p-value below 0.05 from any sample size is fully trustworthy</button>
                     <button data-opt>Two replicates always guarantee adequate statistical power</button>
                     <div class="quiz-explain"><strong>Right.</strong> Low statistical power both misses true effects and exaggerates the surviving "significant" ones in magnitude or direction. This winner's-curse effect is a key driver of irreproducible results, so small-sample hits deserve extra skepticism and replication.</div>
+                </div>
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Wasserstein RL, Lazar NA. The ASA Statement on p-Values: Context, Process, and Purpose. <em>The American Statistician</em>, 2016. <a href="https://doi.org/10.1080/00031305.2016.1154108" target="_blank" rel="noopener">doi:10.1080/00031305.2016.1154108</a></li>
+                        <li>Amrhein V, Greenland S, McShane B. Retire statistical significance. <em>Nature</em> 567, 305–307, 2019. (One of the most-discussed statistics commentaries ever, signed by 800+ scientists.) <a href="https://doi.org/10.1038/d41586-019-00857-9" target="_blank" rel="noopener">doi:10.1038/d41586-019-00857-9</a></li>
+                        <li>Wasserstein RL, Schirm AL, Lazar NA. Moving to a World Beyond "p &lt; 0.05". <em>The American Statistician</em> 73(sup1), 1–19, 2019. <a href="https://doi.org/10.1080/00031305.2019.1583913" target="_blank" rel="noopener">doi:10.1080/00031305.2019.1583913</a></li>
+                        <li>Nuzzo R. Scientific method: Statistical errors. <em>Nature</em>, 2014. (A readable tour of how p-values are misused.)</li>
+                        <li>Halsey LG, et al. The fickle P value generates irreproducible results. <em>Nature Methods</em>, 2015.</li>
+                        <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em>, 2014. (Why counts use the negative binomial.)</li>
+                        <li>Button KS, et al. Power failure: why small sample size undermines the reliability of neuroscience. <em>Nature Reviews Neuroscience</em>, 2013.</li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: June 2026.</p>
                 </div>
                 <a class="next-lesson" href="multiple-testing.html" target="_blank" rel="noopener">
                     <span>Next in Track 5</span>

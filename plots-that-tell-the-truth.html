@@ -291,18 +291,6 @@ print("Lesson: never trust a mean without seeing the distribution.")
                     <div class="quiz-explain"><strong>Right.</strong> Jet/rainbow distorts perception: bright bands appear where the data are smooth and gradients flatten where the data change, inventing or hiding structure. Perceptually uniform maps (viridis and relatives) keep equal data differences looking equal and are more accessible to color-blind readers.</div>
                 </div>
 
-                <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
-                    <ol>
-                        <li>Anscombe FJ. Graphs in Statistical Analysis. <em>The American Statistician</em>, 1973. (The quartet.)</li>
-                        <li>Tufte ER. <em>The Visual Display of Quantitative Information.</em> Graphics Press, 2001. (Data-ink ratio, chartjunk.)</li>
-                        <li>Weissgerber TL, et al. Beyond bar and line graphs: time for a new data presentation paradigm. <em>PLOS Biology</em>, 2015. <a href="https://doi.org/10.1371/journal.pbio.1002128" target="_blank" rel="noopener">doi:10.1371/journal.pbio.1002128</a></li>
-                        <li>Crameri F, Shephard GE, Heron PJ. The misuse of colour in science communication. <em>Nature Communications</em>, 2020. (Why to drop rainbow maps.)</li>
-                        <li>Jambor H. A checklist for designing and improving the visualization of scientific data. <em>Nature Cell Biology</em> 27, 879–883, 2025. (A current, evidence-based figure checklist for biologists.) <a href="https://doi.org/10.1038/s41556-025-01684-z" target="_blank" rel="noopener">doi:10.1038/s41556-025-01684-z</a></li>
-                        <li>Okabe M, Ito K. Color Universal Design (color-blind-safe palette), 2008. <a href="https://jfly.uni-koeln.de/color/" target="_blank" rel="noopener">jfly color guide</a></li>
-                    </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
-                </div>
 
                 <div class="quiz">
                     <div class="quiz-q-src">When drawing a heatmap of log<sub>2</sub> fold changes that range from negative to positive around zero, which color scale is the honest choice?</div>
@@ -317,6 +305,18 @@ print("Lesson: never trust a mean without seeing the distribution.")
                     <button data-opt>Dual y-axes are impossible to render in matplotlib or ggplot2</button>
                     <button data-opt>Two axes always use too much ink and lower the data-ink ratio below zero</button>
                     <div class="quiz-explain"><strong>Right.</strong> With independent scales on each axis you can slide two series into apparent lockstep, implying a correlation the data may not support. It is a classic trick of deceptive figures, which is why dual y-axes are discouraged for comparing series.</div>
+                </div>
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Anscombe FJ. Graphs in Statistical Analysis. <em>The American Statistician</em>, 1973. (The quartet.)</li>
+                        <li>Tufte ER. <em>The Visual Display of Quantitative Information.</em> Graphics Press, 2001. (Data-ink ratio, chartjunk.)</li>
+                        <li>Weissgerber TL, et al. Beyond bar and line graphs: time for a new data presentation paradigm. <em>PLOS Biology</em>, 2015. <a href="https://doi.org/10.1371/journal.pbio.1002128" target="_blank" rel="noopener">doi:10.1371/journal.pbio.1002128</a></li>
+                        <li>Crameri F, Shephard GE, Heron PJ. The misuse of colour in science communication. <em>Nature Communications</em>, 2020. (Why to drop rainbow maps.)</li>
+                        <li>Jambor H. A checklist for designing and improving the visualization of scientific data. <em>Nature Cell Biology</em> 27, 879–883, 2025. (A current, evidence-based figure checklist for biologists.) <a href="https://doi.org/10.1038/s41556-025-01684-z" target="_blank" rel="noopener">doi:10.1038/s41556-025-01684-z</a></li>
+                        <li>Okabe M, Ito K. Color Universal Design (color-blind-safe palette), 2008. <a href="https://jfly.uni-koeln.de/color/" target="_blank" rel="noopener">jfly color guide</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: June 2026.</p>
                 </div>
                 <a class="next-lesson" href="learn.html#track-6" target="_blank" rel="noopener">
                     <span>You finished Track 5</span>
