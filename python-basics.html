@@ -114,6 +114,17 @@
 
     <main>
         <div class="container"><div class="lesson-body">
+            <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <ul style="margin:0 0 0 20px;">
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Have Python installed first. If not, work through <a href="python-install.html" target="_blank" rel="noopener">Installing Python</a>.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                </ul>
+            </div>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: use variables and core data types; make decisions with if, elif, and else; work with lists and dictionaries; write loops and your own functions; and read a file.</p>
+            </div>
 
             <div class="why">
                 <h4>Start here, even if you have never written a line of code</h4>
@@ -363,6 +374,30 @@ print(gc_content("AAATTT"))   # 0.0
                 </dl>
             </div>
 
+            <h2>Practice exercises</h2>
+            <p>Try each one yourself before opening the solution. You only need what this lesson covered.</p>
+
+            <p><strong>Exercise 1: make a box.</strong> Store the sequence <code class="inline">"ATGCTAGC"</code> in a variable called <code class="inline">seq</code>, then print how many letters it has.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>seq = "ATGCTAGC"
+print(len(seq))   # 8</pre></details>
+
+            <p><strong>Exercise 2: count a base.</strong> Using <code class="inline">seq</code> from Exercise 1, print how many times <code class="inline">"C"</code> appears.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>print(seq.count("C"))   # 2</pre></details>
+
+            <p><strong>Exercise 3: loop over a list.</strong> Given <code class="inline">genes = ["TP53", "BRCA1", "EGFR"]</code>, print each gene name next to its length.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>genes = ["TP53", "BRCA1", "EGFR"]
+for gene in genes:
+    print(gene, len(gene))</pre></details>
+
+            <p><strong>Exercise 4: GC content.</strong> Work out the GC content of <code class="inline">"GGCATGCC"</code> as a percentage, rounded to one decimal place.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>dna = "GGCATGCC"
+gc = (dna.count("G") + dna.count("C")) / len(dna) * 100
+print(round(gc, 1))   # 75.0</pre></details>
+
             <h2>Check your understanding</h2>
             <div class="quiz" data-question="Which data type would you use to store how many times each base appears, like A:10, C:7, G:9?">
                 <button data-opt data-correct>A dictionary, because it stores labelled key-to-value pairs</button>
@@ -372,38 +407,38 @@ print(gc_content("AAATTT"))   # 0.0
             </div>
             <div class="quiz" data-question="You start with an empty dictionary, counts = {}, then loop over a sequence doing counts[base] += 1. The first base raises a KeyError. Why, and what is the clean fix?">
                 <button data-opt data-correct>The key does not exist yet the first time you see a base; use counts[base] = counts.get(base, 0) + 1</button>
-                <button data-opt>Dictionaries cannot count letters; you must use a list instead</button>
-                <button data-opt>You forgot to import the counting module</button>
+                <button data-opt>Switch to counts[base] = counts[base] + 1; it is the += operator itself that triggers the KeyError</button>
+                <button data-opt>The += operator does not work on dictionaries; you need counts.append(base) instead</button>
                 <div class="quiz-explain"><strong>Right.</strong> += needs the key to already hold a number. <code>counts.get(base, 0)</code> returns 0 when the base has not been seen yet, so the very first count works.</div>
             </div>
             <div class="quiz" data-question="What is a variable?">
                 <button data-opt data-correct>A named box that stores a piece of data for later use</button>
-                <button data-opt>A type of error in your code</button>
+                <button data-opt>A word Python already knows, like print or len</button>
                 <button data-opt>A number that can never change</button>
                 <div class="quiz-explain"><strong>Right.</strong> A variable is a name attached to a value, like the box <code>dna</code> holding "ATGC".</div>
             </div>
             <div class="quiz" data-question="Which type would you use for a DNA sequence like ATGC?">
                 <button data-opt data-correct>A string (str), because it is text in quotes</button>
-                <button data-opt>An integer (int), because it has letters</button>
-                <button data-opt>A boolean (bool), because DNA is either there or not</button>
+                <button data-opt>A list, because it is a sequence of separate bases</button>
+                <button data-opt>A variable, because we save it in a name like dna</button>
                 <div class="quiz-explain"><strong>Correct.</strong> Text, including a DNA sequence, is a string: characters inside quotes.</div>
             </div>
             <div class="quiz" data-question="Why does dna[0] give the first letter, not dna[1]?">
                 <button data-opt data-correct>Python counts positions starting from 0</button>
-                <button data-opt>dna[0] is empty; the first letter is always dna[1]</button>
-                <button data-opt>It is a bug; both give the same letter</button>
+                <button data-opt>dna[1] gives the first letter; dna[0] only works on lists, not strings</button>
+                <button data-opt>It is just a habit; you could start counting from 1 and use dna[1] instead</button>
                 <div class="quiz-explain"><strong>Exactly.</strong> Indexing starts at 0, so position 0 is the first item, position 1 the second, and so on.</div>
             </div>
             <div class="quiz" data-question="What is the difference between = and == ?">
                 <button data-opt data-correct>= stores a value in a variable; == asks whether two things are equal</button>
-                <button data-opt>They are identical and interchangeable</button>
+                <button data-opt>Both compare two values; the second = only makes the check clearer</button>
                 <button data-opt>== stores a value; = compares two values</button>
                 <div class="quiz-explain"><strong>Correct.</strong> One equals sign assigns; two equals signs compare and give True or False.</div>
             </div>
             <div class="quiz" data-question="When should you write a function?">
                 <button data-opt data-correct>When you want to reuse the same steps with different inputs</button>
                 <button data-opt>Only when a program is over 100 lines long</button>
-                <button data-opt>Never; functions make code slower</button>
+                <button data-opt>Only for maths; a function can return a number but cannot work on strings</button>
                 <div class="quiz-explain"><strong>Right.</strong> A function lets you write the logic once and reuse it, which keeps code short and clear.</div>
             </div>
 

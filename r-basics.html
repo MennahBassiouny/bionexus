@@ -114,6 +114,17 @@
 
     <main>
         <div class="container"><div class="lesson-body">
+            <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <ul style="margin:0 0 0 20px;">
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Have R and RStudio installed first. If not, work through <a href="r-install.html" target="_blank" rel="noopener">Installing R and RStudio</a>.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                </ul>
+            </div>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: assign values with the arrow; use R core data types; build and work with vectors; handle data frames; apply the main tidyverse verbs; and make a first plot with ggplot2.</p>
+            </div>
 
             <div class="why">
                 <h4>Start here, even if you have never written a line of code</h4>
@@ -304,18 +315,39 @@ glimpse(my_data)   <span class="c"># a quick look at the columns and their types
                 <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;">Check yourself</h4>
                 <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">R and the terminal do not run in this page, so here is what correct output looks like. Type each one and compare.</p>
                 <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">mean(c(12.4, 8.1, 15.7, 3.3, 9.9))</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">9.88</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">expr["EGFR"]</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">15.7</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">nrow(genes)</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">3   (three rows)</td></tr></table></div>
+            <h2>Practice exercises</h2>
+            <p>Type each one into RStudio and run it. Peek at the solution only after you have tried.</p>
+
+            <p><strong>Exercise 1: a vector and its mean.</strong> Store the numbers 5, 8, 2, 10 in a vector called <code class="inline">counts</code>, then get the mean.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>counts &lt;- c(5, 8, 2, 10)
+mean(counts)   # 6.25</pre></details>
+
+            <p><strong>Exercise 2: pick one value.</strong> Using <code class="inline">counts</code> from Exercise 1, print the third value.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>counts[3]   # 2  (R counts from 1)</pre></details>
+
+            <p><strong>Exercise 3: pull out a column.</strong> Using the <code class="inline">genes</code> data frame from section 4, get the <code class="inline">length_kb</code> column and then its mean.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>genes$length_kb        # 19.1 81.2 188.3
+mean(genes$length_kb)  # 96.2</pre></details>
+
+            <p><strong>Exercise 4: keep some rows.</strong> From <code class="inline">genes</code>, keep only the rows on chromosome "7".</p>
+            <details><summary>Show a worked solution</summary>
+<pre>genes |&gt; filter(chromosome == "7")</pre></details>
+
             <h2>Check your understanding</h2>
             <div class="quiz">
                 <div class="quiz-q-src">What does the pipe <code class="inline">|&gt;</code> do?</div>
                 <button data-opt data-correct>Passes the result on its left into the next function, so steps read top to bottom</button>
                 <button data-opt>Runs two functions at the same time</button>
-                <button data-opt>Comments out the rest of the line</button>
+                <button data-opt>Sends the result on its right backwards into the function on its left</button>
                 <div class="quiz-explain"><strong>Right.</strong> Read it as "and then": take the data, then filter, then sort.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">How do you pull a single column out of a data frame by name?</div>
                 <button data-opt data-correct>With the dollar sign, e.g. genes$length_kb</button>
-                <button data-opt>With a slash, e.g. genes/length_kb</button>
+                <button data-opt>With square brackets, e.g. genes[length_kb]</button>
                 <button data-opt>With a dot, e.g. genes.length_kb</button>
                 <div class="quiz-explain"><strong>Correct.</strong> <code>$</code> selects a named column from a data frame (or a named element from a list).</div>
             </div>
@@ -337,21 +369,21 @@ glimpse(my_data)   <span class="c"># a quick look at the columns and their types
                 <div class="quiz-q-src">In R, what is <code class="inline">expr[1]</code>?</div>
                 <button data-opt data-correct>The first value in the vector (R counts from 1)</button>
                 <button data-opt>The second value (R counts from 0)</button>
-                <button data-opt>An error; you cannot index a vector</button>
+                <button data-opt>The last value, because R indexes from the end</button>
                 <div class="quiz-explain">R numbers positions starting at 1, so <code class="inline">expr[1]</code> is the first element.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">What is the difference between <code class="inline">filter()</code> and <code class="inline">select()</code>?</div>
                 <button data-opt data-correct>filter keeps rows; select keeps columns</button>
                 <button data-opt>filter keeps columns; select keeps rows</button>
-                <button data-opt>They both remove missing values only</button>
+                <button data-opt>filter sorts the rows; select renames the columns</button>
                 <div class="quiz-explain">Rows are observations (filter) and columns are variables (select). Rows = filter, columns = select.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">A data frame is best described as...</div>
                 <button data-opt data-correct>A table where columns are variables and rows are observations</button>
-                <button data-opt>A single number stored in a box</button>
-                <button data-opt>A type of plot</button>
+                <button data-opt>A vector: a single row of values that are all the same type</button>
+                <button data-opt>One column pulled out of a table with the dollar sign</button>
                 <div class="quiz-explain">A data frame is R's spreadsheet: a table of columns (variables) and rows (observations).</div>
             </div>
 

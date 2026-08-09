@@ -267,6 +267,7 @@
                 <div class="warn">
                     <h4>⚠️ Not every call is real</h4>
                     <p>Variant callers make mistakes, especially at low coverage or in repetitive regions. Real projects <strong>filter</strong> the VCF by quality and depth (for example, dropping calls with QUAL below a threshold or very low DP) before trusting it. Raw calls are a starting point, not a final answer.</p>
+                    <pre>bcftools filter -e <span class="s">'QUAL&lt;20 || DP&lt;10'</span> calls.norm.vcf.gz -Oz -o calls.filt.vcf.gz</pre>
                 </div>
 
                 <div class="capstone">

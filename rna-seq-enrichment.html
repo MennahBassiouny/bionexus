@@ -208,6 +208,7 @@ head(geneList)</pre>
 sig_genes <- names(geneList)[abs(geneList) > 2]
 
 ego <- enrichGO(gene          = sig_genes,
+                universe      = names(geneList),   <span class="c"># background = the genes you actually measured</span>
                 OrgDb         = org.Hs.eg.db,
                 ont           = <span class="s">"BP"</span>,        <span class="c"># Biological Process</span>
                 pAdjustMethod = <span class="s">"BH"</span>,
@@ -257,12 +258,14 @@ gseaplot2(gse, geneSetID = 1, title = gse$Description[1])</pre>
                 <pre><span class="c"># res is your DESeq2 results data frame, with gene symbols as row names</span>
 ids <- bitr(rownames(res), fromType = <span class="s">"SYMBOL"</span>,
             toType = <span class="s">"ENTREZID"</span>, OrgDb = org.Hs.eg.db)
+ids <- ids[!duplicated(ids$SYMBOL) & !duplicated(ids$ENTREZID), ]  <span class="c"># drop one-to-many maps</span>
 
 <span class="c"># build a ranked named vector (rank by the test statistic, high to low)</span>
 ranks <- res$stat
 names(ranks) <- rownames(res)
-ranks <- ranks[ids$SYMBOL]
-names(ranks) <- ids$ENTREZID
+ranks <- ranks[ids$SYMBOL]        <span class="c"># keep only genes that mapped</span>
+names(ranks) <- ids$ENTREZID      <span class="c"># rows now line up one-to-one</span>
+ranks <- ranks[!is.na(ranks)]
 ranks <- sort(ranks, decreasing = TRUE)
 <span class="c"># now feed 'ranks' into gseGO() exactly as above</span></pre>
 

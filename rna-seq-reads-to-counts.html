@@ -234,17 +234,19 @@
             <p>This is the classic route. You align reads to the genome (Track 2 taught the idea), then hand the BAM and an annotation to <strong>featureCounts</strong>, which assigns each read to a gene.</p>
             <pre><span class="c"># align (a splice-aware aligner; STAR shown conceptually), then count</span>
 featureCounts -a annotation.gtf -o counts.txt sample1.bam sample2.bam
+<span class="c"># paired-end reads: add -p --countReadPairs</span>
 <span class="c"># counts.txt now has one row per gene and one column per sample</span></pre>
 
             <h3>Route B: quantify directly (the fast modern default)</h3>
-            <p><strong>salmon</strong> skips the slow step of placing every read on the genome. It matches reads straight against the list of known transcripts (the <em>transcriptome</em>), a trick called <strong>pseudo-alignment</strong>, then you collapse transcript estimates to gene-level counts in R with <code class="inline">tximport</code>.</p>
+            <p><strong>salmon</strong> skips the slow step of placing every read on the genome. It matches reads straight against the list of known transcripts (the <em>transcriptome</em>), a fast approach called <strong>selective alignment</strong> (also called quasi-mapping; kallisto uses a closely related idea called pseudo-alignment), then you collapse transcript estimates to gene-level counts in R with <code class="inline">tximport</code>.</p>
             <pre><span class="c"># build an index once, then quantify each sample</span>
 salmon index -t transcripts.fa -i salmon_index
 salmon quant -i salmon_index -l A -r sample1.fastq.gz -o sample1_quant
+<span class="c"># paired-end: use -1 reads_1.fastq.gz -2 reads_2.fastq.gz instead of -r</span>
 <span class="c"># then in R: tximport() reads the quant files into a gene-level count matrix</span></pre>
             <div class="jargon">
                 <h4><span>Decode the jargon</span>Pseudo-alignment</h4>
-                <p>Instead of working out the exact position of every read on the genome, <strong>pseudo-alignment</strong> just figures out which transcripts a read is compatible with. That is all you need to count expression, and it is dramatically faster and lighter, which is why salmon and kallisto are the common modern choice.</p>
+                <p>Instead of working out the exact position of every read on the genome, salmon's <strong>selective alignment</strong> (and kallisto's pseudo-alignment) just figures out which transcripts a read is compatible with. That is all you need to count expression, and it is dramatically faster and lighter, which is why salmon and kallisto are the common modern choice.</p>
             </div>
 
             <h2><span class="step-num">3</span>Which route should a beginner use?</h2>
@@ -262,10 +264,10 @@ salmon quant -i salmon_index -l A -r sample1.fastq.gz -o sample1_quant
 
             <h2>Check your understanding</h2>
             <div class="quiz" data-question="Which route skips full genome alignment and matches reads straight against the transcriptome?">
-                <button data-opt data-correct>salmon (pseudo-alignment)</button>
+                <button data-opt data-correct>salmon (selective alignment / quasi-mapping)</button>
                 <button data-opt>featureCounts</button>
                 <button data-opt>the STAR aligner</button>
-                <div class="quiz-explain"><strong>Right.</strong> salmon uses pseudo-alignment against the transcriptome, which is fast and light. featureCounts and STAR are the align-then-count route.</div>
+                <div class="quiz-explain"><strong>Right.</strong> salmon uses selective alignment (quasi-mapping) against the transcriptome, which is fast and light. featureCounts and STAR are the align-then-count route.</div>
             </div>
             <div class="quiz" data-question="Besides the BAM, what does featureCounts need to assign reads to genes?">
                 <button data-opt data-correct>An annotation file (GTF) giving each gene's location</button>

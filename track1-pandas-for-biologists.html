@@ -232,6 +232,43 @@ plt.ylabel(<span class="s">"GC %"</span>); plt.tight_layout(); plt.show()</pre>
 
             <details><summary>The translate or fetch warned about something - did it fail?</summary><p>Warnings (like a sequence length not being a multiple of three) aren't errors - the code still produced your table. Read the message, but if you got a DataFrame, you succeeded.</p></details>
 
+            <h2>Check your understanding</h2>
+                <div class="quiz">
+                    <div class="quiz-q-src">You have gene measurements saved in a file called results.csv. Which pandas call loads it into a DataFrame?</div>
+                    <button data-opt data-correct>pd.read_csv("results.csv")</button>
+                    <button data-opt>pd.open_csv("results.csv")</button>
+                    <button data-opt>pd.DataFrame.load("results.csv")</button>
+                    <div class="quiz-explain">Correct. pd.read_csv reads a CSV file straight into a DataFrame, the usual first step for working with tabular data.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Your DataFrame genes has a length column. Which expression keeps only the rows where length is greater than 10000?</div>
+                    <button data-opt>genes.length &gt; 10000</button>
+                    <button data-opt data-correct>genes[genes["length"] &gt; 10000]</button>
+                    <button data-opt>genes.filter(length &gt; 10000)</button>
+                    <div class="quiz-explain">Right. Putting a boolean condition inside the square brackets keeps only the rows where the test is true, here the rows longer than 10000.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You want the average gene length for each chromosome. Which pandas expression gives you one average per chromosome?</div>
+                    <button data-opt>genes.mean("chrom")</button>
+                    <button data-opt>genes.sort_values("chrom").mean()</button>
+                    <button data-opt data-correct>genes.groupby("chrom")["length"].mean()</button>
+                    <div class="quiz-explain">Correct. groupby("chrom") splits the rows into groups by chromosome, and taking the mean of length then returns one average for each group.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Which call gives you count, mean, min, max, and other summary statistics for every numeric column at once?</div>
+                    <button data-opt data-correct>df.describe()</button>
+                    <button data-opt>df.head()</button>
+                    <button data-opt>df.info()</button>
+                    <div class="quiz-explain">Correct. df.describe() returns summary statistics, including count, mean, standard deviation, min, max, and quartiles, for each numeric column.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You have one DataFrame of gene IDs with lengths and a second DataFrame of the same gene IDs with expression values. Which operation combines them into one table matched on gene ID?</div>
+                    <button data-opt>lengths.append(expression)</button>
+                    <button data-opt data-correct>pd.merge(lengths, expression, on="gene")</button>
+                    <button data-opt>pd.concat([lengths, expression], axis=0)</button>
+                    <div class="quiz-explain">Right. pd.merge joins two DataFrames on a shared key column, here gene, lining up the rows that share the same gene ID.</div>
+                </div>
+
             <a class="next-lesson" href="learn.html" target="_blank" rel="noopener">
                 <span>You've completed the data-literacy track</span>
                 <h3>Back to the roadmap - pick your next track →</h3>

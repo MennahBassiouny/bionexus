@@ -118,6 +118,17 @@
 
     <main>
         <div class="container"><div class="lesson-body">
+            <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <ul style="margin:0 0 0 20px;">
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Have a working terminal first. If not, work through <a href="bash-install.html" target="_blank" rel="noopener">Setting Up a Terminal</a>.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                </ul>
+            </div>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: know where you are and move around the filesystem; create and handle files and folders; look inside and search files; and combine commands with the pipe.</p>
+            </div>
 
             <div class="why">
                 <h4>Start here, even if you have never opened a terminal</h4>
@@ -270,6 +281,29 @@ grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class=
                 <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;">Check yourself</h4>
                 <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">R and the terminal do not run in this page, so here is what correct output looks like. Type each one and compare.</p>
                 <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">grep -c "&gt;" genes.fasta</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the number of sequences</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">echo "ATGC" &gt; dna.txt &amp;&amp; cat dna.txt</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">ATGC</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">wc -l &lt; reads.fastq</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the number of lines</td></tr></table></div>
+            <h2>Practice exercises</h2>
+            <p>Open your terminal and try each one before you reveal the solution.</p>
+
+            <p><strong>Exercise 1: find your feet.</strong> Print the folder you are in, list its contents with details, then move into a folder called <code class="inline">project</code>.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>pwd
+ls -l
+cd project</pre></details>
+
+            <p><strong>Exercise 2: peek, do not dump.</strong> Show only the first 3 lines of <code class="inline">reads.txt</code> without printing the whole file.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>head -n 3 reads.txt</pre></details>
+
+            <p><strong>Exercise 3: count sequences.</strong> Count how many sequences are in <code class="inline">seqs.fasta</code>, where every header line starts with <code class="inline">&gt;</code>. Try it with a pipe too.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>grep -c "&gt;" seqs.fasta
+# or, with a pipe:
+cat seqs.fasta | grep "&gt;" | wc -l</pre></details>
+
+            <p><strong>Exercise 4: save the result.</strong> Write just the header lines of <code class="inline">seqs.fasta</code> into a new file called <code class="inline">headers.txt</code>.</p>
+            <details><summary>Show a worked solution</summary>
+<pre>grep "&gt;" seqs.fasta &gt; headers.txt</pre></details>
+
             <h2>Check your understanding</h2>
             <div class="quiz">
                 <div class="quiz-q-src">What does <code class="inline">~</code> mean in a path?</div>
@@ -281,21 +315,21 @@ grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class=
             <div class="quiz">
                 <div class="quiz-q-src">What is the difference between <code class="inline">&gt;</code> and <code class="inline">&gt;&gt;</code> when saving output?</div>
                 <button data-opt data-correct>&gt; creates or overwrites a file; &gt;&gt; adds to the end of an existing file</button>
-                <button data-opt>They are identical</button>
+                <button data-opt>Both add to the end of the file; you must delete it first to overwrite</button>
                 <button data-opt>&gt; appends; &gt;&gt; overwrites</button>
                 <div class="quiz-explain"><strong>Correct.</strong> A single <code>&gt;</code> replaces the file's contents; <code>&gt;&gt;</code> appends, leaving what was already there.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">To count reads in a FASTQ file, a colleague runs <code class="inline">grep "&gt;" reads.fastq | wc -l</code> and gets 0. Why is this wrong for FASTQ?</div>
                 <button data-opt data-correct>FASTQ headers start with @, not &gt;, and a read spans four lines; count lines and divide by four</button>
-                <button data-opt>grep cannot be used on sequencing files at all</button>
+                <button data-opt>FASTQ headers also start with &gt;, so the command is right and the file simply has no reads</button>
                 <button data-opt>The file must be unzipped first; nothing else is wrong</button>
                 <div class="quiz-explain"><strong>Correct.</strong> The <code>&gt;</code> header is a FASTA thing. FASTQ uses four lines per read, so the read count is <code>$(( $(wc -l &lt; reads.fastq) / 4 ))</code>.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">In <code class="inline">ls -l Downloads</code>, what is <code class="inline">Downloads</code>?</div>
                 <button data-opt data-correct>The argument: the folder the command acts on</button>
-                <button data-opt>The command itself</button>
+                <button data-opt>The command, because it names what you want to see</button>
                 <button data-opt>An option that changes how ls behaves</button>
                 <div class="quiz-explain"><code class="inline">ls</code> is the command, <code class="inline">-l</code> is the option, and <code class="inline">Downloads</code> is the argument (what to act on).</div>
             </div>
@@ -303,20 +337,20 @@ grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class=
                 <div class="quiz-q-src">What does <code class="inline">grep "&gt;" seqs.fasta | wc -l</code> tell you?</div>
                 <button data-opt data-correct>The number of sequences in the file</button>
                 <button data-opt>The total number of bases in the file</button>
-                <button data-opt>The length of the longest sequence</button>
+                <button data-opt>The total number of lines in the file, sequences included</button>
                 <div class="quiz-explain">Each sequence has one header line starting with <code class="inline">&gt;</code>, so counting those lines counts the sequences.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">What does the pipe <code class="inline">|</code> do?</div>
                 <button data-opt data-correct>Feeds the output of one command into the next</button>
-                <button data-opt>Deletes the file on the left</button>
+                <button data-opt>Saves the output of the left command into a file named after the right one</button>
                 <button data-opt>Runs two commands at the exact same time</button>
                 <div class="quiz-explain">The pipe chains small tools together by passing output along, which is what makes the command line so powerful.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">Why prefer <code class="inline">head</code> or <code class="inline">less</code> over <code class="inline">cat</code> for big files?</div>
                 <button data-opt data-correct>cat dumps the whole (possibly huge) file; head/less show or scroll part of it</button>
-                <button data-opt>cat only works on compressed files</button>
+                <button data-opt>cat changes the file, while head and less only read it</button>
                 <button data-opt>head and less are faster for every file</button>
                 <div class="quiz-explain">Genomic files can be enormous. <code class="inline">cat</code> floods your screen; <code class="inline">head</code> shows the top and <code class="inline">less</code> lets you scroll.</div>
             </div>
