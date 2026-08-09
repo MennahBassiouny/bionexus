@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="author" content="BioNexus Hub">
     <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+    <link rel="canonical" href="https://bionexushub.com/single-cell-rna-seq-intro.html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A gentle intro to single-cell RNA-seq: how it differs from bulk, what barcodes and UMIs do, why the matrix is sparse, and the standard QC to clustering pipeline.">
     <link rel="icon" type="image/png" href="favicon.png">
@@ -218,7 +219,9 @@ sc.pp.log1p(adata)
 # 3. Highly variable genes
 sc.pp.highly_variable_genes(adata, n_top_genes=2000)
 
-# 4. PCA
+# 4. Keep the highly variable genes, scale, then PCA
+adata = adata[:, adata.var.highly_variable]
+sc.pp.scale(adata, max_value=10)
 sc.pp.pca(adata)
 
 # 5. Graph-based clustering (Leiden)

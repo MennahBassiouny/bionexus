@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="author" content="BioNexus Hub">
     <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+    <link rel="canonical" href="https://bionexushub.com/rna-seq-reads-to-counts.html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="The bridge between NGS and RNA-seq: how sequencing reads become a gene-count matrix, the two routes (align then featureCounts, or salmon then tximport), and why raw counts go into DESeq2. Beginner-friendly, with diagrams.">
     <link rel="icon" type="image/png" href="favicon.png">
@@ -11,7 +12,7 @@
     <meta property="og:site_name" content="BioNexus Hub">
     <meta property="og:title" content="From Reads to a Count Matrix - BioNexus Hub">
     <meta property="og:description" content="Free, beginner-friendly bioinformatics. Learn Python, R, and the command line from scratch with browser-based lessons and real-data projects.">
-    <meta property="og:url" content="https://bionexushub.com/">
+    <meta property="og:url" content="https://bionexushub.com/rna-seq-reads-to-counts.html">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -245,7 +246,7 @@ salmon quant -i salmon_index -l A -r sample1.fastq.gz -o sample1_quant
 <span class="c"># paired-end: use -1 reads_1.fastq.gz -2 reads_2.fastq.gz instead of -r</span>
 <span class="c"># then in R: tximport() reads the quant files into a gene-level count matrix</span></pre>
             <div class="jargon">
-                <h4><span>Decode the jargon</span>Pseudo-alignment</h4>
+                <h4><span>Decode the jargon</span>Selective alignment (vs pseudo-alignment)</h4>
                 <p>Instead of working out the exact position of every read on the genome, salmon's <strong>selective alignment</strong> (and kallisto's pseudo-alignment) just figures out which transcripts a read is compatible with. That is all you need to count expression, and it is dramatically faster and lighter, which is why salmon and kallisto are the common modern choice.</p>
             </div>
 

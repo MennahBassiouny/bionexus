@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="author" content="BioNexus Hub">
     <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+    <link rel="canonical" href="https://bionexushub.com/m6a-seq-analysis.html">
     <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="How to analyze m6A-seq / MeRIP-seq data: the IP-versus-input design, peak calling, why you normalize methylation against expression, single-nucleotide and antibody-free alternatives (miCLIP, GLORI, nanopore), and differential methylation.">
@@ -187,7 +188,7 @@
                 <ol>
                     <li><strong>QC and trim</strong> the IP and input FASTQ files (same as any RNA-seq).</li>
                     <li><strong>Align</strong> both to the genome with a splice-aware aligner (STAR or HISAT2), because mRNA reads cross exon junctions.</li>
-                    <li><strong>Call peaks</strong>: find regions significantly enriched in IP over input. Purpose-built tools model this exome-aware: <code class="inline">exomePeak2</code>, <code class="inline">MeTPeak</code>, or MACS2 adapted for RNA.</li>
+                    <li><strong>Call peaks</strong>: find regions significantly enriched in IP over input. Purpose-built tools model this exome-aware: <code class="inline">exomePeak2</code> or <code class="inline">MeTPeak</code> (general ChIP peak callers like MACS2 are not exon-aware, so they are only a rough fallback for RNA).</li>
                     <li><strong>QC the peaks</strong>: a good m6A dataset recovers the <strong>DRACH motif</strong> under the peaks and shows enrichment near <strong>stop codons / 3' UTRs</strong>. If it does not, something is wrong.</li>
                     <li><strong>Differential methylation</strong> between conditions (e.g. treatment vs control, or writer-knockdown vs control): tools like <code class="inline">exomePeak2</code>, <code class="inline">RADAR</code>, or <code class="inline">QNB</code> test whether the IP/input ratio changes, while accounting for expression changes.</li>
                 </ol>
