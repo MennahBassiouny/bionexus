@@ -128,6 +128,8 @@
                 <div class="term"><h3>Confounding</h3><p>When two effects are tangled together so you cannot tell them apart, for example if every treated sample was processed on a different day than the controls.</p></div>
                 <div class="term"><h3>Count matrix</h3><p>A table with one row per gene and one column per sample, where each cell is how many sequencing reads were counted for that gene. The starting point of most RNA-seq analyses.</p></div>
                 <div class="term"><h3>CPM (counts per million)</h3><p>Read counts scaled by library size so samples sequenced to different depths can be compared. It does not correct for gene length.</p></div>
+                <div class="term"><h3>CRAN</h3><p>The Comprehensive R Archive Network: R's main package store. You install from it with install.packages("name").</p></div>
+                <div class="term"><h3>Data frame</h3><p>R's table: each column is a variable and each row is one observation, like one row per gene or per sample.</p></div>
                 <div class="term"><h3>DESeq2</h3><p>The standard R/Bioconductor package for finding genes that change between conditions (differential expression).</p></div>
                 <div class="term"><h3>Design formula</h3><p>A short recipe (like <code>~ condition</code>) that tells DESeq2 which sample features to model and what comparison you care about.</p></div>
                 <div class="term"><h3>Differential expression</h3><p>Finding which genes are more or less active between two conditions, for example treated versus untreated cells.</p></div>
@@ -171,6 +173,7 @@
                 <div class="term"><h3>Normalization</h3><p>Adjusting counts so samples sequenced at different depths can be compared fairly, so differences reflect biology and not data volume.</p></div>
                 <div class="term"><h3>p-value</h3><p>The probability of seeing a difference this big by chance alone. Small means surprising. For many-gene tests, use the adjusted p-value instead.</p></div>
                 <div class="term"><h3>pandas</h3><p>A Python library for working with tables of data, like a programmable spreadsheet.</p></div>
+                <div class="term"><h3>Package (R)</h3><p>A bundle of extra functions for R, such as ggplot2 or DESeq2. Install it once with install.packages(), then load it in every new session with library().</p></div>
                 <div class="term"><h3>PCA (Principal Component Analysis)</h3><p>A way to squeeze many measurements into two axes so you can see, at a glance, which samples group together.</p></div>
                 <div class="term"><h3>Pearson correlation</h3><p>A measure of how strongly two numeric variables move together in a straight line. For non-linear or ranked relationships, use Spearman.</p></div>
                 <div class="term"><h3>pip</h3><p>Python's package installer; it fetches and installs Python libraries.</p></div>
@@ -180,6 +183,8 @@
                 <div class="term"><h3>Replicate (biological vs technical)</h3><p>A biological replicate is a separate sample (a different animal or culture); a technical replicate is the same sample measured again. Differential expression needs biological replicates.</p></div>
                 <div class="term"><h3>RNA</h3><p>A molecule transcribed from DNA. Measuring RNA tells you which genes a cell is actively using.</p></div>
                 <div class="term"><h3>RNA-seq</h3><p>Sequencing the RNA in a sample to measure how active each gene is.</p></div>
+                <div class="term"><h3>RStudio</h3><p>A free workspace (IDE) for writing and running R, with panes for your script, the Console, your data and your plots.</p></div>
+                <div class="term"><h3>RStudio Project</h3><p>A folder that RStudio ties to one analysis (it contains a .Rproj file). Opening it makes that folder the working directory, so file paths work on any computer.</p></div>
                 <div class="term"><h3>SAM</h3><p>A text format that stores aligned reads (where each read mapped on the genome). BAM is its compressed form.</p></div>
                 <div class="term"><h3>Sequence</h3><p>The order of letters (bases) in DNA or RNA, or of amino acids in a protein.</p></div>
                 <div class="term"><h3>Single-cell RNA-seq</h3><p>RNA-seq that measures gene activity in individual cells rather than averaged over millions.</p></div>
@@ -187,6 +192,7 @@
                 <div class="term"><h3>SRA (Sequence Read Archive)</h3><p>A public NCBI repository of raw sequencing reads.</p></div>
                 <div class="term"><h3>Substitution matrix</h3><p>A scoring table (such as BLOSUM62 or PAM) for how favorable each amino-acid swap is, based on real related proteins. It makes protein alignment more sensitive than raw DNA matching.</p></div>
                 <div class="term"><h3>t-test</h3><p>A test for whether the averages of two groups differ. The rank-based version for small or skewed data is the Wilcoxon test.</p></div>
+                <div class="term"><h3>tidyverse</h3><p>A family of R packages (dplyr, ggplot2, tidyr, readr and more) for tidy data work. library(tidyverse) loads the core ones at once.</p></div>
                 <div class="term"><h3>TPM (transcripts per million)</h3><p>An expression unit correcting for both sequencing depth and gene length that sums to the same total in every sample, which makes it good for comparing across samples. Do not feed TPM to DESeq2; it needs raw counts.</p></div>
                 <div class="term"><h3>Transcription</h3><p>The cell copying a gene's DNA into RNA, the first step in using a gene.</p></div>
                 <div class="term"><h3>Transcriptomics</h3><p>The study of all the RNA in a sample: which genes are on, off, up, or down.</p></div>
@@ -196,7 +202,9 @@
                 <div class="term"><h3>VCF (Variant Call Format)</h3><p>A text format that lists differences (variants) between a sample's DNA and the reference genome.</p></div>
                 <div class="term"><h3>venv</h3><p>Python's built-in tool for creating virtual environments.</p></div>
                 <div class="term"><h3>Volcano plot</h3><p>A scatter plot of significance versus fold change. The genes that matter fly up into the top corners.</p></div>
+                <div class="term"><h3>webR</h3><p>A version of R that runs inside your web browser, with nothing to install. BioNexus uses it for the runnable R boxes in the R lessons.</p></div>
                 <div class="term"><h3>Wilcoxon test</h3><p>The rank-based alternative to the t-test, for comparing two groups when the data is small or not normally distributed. Also called Mann-Whitney.</p></div>
+                <div class="term"><h3>Working directory</h3><p>The folder R looks in when you give just a file name. Check it with getwd(); an RStudio Project sets it for you.</p></div>
                 <div class="term"><h3>z-score</h3><p>Rescaling each gene so a heatmap shows its relative change (up or down versus its own average) rather than its absolute level.</p></div>
             </div>
             <p class="no-res" id="noRes">No term matches that search. Try another word, or send us a suggestion from the feedback button.</p>

@@ -1,0 +1,9 @@
+gene,chromosome,length_kb,expression
+TP53,17,19.1,12.4
+BRCA1,17,81.2,8.1
+EGFR,7,188.3,15.7
+MYC,8,7.5,3.3
+GAPDH,12,4.4,25.6
+KRAS,12,45.7,9.9
+PTEN,10,105.3,6.2
+ACTB,7,3.4,22.8

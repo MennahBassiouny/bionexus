@@ -93,7 +93,7 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (3 of 3)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (5 of 5)</div>
             <h1>Project: Explore a Real Dataset with R</h1>
             <p class="promise">Take a real, published dataset from messy to insight: load it, clean it, summarise it by group, and produce a polished figure - the exact workflow you'll later run on gene expression data.</p>
             <div class="tags">
@@ -110,7 +110,8 @@
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
                 <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
-                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Finish the earlier R lessons first, ideally <a href="r-intermediate.html" target="_blank" rel="noopener">R: Level 2 (Intermediate)</a>.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Finish <a href="r-basics.html" target="_blank" rel="noopener">R: Level 1 (Basics)</a>. <a href="r-intermediate.html" target="_blank" rel="noopener">Level 2</a> is optional: everything new here is explained as you go.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">No install needed: every step runs in your browser. In RStudio, you need the <code class="inline">tidyverse</code> and <code class="inline">palmerpenguins</code> packages (see <a href="r-install.html" target="_blank" rel="noopener">Installing R and RStudio</a>, Step 4).</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
@@ -123,48 +124,66 @@
 
             <div class="why"><h4>Why not jump straight to gene data?</h4><p>Because the <em>skill</em> you're building - wrangling a real table and seeing structure in it - is identical, and penguins won't drown you in biological jargon while you're still learning the verbs. Once this clicks, swapping in an expression matrix is a small step.</p></div>
 
-            <h2><span class="step-num">1</span>Load the data and look at it</h2>
-            <pre><span class="k">library</span>(tidyverse)
-<span class="k">library</span>(palmerpenguins)
+            <div style="background:rgba(168,85,247,0.07); border:1px solid rgba(168,85,247,0.3); border-left:4px solid #a855f7; border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:#7c3aed; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Do the whole project in your browser</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">Each step has a dark R box: press <strong>Run</strong>, in order from Step 1, because each step uses what the one before created. The first Run downloads R and the packages, so allow a minute or two on a slow connection. Doing it in RStudio instead? Copy the same code into a script.</p>
+            </div>
 
-penguins         <span class="c"># the dataset comes with the package</span>
-glimpse(penguins) <span class="c"># columns, types, and a peek at values</span></pre>
+            <h2><span class="step-num">1</span>Load the data and look at it</h2>
+            <div class="rcell" data-packages="dplyr,tidyr,ggplot2,palmerpenguins"><script type="text/x-r">
+library(dplyr)           # In RStudio, library(tidyverse) loads dplyr,
+library(tidyr)           # tidyr and ggplot2 in one go. Here we load
+library(ggplot2)         # just the three this project uses.
+library(palmerpenguins)
+
+penguins          # the dataset comes with the package
+glimpse(penguins) # columns, types, and a peek at values
+</script></div>
             <p>Always look before you leap. <code class="inline">glimpse()</code> shows you the columns (species, island, bill length, flipper length, body mass, sex…) and their types. Notice some values are <code class="inline">NA</code> - missing. Real data is always a little messy.</p>
+            <div class="why"><h4>Seeing "Column `bill_length_mm` doesn't exist" or "object 'bill_length_mm' not found"?</h4><p>R 4.5 and newer comes with its own copy of the penguins data, with shorter column names (<code class="inline">bill_len</code>, <code class="inline">bill_dep</code>, <code class="inline">body_mass</code>). If you forget <code class="inline">library(palmerpenguins)</code>, R uses that copy and the column names in this project will not match. Run the <code class="inline">library(palmerpenguins)</code> line, then try again.</p></div>
 
             <h2><span class="step-num">2</span>Clean it</h2>
-            <pre>clean &lt;- penguins |&gt;
-  drop_na(bill_length_mm, bill_depth_mm, species)   <span class="c"># remove rows missing these</span>
+            <div class="rcell"><script type="text/x-r">
+clean <- penguins |>
+  drop_na(bill_length_mm, bill_depth_mm, species)   # remove rows missing these
 
-nrow(penguins)   <span class="c"># before</span>
-nrow(clean)      <span class="c"># after</span></pre>
+nrow(penguins)   # before
+nrow(clean)      # after
+</script></div>
             <div class="why"><h4>Decode the jargon: NA</h4><p><code class="inline">NA</code> means "not available" - a missing value. Many calculations refuse to run with NAs present (on purpose, so you don't get silently wrong answers). Deciding what to do with them is a real and important judgment call in every analysis.</p></div>
 
             <h2><span class="step-num">3</span>Summarise by group</h2>
             <p>This is the question-answering step. How do the species differ?</p>
-            <pre>clean |&gt;
-  group_by(species) |&gt;
+            <div class="rcell"><script type="text/x-r">
+clean |>
+  group_by(species) |>
   summarise(
     n = n(),
     avg_bill_length = mean(bill_length_mm),
-    avg_body_mass   = mean(body_mass_g, na.rm = <span class="k">TRUE</span>)
-  )</pre>
+    avg_body_mass   = mean(body_mass_g, na.rm = TRUE)
+  )
+</script></div>
             <p>In one short block you've just computed, per species, how many penguins there are and their average measurements. That <code class="inline">group_by() |&gt; summarise()</code> combination is one of the most useful patterns in all of data analysis.</p>
 
             <h2><span class="step-num">4</span>Visualize the structure</h2>
-            <pre><span class="k">ggplot</span>(clean, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
-  geom_point(size = <span class="o">2</span>, alpha = <span class="o">0.8</span>) +
+            <div class="rcell"><script type="text/x-r">
+ggplot(clean, aes(x = bill_length_mm, y = bill_depth_mm, color = species)) +
+  geom_point(size = 2, alpha = 0.8) +
   labs(
-    title = <span class="s">"Bill shape separates penguin species"</span>,
-    x = <span class="s">"Bill length (mm)"</span>, y = <span class="s">"Bill depth (mm)"</span>
+    title = "Bill shape separates penguin species",
+    x = "Bill length (mm)", y = "Bill depth (mm)"
   ) +
-  theme_minimal()</pre>
+  theme_minimal()
+</script></div>
             <p>Look at the result: the three species form distinct clusters. You've just <em>discovered</em> something real from data - that bill shape alone largely tells the species apart. That move, finding group structure in measurements, is exactly what clustering gene expression does later.</p>
 
             <h2><span class="step-num">5</span>One more: a boxplot</h2>
-            <pre><span class="k">ggplot</span>(clean, aes(x = species, y = body_mass_g, fill = species)) +
+            <div class="rcell"><script type="text/x-r">
+ggplot(clean, aes(x = species, y = body_mass_g, fill = species)) +
   geom_boxplot() +
-  labs(title = <span class="s">"Body mass by species"</span>, y = <span class="s">"Body mass (g)"</span>) +
-  theme_minimal()</pre>
+  labs(title = "Body mass by species", y = "Body mass (g)") +
+  theme_minimal()
+</script></div>
 
             <div class="challenge">
                 <h3>🚀 Make it your own</h3>
@@ -172,7 +191,7 @@ nrow(clean)      <span class="c"># after</span></pre>
                     <li>Use <code class="inline">filter()</code> to look at just one island, then re-make the scatter plot. Do the clusters change?</li>
                     <li>Add <code class="inline">facet_wrap(~ island)</code> to the scatter plot - what does splitting by island reveal?</li>
                     <li>Group by <strong>species and sex</strong> together and compare average body mass. Which is the bigger driver?</li>
-                    <li><strong>Bridge to biology:</strong> download any gene-length or expression CSV from <a href="resources.html" target="_blank" rel="noopener">Resources</a>, <code class="inline">read_csv()</code> it, and run the same load → clean → group → plot pattern. The skill transfers directly.</li>
+                    <li><strong>Bridge to biology:</strong> read our small practice gene table with <code class="inline">read.csv("https://bionexushub.com/practice-genes.csv")</code> and run the same load → inspect → group → plot pattern. For example, plot <code class="inline">length_kb</code> against <code class="inline">expression</code>, or summarise the mean expression per chromosome. The skill transfers directly.</li>
                     <li><strong>Portfolio move:</strong> knit your script into an HTML report (RStudio → Knit) and put it on GitHub.</li>
                 </ul>
             </div>
@@ -218,6 +237,7 @@ nrow(clean)      <span class="c"># after</span></pre>
                     <div class="quiz-explain">The project builds its figures with ggplot(), adding layers like geom_point() and geom_boxplot() to reveal the structure in the data.</div>
                 </div>
 
+            <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:30px;">Skipped Level 2? <a href="r-intermediate.html" target="_blank" rel="noopener" style="color:var(--primary-blue); font-weight:600;">R Level 2 (Intermediate)</a> adds functions, reshaping and joins, which the RNA-seq lessons use.</p>
             <a class="next-lesson" href="bash-install.html" target="_blank" rel="noopener">
                 <span>Next foundation</span>
                 <h3>Start the Bash series: setting up a terminal →</h3>
@@ -229,6 +249,6 @@ nrow(clean)      <span class="c"># after</span></pre>
     <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
-    <script src="interactive.js" defer></script>
+    <script src="interactive.js?v=2" defer></script>
 </body>
 </html>

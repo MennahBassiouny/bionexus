@@ -102,7 +102,7 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Foundations &nbsp;/&nbsp; R &nbsp;/&nbsp; Level 1: Basics</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (3 of 5): Level 1 Basics</div>
             <h1>R: Level 1 (Basics)</h1>
             <p class="promise">For complete beginners with no coding background. We start from what R even is, then build every core idea (data types, vectors, and the data frame) one small step at a time, with pictures.</p>
             <div class="tags">
@@ -118,7 +118,8 @@
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
                 <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
-                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Have R and RStudio installed first. If not, work through <a href="r-install.html" target="_blank" rel="noopener">Installing R and RStudio</a>.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Nothing to install for this page: every example runs in your browser. When you want R on your own computer, see <a href="r-install.html" target="_blank" rel="noopener">Installing R and RStudio</a>.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Using RStudio? Do <a href="r-first-steps.html" target="_blank" rel="noopener">First steps in RStudio</a> first: the panes, saving a script, getting help, and reading errors.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
@@ -130,6 +131,11 @@
             <div class="why">
                 <h4>Start here, even if you have never written a line of code</h4>
                 <p>This lesson assumes nothing. We will explain what R even is, then build up every core idea (values, the data types, vectors, and the data frame) one small step at a time, with pictures. By the end you will understand the heart of R. Go slowly. You cannot break anything.</p>
+            </div>
+
+            <div style="background:rgba(168,85,247,0.07); border:1px solid rgba(168,85,247,0.3); border-left:4px solid var(--primary-purple, #a855f7); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
+                <h4 style="color:#7c3aed; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">No R on your computer yet? Start anyway</h4>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">The dark boxes marked <strong>R &middot; runs in your browser</strong> run real R on this page. Press <strong>Run</strong>, change the code, press Run again. If you break something, press <strong>Reset</strong>. The first Run downloads R into your browser (about 20 MB, so allow up to a minute on a slow connection). Boxes on the same page share memory, so run them top to bottom. Later, type the same code into RStudio: it works the same way.</p>
             </div>
 
             <h2>What is R, and where do I type it?</h2>
@@ -151,9 +157,11 @@
                 <figcaption>R in one picture: data in, an answer or a graph out.</figcaption>
             </figure>
             <p>Anything after a <code class="inline">#</code> is a <strong>comment</strong>: a note for humans that R ignores.</p>
-            <pre><span class="o">2</span> + <span class="o">2</span>            <span class="c"># type this in the Console, press Enter  ->  4</span>
-<span class="c"># this whole line is a comment, R skips it</span></pre>
-            <div class="tryit"><strong>Try it:</strong> open RStudio, type a sum in the Console, press Enter. Then change the numbers and try again. That loop (change something, run, see the result) is how you will learn everything here.</div>
+            <div class="rcell"><script type="text/x-r">
+2 + 2            # press Run  ->  4
+# this whole line is a comment, R skips it
+</script></div>
+            <div class="tryit"><strong>Try it:</strong> press Run in the box above. You will see <code class="inline">[1] 4</code>: the <code class="inline">[1]</code> just means "first value", so you can ignore it for now. Then change the numbers and Run again. (In RStudio, you would type the same line into the Console and press Enter.) That loop (change something, run, see the result) is how you will learn everything here.</div>
 
             <h2>1. Storing a value: the assignment arrow</h2>
             <p>To keep a value for later, store it in a name with the <strong>assignment arrow</strong> <code class="inline">&lt;-</code>. Think of the name as a labelled box. (RStudio types the arrow for you with Alt and the minus key.)</p>
@@ -168,9 +176,11 @@
                 </svg>
                 <figcaption>The arrow points from the value into the box. Here <code class="inline">gc</code> holds 41.5.</figcaption>
             </figure>
-            <pre>gc &lt;- <span class="o">41.5</span>      <span class="c"># put 41.5 into a box called gc</span>
-gc            <span class="c"># type the name to see what is inside  ->  41.5</span>
-gc * <span class="o">2</span>        <span class="c"># use it in a calculation  ->  83</span></pre>
+            <div class="rcell"><script type="text/x-r">
+gc <- 41.5      # put 41.5 into a box called gc
+gc            # type the name to see what is inside  ->  41.5
+gc * 2        # use it in a calculation  ->  83
+</script></div>
 
             <h2>2. The core data types</h2>
             <p>Every value in R has a <strong>type</strong>: what kind of thing it is. Three basic ones cover most of your early work. Do not memorize this; it is here to come back to.</p>
@@ -181,8 +191,11 @@ gc * <span class="o">2</span>        <span class="c"># use it in a calculation  
                 <tr><td><strong>logical</strong></td><td>A yes/no value: only <code>TRUE</code> or <code>FALSE</code>.</td><td><code>TRUE</code></td></tr>
             </table>
             <p>You usually get a logical by asking a question (a comparison): <code class="inline">==</code> equal, <code class="inline">!=</code> different, <code class="inline">&gt;</code> greater, <code class="inline">&lt;</code> less.</p>
-            <pre>gc &gt; <span class="o">50</span>           <span class="c"># is gc greater than 50?  ->  FALSE</span>
-<span class="s">"ATG"</span> == <span class="s">"ATG"</span>   <span class="c"># are these equal?  ->  TRUE</span></pre>
+            <div class="rcell"><script type="text/x-r">
+gc <- 41.5        # from section 1
+gc > 50           # is gc greater than 50?  ->  FALSE
+"ATG" == "ATG"   # are these equal?  ->  TRUE
+</script></div>
             <div class="why"><h4>One arrow or two equals?</h4><p><code class="inline">&lt;-</code> <em>stores</em> a value in a name. <code class="inline">==</code> (two equals signs) <em>asks</em> "are these equal?" and answers TRUE or FALSE. They are different jobs.</p></div>
 
             <h2>3. Vectors: R's basic building block</h2>
@@ -204,10 +217,12 @@ gc * <span class="o">2</span>        <span class="c"># use it in a calculation  
                 </svg>
                 <figcaption>A vector of expression values. The positions (purple) start at 1, so <code class="inline">expr[1]</code> is 12.4.</figcaption>
             </figure>
-            <pre>expr &lt;- <span class="k">c</span>(<span class="o">12.4</span>, <span class="o">8.1</span>, <span class="o">15.7</span>, <span class="o">3.3</span>, <span class="o">9.9</span>)
-mean(expr)      <span class="c"># average of all five  ->  9.88</span>
-expr * <span class="o">2</span>        <span class="c"># doubles EVERY value at once</span>
-expr[<span class="o">1</span>]         <span class="c"># the FIRST value  ->  12.4</span></pre>
+            <div class="rcell"><script type="text/x-r">
+expr <- c(12.4, 8.1, 15.7, 3.3, 9.9)
+mean(expr)      # average of all five  ->  9.88
+expr * 2        # doubles EVERY value at once
+expr[1]         # the FIRST value  ->  12.4
+</script></div>
             <div class="why"><h4>R counts from 1</h4><p>Unlike many languages, R numbers positions starting at <strong>1</strong>, not 0. So <code class="inline">expr[1]</code> is the first value. If you have seen Python, this is the opposite, and a common thing to trip on.</p></div>
 
             <h2>4. Data frames: the spreadsheet of R</h2>
@@ -232,13 +247,15 @@ expr[<span class="o">1</span>]         <span class="c"># the FIRST value  ->  12
                 </svg>
                 <figcaption>A data frame. The purple header names each column; every row is one gene.</figcaption>
             </figure>
-            <pre>genes &lt;- data.frame(
-  gene       = <span class="k">c</span>(<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>),
-  length_kb  = <span class="k">c</span>(<span class="o">19.1</span>, <span class="o">81.2</span>, <span class="o">188.3</span>),
-  chromosome = <span class="k">c</span>(<span class="s">"17"</span>, <span class="s">"17"</span>, <span class="s">"7"</span>)
+            <div class="rcell"><script type="text/x-r">
+genes <- data.frame(
+  gene       = c("TP53", "BRCA1", "EGFR"),
+  length_kb  = c(19.1, 81.2, 188.3),
+  chromosome = c("17", "17", "7")
 )
-head(genes)        <span class="c"># show the first rows</span>
-genes$length_kb    <span class="c"># pull out one column by name with $</span></pre>
+head(genes)        # show the first rows
+genes$length_kb    # pull out one column by name with $
+</script></div>
 
             <h2>5. The tidyverse: five verbs that do most of the work</h2>
             <p>The <strong>tidyverse</strong> is a popular set of R packages for data work. Five verbs cover the vast majority of it. The two you will reach for first are <code class="inline">filter</code> (keep rows) and <code class="inline">select</code> (keep columns). The picture makes the difference obvious.</p>
@@ -265,6 +282,18 @@ genes$length_kb    <span class="c"># pull out one column by name with $</span></
 genes |&gt;
   filter(length_kb &gt; <span class="o">50</span>) |&gt;     <span class="c"># keep rows where the gene is long</span>
   arrange(desc(length_kb))         <span class="c"># sort, longest first</span></pre>
+            <p class="rtry" style="margin:14px 0 0; font-size:0.95rem; color:var(--text-gray);">Try it in your browser (this box loads <code class="inline">dplyr</code>, the tidyverse package that provides these verbs, so the first Run takes a little longer):</p>
+            <div class="rcell" data-packages="dplyr"><script type="text/x-r">
+library(dplyr)   # in RStudio, library(tidyverse) loads dplyr for you
+genes <- data.frame(
+  gene       = c("TP53", "BRCA1", "EGFR"),
+  length_kb  = c(19.1, 81.2, 188.3),
+  chromosome = c("17", "17", "7")
+)
+genes |>
+  filter(length_kb > 50) |>     # keep rows where the gene is long
+  arrange(desc(length_kb))      # sort, longest first
+</script></div>
             <div class="why"><h4>The pipe <code class="inline">|&gt;</code></h4><p>The pipe passes the result of one step into the next, so you read top to bottom as a sentence: "take genes, <em>then</em> filter, <em>then</em> sort." It is the backbone of tidyverse code.</p></div>
 
             <h2>6. Your first plot with ggplot2</h2>
@@ -287,11 +316,33 @@ genes |&gt;
   geom_col(fill = <span class="s">"#5b9cf8"</span>) +
   labs(title = <span class="s">"Gene lengths"</span>, y = <span class="s">"Length (kb)"</span>) +
   theme_minimal()</pre>
+            <p class="rtry" style="margin:14px 0 0; font-size:0.95rem; color:var(--text-gray);">Try it in your browser (loads <code class="inline">ggplot2</code> the first time, about 20 to 40 seconds). Then swap <code class="inline">geom_col()</code> for <code class="inline">geom_point()</code> and Run again:</p>
+            <div class="rcell" data-packages="ggplot2"><script type="text/x-r">
+library(ggplot2)   # in RStudio, library(tidyverse) loads ggplot2 for you
+genes <- data.frame(
+  gene       = c("TP53", "BRCA1", "EGFR"),
+  length_kb  = c(19.1, 81.2, 188.3),
+  chromosome = c("17", "17", "7")
+)
+ggplot(genes, aes(x = gene, y = length_kb)) +
+  geom_col(fill = "#5b9cf8") +
+  labs(title = "Gene lengths", y = "Length (kb)") +
+  theme_minimal()
+</script></div>
 
             <h2>7. Reading your own data</h2>
-            <p>Real data usually arrives as a CSV file. Reading it is one line.</p>
-            <pre>my_data &lt;- read_csv(<span class="s">"my_file.csv"</span>)
+            <p>Real data usually arrives as a CSV file (a plain-text table with commas between the columns). Reading it is one line. To practise, we host a small table for you: <a href="practice-genes.csv" target="_blank" rel="noopener">practice-genes.csv</a> (8 genes; lengths approximate, expression values made up for practice). R can read straight from a web address, so you do not need to download anything.</p>
+            <pre><span class="k">library</span>(tidyverse)
+my_data &lt;- read_csv(<span class="s">"https://bionexushub.com/practice-genes.csv"</span>)
 glimpse(my_data)   <span class="c"># a quick look at the columns and their types</span></pre>
+            <p class="rtry" style="margin:14px 0 0; font-size:0.95rem; color:var(--text-gray);">The browser box uses <code class="inline">read.csv()</code>, the reader built into R, so it does not need the tidyverse. It does the same job:</p>
+            <div class="rcell"><script type="text/x-r">
+my_data <- read.csv("https://bionexushub.com/practice-genes.csv")
+head(my_data)    # the first 6 rows
+str(my_data)     # the columns and their types (base R's version of glimpse)
+mean(my_data$expression)
+</script></div>
+            <div class="why"><h4>Your own file</h4><p>To read a file on your computer, put it in your project folder and give just its name: <code class="inline">read_csv("my_file.csv")</code>. <a href="r-first-steps.html" target="_blank" rel="noopener">First steps in RStudio</a> shows how RStudio Projects make that "just the name" trick work.</p></div>
 
             <div class="glossary">
                 <h4>Every key word, in plain English</h4>
@@ -314,10 +365,23 @@ glimpse(my_data)   <span class="c"># a quick look at the columns and their types
 
             <div class="why" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px 20px; margin:22px 0;">
                 <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;">Check yourself</h4>
-                <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">R and the terminal do not run in this page, so here is what correct output looks like. Type each one and compare.</p>
-                <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">mean(c(12.4, 8.1, 15.7, 3.3, 9.9))</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">9.88</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">expr["EGFR"]</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">15.7</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">nrow(genes)</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">3   (three rows)</td></tr></table></div>
+                <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">Run each one in the box below (or in RStudio) and compare with what you should see.</p>
+                <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">mean(c(12.4, 8.1, 15.7, 3.3, 9.9))</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">9.88</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">expr[3]</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">15.7</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">nrow(genes)</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">3   (three rows)</td></tr></table></div>
+            <div class="rcell" data-packages="dplyr"><script type="text/x-r">
+# Your scratchpad: type here and press Run.
+# These lines rebuild expr and genes so this box works on its own.
+expr <- c(12.4, 8.1, 15.7, 3.3, 9.9)
+genes <- data.frame(gene = c("TP53", "BRCA1", "EGFR"),
+                    length_kb = c(19.1, 81.2, 188.3),
+                    chromosome = c("17", "17", "7"))
+library(dplyr)   # needed for filter() in Exercise 4
+
+mean(c(12.4, 8.1, 15.7, 3.3, 9.9))
+expr[3]
+nrow(genes)
+</script></div>
             <h2>Practice exercises</h2>
-            <p>Type each one into RStudio and run it. Peek at the solution only after you have tried.</p>
+            <p>Type each one into the scratchpad above (delete its last three lines first) or into RStudio, and run it. Peek at the solution only after you have tried.</p>
 
             <p><strong>Exercise 1: a vector and its mean.</strong> Store the numbers 5, 8, 2, 10 in a vector called <code class="inline">counts</code>, then get the mean.</p>
             <details><summary>Show a worked solution</summary>
@@ -389,10 +453,10 @@ mean(genes$length_kb)  # 96.2</pre></details>
             </div>
 
             <a class="next-lesson" href="r-project.html" target="_blank" rel="noopener">
-                <span>Next in the R series, the payoff</span>
+                <span>Next in the R series (step 5 of 5), the payoff</span>
                 <h3>Project: explore a real dataset with R &rarr;</h3>
             </a>
-            <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:18px;">Ready for more? <a href="r-intermediate.html" target="_blank" rel="noopener" style="color:var(--primary-blue); font-weight:600;">R Level 2 (Intermediate)</a> builds straight on this.</p>
+            <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:18px;">Want more depth first? <a href="r-intermediate.html" target="_blank" rel="noopener" style="color:var(--primary-blue); font-weight:600;">R Level 2 (Intermediate)</a> (step 4, optional) builds straight on this.</p>
 
         </div></div>
     </main>
@@ -400,6 +464,6 @@ mean(genes$length_kb)  # 96.2</pre></details>
     <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
-    <script src="interactive.js" defer></script>
+    <script src="interactive.js?v=2" defer></script>
 </body>
 </html>
