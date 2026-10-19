@@ -74,6 +74,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} .is-isnt{grid-template-columns:1fr;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -136,7 +142,7 @@
             <h2>What it looks like in the real world</h2>
             <p>Bioinformatics isn't abstract - it's behind a lot of things you already know about:</p>
             <ul>
-                <li><strong>Tracking COVID variants:</strong> every new variant was identified by comparing viral genome sequences - pure bioinformatics, done globally in near real-time.</li>
+                <li><strong>Tracking COVID variants:</strong> new variants were spotted by sequencing virus samples and comparing the genomes on computers, with labs sharing data worldwide almost in real time.</li>
                 <li><strong>Personalized cancer treatment:</strong> sequencing a tumor's DNA to find which mutations are driving it, and matching them to drugs that target those mutations.</li>
                 <li><strong>Drug discovery:</strong> screening which genes a disease switches on or off to find what to target with a new medicine.</li>
                 <li><strong>Understanding disease:</strong> comparing healthy and diseased tissue to see which genes behave differently.</li>
@@ -147,7 +153,7 @@
                 <div class="is">
                     <h4>✅ Bioinformatics is…</h4>
                     <ul>
-                        <li>Analyzing data that already exists</li>
+                        <li>Analyzing data, whether from public databases or fresh from a lab</li>
                         <li>Writing small, practical bits of code</li>
                         <li>Asking biological questions and answering them with data</li>
                         <li>Mostly done at a computer, anywhere</li>
@@ -157,7 +163,7 @@
                     <h4>❌ Bioinformatics isn't…</h4>
                     <ul>
                         <li>Working at a lab bench with pipettes (that's the wet lab - it produces the data)</li>
-                        <li>Building apps or websites (that's software engineering)</li>
+                        <li>Mainly about building general apps or websites (though some bioinformaticians do build science tools and databases)</li>
                         <li>Something you need a computer-science degree for</li>
                         <li>Only for people who were "always good at math"</li>
                     </ul>
@@ -178,14 +184,14 @@
                     <div class="quiz-q-src">What is the one-sentence definition of bioinformatics?</div>
                     <button data-opt data-correct>Using computers and code to make sense of biological data</button>
                     <button data-opt>Building laboratory robots to run experiments</button>
-                    <button data-opt>A kind of microscope for looking at living cells</button>
+                    <button data-opt>Collecting tissue samples and running experiments at the lab bench</button>
                     <div class="quiz-explain">Correct. Bioinformatics is about using computers and code to make sense of biological data, not about lab robots or microscopes.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">Do you need to be a 'math person' or an expert coder to start?</div>
                     <button data-opt>Yes, only professional software engineers can do it</button>
                     <button data-opt data-correct>No - curiosity and steady practice matter most at the beginning</button>
-                    <button data-opt>Yes, a PhD in mathematics is required first</button>
+                    <button data-opt>Yes, you need a computer-science degree before you begin</button>
                     <div class="quiz-explain">Right. You do not need a math degree or a software-engineering career to begin: curiosity and steady practice matter most early on.</div>
                 </div>
 
@@ -193,12 +199,12 @@
                     <div class="quiz-q-src">Which three fields does bioinformatics sit at the intersection of?</div>
                     <button data-opt>Biology, chemistry, and engineering</button>
                     <button data-opt data-correct>Biology, computer science, and statistics</button>
-                    <button data-opt>Medicine, physics, and design</button>
+                    <button data-opt>Biology, chemistry, and statistics</button>
                     <div class="quiz-explain">Correct. Bioinformatics sits where biology, computer science, and statistics meet, blending biological questions with code and data analysis.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">What is the difference between the 'wet lab' and the 'dry lab'?</div>
-                    <button data-opt>They are two names for the exact same thing</button>
+                    <button data-opt>The wet lab analyzes data on a computer; the dry lab runs the experiments</button>
                     <button data-opt>The dry lab handles pipettes while the wet lab writes code</button>
                     <button data-opt data-correct>The wet lab generates data with experiments; the dry lab analyzes that data on a computer</button>
                     <div class="quiz-explain">Right. The wet lab generates data through physical experiments, while the dry lab analyzes that data on a computer.</div>
@@ -206,10 +212,21 @@
                 <div class="quiz">
                     <div class="quiz-q-src">In the lesson, how were new COVID variants identified?</div>
                     <button data-opt data-correct>By comparing viral genome sequences</button>
-                    <button data-opt>By building new websites for the public</button>
-                    <button data-opt>By inventing brand-new microscopes</button>
+                    <button data-opt>By counting how many patients got sick in each country</button>
+                    <button data-opt>By looking at the virus under an electron microscope</button>
                     <div class="quiz-explain">Correct. New variants were spotted by comparing viral genome sequences to see where they differed.</div>
                 </div>
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Hogeweg P. The roots of bioinformatics in theoretical biology. <em>PLoS Comput Biol</em> 7: e1002021, 2011. <a href="https://doi.org/10.1371/journal.pcbi.1002021" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1002021</a></li>
+                    <li>Luscombe NM, Greenbaum D, Gerstein M. What is bioinformatics? A proposed definition and overview of the field. <em>Methods Inf Med</em> 40: 346-358, 2001. <a href="https://pubmed.ncbi.nlm.nih.gov/11552348/" target="_blank" rel="noopener">PubMed 11552348</a></li>
+                    <li>Hadfield J, Megill C, Bell SM, et al. Nextstrain: real-time tracking of pathogen evolution. <em>Bioinformatics</em> 34: 4121-4123, 2018. <a href="https://doi.org/10.1093/bioinformatics/bty407" target="_blank" rel="noopener">doi:10.1093/bioinformatics/bty407</a></li>
+                    <li>O*NET OnLine. "19-1029.01: Bioinformatics Scientists" (job outlook). <a href="https://www.onetonline.org/link/summary/19-1029.01" target="_blank" rel="noopener">onetonline.org</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
+            </div>
+
             <a class="next-lesson" href="intro-3-month-map.html" target="_blank" rel="noopener">
                 <span>Next in the Introduction</span>
                 <h3>The map: what you'll be able to do in 3 months →</h3>

@@ -76,6 +76,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} .nextsteps{grid-template-columns:1fr;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -124,18 +130,18 @@
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: store and display a DNA sequence in Python, measure its length, count each base, and compute its GC content with just ten lines of code.</p>
             </div>
 
-            <p>No setup, no installation, no excuses. We'll use <strong>Google Colab</strong> - a free coding notebook that runs in your browser. You just need a Google account. Let's go.</p>
+            <p>No installation needed. You can use <strong>Google Colab</strong> (a free coding notebook in your browser; it needs a Google account), or skip straight to the ▶ Run box further down this page, which needs nothing at all. Let's go.</p>
 
             <div class="colab-cta">
                 <div>
                     <p>▶ Open your notebook</p>
-                    <p>Click below to open a blank Colab. You'll type code into the box, then press the ▶ button (or Shift+Enter) to run it.</p>
+                    <p>Click below to open the companion notebook in Colab. You'll type code into the box, then press the ▶ button (or Shift+Enter) to run it.</p>
                 </div>
-                <a class="colab-btn" href="https://colab.research.google.com/github/MennahBassiouny/bionexus/blob/main/nb-intro-first-python.ipynb" target="_blank" rel="noopener">Open a blank Colab →</a>
+                <a class="colab-btn" href="https://colab.research.google.com/github/MennahBassiouny/bionexus/blob/main/nb-intro-first-python.ipynb" target="_blank" rel="noopener">Open the companion notebook →</a>
             </div>
             <div class="why"><h4>How a notebook works</h4><p>A Colab notebook is made of <strong>cells</strong> - boxes you type code into. Run a cell and its output appears right underneath. Type each block below into a cell and run it before moving on. Making mistakes is free here, so experiment.</p></div>
 
-            <h2>Line 1-2: store and show a DNA sequence</h2>
+            <h2>Lines 1-2: store and show a DNA sequence</h2>
             <p>First, we put a DNA sequence into a <strong>variable</strong> - a named container - then print it to the screen.</p>
             <pre>dna = <span class="s">"ATGCGTACGTTAGCCGTA"</span>
 <span class="k">print</span>(dna)</pre>
@@ -146,9 +152,9 @@
             <h2>Line 3: how long is it?</h2>
             <pre><span class="k">print</span>(<span class="k">len</span>(dna))</pre>
             <div class="result">18</div>
-            <p><code class="inline">len()</code> counts the characters - here, 18 bases. On a real genome this same command would count millions, instantly.</p>
+            <p><code class="inline">len()</code> counts the characters - here, 18 bases. On a real genome this same command would count millions or even billions of bases in a blink.</p>
 
-            <h2>Line 4-7: count each base</h2>
+            <h2>Lines 4-7: count each base</h2>
             <p>Now something genuinely useful - count how many of each base the sequence contains.</p>
             <pre><span class="k">print</span>(<span class="s">"A:"</span>, dna.count(<span class="s">"A"</span>))
 <span class="k">print</span>(<span class="s">"C:"</span>, dna.count(<span class="s">"C"</span>))
@@ -160,17 +166,15 @@ G: 5
 T: 5</div>
             <p><code class="inline">.count("G")</code> asks the sequence "how many G's do you contain?" You're now extracting information from biological data with code.</p>
 
-            <h2>Line 8-10: compute GC content</h2>
+            <h2>Lines 8-10: compute GC content</h2>
             <p>Finally, a real metric biologists actually use - the percentage of bases that are G or C.</p>
             <pre>gc = (dna.count(<span class="s">"G"</span>) + dna.count(<span class="s">"C"</span>)) / <span class="k">len</span>(dna) * <span class="o">100</span>
-<span class="k">print</span>(<span class="s">"GC content:"</span>, <span class="k">round</span>(gc, <span class="o">1</span>), <span class="s">"%"</span>)</pre>
-            <div class="result">GC content: 50.0 %</div>
-            <div class="why"><h4>You just did real bioinformatics</h4><p>GC content is a genuine measure scientists use - it relates to how stable a stretch of DNA is and helps characterize genes and genomes. You computed it yourself, from scratch, in your first coding session. That's the entire field in miniature: take biological data, write a few lines, get a real answer.</p></div>
+<span class="k">print</span>(<span class="s">"GC content:"</span>, <span class="k">round</span>(gc, <span class="o">1</span>), <span class="s">"%"</span>)
+<span class="k">print</span>(<span class="s">"AT content:"</span>, <span class="k">round</span>(<span class="o">100</span> - gc, <span class="o">1</span>), <span class="s">"%"</span>)</pre>
+            <div class="result">GC content: 50.0 %
+AT content: 50.0 %</div>
+            <div class="why"><h4>You just did real bioinformatics</h4><p>GC content is a genuine measure scientists use - GC-rich DNA generally needs more heat to separate its two strands, and GC content helps characterize genes and genomes. You computed it yourself, from scratch, in your first coding session. That's the entire field in miniature: take biological data, write a few lines, get a real answer.</p></div>
 
-            <div class="celebrate">
-                <h2>🎉 You finished the Introduction!</h2>
-                <p>You understand what bioinformatics is, you've got the vocabulary, and you've written and run real code that analyzes DNA. You are no longer a complete beginner - you're someone who has done this.</p>
-            </div>
 
             <h2>Make it yours - run it right here</h2>
             <p>No Colab needed for this one. Here is the whole program in one editable box. Press <strong>▶ Run</strong> to execute it in your browser, then change the <code class="inline">dna</code> sequence on the first line - make it longer, or all A's and T's - and run it again. Watch the counts and GC content change. Tinkering like this is exactly how you learn.</p>
@@ -184,19 +188,20 @@ print("G:", dna.count("G"))
 print("T:", dna.count("T"))
 gc = (dna.count("G") + dna.count("C")) / len(dna) * 100
 print("GC content:", round(gc, 1), "%")
+print("AT content:", round(100 - gc, 1), "%")
 </script></div>
             <div class="quiz" data-question='What GC content would the sequence "AAATTTAAA" have?'>
                 <button data-opt data-correct>0%</button>
                 <button data-opt>50%</button>
                 <button data-opt>100%</button>
-                <div class="quiz-explain"><strong>Correct, 0%.</strong> There are no G or C bases at all, so the GC count is zero. Change the cell above to <code>dna = "AAATTTAAA"</code> and run it to see for yourself.</div>
+                <div class="quiz-explain">The answer is <strong>0%</strong>. There are no G or C bases at all, so the GC count is zero. Change the cell above to <code>dna = "AAATTTAAA"</code> and run it to see for yourself.</div>
             </div>
 
             <div class="quiz" data-question="What does len(dna) return for the sequence in this lesson?">
                 <button data-opt>4</button>
                 <button data-opt data-correct>18</button>
                 <button data-opt>50</button>
-                <div class="quiz-explain"><strong>Correct, 18.</strong> The <code>len()</code> function counts the characters in the sequence, and this DNA string has 18 bases.</div>
+                <div class="quiz-explain">The answer is <strong>18</strong>. The <code>len()</code> function counts the characters in the sequence, and this DNA string has 18 bases.</div>
             </div>
             <div class="quiz" data-question="What does dna.count(&quot;G&quot;) do?">
                 <button data-opt>Deletes every G from the sequence</button>
@@ -212,10 +217,26 @@ print("GC content:", round(gc, 1), "%")
             </div>
             <div class="quiz" data-question="What does the print() function do?">
                 <button data-opt data-correct>Displays whatever you give it on the screen</button>
-                <button data-opt>Sends your code to a paper printer</button>
+                <button data-opt>Runs the code again from the start</button>
                 <button data-opt>Permanently saves a file to disk</button>
                 <div class="quiz-explain"><strong>Correct.</strong> <code>print()</code> simply shows its output on the screen, like when it displayed the DNA sequence back to you.</div>
             </div>
+            <div class="celebrate">
+                <h2>🎉 You finished the Introduction!</h2>
+                <p>You understand what bioinformatics is, you've got the vocabulary, and you've written and run real code that analyzes DNA. You are no longer a complete beginner - you're someone who has done this.</p>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Ekmekci B, McAnany CE, Mura C. An introduction to programming for bioscientists: a Python-based primer. <em>PLoS Comput Biol</em> 12: e1004867, 2016. <a href="https://doi.org/10.1371/journal.pcbi.1004867" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1004867</a></li>
+                    <li>Yakovchuk P, Protozanova E, Frank-Kamenetskii MD. Base-stacking and base-pairing contributions into thermal stability of the DNA double helix. <em>Nucleic Acids Res</em> 34: 564-574, 2006. <a href="https://doi.org/10.1093/nar/gkj454" target="_blank" rel="noopener">doi:10.1093/nar/gkj454</a></li>
+                    <li>Python Software Foundation. "An informal introduction to Python" (Python tutorial, chapter 3). <a href="https://docs.python.org/3/tutorial/introduction.html" target="_blank" rel="noopener">docs.python.org</a></li>
+                    <li>Google Research. Colaboratory frequently asked questions. <a href="https://research.google.com/colaboratory/faq.html" target="_blank" rel="noopener">research.google.com</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
+            </div>
+
             <h2>Where to go next</h2>
             <p>You've got two great paths from here. Set up the tools properly on your own machine, or keep building data skills. Either works - pick what excites you.</p>
             <div class="nextsteps">

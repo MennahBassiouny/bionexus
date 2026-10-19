@@ -69,6 +69,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -116,7 +122,7 @@
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: picture the concrete skills you will have after three months, identify where you are starting from today, and adopt the single most important learning habit this site is built around.</p>
             </div>
 
-            <p>One of the most discouraging things about starting bioinformatics is not knowing where it leads. So here's a concrete, honest map of what a few months of steady learning - even just a few hours a week - actually gets you. These aren't promises of mastery; they're real, reachable milestones.</p>
+            <p>One of the most discouraging things about starting bioinformatics is not knowing where it leads. So here's a concrete, honest map of what about three months of steady learning - roughly 5 to 8 hours a week - actually gets you. These aren't promises of mastery; they're real, reachable milestones.</p>
 
             <div class="timeline">
                 <div class="month">
@@ -142,7 +148,7 @@
                             <li>You pull data from public databases like NCBI and GEO yourself</li>
                             <li>You understand what a sequencing experiment produces and why</li>
                         </ul>
-                        <span class="track-ref">Tracks 1-2</span>
+                        <span class="track-ref">Tracks 1-2 (+ plotting from Foundations and Track 5)</span>
                     </div>
                 </div>
                 <div class="month">
@@ -153,9 +159,9 @@
                             <li>You run a full RNA-seq differential-expression analysis and interpret it</li>
                             <li>You produce a volcano plot and explain what the genes mean biologically</li>
                             <li>You have a finished project on GitHub you can show an employer or supervisor</li>
-                            <li>You can read a methods section of a paper and follow what they did</li>
+                            <li>You can follow the main steps in the methods section of an RNA-seq paper</li>
                         </ul>
-                        <span class="track-ref">Track 3 - the flagship</span>
+                        <span class="track-ref">Track 3 - the flagship (+ Git &amp; GitHub from Track 6)</span>
                     </div>
                 </div>
             </div>
@@ -163,7 +169,7 @@
             <div class="why"><h4>The honest caveat</h4><p>Everyone moves at a different pace, and "3 months" assumes steady, regular practice - not perfection. Some weeks you'll fly; some you'll wrestle with one error message for an hour. That's completely normal and not a sign you're failing. The people who make it aren't the fastest; they're the ones who keep showing up.</p></div>
 
             <h2>The single most important habit</h2>
-            <p><strong>Finish small things.</strong> A completed tiny project teaches you more than a half-watched hour of advanced tutorials. Every lesson here ends in something you actually finish and can point to - because momentum, not talent, is what carries you from week 1 to month 3.</p>
+            <p><strong>Finish small things.</strong> A completed tiny project teaches you more than a half-watched hour of advanced tutorials. Each track ends in a small project you actually finish and can point to - because momentum, not talent, is what carries you from week 1 to month 3.</p>
 
             <h2>Where you are right now</h2>
             <p>You're at the very start of that map - and that's exactly the right place to be. The next two lessons close the most common confidence gap for newcomers: the vocabulary. We'll translate the biology for anyone from a computing background, and the computing for anyone from a biology background, so no term on this site ever leaves you stuck.</p>
@@ -173,38 +179,48 @@
                     <div class="quiz-q-src">What is the realistic goal of your first three months here?</div>
                     <button data-opt data-correct>To go from curious to analyzing real biological data, step by step</button>
                     <button data-opt>To publish a paper in a top journal</button>
-                    <button data-opt>To memorize the entire human genome</button>
+                    <button data-opt>To master every bioinformatics tool used in research</button>
                     <div class="quiz-explain">Correct. The aim of the first three months is a step-by-step path from curious beginner to analyzing real biological data.</div>
                 </div>
                 <div class="quiz">
-                    <div class="quiz-q-src">What learning habit does this roadmap rely on most?</div>
+                    <div class="quiz-q-src">Which habit does the lesson call the single most important?</div>
                     <button data-opt>Never making any mistakes</button>
-                    <button data-opt data-correct>Practising a little, consistently, over time</button>
+                    <button data-opt data-correct>Finishing small things you can point to</button>
                     <button data-opt>Cramming once a month for many hours</button>
-                    <div class="quiz-explain">Right. The roadmap depends on practising a little, consistently, over time rather than rare cramming sessions.</div>
+                    <div class="quiz-explain">The lesson calls finishing small things the single most important habit: a completed tiny project builds momentum and teaches more than half-watched tutorials.</div>
                 </div>
 
                 <div class="quiz">
                     <div class="quiz-q-src">By the end of weeks 1 to 2, what should you be able to do?</div>
                     <button data-opt>Publish your first research paper</button>
                     <button data-opt data-correct>Run small scripts and recognize core file formats like FASTA and CSV</button>
-                    <button data-opt>Design a brand-new sequencing machine</button>
+                    <button data-opt>Run a full RNA-seq differential-expression analysis</button>
                     <div class="quiz-explain">Correct. By the end of weeks 1 to 2 you should be running small scripts and recognizing core file formats like FASTA and CSV.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">What is the flagship, end-to-end analysis you reach by month 3?</div>
-                    <button data-opt>Building a mobile phone app</button>
-                    <button data-opt>Memorizing the periodic table</button>
+                    <button data-opt>Calling variants from whole-genome sequencing data</button>
+                    <button data-opt>Analyzing single-cell RNA-seq data from scratch</button>
                     <button data-opt data-correct>A full RNA-seq differential-expression analysis, including a volcano plot</button>
                     <div class="quiz-explain">Right. The month 3 milestone is a full RNA-seq differential-expression analysis that ends with a volcano plot.</div>
                 </div>
                 <div class="quiz">
-                    <div class="quiz-q-src">According to the lesson, why does finishing small things matter so much?</div>
-                    <button data-opt data-correct>A completed tiny project builds momentum and teaches more than half-watched tutorials</button>
-                    <button data-opt>Small projects are the only way to impress a journal editor</button>
-                    <button data-opt>It lets you skip practising entirely</button>
-                    <div class="quiz-explain">Correct. Finishing a small project builds momentum and teaches you more than tutorials you only half-watch.</div>
+                    <div class="quiz-q-src">According to the honest caveat, what does "3 months" assume?</div>
+                    <button data-opt data-correct>Steady, regular practice, not perfection</button>
+                    <button data-opt>Studying full-time, 40 hours a week</button>
+                    <button data-opt>Already knowing how to code before you start</button>
+                    <div class="quiz-explain">The timeline assumes steady, regular practice. Going slower is fine; the order of the steps matters more than the speed.</div>
                 </div>
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Carey MA, Papin JA. Ten simple rules for biologists learning to program. <em>PLoS Comput Biol</em> 14: e1005871, 2018. <a href="https://doi.org/10.1371/journal.pcbi.1005871" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1005871</a></li>
+                    <li>Ekmekci B, McAnany CE, Mura C. An introduction to programming for bioscientists: a Python-based primer. <em>PLoS Comput Biol</em> 12: e1004867, 2016. <a href="https://doi.org/10.1371/journal.pcbi.1004867" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1004867</a></li>
+                    <li>O*NET OnLine. "19-1029.01: Bioinformatics Scientists" (job outlook). <a href="https://www.onetonline.org/link/summary/19-1029.01" target="_blank" rel="noopener">onetonline.org</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
+            </div>
+
             <a class="next-lesson" href="intro-biology-for-coders.html" target="_blank" rel="noopener">
                 <span>Next in the Introduction</span>
                 <h3>Decode the jargon: the biology a coder needs →</h3>
