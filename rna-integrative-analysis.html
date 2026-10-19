@@ -181,18 +181,18 @@
                     <div class="layer"><span class="ico">🧲</span><div><span class="t">Protein binding</span> <span class="tool">CLIP-seq</span><div class="d">Which transcripts (and where) a specific protein directly binds.</div></div></div>
                     <div class="layer"><span class="ico">🔬</span><div><span class="t">Modification</span> <span class="tool">MeRIP / m6A-seq</span><div class="d">Which transcripts and regions carry m6A (or another mark).</div></div></div>
                     <div class="layer"><span class="ico">🧬</span><div><span class="t">Structure</span> <span class="tool">SHAPE / icSHAPE</span><div class="d">Which regions are paired or accessible.</div></div></div>
-                    <div class="layer"><span class="ico">🏭</span><div><span class="t">Translation</span> <span class="tool">Ribo-seq</span><div class="d">Which mRNAs are actually being translated, and how much.</div></div></div>
+                    <div class="layer"><span class="ico">🏭</span><div><span class="t">Translation</span> <span class="tool">Ribo-seq (not covered in this track)</span><div class="d">Which mRNAs are actually being translated, and how much.</div></div></div>
                 </div>
 
                 <h2>How layering builds a mechanism</h2>
                 <p>Take a concrete, well-supported example. Suppose you want to test the hypothesis "m6A destabilizes a set of transcripts via the reader YTHDF2." A single experiment cannot prove this. Layered evidence can build a strong case:</p>
                 <ol>
                     <li><strong>Modification:</strong> MeRIP shows the transcripts are m6A-methylated.</li>
-                    <li><strong>Perturbation + expression:</strong> knock down the writer METTL3; methylation drops and those same transcripts become <em>more</em> abundant and longer-lived (RNA-seq, ideally with RNA half-life measurement).</li>
+                    <li><strong>Perturbation + expression:</strong> knock down the writer METTL3; methylation drops and those same transcripts become <em>more</em> abundant and longer-lived (RNA-seq, ideally with RNA half-life measurement). Writer knockdown also changes many genes indirectly, so this step alone is not proof.</li>
                     <li><strong>Binding:</strong> CLIP of YTHDF2 shows it directly binds those methylated transcripts.</li>
                     <li><strong>Reader perturbation:</strong> knocking down YTHDF2 reproduces the stabilization, placing it downstream of the mark.</li>
                 </ol>
-                <p>Now you have a mechanism: <strong>m6A → bound by YTHDF2 → faster decay</strong>. No single dataset says this. The convergence of an orthogonal modification map, a perturbation, a binding map, and a half-life change is what makes it credible. This is exactly the YTHDF2 decay pathway established in the field (Wang et al., 2014).</p>
+                <p>Now you have a mechanism: <strong>m6A → bound by YTHDF2 → faster decay</strong>. No single dataset says this. The convergence of an orthogonal modification map, a perturbation, a binding map, and a half-life change is what makes it credible. This is the YTHDF2 decay pathway first described by Wang et al. (2014); later work suggests YTHDF1 and YTHDF3 share this role, which is a good reminder to keep testing your mechanism.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Direct vs indirect target</h4>
@@ -229,7 +229,7 @@
                 <div class="quiz">
                     <div class="quiz-q-src">You find that m6A-methylated transcripts tend to have shorter half-lives than unmethylated ones. A collaborator wants to publish "m6A causes mRNA decay." What is the minimum needed to support a causal claim?</div>
                     <button data-opt>Nothing more; a strong correlation across many transcripts is proof of causation</button>
-                    <button data-opt data-correct>A perturbation: remove the mark (e.g. knock down the writer, or the relevant reader) and show that stability changes in the predicted direction on those transcripts</button>
+                    <button data-opt data-correct>A perturbation: perturb the system (e.g. knock down the writer to remove the mark, or the reader that acts on it) and show that stability changes in the predicted direction on those transcripts</button>
                     <button data-opt>Simply repeat the same correlation in a second cell line</button>
                     <button data-opt>Show that the transcripts are highly expressed</button>
                     <div class="quiz-explain"><strong>Correct.</strong> Correlation between methylation and decay is suggestive but not causal. Causality requires intervention: removing the writer or reader and observing that the destabilization is lost or reversed on the affected transcripts. Repeating a correlation does not upgrade it to causation.</div>
@@ -239,7 +239,7 @@
                     <button data-opt>All 1,200, since they all changed after the knockdown</button>
                     <button data-opt data-correct>The subset that are also m6A-methylated (MeRIP) and, ideally, bound by the relevant reader (CLIP), changing in the expected direction; the rest are likely indirect</button>
                     <button data-opt>Only the genes with the largest fold changes, regardless of methylation</button>
-                    <button data-opt>The genes that did NOT change, because they are the controls</button>
+                    <button data-opt>The genes whose expression changed in both directions equally</button>
                     <div class="quiz-explain"><strong>Exactly.</strong> A writer knockdown perturbs the whole network, so most changed genes are indirect. Intersecting the differentially expressed list with methylation (and binding) data, and checking the direction of change, isolates the defensible direct targets. This intersection logic is the core of integrative analysis.</div>
                 </div>
                 <div class="quiz">
@@ -256,25 +256,28 @@
                     <div class="quiz-q-src">Why does combining m6A maps with RNA-seq after a METTL3 knockdown make a stronger argument than either dataset alone?</div>
                     <button data-opt>Because RNA-seq alone can identify methylated sites directly</button>
                     <button data-opt data-correct>Because it links the physical mark (where m6A is) to a functional readout (what changes when the writer is removed)</button>
-                    <button data-opt>Because it removes the need for any statistical testing</button>
+                    <button data-opt>Because combining datasets increases sequencing depth</button>
+                    <button data-opt>Because MeRIP alone already proves the expression changes are caused by m6A</button>
                     <div class="quiz-explain"><strong>Correct.</strong> An m6A map shows where the mark sits; the knockdown RNA-seq shows what happens to expression when the writer is gone. Integrating them connects location to consequence, which is far more convincing than correlation in one dataset.</div>
                 </div>
                 <div class="quiz">
-                    <div class="quiz-q-src">When integrating RNA evidence, what makes a candidate a more credible DIRECT target of an RNA-binding protein?</div>
-                    <button data-opt>It is among the most highly expressed genes in the cell</button>
-                    <button data-opt>It changes by the largest fold-change, regardless of binding</button>
-                    <button data-opt data-correct>It is both physically bound by the protein (for example a CLIP peak) and responds when the protein is perturbed</button>
-                    <div class="quiz-explain"><strong>Exactly.</strong> Direct targets should show physical binding (a CLIP or IP peak) and a functional response to knockdown or knockout. Requiring both pieces of orthogonal evidence filters out indirect, downstream effects.</div>
+                    <div class="quiz-q-src">You overlap a ~100 nt MeRIP peak with a single-nucleotide CLIP site and gene-level expression. What is the main pitfall?</div>
+                    <button data-opt data-correct>The data are at different resolutions, so integrate at the transcript or region level and do not over-read coincidental overlaps</button>
+                    <button data-opt>CLIP and MeRIP can never be combined</button>
+                    <button data-opt>Gene-level expression is always more precise than CLIP</button>
+                    <button data-opt>The overlap automatically proves direct binding to the m6A base</button>
+                    <div class="quiz-explain">Each layer has its own resolution: MeRIP about 100 nt, CLIP near single-base, RNA-seq per gene. Line them up at a level they all share and treat a single overlap as a lead, not proof.</div>
                 </div>
                 <div class="refs">
                     <h4>Sources &amp; further reading</h4>
                     <ol>
-                        <li>Wang X, et al. N6-methyladenosine-dependent regulation of messenger RNA stability (YTHDF2 → decay). <em>Nature</em>, 2014.</li>
-                        <li>Wang X, et al. N6-methyladenosine modulates messenger RNA translation efficiency (YTHDF1). <em>Cell</em>, 2015.</li>
-                        <li>Zaccara S, Ries RJ, Jaffrey SR. Reading, writing and erasing mRNA methylation. <em>Nat Rev Mol Cell Biol</em>, 2019.</li>
-                        <li>Van Nostrand EL, et al. A large-scale binding and functional map of human RNA-binding proteins (ENCODE integrative analysis). <em>Nature</em>, 2020.</li>
+                        <li>Wang X, Lu Z, Gomez A, et al. N6-methyladenosine-dependent regulation of messenger RNA stability. <em>Nature</em> 505: 117-120, 2014. <a href="https://doi.org/10.1038/nature12730" target="_blank" rel="noopener">doi:10.1038/nature12730</a></li>
+                        <li>Wang X, Zhao BS, Roundtree IA, et al. N6-methyladenosine modulates messenger RNA translation efficiency. <em>Cell</em> 161: 1388-1399, 2015. <a href="https://doi.org/10.1016/j.cell.2015.05.014" target="_blank" rel="noopener">doi:10.1016/j.cell.2015.05.014</a></li>
+                        <li>Zaccara S, Ries RJ, Jaffrey SR. Reading, writing and erasing mRNA methylation. <em>Nat Rev Mol Cell Biol</em> 20: 608-624, 2019. <a href="https://doi.org/10.1038/s41580-019-0168-5" target="_blank" rel="noopener">doi:10.1038/s41580-019-0168-5</a></li>
+                        <li>Zaccara S, Jaffrey SR. A unified model for the function of YTHDF proteins in regulating m6A-modified mRNA. <em>Cell</em> 181: 1582-1595, 2020. <a href="https://doi.org/10.1016/j.cell.2020.05.012" target="_blank" rel="noopener">doi:10.1016/j.cell.2020.05.012</a></li>
+                        <li>Van Nostrand EL, Freese P, Pratt GA, et al. A large-scale binding and functional map of human RNA-binding proteins. <em>Nature</em> 583: 711-719, 2020. <a href="https://doi.org/10.1038/s41586-020-2077-3" target="_blank" rel="noopener">doi:10.1038/s41586-020-2077-3</a></li>
                     </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
                 <a class="next-lesson" href="learn.html#track-4" target="_blank" rel="noopener">
                     <span>Track 4 complete</span>

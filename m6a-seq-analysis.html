@@ -188,15 +188,17 @@
                 <ol>
                     <li><strong>QC and trim</strong> the IP and input FASTQ files (same as any RNA-seq).</li>
                     <li><strong>Align</strong> both to the genome with a splice-aware aligner (STAR or HISAT2), because mRNA reads cross exon junctions.</li>
-                    <li><strong>Call peaks</strong>: find regions significantly enriched in IP over input. Purpose-built tools model this exome-aware: <code class="inline">exomePeak2</code> or <code class="inline">MeTPeak</code> (general ChIP peak callers like MACS2 are not exon-aware, so they are only a rough fallback for RNA).</li>
+                    <li><strong>Call peaks</strong>: find regions significantly enriched in IP over input. Purpose-built tools model this exome-aware: <code class="inline">exomePeak2</code> or <code class="inline">MeTPeak</code> (note: exomePeak2 is no longer on Bioconductor; install it from GitHub with <code class="inline">remotes::install_github("ZW-xjtlu/exomePeak2")</code>). General ChIP peak callers like MACS2/MACS3 are not exon-aware, so they are only a rough fallback for RNA).</li>
                     <li><strong>QC the peaks</strong>: a good m6A dataset recovers the <strong>DRACH motif</strong> under the peaks and shows enrichment near <strong>stop codons / 3' UTRs</strong>. If it does not, something is wrong.</li>
                     <li><strong>Differential methylation</strong> between conditions (e.g. treatment vs control, or writer-knockdown vs control): tools like <code class="inline">exomePeak2</code>, <code class="inline">RADAR</code>, or <code class="inline">QNB</code> test whether the IP/input ratio changes, while accounting for expression changes.</li>
                 </ol>
                 <pre><span class="c"># Conceptual shape (per condition you have IP + input, in replicates)</span>
-<span class="p">$</span> STAR --genomeDir hg38 --readFilesIn ip.fastq    --outSAMtype BAM ...
-<span class="p">$</span> STAR --genomeDir hg38 --readFilesIn input.fastq --outSAMtype BAM ...
+<span class="p">$</span> STAR --genomeDir hg38 --readFilesIn ip.fastq    --outSAMtype BAM SortedByCoordinate --outFileNamePrefix ip_ ...
+<span class="p">$</span> STAR --genomeDir hg38 --readFilesIn input.fastq --outSAMtype BAM SortedByCoordinate --outFileNamePrefix input_ ...
 <span class="c"># In R/Bioconductor: peaks = IP enriched over input</span>
-<span class="p">&gt;</span> exomePeak2(bam_ip = "ip.bam", bam_input = "input.bam", gff = "annotation.gtf")</pre>
+<span class="p">&gt;</span> exomePeak2(bam_ip = "ip_Aligned.sortedByCoord.out.bam",
+             bam_input = "input_Aligned.sortedByCoord.out.bam",
+             gff = "annotation.gtf", genome = "hg38")</pre>
 
                 <div class="warn">
                     <h4>⚠️ The mistake that ruins m6A studies: confusing methylation with expression</h4>
@@ -209,7 +211,7 @@
                     <tr><th>Method</th><th>Approach</th><th>What it adds</th></tr>
                     <tr><td>miCLIP / m6A-CLIP</td><td>UV-crosslink the anti-m6A antibody to RNA, then read the crosslink signature (like CLIP).</td><td>Single-nucleotide resolution from an antibody method.</td></tr>
                     <tr><td>GLORI</td><td>Antibody-free chemical conversion that deaminates unmethylated A but spares m6A, read out as a base change.</td><td>Quantitative, single-base, high sensitivity; no antibody bias.</td></tr>
-                    <tr><td>Nanopore direct RNA</td><td>Sequence native RNA directly; m6A perturbs the ionic current signal and can be detected.</td><td>No antibody, no chemical conversion; sees modifications on full-length native molecules.</td></tr>
+                    <tr><td>Nanopore direct RNA</td><td>Sequence native RNA directly; m6A perturbs the ionic current signal and can be detected.</td><td>No antibody, no chemical conversion; sees modifications on full-length native molecules. Current RNA004 chemistry with ONT's Dorado m6A models; accuracy per site is still lower than GLORI.</td></tr>
                 </table>
                 <p>Each trades off cost, sensitivity, and complexity. MeRIP remains the most common entry point, but a credible modern study often pairs it with a single-nucleotide method to nail down exact sites.</p>
 
@@ -224,23 +226,23 @@
                     <button data-opt>Nothing; more IP reads always means more methylation</button>
                     <button data-opt data-correct>Whether gene X's overall expression (input) also went up; only an increase in the IP/input ratio indicates a real methylation change</button>
                     <button data-opt>Whether the DRACH motif changed to a different sequence</button>
-                    <button data-opt>Whether the antibody was used on DNA instead of RNA</button>
+                    <button data-opt>Whether the IP library was sequenced deeper than the input</button>
                     <div class="quiz-explain"><strong>Correct.</strong> IP read counts scale with transcript abundance. If gene X's expression doubled, its IP reads double with no change in methylation. The valid signal is a change in the IP/input ratio, which is exactly why MeRIP requires a matched input and why differential tools control for expression.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">A reviewer asks you to report the exact methylated adenosine for a functional follow-up, but you only ran standard antibody MeRIP-seq. What is the honest, correct response?</div>
                     <button data-opt>MeRIP already gives single-nucleotide resolution, so report any A in the peak</button>
                     <button data-opt data-correct>Antibody MeRIP peaks are ~100 nt wide and cannot pinpoint the exact base; a single-nucleotide method such as miCLIP, GLORI, or nanopore is needed</button>
-                    <button data-opt>It is impossible to ever locate m6A at single-base resolution</button>
-                    <button data-opt>Just pick the adenosine closest to the stop codon</button>
+                    <button data-opt>Rerun MeRIP with more replicates to sharpen it to single-base resolution</button>
+                    <button data-opt>Report the adenosine at the summit of the MeRIP peak as the exact site</button>
                     <div class="quiz-explain"><strong>Right.</strong> Fragment-based MeRIP localizes m6A to a ~100 nt window, not a specific nucleotide. To resolve the exact site you switch to a single-nucleotide approach (miCLIP/m6A-CLIP, GLORI, or nanopore direct RNA). Recognizing this limit is part of doing the analysis honestly.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">Your MeRIP peaks do NOT recover the DRACH motif and are spread evenly across gene bodies rather than near stop codons. What is the most reasonable conclusion?</div>
-                    <button data-opt>This is a novel m6A biology and should be published immediately</button>
+                    <button data-opt>It shows the cell type uses a different m6A writer with its own motif</button>
                     <button data-opt data-correct>It is a red flag for a technical problem (poor antibody specificity, weak enrichment, or analysis error); good m6A data should recover DRACH and stop-codon/3'UTR enrichment</button>
                     <button data-opt>DRACH and stop-codon enrichment are irrelevant to m6A</button>
-                    <button data-opt>The aligner used the wrong species, which never affects motifs</button>
+                    <button data-opt>It is expected, because MeRIP peaks are too wide to recover any motif</button>
                     <div class="quiz-explain"><strong>Exactly.</strong> Recovering the DRACH motif and the characteristic enrichment near stop codons / 3' UTRs are standard positive-control checks for m6A data. Their absence points to a technical issue (specificity, enrichment, or pipeline error) rather than a discovery, and should be investigated before any biological claim.</div>
                 </div>
 
@@ -248,26 +250,29 @@
                 <div class="quiz">
                     <div class="quiz-q-src">In a standard MeRIP-seq (m6A-seq) experiment, what does the IP sample contain compared with the input sample?</div>
                     <button data-opt data-correct>RNA fragments enriched by an anti-m6A antibody, versus the total fragmented transcriptome</button>
-                    <button data-opt>Only DNA, versus only protein</button>
-                    <button data-opt>Genomic reads, versus mitochondrial reads</button>
+                    <button data-opt>Fragments pulled down with an anti-METTL3 antibody, versus untreated RNA</button>
+                    <button data-opt>Only reads at DRACH motifs, versus all other reads</button>
+                    <button data-opt>RNA from writer-knockout cells, versus wild-type RNA</button>
                     <div class="quiz-explain"><strong>Correct.</strong> MeRIP fragments RNA, then immunoprecipitates fragments carrying m6A with an antibody (the IP). The input is the matched fragmented RNA without IP. Peaks are regions enriched in IP relative to input.</div>
                 </div>
                 <div class="quiz">
-                    <div class="quiz-q-src">A standard antibody-based MeRIP-seq peak typically spans roughly a hundred or more nucleotides. What is the practical limitation this creates?</div>
-                    <button data-opt>It tells you the exact methylated adenosine to the single base</button>
-                    <button data-opt>It cannot detect m6A at all</button>
-                    <button data-opt data-correct>It localizes m6A to a region but does not pinpoint the exact methylated base</button>
-                    <div class="quiz-explain"><strong>Right.</strong> MeRIP resolution is set by the RNA fragment size, so a peak marks a window rather than one base. To get single-nucleotide resolution you need methods such as miCLIP rather than standard MeRIP-seq.</div>
+                    <div class="quiz-q-src">Which method maps m6A at single-base resolution WITHOUT using an antibody?</div>
+                    <button data-opt data-correct>GLORI</button>
+                    <button data-opt>miCLIP</button>
+                    <button data-opt>MeRIP-seq with an IgG control</button>
+                    <button data-opt>eCLIP</button>
+                    <div class="quiz-explain">GLORI chemically converts unmethylated A (read as G) while m6A stays A, so no antibody is needed; miCLIP is single-base but still antibody-based.</div>
                 </div>
                 <div class="refs">
                     <h4>Sources &amp; further reading</h4>
                     <ol>
-                        <li>Dominissini D, et al. Topology of the human and mouse m6A RNA methylomes revealed by m6A-seq. <em>Nature</em>, 2012. (The original MeRIP/m6A-seq method.)</li>
-                        <li>Meng J, et al. exomePeak: a Bioconductor package for peak calling and differential analysis of MeRIP-seq and m6A-seq data. <em>Methods</em>, 2014.</li>
-                        <li>Linder B, et al. Single-nucleotide-resolution mapping of m6A and m6Am throughout the transcriptome (miCLIP). <em>Nat Methods</em>, 2015.</li>
-                        <li>Liu C, et al. Absolute quantification of single-base m6A methylation in the mammalian transcriptome using GLORI. <em>Nat Biotechnol</em>, 2023.</li>
+                        <li>Dominissini D, Moshitch-Moshkovitz S, Schwartz S, et al. Topology of the human and mouse m6A RNA methylomes revealed by m6A-seq. <em>Nature</em> 485: 201-206, 2012. <a href="https://doi.org/10.1038/nature11112" target="_blank" rel="noopener">doi:10.1038/nature11112</a></li>
+                        <li>Meng J, Lu Z, Liu H, et al. A protocol for RNA methylation differential analysis with MeRIP-Seq data and exomePeak R/Bioconductor package. <em>Methods</em> 69: 274-281, 2014. <a href="https://doi.org/10.1016/j.ymeth.2014.06.008" target="_blank" rel="noopener">doi:10.1016/j.ymeth.2014.06.008</a></li>
+                        <li>Zhou J, Wei Z, Zhen D, et al. Comprehensive epitranscriptome analysis from MeRIP-seq data with exomePeak2. <em>Genomics Proteomics Bioinformatics</em>, 2026. <a href="https://doi.org/10.1093/gpbjnl/qzag019" target="_blank" rel="noopener">doi:10.1093/gpbjnl/qzag019</a></li>
+                        <li>Linder B, Grozhik AV, Olarerin-George AO, Meydan C, Mason CE, Jaffrey SR. Single-nucleotide-resolution mapping of m6A and m6Am throughout the transcriptome. <em>Nat Methods</em> 12: 767-772, 2015. <a href="https://doi.org/10.1038/nmeth.3453" target="_blank" rel="noopener">doi:10.1038/nmeth.3453</a></li>
+                        <li>Liu C, Sun H, Yi Y, et al. Absolute quantification of single-base m6A methylation in the mammalian transcriptome using GLORI. <em>Nat Biotechnol</em> 41: 355-366, 2023. <a href="https://doi.org/10.1038/s41587-022-01487-9" target="_blank" rel="noopener">doi:10.1038/s41587-022-01487-9</a></li>
                     </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
                 <a class="next-lesson" href="rna-integrative-analysis.html" target="_blank" rel="noopener">
                     <span>Next in Track 4</span>

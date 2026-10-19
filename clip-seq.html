@@ -145,7 +145,7 @@
         <div class="container">
             <div class="lesson-body">
                 <div class="breadcrumb"><a href="learn.html#track-4" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 4: RNA Biology &amp; Epitranscriptomics &nbsp;/&nbsp; CLIP-seq</div>
-                <h1>RNA–Protein Interactions: an Intro to CLIP-seq</h1>
+                <h1>RNA-Protein Interactions: an Intro to CLIP-seq</h1>
                 <p class="promise">Proteins control the life of every mRNA: when it is spliced, where it goes, how long it lives, and when it is translated. To study that control you need to know exactly where a protein grabs the RNA. CLIP-seq is the method that maps those binding sites across the whole transcriptome, at close to single-nucleotide resolution. This lesson explains how it works, the variants you will see in papers, and why the controls make or break the result.</p>
                 <div class="tags">
                     <span class="tag red">🔴 Advanced</span>
@@ -178,7 +178,7 @@
                 <p>An <strong>RNA-binding protein (RBP)</strong> recognizes specific RNAs and acts on them. CLIP-seq, short for <strong>cross-linking and immunoprecipitation followed by sequencing</strong>, answers: for a given RBP, which RNA positions does it physically bind, across the entire transcriptome? The output is a map of <strong>binding sites (peaks)</strong>, which you then turn into a binding motif and a list of regulated transcripts.</p>
 
                 <h2>Why crosslinking is the whole trick</h2>
-                <p>You could just pull the protein down with an antibody and sequence whatever RNA comes along, which is the older method called RIP. The problem is that RNAs re-associate and stick non-specifically after you break the cell open, so RIP is noisy. CLIP fixes this with a covalent <strong>crosslink</strong> made <em>before</em> lysis: a pulse of <strong>UV light</strong> forms a permanent covalent bond between the protein and the exact RNA nucleotides it is touching at that instant (a "zero-distance" crosslink). Because the bond is covalent, the RNA stays attached through harsh, stringent washes that strip away everything not directly bound. That is what gives CLIP its specificity.</p>
+                <p>You could just pull the protein down with an antibody and sequence whatever RNA comes along, which is the older method called RIP. The problem is that RNAs re-associate and stick non-specifically after you break the cell open, so RIP is noisy. CLIP fixes this with a covalent <strong>crosslink</strong> made <em>before</em> lysis: a pulse of <strong>UV light</strong> forms a covalent bond (on only a small fraction of contacts) between the protein and the exact RNA nucleotides it is touching at that instant (a "zero-distance" crosslink). Because the bond is covalent, the RNA stays attached through harsh, stringent washes that strip away everything not directly bound. That is what gives CLIP its specificity.</p>
 
                 <h3>The core workflow</h3>
                 <ol>
@@ -186,6 +186,7 @@
                     <li><strong>Lyse</strong> and lightly digest with RNase to trim the RNA down to a footprint around the protein.</li>
                     <li><strong>Immunoprecipitate</strong> the RBP with a specific antibody, capturing the protein plus its crosslinked RNA.</li>
                     <li><strong>Stringent wash</strong> to remove non-crosslinked, background RNA.</li>
+                    <li><strong>Run on a gel and transfer to a membrane</strong>, then cut out the band at the protein's size plus a little extra, which removes free RNA and other proteins. The input control is cut from the same size range, hence "size-matched".</li>
                     <li><strong>Recover the RNA</strong>, build a sequencing library (with adapters and unique molecular identifiers), and sequence.</li>
                     <li><strong>Map and call peaks</strong>: enriched pile-ups mark binding sites.</li>
                 </ol>
@@ -213,17 +214,17 @@
 
                 <h2>From reads to binding sites: the analysis</h2>
                 <p>A typical eCLIP-style pipeline looks like this. You do not need to memorize the tools, but you should recognize the shape:</p>
-                <pre><span class="c"># 1. Trim adapters and remove PCR duplicates using the UMIs</span>
+                <pre><span class="c"># 1. Trim adapters and move each read's UMI into its name</span>
 <span class="c"># 2. Align the footprint reads to the genome (e.g. STAR)</span>
 <span class="c"># 3. Collapse duplicates by UMI so each original molecule counts once</span>
-<span class="c"># 4. Call peaks and test enrichment AGAINST the size-matched input</span>
+<span class="c"># 4. Call candidate peaks on the IP (CLIPper), then test each peak for enrichment against the size-matched input in a separate step</span>
 <span class="p">$</span> clipper --species hg38 --bam IP.bam --outfile peaks.bed
 <span class="c"># 5. Keep peaks reproducible across replicates, then find the motif</span></pre>
                 <p>The end products are a BED file of high-confidence binding sites, an enriched sequence motif (the protein's preferred sequence or structure), and the set of transcripts it regulates, which you can then cross with expression data.</p>
 
                 <div class="levelup">
                     <h4>🔶 Level up: real data and tools</h4>
-                    <p>The <a href="https://www.encodeproject.org/" target="_blank" rel="noopener">ENCODE project</a> released eCLIP data for hundreds of human RBPs, all public. Common peak callers include <strong>CLIPper</strong> (eCLIP), <strong>PureCLIP</strong>, <strong>PARpipe/PARalyzer</strong> (PAR-CLIP), and <strong>Piranha</strong>. A great exercise once you finish this track: download one RBP's eCLIP data and reproduce its known binding motif.</p>
+                    <p>The <a href="https://www.encodeproject.org/" target="_blank" rel="noopener">ENCODE project</a> released eCLIP data for about 150 human RBPs in two cell lines, all public. Common peak callers include <strong>CLIPper</strong> (eCLIP), <strong>PureCLIP</strong>, <strong>PARpipe/PARalyzer</strong> (PAR-CLIP), and <strong>Piranha</strong>. A great exercise once you finish this track: download one RBP's eCLIP data and reproduce its known binding motif.</p>
                 </div>
 
                 <h2>Check your understanding</h2>
@@ -238,9 +239,9 @@
                 <div class="quiz">
                     <div class="quiz-q-src">A reviewer rejects a CLIP study that pulled down an RBP and sequenced co-purifying RNA but used no crosslinking and no input control. What is the strongest scientific objection?</div>
                     <button data-opt data-correct>Without crosslinking, RNAs re-associate non-specifically after lysis, so the data cannot distinguish direct binding from background; an input control is also needed to judge enrichment</button>
-                    <button data-opt>Sequencing RNA is impossible without crosslinking</button>
+                    <button data-opt>The study needed deeper sequencing; depth alone would resolve direct versus indirect binding</button>
                     <button data-opt>The study should have used DNA instead of RNA</button>
-                    <button data-opt>Crosslinking is purely cosmetic and the objection is unjustified</button>
+                    <button data-opt>RIP-style pulldowns are fine as long as two antibodies are used</button>
                     <div class="quiz-explain"><strong>Exactly.</strong> That design is essentially RIP. The covalent UV crosslink is what lets stringent washes remove non-specific RNA and report direct contacts; and a control (e.g. size-matched input, as in eCLIP) is required to call a region genuinely enriched. Both are missing.</div>
                 </div>
                 <div class="quiz">
@@ -248,7 +249,7 @@
                     <button data-opt>The RBP only binds rRNA and uridine; the result is biologically complete</button>
                     <button data-opt data-correct>Abundant-RNA contamination plus the known uridine crosslinking bias; you need input normalization, duplicate removal via UMIs, and reproducibility filtering before trusting peaks</button>
                     <button data-opt>The sequencer malfunctioned and the run should be discarded entirely</button>
-                    <button data-opt>This proves the antibody is perfectly specific</button>
+                    <button data-opt>The RNase digestion was too light, so the reads are simply longer</button>
                     <div class="quiz-explain"><strong>Right.</strong> Hyper-abundant RNAs leak into any pulldown, and UV crosslinking favors uridines, so U-rich and abundant regions inflate without normalization. Correcting against an input control, deduplicating with UMIs, and requiring cross-replicate reproducibility separate real binding from these well-known artefacts.</div>
                 </div>
 
@@ -258,24 +259,28 @@
                     <button data-opt data-correct>To covalently lock RNA-binding proteins onto the RNA they directly contact so the interaction survives purification</button>
                     <button data-opt>To fragment the genome into short pieces for sequencing</button>
                     <button data-opt>To add m6A modifications to the bound RNA</button>
+                    <button data-opt>To convert 4SU into cytidine before sequencing</button>
                     <div class="quiz-explain"><strong>Correct.</strong> UV light forms a covalent bond between an RBP and the RNA in direct contact. That crosslink lets you wash stringently and pull down only genuinely bound RNA, giving near-nucleotide resolution rather than loose co-purification.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">In eCLIP, why is a size-matched input (SMInput) control sequenced alongside the IP sample?</div>
-                    <button data-opt>To replace the need for any antibody in the experiment</button>
+                    <button data-opt>To measure how efficiently UV crosslinking worked in each sample</button>
                     <button data-opt>To increase the read length of the IP library</button>
                     <button data-opt data-correct>To reveal background signal from abundant or sticky RNAs so that real binding peaks can be distinguished from noise</button>
+                    <button data-opt>To provide the UMIs needed for deduplication</button>
                     <div class="quiz-explain"><strong>Exactly.</strong> Abundant and structured RNAs show up even without specific binding. The size-matched input captures that background, and peaks are called as enrichment of the IP over the input rather than from raw IP coverage alone.</div>
                 </div>
                 <div class="refs">
                     <h4>Sources &amp; further reading</h4>
                     <ol>
-                        <li>Licatalosi DD, et al. HITS-CLIP yields genome-wide insights into brain alternative RNA processing. <em>Nature</em>, 2008.</li>
-                        <li>Hafner M, et al. Transcriptome-wide identification of RNA-binding protein and microRNA target sites by PAR-CLIP. <em>Cell</em>, 2010.</li>
-                        <li>König J, et al. iCLIP reveals the function of hnRNP particles in splicing at individual nucleotide resolution. <em>Nat Struct Mol Biol</em>, 2010.</li>
-                        <li>Van Nostrand EL, et al. Robust transcriptome-wide discovery of RBP binding sites with enhanced CLIP (eCLIP). <em>Nat Methods</em>, 2016. <a href="https://www.encodeproject.org/" target="_blank" rel="noopener">ENCODE eCLIP data</a></li>
+                        <li>Licatalosi DD, Mele A, Fak JJ, et al. HITS-CLIP yields genome-wide insights into brain alternative RNA processing. <em>Nature</em> 456: 464-469, 2008. <a href="https://doi.org/10.1038/nature07488" target="_blank" rel="noopener">doi:10.1038/nature07488</a></li>
+                        <li>Hafner M, Landthaler M, Burger L, et al. Transcriptome-wide identification of RNA-binding protein and microRNA target sites by PAR-CLIP. <em>Cell</em> 141: 129-141, 2010. <a href="https://doi.org/10.1016/j.cell.2010.03.009" target="_blank" rel="noopener">doi:10.1016/j.cell.2010.03.009</a></li>
+                        <li>König J, Zarnack K, Rot G, et al. iCLIP reveals the function of hnRNP particles in splicing at individual nucleotide resolution. <em>Nat Struct Mol Biol</em> 17: 909-915, 2010. <a href="https://doi.org/10.1038/nsmb.1838" target="_blank" rel="noopener">doi:10.1038/nsmb.1838</a></li>
+                        <li>Van Nostrand EL, Pratt GA, Shishkin AA, et al. Robust transcriptome-wide discovery of RNA-binding protein binding sites with enhanced CLIP (eCLIP). <em>Nat Methods</em> 13: 508-514, 2016. <a href="https://doi.org/10.1038/nmeth.3810" target="_blank" rel="noopener">doi:10.1038/nmeth.3810</a></li>
+                        <li>Boyle EA, Her HL, Mueller JR, et al. Skipper analysis of eCLIP datasets enables sensitive detection of constrained translation factor binding sites. <em>Cell Genom</em> 3: 100317, 2023. <a href="https://doi.org/10.1016/j.xgen.2023.100317" target="_blank" rel="noopener">doi:10.1016/j.xgen.2023.100317</a></li>
+                        <li>ENCODE Project: eCLIP data portal. <a href="https://www.encodeproject.org/" target="_blank" rel="noopener">encodeproject.org</a></li>
                     </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
                 <a class="next-lesson" href="epitranscriptomics-m6a.html" target="_blank" rel="noopener">
                     <span>Next in Track 4</span>

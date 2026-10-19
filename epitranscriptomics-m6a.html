@@ -143,7 +143,7 @@
             <div class="lesson-body">
                 <div class="breadcrumb"><a href="learn.html#track-4" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 4: RNA Biology &amp; Epitranscriptomics &nbsp;/&nbsp; Epitranscriptomics 101</div>
                 <h1>Epitranscriptomics 101: m6A and RNA Modifications</h1>
-                <p class="promise">Just as DNA carries chemical marks (epigenetics), RNA carries its own layer of reversible chemical modifications, the epitranscriptome. The same mRNA sequence can be stabilized, degraded, or translated differently depending on these marks. This lesson focuses on m6A, the most abundant internal mRNA modification, and the writer–eraser–reader system that controls it.</p>
+                <p class="promise">Just as DNA carries chemical marks (epigenetics), RNA carries its own layer of reversible chemical modifications, the epitranscriptome. The same mRNA sequence can be stabilized, degraded, or translated differently depending on these marks. This lesson focuses on m6A, the most abundant internal mRNA modification, and the writer-eraser-reader system that controls it.</p>
                 <div class="tags">
                     <span class="tag red">🔴 Advanced</span>
                     <span class="tag">⏱️ ~45 min</span>
@@ -173,7 +173,7 @@
 
                 <h2>A second layer of information on RNA</h2>
                 <p>Over 170 distinct chemical modifications have been catalogued across cellular RNAs. Together they form the <strong>epitranscriptome</strong>: information written on top of the RNA sequence, without changing the sequence itself. The concept mirrors epigenetics on DNA, and the consequences are similar. Two identical mRNA molecules with different modification patterns can have completely different fates.</p>
-                <p>The star of the field is <strong>m6A (N6-methyladenosine)</strong>: a methyl group added to the nitrogen-6 position of adenosine. It is the most abundant <em>internal</em> modification of eukaryotic messenger RNA, and unlike many marks it is <strong>dynamic and reversible</strong>, which is what makes it a genuine regulatory switch rather than a fixed tag.</p>
+                <p>The star of the field is <strong>m6A (N6-methyladenosine)</strong>: a methyl group added to the nitrogen-6 position of adenosine. It is the most abundant <em>internal</em> modification of eukaryotic messenger RNA, and it is <strong>chemically reversible</strong>: enzymes exist that can remove it. How often mRNA m6A is actually removed in cells is still debated; most is added while the RNA is being made and stays on.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Epitranscriptome</h4>
@@ -181,26 +181,26 @@
                 </div>
 
                 <h2>Where m6A sits: the DRACH motif</h2>
-                <p>m6A is not placed randomly. It occurs within a consensus sequence usually written <strong>DRACH</strong>, where the bold A is the methylated adenosine and the letters are IUPAC ambiguity codes:</p>
+                <p>m6A is not placed randomly. It occurs within a consensus sequence usually written <strong>DRACH</strong>, where the central A is the methylated adenosine and the letters are IUPAC ambiguity codes. Most DRACH sites are <em>not</em> methylated, so the motif is needed but not enough on its own.</p>
                 <ul>
                     <li><strong>D</strong> = A, G, or U &nbsp;·&nbsp; <strong>R</strong> = A or G &nbsp;·&nbsp; <strong>A</strong> = the methylated adenosine &nbsp;·&nbsp; <strong>C</strong> = C &nbsp;·&nbsp; <strong>H</strong> = A, C, or U</li>
                 </ul>
                 <p>Transcriptome-wide maps (the founding 2012 studies by Dominissini et al. and Meyer et al.) showed that m6A is strikingly <strong>enriched near stop codons and in 3' untranslated regions</strong>, with some in long internal exons. That location is a clue to function: it sits exactly where decisions about translation termination, stability, and 3' UTR-based regulation are made.</p>
 
-                <h2>The writer–eraser–reader system</h2>
+                <h2>The writer-eraser-reader system</h2>
                 <p>m6A is controlled by three classes of proteins. This framework is the core mental model of the whole field.</p>
                 <div class="roles">
                     <div class="role">
                         <span class="ico">✍️</span>
                         <h4>Writers</h4>
-                        <div class="who">METTL3–METTL14, WTAP, ...</div>
-                        <p>Add the methyl group. The core is the METTL3–METTL14 complex: METTL3 is the catalytic subunit, METTL14 is a structural partner that helps bind RNA. WTAP and others recruit and localize the complex.</p>
+                        <div class="who">METTL3-METTL14, WTAP, ...</div>
+                        <p>Add the methyl group. The core is the METTL3-METTL14 complex: METTL3 is the catalytic subunit, METTL14 is a structural partner that helps bind RNA. WTAP and others recruit and localize the complex.</p>
                     </div>
                     <div class="role">
                         <span class="ico">🧽</span>
                         <h4>Erasers</h4>
                         <div class="who">ALKBH5, FTO</div>
-                        <p>Remove the methyl group, making the mark reversible. <strong>ALKBH5</strong> is the major mRNA m6A demethylase; FTO acts more on the related cap-adjacent mark m6Am than on internal m6A in cells.</p>
+                        <p>Remove the methyl group, making the mark reversible. <strong>ALKBH5</strong> is the major mRNA m6A demethylase; FTO acts more on the related cap-adjacent mark m6Am (and on m1A in tRNA) than on internal mRNA m6A in most cells, although this depends on cell type and where FTO sits in the cell.</p>
                     </div>
                     <div class="role">
                         <span class="ico">👁️</span>
@@ -209,7 +209,7 @@
                         <p>Recognize the mark and decide the outcome. Different readers pull the RNA toward different fates, so the <em>same</em> m6A means different things depending on who reads it.</p>
                     </div>
                 </div>
-                <p>The readers are where the biology gets decided. Classic examples: <strong>YTHDF2</strong> directs methylated mRNAs toward degradation; <strong>YTHDF1</strong> can promote their translation; the nuclear reader <strong>YTHDC1</strong> influences splicing and export; and the <strong>IGF2BP</strong> family acts to <em>stabilize</em> methylated transcripts. So m6A does not have one fixed effect. Its consequence depends on which reader engages it, in which compartment, on which transcript.</p>
+                <p>The readers are where the biology gets decided. Classic examples: <strong>YTHDF2</strong> directs methylated mRNAs toward degradation (newer work suggests YTHDF1, 2 and 3 largely share this decay role, and YTHDF1's reported boost to translation is debated); the nuclear reader <strong>YTHDC1</strong> influences splicing and export; and the <strong>IGF2BP</strong> family acts to <em>stabilize</em> methylated transcripts. So m6A does not have one fixed effect. Its consequence depends on which reader engages it, in which compartment, on which transcript.</p>
 
                 <div class="warn">
                     <h4>⚠️ A common misconception: "FTO is the m6A eraser"</h4>
@@ -217,7 +217,7 @@
                 </div>
 
                 <h2>Why m6A matters</h2>
-                <p>By tuning stability, translation, splicing, and export, m6A shapes how quickly a cell can change its protein output. It is central to embryonic development and stem-cell differentiation, the stress and heat-shock response, the immune response, the circadian clock, and is dysregulated in many cancers, which has made the writers and erasers active drug targets. m6A is, in short, a fast, reversible control knob on gene expression that operates entirely at the RNA level.</p>
+                <p>By tuning stability, translation, splicing, and export, m6A shapes how quickly a cell can change its protein output. It is central to embryonic development and stem-cell differentiation, the stress and heat-shock response, the immune response, the circadian clock, and is dysregulated in many cancers, which has made the writers and erasers active drug targets. m6A is, in short, a control knob on gene expression that operates entirely at the RNA level.</p>
 
                 <h2>m6A is not alone: the wider modification landscape</h2>
                 <p>m6A gets the spotlight, but several other modifications are biologically important and increasingly mappable:</p>
@@ -236,7 +236,7 @@
                     <button data-opt>Correct, FTO is the only m6A eraser</button>
                     <button data-opt data-correct>Be cautious: FTO acts mainly on m6Am (cap-adjacent), and ALKBH5 is the major eraser of internal m6A, so the predicted effect may be small or misattributed</button>
                     <button data-opt>Wrong, because m6A cannot be removed at all</button>
-                    <button data-opt>Correct, because erasers do not affect methylation levels</button>
+                    <button data-opt>Correct, because FTO is the main eraser of internal m6A in every cell type</button>
                     <div class="quiz-explain"><strong>Right.</strong> FTO was the first-described demethylase but predominantly targets m6Am near the cap; ALKBH5 is the principal demethylase of internal m6A. Attributing a large internal-m6A change to FTO loss overstates its role. This nuance is exactly the kind of thing that separates careful work from sloppy claims.</div>
                 </div>
                 <div class="quiz">
@@ -249,9 +249,9 @@
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">An m6A map shows strong enrichment around stop codons and in 3' UTRs. Why is this distribution biologically meaningful rather than a technical quirk?</div>
-                    <button data-opt>Because stop codons are the only place adenosine exists</button>
+                    <button data-opt>Because antibodies bind 3' UTRs non-specifically, so the pattern is always an artefact</button>
                     <button data-opt data-correct>Because those regions are where translation termination, mRNA stability, and 3' UTR-based regulation are decided, so a mark there is well-placed to influence those processes</button>
-                    <button data-opt>Because 3' UTRs are not transcribed and cannot be modified</button>
+                    <button data-opt>Because 3' UTRs are longer than coding regions, so any mark will be enriched there by chance</button>
                     <button data-opt>Because the DRACH motif only occurs in 3' UTRs</button>
                     <div class="quiz-explain"><strong>Correct.</strong> The reproducible enrichment near stop codons and in 3' UTRs (first shown in 2012) places m6A exactly where post-transcriptional fate is decided. Location is a functional clue: the mark sits where readers can act on stability and translation.</div>
                 </div>
@@ -262,24 +262,28 @@
                     <button data-opt>They are erasers that remove m6A</button>
                     <button data-opt data-correct>They form the writer complex that deposits m6A onto mRNA</button>
                     <button data-opt>They are reader proteins that bind existing m6A marks</button>
-                    <div class="quiz-explain"><strong>Correct.</strong> METTL3 (with METTL14 and cofactors such as WTAP) is the writer complex that installs m6A. Erasers like FTO and ALKBH5 remove it, and YTH-domain readers interpret it. METTL3 is the catalytic subunit.</div>
+                    <button data-opt>They are erasers that remove m6Am from the cap</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> METTL3 (with METTL14 and cofactors such as WTAP) is the writer complex that installs m6A. Erasers (mainly ALKBH5 for internal m6A) remove it, and YTH-domain readers interpret it. METTL3 is the catalytic subunit.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">m6A sites are strongly enriched in the DRACH sequence context. What does that tell a beginner?</div>
                     <button data-opt>Every adenosine in the transcriptome is methylated equally</button>
-                    <button data-opt>DRACH is a protein, not a sequence</button>
+                    <button data-opt>Every DRACH site in the transcriptome is methylated</button>
                     <button data-opt data-correct>Methylation is sequence-selective: the writer prefers adenosines sitting in a DRACH consensus motif</button>
+                    <button data-opt>Methylation happens only in the 5' UTR</button>
                     <div class="quiz-explain"><strong>Right.</strong> DRACH (where D is A, G or U, R is a purine, and H is A, C or U) is the consensus around methylated adenosines. m6A is selective, not random, which is why motif recovery is a useful sanity check in m6A mapping.</div>
                 </div>
                 <div class="refs">
                     <h4>Sources &amp; further reading</h4>
                     <ol>
-                        <li>Dominissini D, et al. Topology of the human and mouse m6A RNA methylomes revealed by m6A-seq. <em>Nature</em>, 2012.</li>
-                        <li>Meyer KD, et al. Comprehensive analysis of mRNA methylation reveals enrichment in 3' UTRs and near stop codons. <em>Cell</em>, 2012.</li>
-                        <li>Zaccara S, Ries RJ, Jaffrey SR. Reading, writing and erasing mRNA methylation. <em>Nat Rev Mol Cell Biol</em>, 2019. (Authoritative review of the writer/eraser/reader system.)</li>
-                        <li>Roundtree IA, et al. Dynamic RNA modifications in gene expression regulation. <em>Cell</em>, 2017.</li>
+                        <li>Dominissini D, Moshitch-Moshkovitz S, Schwartz S, et al. Topology of the human and mouse m6A RNA methylomes revealed by m6A-seq. <em>Nature</em> 485: 201-206, 2012. <a href="https://doi.org/10.1038/nature11112" target="_blank" rel="noopener">doi:10.1038/nature11112</a></li>
+                        <li>Meyer KD, Saletore Y, Zumbo P, Elemento O, Mason CE, Jaffrey SR. Comprehensive analysis of mRNA methylation reveals enrichment in 3' UTRs and near stop codons. <em>Cell</em> 149: 1635-1646, 2012. <a href="https://doi.org/10.1016/j.cell.2012.05.003" target="_blank" rel="noopener">doi:10.1016/j.cell.2012.05.003</a></li>
+                        <li>Zaccara S, Ries RJ, Jaffrey SR. Reading, writing and erasing mRNA methylation. <em>Nat Rev Mol Cell Biol</em> 20: 608-624, 2019. <a href="https://doi.org/10.1038/s41580-019-0168-5" target="_blank" rel="noopener">doi:10.1038/s41580-019-0168-5</a></li>
+                        <li>Roundtree IA, Evans ME, Pan T, He C. Dynamic RNA modifications in gene expression regulation. <em>Cell</em> 169: 1187-1200, 2017. <a href="https://doi.org/10.1016/j.cell.2017.05.045" target="_blank" rel="noopener">doi:10.1016/j.cell.2017.05.045</a></li>
+                        <li>Mauer J, Luo X, Blanjoie A, et al. Reversible methylation of m6Am in the 5' cap controls mRNA stability. <em>Nature</em> 541: 371-375, 2017. <a href="https://doi.org/10.1038/nature21022" target="_blank" rel="noopener">doi:10.1038/nature21022</a></li>
+                        <li>Zaccara S, Jaffrey SR. A unified model for the function of YTHDF proteins in regulating m6A-modified mRNA. <em>Cell</em> 181: 1582-1595, 2020. <a href="https://doi.org/10.1016/j.cell.2020.05.012" target="_blank" rel="noopener">doi:10.1016/j.cell.2020.05.012</a></li>
                     </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
                 <a class="next-lesson" href="m6a-seq-analysis.html" target="_blank" rel="noopener">
                     <span>Next in Track 4</span>

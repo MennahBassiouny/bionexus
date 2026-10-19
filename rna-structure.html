@@ -170,7 +170,7 @@
             </div>
 
                 <h2>RNA is a shape, not just a sequence</h2>
-                <p>DNA is famously a stable double helix held by two separate strands. RNA is usually <strong>single-stranded</strong>, which changes everything: a single RNA molecule folds back on itself, and its own bases pair up internally. Adenine pairs with uracil, guanine with cytosine, and RNA also tolerates the weaker <strong>G–U "wobble" pair</strong>, which DNA does not use. Those internal pairings build the molecule's <strong>secondary structure</strong>: stems (paired regions), hairpin loops, internal loops, bulges, and junctions.</p>
+                <p>DNA is famously a stable double helix held by two separate strands. RNA is usually <strong>single-stranded</strong>, which changes everything: a single RNA molecule folds back on itself, and its own bases pair up internally. Adenine pairs with uracil, guanine with cytosine, and RNA also tolerates the weaker <strong>G-U "wobble" pair</strong>, which DNA does not use. Those internal pairings build the molecule's <strong>secondary structure</strong>: stems (paired regions), hairpin loops, internal loops, bulges, and junctions.</p>
                 <p>Stack the secondary structure into three dimensions and you get the <strong>tertiary structure</strong>, the actual folded shape, sometimes locked together by long-range contacts called pseudoknots. The classic mental image is the cloverleaf of a tRNA folding into an L shape, but every mRNA has structure too, especially in its untranslated regions (UTRs).</p>
 
                 <div class="jargon">
@@ -182,7 +182,7 @@
                 <p>Structure is a regulatory layer that sits on top of sequence. A few of the places it decides biology:</p>
                 <ul>
                     <li><strong>Non-coding RNAs are structure.</strong> tRNAs, rRNAs, and the spliceosome's snRNAs do their jobs because of precise folds, not coding content.</li>
-                    <li><strong>Riboswitches</strong> are structured segments in the UTRs of some mRNAs that change shape when they bind a small metabolite, switching the gene on or off without any protein involved.</li>
+                    <li><strong>Riboswitches</strong> are structured segments in the UTRs of some mRNAs, mostly in bacteria, that change shape when they bind a small metabolite, switching the gene on or off without any protein involved.</li>
                     <li><strong>Translation control.</strong> A stable hairpin in the 5' UTR can block the ribosome from scanning, lowering translation; an internal ribosome entry site (IRES) is a structure that recruits the ribosome directly.</li>
                     <li><strong>Stability and localization.</strong> Structured elements in the 3' UTR are recognized by RNA-binding proteins that set how long the message survives and where in the cell it goes.</li>
                     <li><strong>Splicing.</strong> Local structure around splice sites can hide or expose them, tuning which exons are included.</li>
@@ -191,7 +191,7 @@
 
                 <h2>Predicting structure from sequence (the computational part)</h2>
                 <p>Given just the sequence, can we predict how it folds? The dominant approach is <strong>thermodynamic</strong>: every possible base pair and stacked helix has a known free-energy contribution, and the algorithm searches for the structure with the lowest total free energy, the <strong>minimum free energy (MFE)</strong> structure, because the most stable fold is the one most likely to form. This search is solved efficiently with dynamic programming (the Zuker algorithm, 1981).</p>
-                <p>The standard, free, open-source toolkit is the <strong>ViennaRNA package</strong> (its <code class="inline">RNAfold</code> program); <strong>Mfold/UNAFold</strong> is the other classic. Output is often written in <strong>dot-bracket notation</strong>, where a dot is an unpaired base and matching brackets are a base pair:</p>
+                <p>The standard, free toolkit is the <strong>ViennaRNA package</strong> (its <code class="inline">RNAfold</code> program); <strong>Mfold/UNAFold</strong> is the other classic. Output is often written in <strong>dot-bracket notation</strong>, where a dot is an unpaired base and matching brackets are a base pair:</p>
                 <pre><span class="c"># sequence</span>
 GGGAAACCC
 <span class="c"># predicted secondary structure (dot-bracket): a 3-bp stem closing a loop</span>
@@ -211,9 +211,9 @@ GGGAAACCC
                 <p>Because prediction is imperfect, the field measures structure directly using <strong>chemical probing</strong> followed by sequencing. The idea: use a chemical that reacts only with <em>unpaired, flexible</em> nucleotides, then read out where it reacted.</p>
                 <ul>
                     <li><strong>SHAPE</strong> reagents acylate the 2'-hydroxyl of flexible (single-stranded) nucleotides regardless of base, marking them.</li>
-                    <li><strong>DMS</strong> methylates unpaired adenines and cytosines specifically.</li>
+                    <li><strong>DMS</strong> adds a methyl group mainly to unpaired adenines and cytosines, which is what standard DMS readouts report.</li>
                 </ul>
-                <p>Sequencing then reports a per-nucleotide "reactivity": high reactivity = likely unpaired, low = likely paired. Transcriptome-wide, in-cell versions such as <strong>SHAPE-seq</strong> and <strong>icSHAPE</strong> let you map structure across thousands of RNAs in living cells, and those reactivities can be fed back in as constraints to make the computational prediction far more accurate.</p>
+                <p>Sequencing then reports a per-nucleotide "reactivity": high reactivity = likely unpaired, low = likely paired. Transcriptome-wide, in-cell versions such as <strong>icSHAPE</strong>, <strong>SHAPE-MaP</strong> and <strong>DMS-MaPseq</strong> let you map structure across thousands of RNAs in living cells, and those reactivities can be fed back in as constraints to make the computational prediction far more accurate.</p>
 
                 <h2>The bridge to the rest of this track</h2>
                 <p>Structure connects directly to the two big themes ahead. RNA-binding proteins often recognize a <em>shape</em>, not just a motif, which is what CLIP-seq maps (next lesson). And chemical modifications change structure: the modification <strong>m6A</strong> weakens base pairing and can act as a structural switch that exposes or hides protein-binding sites (Liu et al., 2015). So the shape you just learned about is itself regulated by the epitranscriptomic marks you will study later in this track.</p>
@@ -222,8 +222,8 @@ GGGAAACCC
                 <div class="quiz">
                     <div class="quiz-q-src">An RNAfold prediction gives a single MFE structure with ΔG = −22 kcal/mol. A colleague treats this as "the" structure of the RNA in the cell. What is the most accurate critique?</div>
                     <button data-opt data-correct>The MFE is only the most stable single state; in cells RNA samples an ensemble and is shaped by folding kinetics, proteins, and modifications</button>
-                    <button data-opt>A negative ΔG is impossible, so the prediction is wrong</button>
-                    <button data-opt>RNAfold cannot handle sequences with G–U pairs, so the result is invalid</button>
+                    <button data-opt>The prediction is reliable because RNAfold accounts for all bound proteins in the cell</button>
+                    <button data-opt>RNAfold cannot handle sequences with G-U pairs, so the result is invalid</button>
                     <button data-opt>The structure is correct because lower free energy always equals the in-cell structure</button>
                     <div class="quiz-explain"><strong>Correct.</strong> MFE prediction returns the single lowest-energy fold, but real RNA occupies a structural ensemble and is influenced by co-transcriptional folding, bound proteins, the cellular milieu, and modifications. The prediction is a strong hypothesis to test (e.g., with SHAPE), not ground truth.</div>
                 </div>
@@ -250,28 +250,31 @@ GGGAAACCC
                     <button data-opt>A modified nucleotide such as m6A</button>
                     <button data-opt data-correct>Two nucleotides that are base-paired with each other</button>
                     <button data-opt>The start and end of the open reading frame</button>
+                    <button data-opt>A pseudoknot linking two distant loops</button>
                     <div class="quiz-explain"><strong>Correct.</strong> In dot-bracket notation a dot is an unpaired base, and a matched pair of parentheses marks two nucleotides that pair together (for example in a stem). It is just a compact text encoding of the secondary structure.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">Why is a G-U wobble pair worth knowing about when you reason about RNA folding?</div>
                     <button data-opt data-correct>It is a stable, allowed pairing in RNA helices beyond the standard A-U and G-C pairs</button>
                     <button data-opt>It only occurs in DNA, never in RNA</button>
-                    <button data-opt>It signals that the prediction software has crashed</button>
+                    <button data-opt>It is a mismatch that folding algorithms always exclude from helices</button>
+                    <button data-opt>It is weaker than an A-U pair, so it never occurs inside stems</button>
                     <div class="quiz-explain"><strong>Right.</strong> RNA tolerates the non-Watson-Crick G-U wobble pair, which is common and reasonably stable inside helices. Folding algorithms include it, so real stems often contain G-U pairs alongside A-U and G-C pairs.</div>
                 </div>
                 <div class="refs">
                     <h4>Sources &amp; further reading</h4>
                     <ol>
-                        <li>Zuker M, Stiegler P. Optimal computer folding of large RNA sequences using thermodynamics and auxiliary information. <em>Nucleic Acids Res</em>, 1981. (The dynamic-programming MFE algorithm.)</li>
-                        <li>Lorenz R, et al. ViennaRNA Package 2.0. <em>Algorithms Mol Biol</em>, 2011. <a href="https://www.tbi.univie.ac.at/RNA/" target="_blank" rel="noopener">ViennaRNA website</a></li>
-                        <li>Spitale RC, et al. Structural imprints in vivo decode RNA regulatory mechanisms (icSHAPE). <em>Nature</em>, 2015.</li>
-                        <li>Liu N, et al. N6-methyladenosine-dependent RNA structural switches regulate RNA–protein interactions. <em>Nature</em>, 2015. (m6A as a structural switch.)</li>
+                        <li>Zuker M, Stiegler P. Optimal computer folding of large RNA sequences using thermodynamics and auxiliary information. <em>Nucleic Acids Res</em> 9: 133-148, 1981. <a href="https://doi.org/10.1093/nar/9.1.133" target="_blank" rel="noopener">doi:10.1093/nar/9.1.133</a></li>
+                        <li>Lorenz R, Bernhart SH, Höner zu Siederdissen C, et al. ViennaRNA Package 2.0. <em>Algorithms Mol Biol</em> 6: 26, 2011. <a href="https://doi.org/10.1186/1748-7188-6-26" target="_blank" rel="noopener">doi:10.1186/1748-7188-6-26</a></li>
+                        <li>ViennaRNA Package (official site and documentation). <a href="https://www.tbi.univie.ac.at/RNA/" target="_blank" rel="noopener">tbi.univie.ac.at</a></li>
+                        <li>Spitale RC, Flynn RA, Zhang QC, et al. Structural imprints in vivo decode RNA regulatory mechanisms. <em>Nature</em> 519: 486-490, 2015. <a href="https://doi.org/10.1038/nature14263" target="_blank" rel="noopener">doi:10.1038/nature14263</a></li>
+                        <li>Liu N, Dai Q, Zheng G, et al. N6-methyladenosine-dependent RNA structural switches regulate RNA-protein interactions. <em>Nature</em> 518: 560-564, 2015. <a href="https://doi.org/10.1038/nature14234" target="_blank" rel="noopener">doi:10.1038/nature14234</a></li>
                     </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
                 <a class="next-lesson" href="clip-seq.html" target="_blank" rel="noopener">
                     <span>Next in Track 4</span>
-                    <h3>RNA–protein interactions: an intro to CLIP-seq →</h3>
+                    <h3>RNA-protein interactions: an intro to CLIP-seq →</h3>
                 </a>
 
             </div>
