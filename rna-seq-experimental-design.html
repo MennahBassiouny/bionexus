@@ -110,6 +110,12 @@
         .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
         .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
         .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -165,13 +171,13 @@
             </div>
 
             <h2>The analysis is only as good as the design</h2>
-            <p>No statistical method can rescue a badly planned experiment. The most common reason an RNA-seq study fails is not the code, it is the design: too few replicates, or a batch effect tangled up with the thing you wanted to measure. The good news is that the rules are simple, and knowing them before you sequence anything is the highest-value half-hour in the whole pipeline.</p>
+            <p>No statistical method can rescue a badly planned experiment. A common reason an RNA-seq study fails is not the code, it is the design: too few replicates, or a batch effect tangled up with the thing you wanted to measure. The good news is that the rules are simple, and knowing them before you sequence anything is the highest-value half-hour in the whole pipeline.</p>
 
             <h2><span class="step-num">1</span>Replicates: why you need at least three</h2>
             <p>A <strong>biological replicate</strong> is a separate, independent sample (a different mouse, a different patient, a different culture). You need several because biology is variable: two untreated samples already differ a little, just by chance. Replicates measure that natural variation, and that is exactly what lets a tool like DESeq2 tell a real treatment effect apart from background noise.</p>
             <div class="jargon" style="background:linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0;">
                 <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">Biological vs technical</span>They are not the same</h4>
-                <p style="font-size:1rem; color:var(--text-gray); margin:0;">A <strong>biological</strong> replicate is a different individual or sample. A <strong>technical</strong> replicate is the same sample measured twice. Only biological replicates capture the variation that matters for differential expression. The common minimum is <strong>three biological replicates per group</strong>, and more is better.</p>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">A <strong>biological</strong> replicate is a different individual or sample. A <strong>technical</strong> replicate is the same sample measured twice. Only biological replicates capture the variation that matters for differential expression. Three biological replicates per group is the <strong>bare minimum</strong>. A large benchmark found that 3 replicates catch only about 20 to 40% of truly changed genes, and recommended at least 6 per group (more if you need to catch small changes).</p>
             </div>
 
             <h2><span class="step-num">2</span>Batch effects and the confounding trap</h2>
@@ -199,7 +205,7 @@
 
             <h2><span class="step-num">3</span>More replicates beat more depth</h2>
             <p>People often ask whether to sequence each sample more deeply or to add more samples. For differential expression the answer is usually clear: <strong>more biological replicates</strong> gives you more power to detect real changes than piling extra reads onto a handful of samples. A modest depth across more replicates wins.</p>
-            <div class="why"><h4>A planning checklist</h4><p>Before you sequence: at least 3 biological replicates per group; conditions spread across batches, not confounded with them; any unavoidable batch recorded so it can go in the model; and a clear control group. Get these right and the analysis you learned in the flagship lesson will simply work.</p></div>
+            <div class="why"><h4>A planning checklist</h4><p>Before you sequence: at least 3 biological replicates per group (6 or more if you can); conditions spread across batches, not confounded with them; any unavoidable batch recorded so it can go in the model; and a clear control group. Get these right and the analysis in the rest of this track will simply work.</p></div>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
@@ -236,6 +242,17 @@
                 <button data-opt>Delete the batch information so it cannot interfere</button>
                 <button data-opt>Nothing can be done once a batch effect exists</button>
                 <div class="quiz-explain"><strong>Correct.</strong> Adding batch to the design lets the model account for it and still test the condition cleanly.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Schurch NJ, Schofield P, Gierli&#324;ski M, et al. How many biological replicates are needed in an RNA-seq experiment and which differential expression tool should you use?. <em>RNA</em> 22: 839-851, 2016. (replicate numbers) <a href="https://doi.org/10.1261/rna.053959.115" target="_blank" rel="noopener">doi:10.1261/rna.053959.115</a></li>
+                    <li>Liu Y, Zhou J, White KP. RNA-seq differential expression studies: more sequence or more replication?. <em>Bioinformatics</em> 30: 301-304, 2014. (replicates vs depth) <a href="https://doi.org/10.1093/bioinformatics/btt688" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btt688</a></li>
+                    <li>Leek JT, Scharpf RB, Bravo HC, et al. Tackling the widespread and critical impact of batch effects in high-throughput data. <em>Nature Reviews Genetics</em> 11: 733-739, 2010. (batch effects and confounding) <a href="https://doi.org/10.1038/nrg2825" target="_blank" rel="noopener">doi:10.1038/nrg2825</a></li>
+                    <li>Zhang Y, Parmigiani G, Johnson WE. ComBat-seq: batch effect adjustment for RNA-seq count data. <em>NAR Genomics and Bioinformatics</em> 2: lqaa078, 2020. <a href="https://doi.org/10.1093/nargab/lqaa078" target="_blank" rel="noopener">doi:10.1093/nargab/lqaa078</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="rna-seq-reads-to-counts.html" target="_blank" rel="noopener">

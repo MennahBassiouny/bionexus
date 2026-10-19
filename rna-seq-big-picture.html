@@ -103,6 +103,12 @@
             .logo-img { height: 40px; }
             .lesson-header h1 { font-size: 2.2rem; }
         }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -160,10 +166,10 @@
             </div>
 
                 <h2>The one idea to hold onto</h2>
-                <p>Every cell in your body carries the same DNA, the same full instruction manual. But a brain cell and a muscle cell look and behave completely differently. Why? Because at any moment, each cell only "switches on" some of its genes, not all of them. A switched-on gene gets copied into <strong>RNA</strong>, and that RNA is the working instruction the cell actually uses.</p>
+                <p>Almost every cell in your body carries the same DNA, the same full instruction manual. But a brain cell and a muscle cell look and behave completely differently. Why? Because at any moment, each cell only "switches on" some of its genes, not all of them. A switched-on gene gets copied into <strong>RNA</strong>, and that RNA is the working instruction the cell actually uses.</p>
 
                 <div class="bigidea">
-                    <p>So if you measure how much <strong>RNA</strong> there is for every gene, you get a snapshot of what a cell is actually <strong>doing</strong>, right now.</p>
+                    <p>So if you measure how much <strong>RNA</strong> there is for every gene, you get a snapshot of which genes a group of cells is using: a strong clue (not proof) to what they are <strong>doing</strong> right now. RNA levels and protein levels are related, but not the same.</p>
                 </div>
 
                 <p>That measurement is exactly what <strong>RNA-seq</strong> gives you, for thousands of genes at once. And the moment you can measure it, you can <em>compare</em> it: healthy cells versus diseased, untreated versus drug-treated, before versus after. Whichever genes change between the two groups are your clue to what is going on. That comparison is the engine of modern molecular biology.</p>
@@ -189,10 +195,10 @@
                 <p>It starts at the bench, not the computer. Researchers collect samples from the groups they want to compare, usually with several <strong>replicates</strong> each (more on why below), and chemically extract the RNA from the cells. This part is biology and lab work; as a bioinformatician you often receive the data after this step is done.</p>
 
                 <h3>2. Sequencing (turning RNA into data)</h3>
-                <p>A sequencing machine breaks the RNA into millions of tiny fragments and "reads" the sequence of each one. Each fragment becomes a short string of letters called a <strong>read</strong>. The raw output is a giant text file of these reads (the <a href="track1-sequences-fasta-fastq.html" target="_blank" rel="noopener">FASTQ format</a>). This is the hand-off point from the lab to the computer.</p>
+                <p>In the lab, the RNA is broken into small fragments and copied into DNA (called cDNA) to make a "library". The sequencing machine then reads millions of these fragments. Each fragment becomes a short string of letters called a <strong>read</strong>. The raw output is a giant text file of these reads (the <a href="track1-sequences-fasta-fastq.html" target="_blank" rel="noopener">FASTQ format</a>). This is the hand-off point from the lab to the computer.</p>
 
                 <h3>3. From reads to a count matrix</h3>
-                <p>On the computer, software figures out which gene each read came from (this is <strong>alignment</strong>) and then tallies them up: how many reads landed on gene 1, gene 2, and so on, for every sample. The result is the <strong>count matrix</strong>, a big table of genes by samples. A bigger number means the gene was more active in that sample.</p>
+                <p>On the computer, software figures out which gene each read came from (this is <strong>alignment</strong>) and then tallies them up: how many reads landed on gene 1, gene 2, and so on, for every sample. The result is the <strong>count matrix</strong>, a big table of genes by samples. For the same gene, a bigger number (after adjusting for how deeply each sample was sequenced) means it was more active in that sample.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Count matrix</h4>
@@ -242,14 +248,6 @@
                 <div class="quiz-explain">Biology is noisy, so a single sample can change just by chance. Replicates let the statistics separate a real, consistent difference between groups from random fluctuation.</div>
             </div>
 
-                <div style="background:#f1f5f9;border:1px solid rgba(91,156,248,0.2);border-radius:10px;padding:20px 24px;margin:30px 0;">
-                    <h4 style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:12px;">Sources &amp; further reading</h4>
-                    <ol style="margin:0 0 0 20px;color:#64748b;">
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Stark R, Grzelak M, Hadfield J. RNA sequencing: the teenage years. <em>Nature Reviews Genetics</em> 20:631–656, 2019. <a href="https://doi.org/10.1038/s41576-019-0150-2" target="_blank" rel="noopener" style="color:#5b9cf8;text-decoration:none;">doi:10.1038/s41576-019-0150-2</a></li>
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Conesa A, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17:13, 2016. <a href="https://doi.org/10.1186/s13059-016-0881-8" target="_blank" rel="noopener" style="color:#5b9cf8;text-decoration:none;">doi:10.1186/s13059-016-0881-8</a></li>
-                    </ol>
-                    <p style="font-size:0.82rem;color:#64748b;margin-top:12px;font-style:italic;">Last reviewed: June 2026.</p>
-                </div>
 
                 <div class="quiz">
                 <div class="quiz-q-src">What does a single number inside the count matrix represent?</div>
@@ -265,6 +263,17 @@
                 <button data-opt>Depth only affects DNA, never RNA</button>
                 <div class="quiz-explain">A sample with more total reads will show higher counts for almost every gene, even with no real biological change. Normalization adjusts for these depth differences so the comparison is fair.</div>
             </div>
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Wang Z, Gerstein M, Snyder M. RNA-Seq: a revolutionary tool for transcriptomics. <em>Nature Reviews Genetics</em> 10: 57-63, 2009. <a href="https://doi.org/10.1038/nrg2484" target="_blank" rel="noopener">doi:10.1038/nrg2484</a></li>
+                        <li>Conesa A, Madrigal P, Tarazona S, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17: 13, 2016. <a href="https://doi.org/10.1186/s13059-016-0881-8" target="_blank" rel="noopener">doi:10.1186/s13059-016-0881-8</a></li>
+                        <li>Stark R, Grzelak M, Hadfield J. RNA sequencing: the teenage years. <em>Nature Reviews Genetics</em> 20: 631-656, 2019. <a href="https://doi.org/10.1038/s41576-019-0150-2" target="_blank" rel="noopener">doi:10.1038/s41576-019-0150-2</a></li>
+                        <li>Buccitelli C, Selbach M. mRNAs, proteins and the emerging principles of gene expression control. <em>Nature Reviews Genetics</em> 21: 630-644, 2020. (why RNA levels are a clue, not proof, of protein levels) <a href="https://doi.org/10.1038/s41576-020-0258-4" target="_blank" rel="noopener">doi:10.1038/s41576-020-0258-4</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
+                </div>
+
                 <a class="next-lesson" href="rna-seq-experimental-design.html" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
                     <h3>Experimental design for RNA-seq &rarr;</h3>

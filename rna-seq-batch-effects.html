@@ -110,6 +110,12 @@
         .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
         .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
         .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -190,18 +196,18 @@
                     <rect x="290" y="245" width="14" height="14" fill="#10b981"/><text x="310" y="257" fill="#64748b">treated</text>
                     </g>
                 </svg>
-                <figcaption>Left: the dominant split is between batches, with conditions mixed inside each. Right: once batch is in the model, the meaningful split is treated versus control.</figcaption>
+                <figcaption>Left: the dominant split is between batches, with conditions mixed inside each. Right: after removing the batch effect from the transformed values (for plotting), the meaningful split is treated versus control.</figcaption>
             </figure>
 
             <h2><span class="step-num">2</span>When a batch is unavoidable: model it</h2>
             <p>Sometimes you cannot avoid a batch, but as long as you <strong>recorded</strong> which batch each sample belongs to, you can handle it. Put the batch in the DESeq2 design: <code class="inline">~ batch + condition</code>. The model then accounts for the batch differences while still testing the condition. Order matters by convention: the variable of interest goes last, so for the airway data with batch added it would read <code class="inline">~ batch + dex</code>, where <code class="inline">dex</code> is the treatment column. You are not removing the batch from the data; you are letting the model subtract its effect.</p>
             <div class="jargon" style="background:linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0;">
                 <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">Model, do not overwrite</span>The key distinction</h4>
-                <p style="font-size:1rem; color:var(--text-gray); margin:0;">For the differential test, <strong>add batch to the design</strong> and keep the raw counts untouched. Do <strong>not</strong> replace your counts with batch-corrected numbers and feed those to DESeq2. Modeling the batch is the statistically correct way; overwriting the data double-counts the correction and distorts the test.</p>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">For the differential test, <strong>add batch to the design</strong> and keep the raw counts untouched. Do <strong>not</strong> replace your counts with batch-corrected numbers and feed those to DESeq2. Modeling the batch is the statistically correct way; corrected values are no longer raw counts, and DESeq2 cannot account for the uncertainty the correction added, so p-values become too optimistic.</p>
             </div>
 
             <h2><span class="step-num">3</span>Batch-corrected values are for plots only</h2>
-            <p>There is a legitimate place for explicitly removing a batch effect: <strong>visualization</strong>. For a clean PCA or heatmap you can apply <code class="inline">limma::removeBatchEffect</code> or <code class="inline">ComBat</code> from the <code class="inline">sva</code> package to your transformed (vst or rlog) values, so the plot shows biology rather than batch. But these adjusted values are for the eye only. <strong>Do not feed batch-corrected values back into DESeq2.</strong> The correct workflow is to model the batch in the design for testing, and to remove the batch only on a copy of the transformed data that you use for figures.</p>
+            <p>There is a legitimate place for explicitly removing a batch effect: <strong>visualization</strong>. For a clean PCA or heatmap you can apply <code class="inline">limma::removeBatchEffect</code> or <code class="inline">ComBat</code> from the <code class="inline">sva</code> package to your transformed (vst or rlog) values, so the plot shows biology rather than batch. But these adjusted values are for the eye only. <strong>Do not feed these batch-corrected values back into DESeq2.</strong> (One exception exists: ComBat-seq produces adjusted <em>counts</em> for cases where a corrected matrix is unavoidable. Modeling batch in the design is still preferred.) The correct workflow is to model the batch in the design for testing, and to remove the batch only on a copy of the transformed data that you use for figures.</p>
 
             <h2>When the batch cannot be separated</h2>
             <p>One hard limit: if <strong>treatment is fully confounded with batch</strong>, meaning every treated sample is in one batch and every control in another, then no method can untangle them. The model cannot tell whether a difference came from the treatment or the batch, because they move together perfectly. There is nothing to subtract that does not also subtract the biology. This is why design comes first: confounding is a planning failure that statistics cannot repair.</p>
@@ -224,11 +230,12 @@
 library(limma)
 
 # --- Correct way to TEST: model the batch in the design ---
-dds &lt;- DESeqDataSetFromMatrix(countData = counts_raw,   # raw integers
-                              colData   = sample_info,  # has 'batch' and 'dex'
+dds &lt;- DESeqDataSetFromMatrix(countData = counts_raw,   # your RAW integer count matrix
+                              colData   = sample_info,  # your table: a 'batch' and a 'dex' column
                               design    = ~ batch + dex) # variable of interest last
+dds$dex &lt;- relevel(dds$dex, "untrt")   # make untreated the baseline
 dds &lt;- DESeq(dds)
-res &lt;- results(dds)        # tests dex while accounting for batch
+res &lt;- results(dds)        # tests dex (treated vs untreated) while accounting for batch
 
 # --- Visualization ONLY: remove batch on transformed data ---
 vsd &lt;- vst(dds, blind = FALSE)
@@ -236,7 +243,8 @@ plotPCA(vsd, intgroup = c("batch", "dex"))   # batch still visible here
 
 mat &lt;- assay(vsd)
 # subtract batch for a cleaner plot; do NOT feed 'mat' back into DESeq2
-mat &lt;- limma::removeBatchEffect(mat, batch = vsd$batch)
+mat &lt;- limma::removeBatchEffect(mat, batch = vsd$batch,
+                         design = model.matrix(~ dex, colData(vsd)))  # protect the treatment signal
 assay(vsd) &lt;- mat
 plotPCA(vsd, intgroup = "dex")               # now split by condition
 </code></pre>
@@ -265,7 +273,7 @@ plotPCA(vsd, intgroup = "dex")               # now split by condition
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">When is it appropriate to use limma::removeBatchEffect or ComBat?</div>
-                <button data-opt data-correct>For visualization only, on transformed data, never as input to DESeq2</button>
+                <button data-opt data-correct>For visualization, on transformed data; for testing, put batch in the DESeq2 design instead</button>
                 <button data-opt>To clean the raw counts before giving them to DESeq2</button>
                 <button data-opt>It is never appropriate to use them at all</button>
                 <div class="quiz-explain"><strong>Right.</strong> Batch-corrected values make PCA and heatmaps clearer, but for testing you model the batch instead of overwriting the data.</div>
@@ -276,6 +284,17 @@ plotPCA(vsd, intgroup = "dex")               # now split by condition
                 <button data-opt>The design is ideal and needs no correction</button>
                 <button data-opt>ComBat will perfectly recover the treatment effect</button>
                 <div class="quiz-explain"><strong>Correct.</strong> When treatment and batch move together perfectly, no method can tell their effects apart; only a new design can fix it.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Leek JT, Scharpf RB, Bravo HC, et al. Tackling the widespread and critical impact of batch effects in high-throughput data. <em>Nature Reviews Genetics</em> 11: 733-739, 2010. <a href="https://doi.org/10.1038/nrg2825" target="_blank" rel="noopener">doi:10.1038/nrg2825</a></li>
+                    <li>Johnson WE, Li C, Rabinovic A. Adjusting batch effects in microarray expression data using empirical Bayes methods. <em>Biostatistics</em> 8: 118-127, 2007. (ComBat) <a href="https://doi.org/10.1093/biostatistics/kxj037" target="_blank" rel="noopener">doi:10.1093/biostatistics/kxj037</a></li>
+                    <li>Ritchie ME, Phipson B, Wu D, et al. limma powers differential expression analyses for RNA-sequencing and microarray studies. <em>Nucleic Acids Research</em> 43: e47, 2015. (removeBatchEffect) <a href="https://doi.org/10.1093/nar/gkv007" target="_blank" rel="noopener">doi:10.1093/nar/gkv007</a></li>
+                    <li>Zhang Y, Parmigiani G, Johnson WE. ComBat-seq: batch effect adjustment for RNA-seq count data. <em>NAR Genomics and Bioinformatics</em> 2: lqaa078, 2020. <a href="https://doi.org/10.1093/nargab/lqaa078" target="_blank" rel="noopener">doi:10.1093/nargab/lqaa078</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="rna-seq-volcano-ma.html" target="_blank" rel="noopener">

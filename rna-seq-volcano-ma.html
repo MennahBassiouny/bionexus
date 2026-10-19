@@ -111,6 +111,12 @@
             .logo-img { height: 40px; }
             .lesson-header h1 { font-size: 2.2rem; }
         }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -184,7 +190,7 @@
                 </div>
 
                 <h2><span class="step-num">1</span>Get a results table to plot</h2>
-                <p>We'll rebuild the results from the previous lesson so this notebook stands on its own. We keep both the raw <code class="inline">res</code> and the shrunken <code class="inline">res_shrunk</code>, because each plot prefers a different one.</p>
+                <p>We'll rebuild the results from the previous lesson so this notebook stands on its own. We keep both the raw <code class="inline">res</code> and the shrunken <code class="inline">res_shrunk</code>, because they differ in one column only: the shrunken version has steadier fold changes, while <code class="inline">padj</code> (the volcano's vertical axis) is identical in both. We use shrunken fold changes for the MA plot. (This example dataset is tiny, just 10 genes, so your plots will be sparse; with real data you will see thousands of points.)</p>
                 <pre><span class="k">library</span>(DESeq2)
 
 base <- <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
@@ -201,12 +207,12 @@ res_shrunk <- lfcShrink(dds, coef = <span class="s">"condition_B_vs_A"</span>, t
 
                 <h2><span class="step-num">2</span>The MA plot (the health check)</h2>
                 <p>DESeq2 has this one built in. Use the <em>shrunken</em> results so low-count noise doesn't spray dots all over the edges.</p>
-                <pre>plotMA(res_shrunk, ylim = c(-3, 3), main = <span class="s">"MA plot (shrunken)"</span>)</pre>
-                <p>How to read it: each dot is a gene. The horizontal axis is the average expression level (low on the left, high on the right). The vertical axis is the log2 fold change. Dots far from the centre line changed a lot; DESeq2 colours the significant ones. A healthy MA plot is a fat cloud hugging the zero line, fanning out a little on the low-expression left side (where there's naturally more noise). If it looks lopsided or tilted, something may be off with normalization.</p>
+                <pre>plotMA(res_shrunk, alpha = 0.05, ylim = c(-3, 3), main = <span class="s">"MA plot (shrunken)"</span>)</pre>
+                <p>How to read it: each dot is a gene. The horizontal axis is the average expression level (low on the left, high on the right). The vertical axis is the log2 fold change. Dots far from the centre line changed a lot; DESeq2 colours the significant ones (we set <code class="inline">alpha = 0.05</code> so it uses the same padj cutoff as the volcano plot; its default is 0.1). With real data (thousands of genes), a healthy MA plot is a fat cloud hugging the zero line, fanning out a little on the low-expression left side (where there's naturally more noise). If the whole cloud is tilted or curved away from zero, something may be off with normalization. More dots above than below (or the reverse) can simply be real biology.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Why "MA"?</h4>
-                    <p>The name comes from the early microarray days. <strong>M</strong> is the log ratio (the fold change, the vertical axis) and <strong>A</strong> is the average intensity (the expression level, the horizontal axis). The name stuck even though we use it for sequencing now.</p>
+                    <p>The name comes from the early microarray days. <strong>M</strong> is the log ratio (the fold change, the vertical axis) and <strong>A</strong> is the average log intensity (the expression level, the horizontal axis). The name stuck even though we use it for sequencing now.</p>
                 </div>
 
                 <h2><span class="step-num">3</span>The volcano plot (the hit finder)</h2>
@@ -240,7 +246,7 @@ text(top$log2FoldChange, -log10(top$padj), labels = rownames(top), pos = 3, cex 
                     <li><strong>Bottom middle</strong>: little change and low confidence. The quiet majority of genes.</li>
                     <li><strong>Far sides but low down</strong>: big fold change but weak significance. Treat these with caution, they're often low-count genes (this is exactly what shrinkage helps with).</li>
                 </ul>
-                <p>The dashed lines are your thresholds: above the horizontal line means <code class="inline">padj &lt; 0.05</code>, and outside the vertical lines means at least a two-fold change. The coloured dots in the upper corners are the genes you'd carry forward into the next step, functional enrichment.</p>
+                <p>The dashed lines are your thresholds: above the horizontal line means <code class="inline">padj &lt; 0.05</code>, and outside the vertical lines means at least a two-fold change. In real data, the coloured dots in the upper corners are the genes you'd carry forward into the next step, functional enrichment.</p>
 
                 <div class="levelup">
                     <h4>🔶 Level up: publication-ready volcanoes</h4>
@@ -270,15 +276,6 @@ text(top$log2FoldChange, -log10(top$padj), labels = rownames(top), pos = 3, cex 
                 <div class="quiz-explain">It's a health check. By plotting fold change against expression level, it shows whether your normalization looks sane and whether changes are spread fairly across low- and high-expression genes. The volcano is for picking hits; the MA plot is for trusting the data.</div>
             </div>
 
-                <div style="background:#f1f5f9;border:1px solid rgba(91,156,248,0.2);border-radius:10px;padding:20px 24px;margin:30px 0;">
-                    <h4 style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:12px;">Sources &amp; further reading</h4>
-                    <ol style="margin:0 0 0 20px;color:#64748b;">
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15:550, 2014. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener" style="color:#5b9cf8;text-decoration:none;">doi:10.1186/s13059-014-0550-8</a></li>
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Zhu A, Ibrahim JG, Love MI. Heavy-tailed prior distributions for sequence count data: removing the noise and preserving large differences (apeglm LFC shrinkage). <em>Bioinformatics</em> 35(12):2084–2092, 2019.</li>
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Conesa A, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17:13, 2016.</li>
-                    </ol>
-                    <p style="font-size:0.82rem;color:#64748b;margin-top:12px;font-style:italic;">Last reviewed: June 2026.</p>
-                </div>
 
                 <div class="quiz">
                 <div class="quiz-q-src">On a volcano plot, what does the x-axis (log2 fold change) tell you?</div>
@@ -294,6 +291,16 @@ text(top$log2FoldChange, -log10(top$padj), labels = rownames(top), pos = 3, cex 
                 <button data-opt data-correct>The average expression level (mean of normalized counts)</button>
                 <div class="quiz-explain">The MA plot puts mean expression (A) on the x-axis and log2 fold change (M) on the y-axis. That lets you see whether fold changes behave sensibly across low- and high-expression genes.</div>
             </div>
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15: 550, 2014. (MA plots and fold-change shrinkage) <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
+                        <li>Zhu A, Ibrahim JG, Love MI. Heavy-tailed prior distributions for sequence count data: removing the noise and preserving large differences. <em>Bioinformatics</em> 35: 2084-2092, 2019. (apeglm shrinkage) <a href="https://doi.org/10.1093/bioinformatics/bty895" target="_blank" rel="noopener">doi:10.1093/bioinformatics/bty895</a></li>
+                        <li>Conesa A, Madrigal P, Tarazona S, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17: 13, 2016. <a href="https://doi.org/10.1186/s13059-016-0881-8" target="_blank" rel="noopener">doi:10.1186/s13059-016-0881-8</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
+                </div>
+
                 <a class="next-lesson" href="rna-seq-heatmaps.html" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
                     <h3>Heatmaps and clustering that mean something →</h3>

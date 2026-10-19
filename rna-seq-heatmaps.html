@@ -111,6 +111,12 @@
             .logo-img { height: 40px; }
             .lesson-header h1 { font-size: 2.2rem; }
         }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -169,11 +175,11 @@
 
                 <h2>First rule: never heatmap raw counts</h2>
                 <p>It's tempting to throw your count matrix straight into a heatmap, but it will mislead you. Raw counts span an enormous range (some genes have tens of reads, others tens of thousands), and they depend on how deeply each sample was sequenced. A heatmap of raw counts just shows you a handful of very high-count genes and hides everything else.</p>
-                <p>The fix is a <strong>variance-stabilizing transformation</strong>. It puts every gene on a comparable, roughly even scale so that real patterns, not raw magnitude, drive the colours. DESeq2 gives you one in a single line.</p>
+                <p>The fix is a <strong>variance-stabilizing transformation</strong>. It corrects for sequencing depth and makes a gene's spread roughly independent of its average level, so noisy low-count genes and a few very high-count genes stop dominating distances and clustering. (Later, z-scoring each gene puts every gene on the same footing for the colours.) DESeq2 gives you one in a single line.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Variance-stabilizing transformation (vst)</h4>
-                    <p>A transformation that flattens the relationship between a gene's average count and its variability, so highly expressed genes stop dominating. The result is values you can safely cluster, plot, and compare across samples. DESeq2's <code class="inline">vst()</code> is fast and works well for most datasets; for very small ones, <code class="inline">rlog()</code> is a gentler alternative.</p>
+                    <p>A transformation that flattens the relationship between a gene's average count and its variability, so highly expressed genes stop dominating. The result is values you can safely cluster, plot, and compare across samples. DESeq2's <code class="inline">vst()</code> is fast and works well for real datasets (it needs at least 1,000 genes); <code class="inline">varianceStabilizingTransformation()</code> does the same job on any size, and <code class="inline">rlog()</code> is a gentler alternative when you have few samples.</p>
                 </div>
 
                 <div class="colab-cta">
@@ -201,8 +207,9 @@ dds <- DESeq(dds)
 res <- results(dds, contrast = c(<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>))
 
 <span class="c"># the transformed values we'll use for every plot below</span>
-vsd <- vst(dds, blind = FALSE)
-<span class="c"># tip: on a very small dataset, use rlog(dds) instead if vst complains</span></pre>
+vsd <- varianceStabilizingTransformation(dds, blind = FALSE)
+<span class="c"># tip: on real datasets (1,000+ genes), vst(dds, blind = FALSE) is a faster shortcut;
+# it refuses tiny datasets like this 10-gene example</span></pre>
 
                 <h2><span class="step-num">2</span>Do my samples cluster by condition? (the QC heatmap)</h2>
                 <p>Before trusting any result, ask a basic question: do replicates of the same condition look alike? We answer it by measuring the distance between every pair of samples and drawing those distances as a heatmap.</p>
@@ -213,7 +220,7 @@ pheatmap(mat,
          clustering_distance_rows = sampleDists,
          clustering_distance_cols = sampleDists,
          main = <span class="s">"Sample-to-sample distances"</span>)</pre>
-                <p>How to read it: darker (smaller distance) means two samples are more similar. You want samples of the same condition to sit together in tight blocks, with a clear split between groups. If one sample clusters with the wrong group, that's a red flag worth investigating: a possible sample swap, a batch effect, or an outlier. This single plot catches problems that would otherwise quietly ruin your conclusions.</p>
+                <p>How to read it: in pheatmap's default colours, blue (cool) means a small distance, so the two samples are more similar, and red (warm) means they are less similar. You want samples of the same condition to sit together in tight blocks, with a clear split between groups. If one sample clusters with the wrong group, that's a red flag worth investigating: a possible sample swap, a batch effect, or an outlier. This single plot catches problems that would otherwise quietly ruin your conclusions.</p>
 
                 <h2><span class="step-num">3</span>The same question, even faster: PCA</h2>
                 <p>A PCA plot squeezes all the genes down to two axes that capture the biggest sources of variation, so you can see the grouping in one glance. DESeq2 has it built in.</p>
@@ -222,8 +229,10 @@ pheatmap(mat,
 
                 <h2><span class="step-num">4</span>Which genes separate the groups? (the gene heatmap)</h2>
                 <p>Now the satisfying one. We take the most differentially expressed genes, scale each gene so we see its <em>pattern</em> rather than its absolute level, and let clustering arrange them.</p>
-                <pre><span class="c"># the 30 most significant genes</span>
-top <- head(order(res$padj), 30)
+                <pre><span class="c"># up to 30 of the most significant genes (padj &lt; 0.05)</span>
+sig <- which(!is.na(res$padj) &amp; res$padj &lt; 0.05)
+top <- head(sig[order(res$padj[sig])], 30)
+<span class="c"># (this 10-gene example has only a few hits; real data gives you a full 30)</span>
 mat <- assay(vsd)[top, ]
 
 <span class="c"># z-score each gene across samples (centre and scale per row)</span>
@@ -236,7 +245,7 @@ pheatmap(mat,
          annotation_col = ann,
          show_rownames = FALSE,
          main = <span class="s">"Top 30 genes (z-scored)"</span>)</pre>
-                <p>Read it as blocks of colour. A clean result shows two opposing blocks: a set of genes high (one colour) in condition A and low in B, and another set doing the reverse. The dendrogram across the top should group the samples by condition on its own, which is a lovely independent confirmation that your differential-expression hits are real and coherent.</p>
+                <p>Read it as blocks of colour. A clean result shows two opposing blocks: a set of genes high (one colour) in condition A and low in B, and another set doing the reverse. The samples will usually group by condition here. That is expected, because we picked genes that differ between the conditions, so it is <strong>not</strong> independent proof that the hits are real. For an unbiased check, use the sample-distance heatmap above and a PCA, which use all genes.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Z-score scaling</h4>
@@ -251,10 +260,10 @@ pheatmap(mat,
                 <h2>Check your understanding</h2>
                 <div class="quiz">
                 <div class="quiz-q-src">Why transform the counts with vst before making a heatmap?</div>
-                <button data-opt data-correct>It puts genes on a comparable scale so a few high-count genes do not dominate</button>
+                <button data-opt data-correct>It corrects for depth and stops a gene's variability depending on its average level</button>
                 <button data-opt>It removes all low-expression genes</button>
                 <button data-opt>It is only needed for PCA, not heatmaps</button>
-                <div class="quiz-explain">Raw counts span a huge range and depend on sequencing depth, so a few high-count genes would dominate the colours. The variance-stabilizing transform puts genes on a comparable scale, so real patterns drive the heatmap instead of raw magnitude.</div>
+                <div class="quiz-explain">Raw counts span a huge range and depend on sequencing depth, so a few high-count genes would dominate the colours. The variance-stabilizing transform corrects for depth and makes each gene's spread roughly independent of its average level, so real patterns drive distances and clustering instead of raw magnitude.</div>
             </div>
                 <div class="quiz">
                 <div class="quiz-q-src">What does the sample-distance heatmap tell you?</div>
@@ -271,14 +280,6 @@ pheatmap(mat,
                 <div class="quiz-explain">So the heatmap shows each gene's relative change (up or down versus its own average) rather than its absolute expression level. Otherwise a handful of very highly expressed genes would dominate and hide the pattern.</div>
             </div>
 
-                <div style="background:#f1f5f9;border:1px solid rgba(91,156,248,0.2);border-radius:10px;padding:20px 24px;margin:30px 0;">
-                    <h4 style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:12px;">Sources &amp; further reading</h4>
-                    <ol style="margin:0 0 0 20px;color:#64748b;">
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Love MI, Huber W, Anders S. DESeq2 (variance-stabilizing transformation used before clustering). <em>Genome Biology</em> 15:550, 2014. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener" style="color:#5b9cf8;text-decoration:none;">doi:10.1186/s13059-014-0550-8</a></li>
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Conesa A, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17:13, 2016. <a href="https://doi.org/10.1186/s13059-016-0881-8" target="_blank" rel="noopener" style="color:#5b9cf8;text-decoration:none;">doi:10.1186/s13059-016-0881-8</a></li>
-                    </ol>
-                    <p style="font-size:0.82rem;color:#64748b;margin-top:12px;font-style:italic;">Last reviewed: June 2026.</p>
-                </div>
 
                 <div class="quiz">
                 <div class="quiz-q-src">After z-scoring a gene, what does a value of 0 mean for one sample?</div>
@@ -294,6 +295,16 @@ pheatmap(mat,
                 <button data-opt>It converts the counts into p-values</button>
                 <div class="quiz-explain">Clustering groups genes with similar expression patterns together and samples that look alike together, so blocks of co-regulated genes and related samples become visible as clear patches of colour.</div>
             </div>
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15: 550, 2014. (variance-stabilizing transformation, sample distances) <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
+                        <li>Conesa A, Madrigal P, Tarazona S, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17: 13, 2016. <a href="https://doi.org/10.1186/s13059-016-0881-8" target="_blank" rel="noopener">doi:10.1186/s13059-016-0881-8</a></li>
+                        <li>Gu Z, Eils R, Schlesner M. Complex heatmaps reveal patterns and correlations in multidimensional genomic data. <em>Bioinformatics</em> 32: 2847-2849, 2016. (ComplexHeatmap) <a href="https://doi.org/10.1093/bioinformatics/btw313" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btw313</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
+                </div>
+
                 <a class="next-lesson" href="rna-seq-enrichment.html" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
                     <h3>Functional enrichment: GO, KEGG, GSEA →</h3>

@@ -110,6 +110,12 @@
         .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
         .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
         .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -186,7 +192,7 @@
                     <rect x="350" y="108" width="22" height="24" fill="#5b9cf8" opacity="0.3"/><rect x="376" y="108" width="22" height="24" fill="#5b9cf8" opacity="0.15"/><rect x="402" y="108" width="22" height="24" fill="#5b9cf8"/><rect x="428" y="108" width="22" height="24" fill="#5b9cf8" opacity="0.2"/><rect x="454" y="108" width="22" height="24" fill="#5b9cf8" opacity="0.4"/>
                     </g>
                     <text x="413" y="160" text-anchor="middle" font-size="11" fill="#64748b">one column per cell</text>
-                    <text x="413" y="176" text-anchor="middle" font-size="11" fill="#64748b">faded blocks = zeros (dropouts)</text>
+                    <text x="413" y="176" text-anchor="middle" font-size="11" fill="#64748b">faded blocks = zeros (gene off, or not captured)</text>
                     </g>
                 </svg>
                 <figcaption>Bulk gives you a single averaged profile; single-cell gives you one profile per cell, with many empty entries because most genes are not detected in any given cell.</figcaption>
@@ -209,10 +215,10 @@
                     <tr><th>Step</th><th>What it does</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>Quality control</td><td>Filter low-quality cells and likely doublets; check the percentage of mitochondrial reads, which is high in dying cells</td></tr>
+                    <tr><td>Quality control</td><td>Filter low-quality cells and likely doublets; check the percentage of mitochondrial reads, which is high in stressed or dying cells (normal levels vary by cell type)</td></tr>
                     <tr><td>Normalization</td><td>Put cells on a comparable scale despite different total counts</td></tr>
                     <tr><td>Highly variable genes</td><td>Keep the genes that vary most across cells, since they carry the signal</td></tr>
-                    <tr><td>PCA</td><td>Reduce to a handful of dimensions that capture the main variation</td></tr>
+                    <tr><td>PCA</td><td>Reduce thousands of genes to a few dozen dimensions (often 30 to 50 PCs) that capture the main variation</td></tr>
                     <tr><td>Graph-based clustering</td><td>Group similar cells with Leiden or Louvain clustering</td></tr>
                     <tr><td>UMAP</td><td>Project to 2D for visualization, so clusters can be seen</td></tr>
                     <tr><td>Label clusters</td><td>Name each cluster by its marker genes (known cell-type signatures)</td></tr>
@@ -232,6 +238,7 @@ adata = sc.read_10x_mtx("filtered_feature_bc_matrix/")   # cells x genes (sparse
 adata.var["mt"] = adata.var_names.str.startswith("MT-")
 sc.pp.calculate_qc_metrics(adata, qc_vars=["mt"], inplace=True)
 sc.pp.filter_cells(adata, min_genes=200)
+adata = adata[adata.obs.pct_counts_mt &lt; 20].copy()   # drop cells with &gt;20% mito reads (tune per tissue)
 sc.pp.filter_genes(adata, min_cells=3)
 
 # 2. Normalize
@@ -242,13 +249,13 @@ sc.pp.log1p(adata)
 sc.pp.highly_variable_genes(adata, n_top_genes=2000)
 
 # 4. Keep the highly variable genes, scale, then PCA
-adata = adata[:, adata.var.highly_variable]
+adata = adata[:, adata.var.highly_variable].copy()
 sc.pp.scale(adata, max_value=10)
 sc.pp.pca(adata)
 
 # 5. Graph-based clustering (Leiden)
 sc.pp.neighbors(adata)
-sc.tl.leiden(adata)
+sc.tl.leiden(adata, flavor="igraph", n_iterations=2)
 
 # 6. UMAP for visualization
 sc.tl.umap(adata)
@@ -271,7 +278,7 @@ sc.tl.rank_genes_groups(adata, "leiden", method="wilcoxon")
                 <button data-opt data-correct>It marks which cell each read came from</button>
                 <button data-opt>It removes PCR duplicates</button>
                 <button data-opt>It measures gene length</button>
-                <div class="quiz-explain"><strong>Correct.</strong> The cell barcode is shared by all reads from one droplet, so reads can be assigned back to their cell.</div>
+                <div class="quiz-explain"><strong>Correct.</strong> The cell barcode is shared by all reads from one droplet, so reads can be assigned back to their droplet, which usually means one cell (empty droplets and doublets are removed in QC).</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">What does a UMI do?</div>
@@ -293,6 +300,17 @@ sc.tl.rank_genes_groups(adata, "leiden", method="wilcoxon")
                 <button data-opt>Capturing cells in droplets</button>
                 <button data-opt>Removing PCR duplicates with UMIs</button>
                 <div class="quiz-explain"><strong>Correct.</strong> After QC, normalization, variable-gene selection, PCA, clustering, and UMAP, you assign identities to clusters using known marker genes.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Zheng GX, Terry JM, Belgrader P, et al. Massively parallel digital transcriptional profiling of single cells. <em>Nature Communications</em> 8: 14049, 2017. (droplet barcodes and UMIs) <a href="https://doi.org/10.1038/ncomms14049" target="_blank" rel="noopener">doi:10.1038/ncomms14049</a></li>
+                    <li>Wolf FA, Angerer P, Theis FJ. SCANPY: large-scale single-cell gene expression data analysis. <em>Genome Biology</em> 19: 15, 2018. <a href="https://doi.org/10.1186/s13059-017-1382-0" target="_blank" rel="noopener">doi:10.1186/s13059-017-1382-0</a></li>
+                    <li>Luecken MD, Theis FJ. Current best practices in single-cell RNA-seq analysis: a tutorial. <em>Molecular Systems Biology</em> 15: e8746, 2019. <a href="https://doi.org/10.15252/msb.20188746" target="_blank" rel="noopener">doi:10.15252/msb.20188746</a></li>
+                    <li>Heumos L, Schaar AC, Lance C, et al. Best practices for single-cell analysis across modalities. <em>Nature Reviews Genetics</em> 24: 550-572, 2023. <a href="https://doi.org/10.1038/s41576-023-00586-w" target="_blank" rel="noopener">doi:10.1038/s41576-023-00586-w</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="learn.html#track-3" target="_blank" rel="noopener">

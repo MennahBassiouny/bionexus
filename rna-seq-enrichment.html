@@ -111,6 +111,12 @@
             .logo-img { height: 40px; }
             .lesson-header h1 { font-size: 2.2rem; }
         }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -174,7 +180,7 @@
                 <h2>Two ways to ask the question</h2>
                 <p>There are two common approaches, and they suit different situations.</p>
                 <ul>
-                    <li><strong>Over-representation analysis (ORA).</strong> You take your list of significant genes (your hits) and ask: is this list unusually full of genes from a particular function or pathway, compared to all genes? It is simple and intuitive, but it throws away everything below your significance cutoff.</li>
+                    <li><strong>Over-representation analysis (ORA).</strong> You take your list of significant genes (your hits) and ask: is this list unusually full of genes from a particular function or pathway, compared to all the genes you measured? It is simple and intuitive, but it throws away everything below your significance cutoff.</li>
                     <li><strong>Gene Set Enrichment Analysis (GSEA).</strong> You keep <em>all</em> genes, ranked from most up to most down, and ask: does any group of related genes sit together near the top or the bottom of the ranking? It catches coordinated, subtle shifts that ORA can miss.</li>
                 </ul>
 
@@ -196,7 +202,7 @@
                 <pre><span class="c"># clusterProfiler is the standard R toolkit for enrichment</span>
 <span class="k">if</span> (!requireNamespace(<span class="s">"BiocManager"</span>, quietly = TRUE)) install.packages(<span class="s">"BiocManager"</span>)
 BiocManager::install(c(<span class="s">"clusterProfiler"</span>, <span class="s">"org.Hs.eg.db"</span>, <span class="s">"DOSE"</span>, <span class="s">"enrichplot"</span>), update = FALSE, ask = FALSE)
-<span class="k">library</span>(clusterProfiler); <span class="k">library</span>(org.Hs.eg.db); <span class="k">library</span>(enrichplot)
+<span class="k">library</span>(clusterProfiler); <span class="k">library</span>(org.Hs.eg.db); <span class="k">library</span>(enrichplot); <span class="k">library</span>(ggplot2)
 
 <span class="c"># a ranked list of real human genes (named vector: gene ID -> fold change)</span>
 data(geneList, package = <span class="s">"DOSE"</span>)
@@ -204,7 +210,7 @@ head(geneList)</pre>
                 <p>The names are <strong>Entrez IDs</strong>, a standard numeric code for each gene. <code class="inline">org.Hs.eg.db</code> is the human annotation database that lets the tools translate those IDs into functions and pathways. (The "Hs" means <em>Homo sapiens</em>; there are equivalent packages for mouse, and other species.)</p>
 
                 <h2><span class="step-num">2</span>Over-representation: GO terms</h2>
-                <p>First the simple approach. We take the clearly significant genes and ask which Gene Ontology terms are over-represented.</p>
+                <p>First the simple approach. We take the genes with a large fold change and ask which Gene Ontology terms are over-represented.</p>
                 <pre><span class="c"># treat genes with a large fold change as our "hits"</span>
 sig_genes <- names(geneList)[abs(geneList) > 2]
 
@@ -222,11 +228,11 @@ dotplot(ego, showCategory = 12) + ggtitle(<span class="s">"Over-represented biol
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>GO and KEGG</h4>
-                    <p><strong>GO (Gene Ontology)</strong> is a standardized dictionary of what genes do, split into biological processes ("BP"), molecular functions, and cellular locations. <strong>KEGG</strong> is a database of pathways, the wiring diagrams of interacting genes (for example, "cell cycle" or "insulin signalling"). Swap <code class="inline">enrichGO</code> for <code class="inline">enrichKEGG</code> to test pathways instead of GO terms.</p>
+                    <p><strong>GO (Gene Ontology)</strong> is a standardized dictionary of what genes do, split into biological processes ("BP"), molecular functions, and cellular components. <strong>KEGG</strong> is a database of pathways, the wiring diagrams of interacting genes (for example, "cell cycle" or "insulin signalling"). To test KEGG pathways instead of GO terms use <code class="inline">enrichKEGG(gene = sig_genes, organism = "hsa", universe = names(geneList))</code>; it takes Entrez IDs and an organism code rather than <code class="inline">OrgDb</code> and <code class="inline">ont</code>.</p>
                 </div>
 
                 <h2><span class="step-num">3</span>GSEA: the whole ranked list</h2>
-                <p>Now the more powerful approach. GSEA uses every gene, in ranked order, and finds gene sets that trend up or down as a group, even if no single gene was a dramatic hit.</p>
+                <p>Now the second approach. GSEA uses every gene, in ranked order, and finds gene sets that trend up or down as a group, even if no single gene was a dramatic hit.</p>
                 <pre>gse <- gseGO(geneList     = geneList,    <span class="c"># the full ranked list</span>
              OrgDb        = org.Hs.eg.db,
              ont          = <span class="s">"BP"</span>,
@@ -248,7 +254,7 @@ gseaplot2(gse, geneSetID = 1, title = gse$Description[1])</pre>
                 <ul>
                     <li><strong>Description</strong>: the name of the GO term or pathway.</li>
                     <li><strong>p.adjust</strong>: the significance, corrected for testing thousands of gene sets. Trust terms below 0.05, just like padj for genes.</li>
-                    <li><strong>GeneRatio / setSize</strong>: how many of your genes are in that term, and how big the term is.</li>
+                    <li><strong>GeneRatio</strong> (ORA): your hits in that term divided by your hits that have any annotation; <strong>BgRatio</strong>: the term's size in the background. <strong>setSize</strong> (GSEA): how many genes the set contains.</li>
                     <li><strong>NES</strong> (GSEA only): the direction and strength of the shift.</li>
                     <li><strong>core_enrichment</strong> (GSEA only): the specific genes driving the result, your shortlist for follow-up.</li>
                 </ul>
@@ -259,7 +265,7 @@ gseaplot2(gse, geneSetID = 1, title = gse$Description[1])</pre>
                 <pre><span class="c"># res is your DESeq2 results data frame, with gene symbols as row names</span>
 ids <- bitr(rownames(res), fromType = <span class="s">"SYMBOL"</span>,
             toType = <span class="s">"ENTREZID"</span>, OrgDb = org.Hs.eg.db)
-ids <- ids[!duplicated(ids$SYMBOL) & !duplicated(ids$ENTREZID), ]  <span class="c"># drop one-to-many maps</span>
+ids <- ids[!duplicated(ids$SYMBOL) & !duplicated(ids$ENTREZID), ]  <span class="c"># keep one mapping per gene (the first)</span>
 
 <span class="c"># build a ranked named vector (rank by the test statistic, high to low)</span>
 ranks <- res$stat
@@ -295,19 +301,9 @@ ranks <- sort(ranks, decreasing = TRUE)
                 <button data-opt>A gene deleted from the genome</button>
                 <button data-opt>An error, since NES cannot be positive</button>
                 <button data-opt data-correct>A credible, significant hit shifted toward the top of your ranking</button>
-                <div class="quiz-explain">The genes in that term are coordinately shifted toward the top of your ranking (up in your condition), and the result is highly significant after correcting for multiple testing. It is a credible, biologically meaningful hit worth reporting.</div>
+                <div class="quiz-explain">The genes in that term are coordinately shifted toward the top of your ranking (up in your condition), and the result is highly significant after correcting for multiple testing. It is a statistically credible result worth following up; whether it matters biologically still needs your judgement.</div>
             </div>
 
-                <div style="background:#f1f5f9;border:1px solid rgba(91,156,248,0.2);border-radius:10px;padding:20px 24px;margin:30px 0;">
-                    <h4 style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:12px;">Sources &amp; further reading</h4>
-                    <ol style="margin:0 0 0 20px;color:#64748b;">
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Subramanian A, et al. Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. <em>PNAS</em> 102(43):15545–15550, 2005.</li>
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Wu T, Hu E, Xu S, et al. clusterProfiler 4.0: A universal enrichment tool for interpreting omics data. <em>The Innovation</em> 2(3):100141, 2021. <a href="https://doi.org/10.1016/j.xinn.2021.100141" target="_blank" rel="noopener" style="color:#5b9cf8;text-decoration:none;">doi:10.1016/j.xinn.2021.100141</a></li>
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Ashburner M, et al. Gene Ontology: tool for the unification of biology. <em>Nature Genetics</em> 25:25–29, 2000.</li>
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Kanehisa M, Goto S. KEGG: Kyoto Encyclopedia of Genes and Genomes. <em>Nucleic Acids Research</em> 28:27–30, 2000.</li>
-                    </ol>
-                    <p style="font-size:0.82rem;color:#64748b;margin-top:12px;font-style:italic;">Last reviewed: June 2026.</p>
-                </div>
 
                 <div class="quiz">
                 <div class="quiz-q-src">Why does an over-representation analysis need a background (universe) gene set?</div>
@@ -317,12 +313,23 @@ ranks <- sort(ranks, decreasing = TRUE)
                 <div class="quiz-explain">The test asks whether a function appears in your hit list more than expected by chance. That expectation depends on the pool of genes that could have shown up, so the background should be the genes you actually measured.</div>
             </div>
                 <div class="quiz">
-                <div class="quiz-q-src">In GSEA, what is the genes ranked by, and why does the order matter?</div>
+                <div class="quiz-q-src">In GSEA, what are the genes ranked by, and why does the order matter?</div>
                 <button data-opt>Alphabetical name, so terms are easy to find</button>
                 <button data-opt data-correct>A statistic like the fold change or signed significance, so coordinated shifts to the top or bottom can be detected</button>
                 <button data-opt>Chromosome position, to map them to the genome</button>
                 <div class="quiz-explain">GSEA needs the whole list ordered by a meaningful metric, such as log2 fold change or a signed score. It then checks whether a gene set clusters near the top (up) or bottom (down) of that ranking.</div>
             </div>
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Subramanian A, Tamayo P, Mootha VK, et al. Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. <em>PNAS</em> 102: 15545-15550, 2005. <a href="https://doi.org/10.1073/pnas.0506580102" target="_blank" rel="noopener">doi:10.1073/pnas.0506580102</a></li>
+                        <li>Ashburner M, Ball CA, Blake JA, et al. Gene ontology: tool for the unification of biology. <em>Nature Genetics</em> 25: 25-29, 2000. <a href="https://doi.org/10.1038/75556" target="_blank" rel="noopener">doi:10.1038/75556</a></li>
+                        <li>Kanehisa M, Goto S. KEGG: Kyoto Encyclopedia of Genes and Genomes. <em>Nucleic Acids Research</em> 28: 27-30, 2000. <a href="https://doi.org/10.1093/nar/28.1.27" target="_blank" rel="noopener">doi:10.1093/nar/28.1.27</a></li>
+                        <li>Wu T, Hu E, Xu S, et al. clusterProfiler 4.0: a universal enrichment tool for interpreting omics data. <em>The Innovation</em> 2: 100141, 2021. <a href="https://doi.org/10.1016/j.xinn.2021.100141" target="_blank" rel="noopener">doi:10.1016/j.xinn.2021.100141</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
+                </div>
+
                 <a class="next-lesson" href="single-cell-rna-seq-intro.html" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
                     <h3>Single-cell RNA-seq: a gentle intro &rarr;</h3>

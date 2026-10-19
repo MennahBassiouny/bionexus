@@ -111,6 +111,12 @@
             .logo-img { height: 40px; }
             .lesson-header h1 { font-size: 2.2rem; }
         }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -198,7 +204,7 @@
                 </div>
 
                 <h2><span class="step-num">1</span>Set up</h2>
-                <p>We'll use <strong>DESeq2</strong>, the standard <strong>R / Bioconductor</strong> package for differential expression - the original method the whole field is built on. Make sure your Colab notebook is set to the <strong>R runtime</strong> (Runtime → Change runtime type → R), then install it once:</p>
+                <p>We'll use <strong>DESeq2</strong>, one of the most widely used <strong>R / Bioconductor</strong> packages for differential expression. Make sure your Colab notebook is set to the <strong>R runtime</strong> (Runtime → Change runtime type → R), then install it once:</p>
                 <pre><span class="c"># Installing Bioconductor packages takes a few minutes the first time - grab a coffee.</span>
 <span class="k">if</span> (!requireNamespace(<span class="s">"BiocManager"</span>, quietly = TRUE)) install.packages(<span class="s">"BiocManager"</span>)
 BiocManager::install(<span class="s">"DESeq2"</span>, update = FALSE, ask = FALSE)</pre>
@@ -206,7 +212,7 @@ BiocManager::install(<span class="s">"DESeq2"</span>, update = FALSE, ask = FALS
                 <pre><span class="k">library</span>(DESeq2)</pre>
 
                 <h2><span class="step-num">2</span>Load the data</h2>
-                <p>We'll use a compact, ready-made example count matrix so everything runs in <em>seconds</em> and you can focus on the workflow. (When you're ready for a real published dataset, see the "Level up" box near the end - the steps are identical.)</p>
+                <p>We'll use a tiny, ready-made example count matrix (just 10 genes, so your volcano plot will have only 10 dots; real data gives thousands) so everything runs in <em>seconds</em> and you can focus on the workflow. (When you're ready for a real published dataset, see the "Level up" box near the end - the steps are identical.)</p>
                 <p>Two files: a <strong>count matrix</strong> (genes × samples) and a <strong>metadata</strong> table that says which condition each sample belongs to.</p>
                 <pre>base <- <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
 
@@ -248,13 +254,13 @@ head(res, 10)                    <span class="c"># the 10 most convincing hits</
                 <p>The results table has a few columns that matter enormously:</p>
                 <ul>
                     <li><strong>log2FoldChange</strong> - how much the gene changed, on a log2 scale. +1 means it doubled in B vs A; −1 means it halved. Sign tells you direction, size tells you magnitude.</li>
-                    <li><strong>pvalue</strong> - the raw probability that you'd see a change this big by pure chance.</li>
+                    <li><strong>pvalue</strong> - the probability of seeing a change at least this big <em>if the gene truly did not change</em>.</li>
                     <li><strong>padj</strong> - the p-value <em>adjusted</em> for the fact that we tested thousands of genes at once. <strong>This is the one you trust</strong>, not the raw p-value.</li>
                 </ul>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Why padj, not pvalue?</h4>
-                    <p>If you test 10,000 genes and call anything with p &lt; 0.05 a "hit," you'll get ~500 false positives by chance alone - before any real biology. Adjusting for <em>multiple testing</em> (here, the Benjamini-Hochberg method) controls that flood of false alarms. Rule of thumb: a gene is a credible hit if <strong>padj &lt; 0.05</strong>. We'll devote a whole lesson to this idea in Track 5 - it's that important.</p>
+                    <p>If you test 10,000 genes and call anything with p &lt; 0.05 a "hit," you could get up to ~500 false positives by chance alone (if no gene truly changed). Adjusting for <em>multiple testing</em> (here, the Benjamini-Hochberg method) controls that flood of false alarms. Rule of thumb: a gene is a credible hit if <strong>padj &lt; 0.05</strong>. We'll devote a whole lesson to this idea in Track 5 - it's that important.</p>
                 </div>
 
                 <h2><span class="step-num">5</span>Visualize: the volcano plot</h2>
@@ -276,7 +282,7 @@ abline(h = -log10(0.05), lty = 2, col = <span class="s">"#64748b"</span>)   <spa
                 <div class="levelup">
                     <h4>🔶 Level up: run it on a real published dataset</h4>
                     <p>Ready to use real biology? A great next dataset is the <strong>airway</strong> experiment (Himes et al., 2014, GEO accession <strong>GSE52778</strong>): human airway smooth-muscle cells treated with dexamethasone, a steroid used in asthma. It's the classic teaching dataset for exactly this workflow.</p>
-                    <p>The only thing that changes is <em>where the count matrix comes from</em> - load airway counts and metadata instead of the example files, set the <code class="inline">design</code> to <code class="inline">~ cell + dex</code> (the treatment column in the airway data is named <code class="inline">dex</code>), and every other step is identical. That repeatability is the whole point. (Handy bonus: in R, the <code class="inline">airway</code> Bioconductor package ships this exact dataset ready to load.)</p>
+                    <p>The only thing that changes is <em>where the count matrix comes from</em> - load airway counts and metadata instead of the example files, set the <code class="inline">design</code> to <code class="inline">~ cell + dex</code> (the treatment column in the airway data is named <code class="inline">dex</code>), and compare the treatment levels with <code class="inline">contrast = c("dex", "trt", "untrt")</code> (or relevel <code class="inline">dex</code> first, as in the code below). Every other step is the same. That repeatability is the whole point. (Handy bonus: in R, the <code class="inline">airway</code> Bioconductor package ships this exact dataset ready to load.)</p>
                     <p><a href="resources.html" target="_blank" rel="noopener">Find dataset links in Resources →</a></p>
                 </div>
 
@@ -314,17 +320,17 @@ BiocManager::install(<span class="k">c</span>(<span class="s">"airway"</span>, <
 data(<span class="s">"airway"</span>)                              <span class="c"># a real RNA-seq dataset, ready to use</span>
 airway$dex &lt;- relevel(airway$dex, <span class="s">"untrt"</span>)   <span class="c"># make "untreated" the baseline</span>
 
-<span class="c"># note the design: cell line is a batch term, treatment is what we test</span>
+<span class="c"># note the design: cell line is a blocking (pairing) term, treatment is what we test</span>
 dds &lt;- DESeqDataSet(airway, design = ~ cell + dex)
 dds &lt;- DESeq(dds)
 res &lt;- results(dds)
 
-summary(res)                              <span class="c"># how many genes up/down at padj &lt; 0.1</span>
+summary(res, alpha = 0.05)                <span class="c"># how many genes up/down at padj &lt; 0.05</span>
 head(res[order(res$padj), ])              <span class="c"># the strongest hits</span></pre>
 
                 <div class="why" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.35); border-radius:10px; padding:16px 20px; margin:18px 0;">
                     <h4 style="color:#b45309; font-size:0.95rem; margin-bottom:8px;">What real data adds (that the example hid)</h4>
-                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">This matrix has roughly <strong>64,000 genes</strong>, most of them barely expressed, so filtering and the negative-binomial model earn their keep. The design is <code class="inline">~ cell + dex</code>, not just <code class="inline">~ dex</code>: real experiments have structure (here, four cell lines), and ignoring it would bury the signal. The adjusted p-value does real work, thousands of genes cross raw p &lt; 0.05 but far fewer survive FDR. And you can sanity-check the biology: top hits like <code class="inline">DUSP1</code>, <code class="inline">KLF15</code>, and <code class="inline">PER1</code> are known dexamethasone-responsive genes, so a correct pipeline recovers known biology.</p>
+                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">This matrix has roughly <strong>64,000 genes</strong>, most of them barely expressed, so filtering and the negative-binomial model earn their keep. The design is <code class="inline">~ cell + dex</code>, not just <code class="inline">~ dex</code>: real experiments have structure (here, four cell lines), and ignoring it would bury the signal. The adjusted p-value does real work, thousands of genes cross raw p &lt; 0.05 but fewer survive FDR. And you can sanity-check the biology: top hits like <code class="inline">DUSP1</code>, <code class="inline">KLF15</code>, and <code class="inline">PER1</code> are known dexamethasone-responsive genes, so a correct pipeline recovers known biology.</p>
                 </div>
 
                 <div class="why" style="background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:16px 20px; margin:22px 0;">
@@ -351,15 +357,6 @@ head(res[order(res$padj), ])              <span class="c"># the strongest hits</
                     <div class="quiz-explain"><strong>Exactly.</strong> High on the y-axis (very significant) and far from zero on the x-axis (large change): big, confident changes in both directions.</div>
                 </div>
 
-                <div style="background:#f1f5f9;border:1px solid rgba(91,156,248,0.2);border-radius:10px;padding:20px 24px;margin:30px 0;">
-                    <h4 style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:12px;">Sources &amp; further reading</h4>
-                    <ol style="margin:0 0 0 20px;color:#64748b;">
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15:550, 2014. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener" style="color:#5b9cf8;text-decoration:none;">doi:10.1186/s13059-014-0550-8</a></li>
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Conesa A, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17:13, 2016. <a href="https://doi.org/10.1186/s13059-016-0881-8" target="_blank" rel="noopener" style="color:#5b9cf8;text-decoration:none;">doi:10.1186/s13059-016-0881-8</a></li>
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Stark R, Grzelak M, Hadfield J. RNA sequencing: the teenage years. <em>Nature Reviews Genetics</em> 20:631–656, 2019. <a href="https://doi.org/10.1038/s41576-019-0150-2" target="_blank" rel="noopener" style="color:#5b9cf8;text-decoration:none;">doi:10.1038/s41576-019-0150-2</a></li>
-                    </ol>
-                    <p style="font-size:0.82rem;color:#64748b;margin-top:12px;font-style:italic;">Last reviewed: June 2026.</p>
-                </div>
 
                 <div class="quiz" data-question="What does a gene with a log2 fold change of +1 mean?">
                     <button data-opt data-correct>It roughly doubled in B versus A</button>
@@ -371,8 +368,19 @@ head(res[order(res$padj), ])              <span class="c"># the strongest hits</
                     <button data-opt data-correct>Probably not on its own: the change is statistically clear but biologically tiny</button>
                     <button data-opt>Yes, a small padj alone always makes a gene important</button>
                     <button data-opt>No, a small padj means the gene is broken</button>
-                    <div class="quiz-explain"><strong>Right.</strong> A small padj says the difference is real, but a tiny fold change means it is small. Good hits usually need both significance (low padj) and a meaningful size of change.</div>
+                    <div class="quiz-explain"><strong>Right.</strong> A small padj says the difference is unlikely to be chance, but a tiny fold change means it is small. Good hits usually need both significance (low padj) and a meaningful size of change.</div>
                 </div>
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15: 550, 2014. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
+                        <li>Himes BE, Jiang X, Wagner P, et al. RNA-Seq transcriptome profiling identifies CRISPLD2 as a glucocorticoid responsive gene that modulates cytokine function in airway smooth muscle cells. <em>PLoS One</em> 9: e99625, 2014. (the airway dataset) <a href="https://doi.org/10.1371/journal.pone.0099625" target="_blank" rel="noopener">doi:10.1371/journal.pone.0099625</a></li>
+                        <li>Muzellec B, Tele&#324;czuk M, Cabeli V, Andreux M. PyDESeq2: a python package for bulk RNA-seq differential expression analysis. <em>Bioinformatics</em> 39: btad547, 2023. (the Python version) <a href="https://doi.org/10.1093/bioinformatics/btad547" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btad547</a></li>
+                        <li>Conesa A, Madrigal P, Tarazona S, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17: 13, 2016. <a href="https://doi.org/10.1186/s13059-016-0881-8" target="_blank" rel="noopener">doi:10.1186/s13059-016-0881-8</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
+                </div>
+
                 <a class="next-lesson" href="rna-seq-deseq2.html" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
                     <h3>From raw counts to differential expression: going deeper with DESeq2 →</h3>

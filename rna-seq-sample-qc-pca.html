@@ -110,6 +110,12 @@
         .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
         .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
         .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -200,7 +206,7 @@
             <p>When the plot looks like the one above, with conditions separated and one stray point, you investigate the stray sample rather than deleting it on sight. Sometimes it is a genuine biological extreme; sometimes it is failed library prep or a mislabel. The point of QC is to ask the question early.</p>
 
             <h2><span class="step-num">3</span>The distance heatmap as a second check</h2>
-            <p>A <strong>sample-to-sample distance heatmap</strong> computes how different every pair of samples is across all genes and draws the result as a grid, usually with clustering. Replicates of the same condition should look most similar to each other (small distances, a tight block on the diagonal). If a sample is closer to the wrong group than to its own replicates, that agrees with what PCA hinted at, and two checks pointing the same way is a strong signal.</p>
+            <p>A <strong>sample-to-sample distance heatmap</strong> computes how different every pair of samples is across all genes and draws the result as a grid, usually with clustering. Replicates of the same condition should look most similar to each other (small distances, a tight block on the diagonal). If a sample is closer to the wrong group than to its own replicates, that agrees with what PCA hinted at. Both views come from the same transformed data, so agreement is reassuring rather than independent proof. Note that <code class="inline">plotPCA</code> uses only the 500 most variable genes by default, while the distance heatmap uses all genes. If the conditions overlap on the PCA, the treatment effect may simply be modest: check how much variance each PC explains before worrying.</p>
             <table class="dtable">
                 <thead>
                     <tr><th>What you see</th><th>Likely meaning</th><th>What to do</th></tr>
@@ -209,19 +215,21 @@
                     <tr><td>Clusters split by condition</td><td>Healthy design; biology is the dominant signal</td><td>Proceed to differential expression</td></tr>
                     <tr><td>Clusters split by batch / lane / day</td><td>Batch effect dominates</td><td>Model the batch (e.g. ~ batch + dex)</td></tr>
                     <tr><td>One sample far from all others</td><td>Outlier or failed prep</td><td>Investigate; consider removing if technical</td></tr>
-                    <tr><td>A sample sits firmly in the wrong group</td><td>Possible swapped label</td><td>Trace the sample back to the metadata</td></tr>
+                    <tr><td>A sample sits firmly in the wrong group</td><td>Possible swapped label, or a real biological difference</td><td>Trace the sample back to the metadata; check sex-marker genes or genotype</td></tr>
                 </tbody>
             </table>
             <div class="why"><h4>One-line summary</h4><p>Transform counts with vst (or rlog), run PCA, and hope samples cluster by condition. Clustering by batch means a batch effect; a lone far point means an outlier; a sample in the wrong group means a possible swapped label. Confirm with a distance heatmap.</p></div>
 
             <h2>A worked example</h2>
             <p>In DESeq2 the whole check is a few lines. You build the dataset, transform with <code class="inline">vst</code>, then call <code class="inline">plotPCA</code>, coloring points by the treatment column (<code class="inline">dex</code> in the airway dataset).</p>
-            <pre><code>library(DESeq2)
+            <pre><code># install.packages("pheatmap")   # once
+# BiocManager::install("airway")  # once, the example dataset
+library(DESeq2)
+library(airway)
+data(airway)                       # 8 samples: 4 cell lines x treated/untreated
 
 # dds built from RAW counts, airway design ~ cell + dex
-dds &lt;- DESeqDataSetFromMatrix(countData = counts_raw,
-                              colData   = sample_info,
-                              design    = ~ cell + dex)
+dds &lt;- DESeqDataSet(airway, design = ~ cell + dex)
 
 # variance stabilizing transform for QC / visualization only
 vsd &lt;- vst(dds, blind = TRUE)
@@ -268,10 +276,20 @@ pheatmap::pheatmap(mat,
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">What does a sample-to-sample distance heatmap add on top of PCA?</div>
-                <button data-opt data-correct>A second, independent view of which samples resemble each other across all genes</button>
+                <button data-opt data-correct>A complementary view of which samples resemble each other, using all genes</button>
                 <button data-opt>It replaces the need to run the differential test</button>
                 <button data-opt>It converts raw counts into TPM</button>
                 <div class="quiz-explain"><strong>Correct.</strong> The heatmap is a complementary check; when it agrees with PCA about an outlier or batch split, the signal is much stronger.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Love MI, Anders S, Kim V, Huber W. RNA-Seq workflow: gene-level exploratory analysis and differential expression. <em>F1000Research</em> 4: 1070, 2015. (vst, plotPCA and sample-distance heatmaps) <a href="https://doi.org/10.12688/f1000research.7035.1" target="_blank" rel="noopener">doi:10.12688/f1000research.7035.1</a></li>
+                    <li>Conesa A, Madrigal P, Tarazona S, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17: 13, 2016. <a href="https://doi.org/10.1186/s13059-016-0881-8" target="_blank" rel="noopener">doi:10.1186/s13059-016-0881-8</a></li>
+                    <li>Himes BE, Jiang X, Wagner P, et al. RNA-Seq transcriptome profiling identifies CRISPLD2 as a glucocorticoid responsive gene that modulates cytokine function in airway smooth muscle cells. <em>PLoS One</em> 9: e99625, 2014. (the airway dataset) <a href="https://doi.org/10.1371/journal.pone.0099625" target="_blank" rel="noopener">doi:10.1371/journal.pone.0099625</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="rna-seq-batch-effects.html" target="_blank" rel="noopener">

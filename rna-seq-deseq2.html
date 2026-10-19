@@ -111,6 +111,12 @@
             .logo-img { height: 40px; }
             .lesson-header h1 { font-size: 2.2rem; }
         }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -165,7 +171,7 @@
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
                 <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
-                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: load a count matrix and sample table into DESeq2 in R, run the standard differential-expression workflow with a design like ~ cell + dex, and interpret the results table including log2 fold change and adjusted p-values.</p>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: load a count matrix and sample table into DESeq2 in R, run the standard differential-expression workflow with a design formula (such as ~ condition, or ~ cell + dex for a paired design), and interpret the results table including log2 fold change and adjusted p-values.</p>
             </div>
 
                 <h2>Where we left off</h2>
@@ -185,7 +191,7 @@
                 <p>The tilde (<code class="inline">~</code>) means "model the counts as a function of...", and <code class="inline">condition</code> is the column in your metadata that splits the samples into groups (here, A and B). That one choice frames the whole analysis.</p>
                 <p>Real experiments are rarely that clean. Suppose your samples were processed in two different batches, and batch differences are leaking into your data. You can tell DESeq2 to account for that:</p>
                 <pre>design = ~ batch + condition</pre>
-                <p>This says: "explain away the differences due to <code class="inline">batch</code> first, then test the effect of <code class="inline">condition</code> on top of that." A simple rule worth memorizing: <strong>the variable you actually want to test goes last</strong>, and anything you want to control for (batch, sex, age) goes before it.</p>
+                <p>This says: "test the effect of <code class="inline">condition</code> while holding <code class="inline">batch</code> constant." (The order of the terms does not change the estimates. By convention the variable you care about goes last, because <code class="inline">results()</code> reports the last variable by default.) A simple rule worth memorizing: <strong>the variable you actually want to test goes last</strong>, and anything you want to control for (batch, sex, age) goes before it.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Batch effect</h4>
@@ -233,8 +239,8 @@ resultsNames(dds)</pre>
 
                 <h2><span class="step-num">4</span>Read the results table properly</h2>
                 <p>Pull the comparison you want, then read what came back:</p>
-                <pre>res <- results(dds, contrast = c(<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>))
-summary(res)                       <span class="c"># a quick overview: how many up / down</span>
+                <pre>res <- results(dds, contrast = c(<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>), alpha = 0.05)
+summary(res, alpha = 0.05)         <span class="c"># how many up / down at padj &lt; 0.05</span>
 head(res[order(res$padj), ], 10)   <span class="c"># the 10 most convincing genes</span></pre>
                 <p>Every column earns its place:</p>
                 <ul>
@@ -242,14 +248,14 @@ head(res[order(res$padj), ], 10)   <span class="c"># the 10 most convincing gene
                     <li><strong>log2FoldChange</strong>: the effect size, on a log2 scale. Plus 1 means doubled in B vs A, minus 1 means halved. Sign is direction, size is magnitude.</li>
                     <li><strong>lfcSE</strong>: the standard error of that fold change, so how uncertain it is.</li>
                     <li><strong>stat</strong>: the test statistic (the fold change divided by its error).</li>
-                    <li><strong>pvalue</strong>: the raw probability of seeing a change this big by chance.</li>
-                    <li><strong>padj</strong>: the p-value adjusted for testing thousands of genes at once. <strong>This is the column you trust.</strong></li>
+                    <li><strong>pvalue</strong>: the probability of seeing a change at least this large if the gene were truly unchanged.</li>
+                    <li><strong>padj</strong>: the Benjamini-Hochberg adjusted p-value, which controls the false discovery rate (FDR) across thousands of genes. <strong>Use this column, not pvalue, to call hits.</strong></li>
                 </ul>
                 <p>To pull a clean list of hits, filter on both significance and effect size:</p>
                 <pre><span class="c"># significant AND at least a two-fold change</span>
 sig <- subset(res, padj < 0.05 & abs(log2FoldChange) > 1)
 nrow(sig)</pre>
-                <p>One thing that surprises beginners: some genes have <code class="inline">NA</code> in the <code class="inline">padj</code> column. That is not a bug. DESeq2 deliberately sets aside genes that are too low-count to ever be detectable, which actually makes your real hits more significant. Treat <code class="inline">NA</code> padj as "not testable", not "failed".</p>
+                <p>One thing that surprises beginners: some genes have <code class="inline">NA</code> in the <code class="inline">padj</code> column. That is not a bug. padj is <code class="inline">NA</code> when DESeq2 filtered a gene out for having counts too low to be likely to reach significance (this "independent filtering" gives your real hits more power), when a gene has zero counts in every sample, or when it has an extreme outlier count. Treat <code class="inline">NA</code> padj as "not testable", not "failed".</p>
 
                 <h2><span class="step-num">5</span>Cleaner effect sizes: LFC shrinkage</h2>
                 <p>A low-count gene can show a huge fold change purely from noise (two reads versus eight reads is "4x", but it's meaningless). <strong>Shrinkage</strong> fixes this: it pulls unreliable fold changes toward zero while leaving well-measured genes almost untouched. The result is rankings you can trust and much cleaner volcano and MA plots.</p>
@@ -257,7 +263,7 @@ nrow(sig)</pre>
 <span class="c"># BiocManager::install("apeglm")</span>
 res_shrunk <- lfcShrink(dds, coef = <span class="s">"condition_B_vs_A"</span>, type = <span class="s">"apeglm"</span>)
 head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
-                <p>The <code class="inline">coef</code> name comes straight from <code class="inline">resultsNames(dds)</code> in step 3. Use the shrunken results whenever you rank genes or draw plots; use the unshrunken <code class="inline">res</code> when you just need the raw test outcome.</p>
+                <p>The <code class="inline">coef</code> name comes straight from <code class="inline">resultsNames(dds)</code> in step 3. Use the shrunken fold changes when you rank genes <em>by fold change</em> or plot fold changes (for example an MA plot). Shrinkage changes only the <code class="inline">log2FoldChange</code> column: <code class="inline">pvalue</code> and <code class="inline">padj</code> are the same in both.</p>
 
                 <h2><span class="step-num">6</span>Save your work</h2>
                 <p>Write the table to a file so you can open it in Excel, share it, or feed it into the next lesson (volcano plots and enrichment both start from this table):</p>
@@ -284,27 +290,18 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                 <div class="quiz">
                     <div class="quiz-q-src">Why would a gene have NA in its padj column?</div>
                     <button data-opt>The gene had a perfect p-value of exactly zero</button>
-                    <button data-opt data-correct>DESeq2 filtered it out as too low-count to test reliably</button>
+                    <button data-opt data-correct>DESeq2 filtered it out because its counts were too low to be likely to reach significance</button>
                     <button data-opt>NA means it is the single most significant hit</button>
-                    <div class="quiz-explain">Because DESeq2 filtered it out as too low-count to be reliably tested (independent filtering). Removing those genes from the multiple-testing pool makes your real hits more significant. NA means "not testable", not "failed".</div>
+                    <div class="quiz-explain">Most often because DESeq2 filtered it out for having counts too low to be likely to reach significance (independent filtering). Genes with all-zero counts or an extreme outlier also get NA. Removing those genes from the multiple-testing pool makes your real hits more significant. NA means "not testable", not "failed".</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">When should you use shrunken (<code class="inline">lfcShrink</code>) fold changes?</div>
                     <button data-opt>Only when you have a single replicate</button>
                     <button data-opt>Never - shrinkage hides real effects</button>
-                    <button data-opt data-correct>Whenever you rank genes or make plots</button>
-                    <div class="quiz-explain">Whenever you rank genes or make plots. Shrinkage tames the wild fold changes that low-count genes produce by chance, so your rankings and volcano/MA plots reflect real, well-measured effects.</div>
+                    <button data-opt data-correct>When you rank or plot genes by fold change</button>
+                    <div class="quiz-explain">When you rank or plot by fold change. Shrinkage tames the wild fold changes that low-count genes produce by chance, so fold-change rankings and MA plots reflect well-measured effects. It does not change p-values or padj.</div>
                 </div>
 
-                <div style="background:#f1f5f9;border:1px solid rgba(91,156,248,0.2);border-radius:10px;padding:20px 24px;margin:30px 0;">
-                    <h4 style="font-size:0.78rem;text-transform:uppercase;letter-spacing:0.6px;color:#64748b;margin-bottom:12px;">Sources &amp; further reading</h4>
-                    <ol style="margin:0 0 0 20px;color:#64748b;">
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15:550, 2014. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener" style="color:#5b9cf8;text-decoration:none;">doi:10.1186/s13059-014-0550-8</a></li>
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Anders S, Huber W. Differential expression analysis for sequence count data (DESeq). <em>Genome Biology</em> 11:R106, 2010.</li>
-                        <li style="font-size:0.92rem;margin-bottom:7px;line-height:1.5;">Robinson MD, McCarthy DJ, Smyth GK. edgeR: a Bioconductor package for differential expression analysis of digital gene expression data. <em>Bioinformatics</em> 26(1):139–140, 2010.</li>
-                    </ol>
-                    <p style="font-size:0.82rem;color:#64748b;margin-top:12px;font-style:italic;">Last reviewed: June 2026.</p>
-                </div>
 
                 <div class="quiz">
                     <div class="quiz-q-src">In the airway dataset the design is <code class="inline">~ cell + dex</code>. Which column holds the treatment being tested?</div>
@@ -320,6 +317,17 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                     <button data-opt>Because raw counts are smaller numbers and easier to store</button>
                     <div class="quiz-explain">DESeq2 models count noise directly and estimates its own size factors to normalize for depth. Feeding it pre-normalized values like TPM breaks the assumptions its negative-binomial model relies on.</div>
                 </div>
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15: 550, 2014. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
+                        <li>Anders S, Huber W. Differential expression analysis for sequence count data. <em>Genome Biology</em> 11: R106, 2010. (DESeq; median-of-ratios size factors) <a href="https://doi.org/10.1186/gb-2010-11-10-r106" target="_blank" rel="noopener">doi:10.1186/gb-2010-11-10-r106</a></li>
+                        <li>Bourgon R, Gentleman R, Huber W. Independent filtering increases detection power for high-throughput experiments. <em>PNAS</em> 107: 9546-9551, 2010. (why some padj values are NA) <a href="https://doi.org/10.1073/pnas.0914005107" target="_blank" rel="noopener">doi:10.1073/pnas.0914005107</a></li>
+                        <li>Li Y, Ge X, Peng F, Li W, Li JJ. Exaggerated false positives by popular differential expression methods when analyzing human population samples. <em>Genome Biology</em> 23: 79, 2022. (a caveat for large human cohorts) <a href="https://doi.org/10.1186/s13059-022-02648-4" target="_blank" rel="noopener">doi:10.1186/s13059-022-02648-4</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
+                </div>
+
                 <a class="next-lesson" href="rna-seq-sample-qc-pca.html" target="_blank" rel="noopener">
                     <span>Next in Track 3</span>
                     <h3>Sample QC and PCA for RNA-seq &rarr;</h3>
