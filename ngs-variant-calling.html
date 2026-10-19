@@ -132,6 +132,12 @@
             .logo-img { height: 40px; }
             .lesson-header h1 { font-size: 2.2rem; }
         }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -227,10 +233,10 @@
                 <h2><span class="step-num">1</span>Install and prepare</h2>
                 <p>We need three tools: <code class="inline">bwa</code> to align, <code class="inline">samtools</code> to sort and index, and <code class="inline">bcftools</code> to call variants.</p>
                 <pre><span class="p">!</span>apt-get -qq install -y bwa samtools bcftools</pre>
-                <p>The notebook then creates a reference and a sample genome that's identical except for a few planted SNPs at positions we record. Reads are generated from the sample, so when we call variants we should recover exactly those planted changes, a built-in answer key.</p>
+                <p>The notebook then creates a reference and a sample genome that's identical except for a few planted SNPs at positions we record. Reads are generated from the sample, so when we call variants we should recover those planted changes, a built-in answer key. (You may also see one low-quality call at the very edge of the genome, where only a read or two reaches; the filter step below removes it, which is a nice preview of why filtering matters.)</p>
 
                 <h2><span class="step-num">2</span>Align, sort, index</h2>
-                <p>This is everything from the last two lessons, compressed into the standard three lines. Notice how each tool hands off to the next.</p>
+                <p>This is everything from the last two lessons, compressed into four commands. Notice how each tool hands off to the next.</p>
                 <pre><span class="p">!</span>bwa index reference.fasta
 <span class="p">!</span>bwa mem reference.fasta sample.fastq <span class="p">|</span> samtools sort -o sample.sorted.bam
 <span class="p">!</span>samtools markdup sample.sorted.bam sample.markdup.bam   <span class="c"># flag PCR/optical duplicates</span>
@@ -241,7 +247,7 @@
                 <p>Calling is two steps piped together. <code class="inline">bcftools mpileup</code> walks the genome and, at every position, gathers the pile of read bases sitting there. <code class="inline">bcftools call</code> then judges each pile and decides whether it's a variant.</p>
                 <pre><span class="p">!</span>bcftools mpileup -f reference.fasta sample.markdup.bam <span class="p">|</span> \
   bcftools call -mv -Oz -o calls.vcf.gz
-<span class="p">!</span>bcftools norm -f reference.fasta calls.vcf.gz -Oz -o calls.norm.vcf.gz   <span class="c"># left-align indels</span>
+<span class="p">!</span>bcftools norm -m -any -f reference.fasta calls.vcf.gz -Oz -o calls.norm.vcf.gz   <span class="c"># split multi-allelic sites, left-align indels</span>
 <span class="p">!</span>bcftools index calls.norm.vcf.gz</pre>
                 <p>The extra <code class="inline">bcftools norm</code> step left-aligns and normalises indels so the same insertion or deletion is always written the same way, which matters the moment you compare or annotate variants on real data.</p>
                 <p>The flags read as: <code class="inline">-m</code> use the modern multiallelic caller, <code class="inline">-v</code> output only variant sites (skip positions that match the reference), and <code class="inline">-Oz</code> write a compressed VCF.</p>
@@ -285,16 +291,16 @@
 
                 <div class="levelup">
                     <h4>🔶 Level up: real data and GATK</h4>
-                    <p>For human germline work, the field standard is the <strong>GATK</strong> Best Practices pipeline, which adds duplicate marking, base-quality recalibration, and joint genotyping. bcftools (what you used here) is lighter, faster, and excellent for many projects, especially microbial genomes and quick analyses. Same concepts, more rigor. Try the pipeline next on a small real dataset, like an <em>E. coli</em> run from the <a href="https://www.ebi.ac.uk/ena/browser/home" target="_blank" rel="noopener">ENA</a>.</p>
+                    <p>For human germline work, the common choices are the <strong>GATK</strong> Best Practices pipeline, which adds base-quality recalibration and joint genotyping across many samples, and <strong>DeepVariant</strong>, a deep-learning caller. bcftools (what you used here) is lighter, faster, and excellent for many projects, especially microbial genomes and quick analyses. Same concepts, more rigor. The section below runs the pipeline on a real <em>E. coli</em> run from the <a href="https://www.ebi.ac.uk/ena/browser/home" target="_blank" rel="noopener">ENA</a>.</p>
                 </div>
 
                 <h2 style="border-top:2px solid rgba(91,156,248,0.2); padding-top:40px;">Now do it on real data: E. coli from the ENA</h2>
-                <p>The toy run above is honest about being a rehearsal. Here is the same pipeline on a <strong>real sequencing run</strong> of <em>E. coli</em>, downloaded from the European Nucleotide Archive (ENA). Everything runs in Colab; the download and alignment take a few minutes, not seconds, because this is real data. The reads are a real isolate from the Lenski long-term evolution experiment (run <code class="inline">SRR2584866</code>), and the reference is the standard <em>E. coli</em> K-12 genome.</p>
+                <p>The toy run above is honest about being a rehearsal. Here is the same pipeline on a <strong>real sequencing run</strong> of <em>E. coli</em>, downloaded from the European Nucleotide Archive (ENA). Everything runs in Colab; the download and alignment take a few minutes, not seconds, because this is real data. The reads come from the Lenski long-term evolution experiment (run <code class="inline">SRR2584866</code>), a famous study that has grown <em>E. coli</em> for tens of thousands of generations. The right reference is the experiment's <strong>ancestor strain, E. coli B REL606</strong>. That choice matters: if you used the more common K-12 lab strain instead, most of your "variants" would just be the normal differences between two strains, not mutations that arose during the experiment.</p>
                 <pre><span class="p">!</span>apt-get -qq install -y bwa samtools bcftools fastp
 
-<span class="c"># 1. Reference genome (E. coli K-12 MG1655)</span>
-<span class="p">!</span>wget -q https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/000/005/845/GCF_000005845.2_ASM584v2/GCF_000005845.2_ASM584v2_genomic.fna.gz
-<span class="p">!</span>gunzip -f GCF_000005845.2_ASM584v2_genomic.fna.gz <span class="p">&amp;&amp;</span> mv GCF_000005845.2_ASM584v2_genomic.fna ecoli.fasta
+<span class="c"># 1. Reference genome: the experiment's ancestor, E. coli B REL606 (GCA_000017985.1)</span>
+<span class="p">!</span>wget -q https://ftp.ncbi.nlm.nih.gov/genomes/all/GCA/000/017/985/GCA_000017985.1_ASM1798v1/GCA_000017985.1_ASM1798v1_genomic.fna.gz
+<span class="p">!</span>gunzip -f GCA_000017985.1_ASM1798v1_genomic.fna.gz <span class="p">&amp;&amp;</span> mv GCA_000017985.1_ASM1798v1_genomic.fna ecoli_rel606.fasta
 
 <span class="c"># 2. A real paired-end sequencing run from the ENA</span>
 <span class="p">!</span>wget -q https://ftp.sra.ebi.ac.uk/vol1/fastq/SRR258/006/SRR2584866/SRR2584866_1.fastq.gz
@@ -304,8 +310,8 @@
 <span class="p">!</span>fastp -i SRR2584866_1.fastq.gz -I SRR2584866_2.fastq.gz -o r1.fq.gz -O r2.fq.gz -h fastp.html
 
 <span class="c"># 4. Align, then fixmate -> sort -> markdup (the real paired-end dedup flow)</span>
-<span class="p">!</span>bwa index ecoli.fasta
-<span class="p">!</span>bwa mem ecoli.fasta r1.fq.gz r2.fq.gz <span class="p">|</span> samtools sort -n -o namesorted.bam
+<span class="p">!</span>bwa index ecoli_rel606.fasta
+<span class="p">!</span>bwa mem ecoli_rel606.fasta r1.fq.gz r2.fq.gz <span class="p">|</span> samtools sort -n -o namesorted.bam
 <span class="p">!</span>samtools fixmate -m namesorted.bam fixmate.bam
 <span class="p">!</span>samtools sort -o sorted.bam fixmate.bam
 <span class="p">!</span>samtools markdup sorted.bam markdup.bam <span class="p">&amp;&amp;</span> samtools index markdup.bam
@@ -314,22 +320,22 @@
 <span class="p">!</span>samtools flagstat markdup.bam
 
 <span class="c"># 6. Call and normalise</span>
-<span class="p">!</span>bcftools mpileup -f ecoli.fasta markdup.bam <span class="p">|</span> bcftools call -mv --ploidy 1 -Oz -o ecoli.vcf.gz
-<span class="p">!</span>bcftools norm -f ecoli.fasta ecoli.vcf.gz -Oz -o ecoli.norm.vcf.gz <span class="p">&amp;&amp;</span> bcftools index ecoli.norm.vcf.gz
+<span class="p">!</span>bcftools mpileup -f ecoli_rel606.fasta markdup.bam <span class="p">|</span> bcftools call -mv --ploidy 1 -Oz -o ecoli.vcf.gz
+<span class="p">!</span>bcftools norm -m -any -f ecoli_rel606.fasta ecoli.vcf.gz -Oz -o ecoli.norm.vcf.gz <span class="p">&amp;&amp;</span> bcftools index ecoli.norm.vcf.gz
 <span class="p">!</span>bcftools stats ecoli.norm.vcf.gz <span class="p">|</span> grep <span class="s">"number of records:"</span></pre>
 
                 <div class="why" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.35); border-radius:10px; padding:16px 20px; margin:18px 0;">
                     <h4 style="color:#b45309; font-size:0.95rem; margin-bottom:8px;">What real data breaks (that the toy run hid)</h4>
-                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">Look at <code class="inline">flagstat</code>: the mapping rate is high but <strong>not 100%</strong>, because real reads include contamination, low-quality ends, and repeats that map ambiguously. <code class="inline">markdup</code> now flags a real percentage of duplicates. There is <strong>no planted answer key</strong>; you judge each call by its depth (<code class="inline">DP</code>) and quality (<code class="inline">QUAL</code>) instead of checking it against a list. And you get hundreds of variants, some multi-allelic and some indels, which is exactly why the <code class="inline">norm</code> step matters. This is the gap between "ran the notebook" and "ran an analysis," and you just crossed it.</p>
+                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">Look at <code class="inline">flagstat</code>: the mapping rate is high but <strong>not 100%</strong>, because real reads include contamination, low-quality ends, and repeats that map ambiguously. <code class="inline">markdup</code> now flags a real percentage of duplicates. There is <strong>no planted answer key</strong>; you judge each call by its depth (<code class="inline">DP</code>) and quality (<code class="inline">QUAL</code>) instead of checking it against a list. And the calls now reflect real mutations that arose during the experiment (plus any errors your filters still need to catch), including some indels, which is exactly why the <code class="inline">norm</code> step matters. This is the gap between "ran the notebook" and "ran an analysis," and you just crossed it.</p>
                 </div>
 
                 <h2>Check your understanding</h2>
                 <div class="quiz">
                 <div class="quiz-q-src">What is the difference between a sequencing error and a variant?</div>
-                <button data-opt data-correct>An error shows in a few reads at random; a variant shows consistently in many</button>
+                <button data-opt data-correct>A random error shows in one or a few reads; a true variant is supported by many independent, good-quality reads</button>
                 <button data-opt>There is no way to tell them apart</button>
                 <button data-opt>A variant appears in one read, an error in many</button>
-                <div class="quiz-explain">Both look like a read disagreeing with the reference. The difference is consensus and consistency: a sequencing error appears in one or a few reads at random, while a true variant appears in many reads covering that position, consistently. The caller uses depth and quality to tell them apart.</div>
+                <div class="quiz-explain">Both look like a read disagreeing with the reference. The difference is consensus and consistency: a sequencing error appears in one or a few reads at random, while a true variant is supported by many independent, good-quality reads at that position (in a diploid sample, a heterozygous variant shows in about half of them). Be careful: some systematic errors, for example in repeats or on one strand only, can also look consistent, which is why callers check depth, quality and other signals.</div>
             </div>
                 <div class="quiz">
                 <div class="quiz-q-src">What do <code>bcftools mpileup</code> and <code>bcftools call</code> each contribute?</div>
@@ -358,8 +364,21 @@
                 <button data-opt data-correct>A SNP is a one-letter change; an indel is a small insertion or deletion of bases</button>
                 <button data-opt>A SNP only occurs in RNA, an indel only in DNA</button>
                 <button data-opt>A SNP is a whole chromosome change; an indel is a single base</button>
-                <div class="quiz-explain">A SNP (single-nucleotide polymorphism) is a single-letter substitution, like an A where the reference has a G. An indel is a small insertion or deletion of bases. Both are common variant types you call in this lesson.</div>
+                <div class="quiz-explain">A SNP (single-nucleotide polymorphism) is a single-letter substitution, like an A where the reference has a G. Strictly, "SNP" means a change that is common in a population; a one-letter change found in one sample is more precisely called an SNV (single-nucleotide variant), but you will see both terms. An indel is a small insertion or deletion of bases. Both are common variant types you call in this lesson.</div>
             </div>
+
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Danecek P, Bonfield JK, Liddle J, et al. Twelve years of SAMtools and BCFtools. <em>GigaScience</em> 10: giab008, 2021. (mpileup, call, norm, filter) <a href="https://doi.org/10.1093/gigascience/giab008" target="_blank" rel="noopener">doi:10.1093/gigascience/giab008</a></li>
+                        <li>Li H. A statistical framework for SNP calling, mutation discovery, association mapping and population genetical parameter estimation from sequencing data. <em>Bioinformatics</em> 27: 2987-2993, 2011. (the bcftools calling model) <a href="https://doi.org/10.1093/bioinformatics/btr509" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btr509</a></li>
+                        <li>Tan A, Abecasis GR, Kang HM. Unified representation of genetic variants. <em>Bioinformatics</em> 31: 2202-2204, 2015. (why normalization matters) <a href="https://doi.org/10.1093/bioinformatics/btv112" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btv112</a></li>
+                        <li>Jeong H, Barbe V, Lee CH, et al. Genome sequences of Escherichia coli B strains REL606 and BL21(DE3). <em>Journal of Molecular Biology</em> 394: 644-652, 2009. (the REL606 reference) <a href="https://doi.org/10.1016/j.jmb.2009.09.052" target="_blank" rel="noopener">doi:10.1016/j.jmb.2009.09.052</a></li>
+                        <li>Tenaillon O, Barrick JE, Ribeck N, et al. Tempo and mode of genome evolution in a 50,000-generation experiment. <em>Nature</em> 536: 165-170, 2016. (the Lenski experiment genomes) <a href="https://doi.org/10.1038/nature18959" target="_blank" rel="noopener">doi:10.1038/nature18959</a></li>
+                        <li>Poplin R, Chang PC, Alexander D, et al. A universal SNP and small-indel variant caller using deep neural networks. <em>Nature Biotechnology</em> 36: 983-987, 2018. (DeepVariant) <a href="https://doi.org/10.1038/nbt.4235" target="_blank" rel="noopener">doi:10.1038/nbt.4235</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
+                </div>
 
                 <a class="next-lesson" href="rna-seq-big-picture.html" target="_blank" rel="noopener">
                     <span>Track 2 complete · keep going</span>

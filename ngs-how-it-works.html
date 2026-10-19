@@ -126,6 +126,12 @@
             .logo-img { height: 40px; }
             .lesson-header h1 { font-size: 2.2rem; }
         }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -183,7 +189,7 @@
             </div>
 
                 <h2>The leap that changed biology</h2>
-                <p>To do almost anything in genomics, you first need to <em>read</em> the DNA, to turn a physical molecule into letters you can analyze on a computer. For decades that was slow and expensive: the old method (Sanger sequencing) read one short piece at a time. Sequencing the first human genome took over a decade and billions of dollars.</p>
+                <p>To do almost anything in genomics, you first need to <em>read</em> the DNA, to turn a physical molecule into letters you can analyze on a computer. For decades that was slow and expensive: the old method (Sanger sequencing) read one DNA fragment per reaction, at most around 96 at a time, so it could not keep up with genome-scale work. Sequencing the first human genome took over a decade and billions of dollars.</p>
                 <p><strong>Next-generation sequencing (NGS)</strong> changed everything by doing the same job a different way.</p>
 
                 <div class="bigidea">
@@ -195,30 +201,30 @@
                 <ol>
                     <li>The DNA is chopped into millions of small <strong>fragments</strong>.</li>
                     <li>The fragments are spread across a small chip (a flow cell) and copied many times, so each forms a tiny bright spot.</li>
-                    <li>The machine then reads every spot <em>at the same time</em>, one letter per cycle: add a base, take a picture of which color lit up, repeat. The color tells you the letter (A, T, G, or C).</li>
+                    <li>The machine then reads every spot <em>at the same time</em>, one letter per cycle: add a base, take a picture, repeat. The colour signal (or, on some newer machines, the lack of one) tells the machine which letter was added (A, T, G, or C).</li>
                 </ol>
-                <p>Because millions of spots are photographed together each cycle, the machine reads an enormous amount of DNA in parallel. The most common platform is <strong>Illumina</strong>, but the core idea is shared across modern sequencers.</p>
+                <p>Because millions of spots are photographed together each cycle, the machine reads an enormous amount of DNA in parallel. The most common platform is <strong>Illumina</strong>. Long-read machines (PacBio, Oxford Nanopore) read single molecules in different ways, but all modern sequencers share the big idea: read many molecules in parallel.</p>
 
                 <h2>What comes out: reads</h2>
                 <p>The output is not one long genome. It is a giant pile of short sequences, one per fragment, called <strong>reads</strong>. Putting the genome back together (or comparing reads to a known reference) is the job of the analysis steps that follow in this track.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Read and read length</h4>
-                    <p>A <strong>read</strong> is the sequence of one fragment as the machine saw it, for example <code class="inline">GATTACAGGC...</code>. The <strong>read length</strong> is how many letters long it is. Illumina produces "short reads" (commonly 100 to 150 letters). Other technologies produce "long reads" (thousands of letters), which are better for assembling tricky regions.</p>
+                    <p>A <strong>read</strong> is the sequence of one fragment as the machine saw it, for example <code class="inline">GATTACAGGC...</code>. The <strong>read length</strong> is how many letters long it is. Illumina produces "short reads" (commonly 100 to 150 letters). Other technologies produce "long reads" (thousands to hundreds of thousands of letters), which are better for assembling tricky regions.</p>
                 </div>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Paired-end reads</h4>
-                    <p>Often each fragment is read from <em>both</em> ends, giving a pair of reads with a known gap between them. These <strong>paired-end</strong> reads make it much easier to figure out where a fragment belongs in the genome, especially across repetitive regions.</p>
+                    <p>Often each fragment is read from <em>both</em> ends, giving a pair of reads whose approximate distance apart is known (from the fragment size). These <strong>paired-end</strong> reads make it much easier to figure out where a fragment belongs in the genome, especially across repetitive regions.</p>
                 </div>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Coverage (depth)</h4>
-                    <p>Because there are so many overlapping fragments, every position in the genome ends up being read many times over. "30x coverage" means each base was read about 30 times on average. More coverage means more confidence, which is crucial when you later decide whether a difference from the reference is a real variant or just a sequencing error.</p>
+                    <p>Because there are so many overlapping fragments, most positions in the genome end up being read many times over (coverage is uneven, and a few hard regions get little or none). "30x coverage" means each base was read about 30 times on average. More coverage means more confidence, which is crucial when you later decide whether a difference from the reference is a real variant or just a sequencing error.</p>
                 </div>
 
                 <h2>The NGS workflow at a glance</h2>
-                <p>Every DNA-sequencing experiment follows the same shape. The first three steps happen in the lab; the rest is the bioinformatics you'll learn in this track. <strong>Click any computational step to jump straight to its lesson.</strong></p>
+                <p>A typical DNA resequencing experiment follows this shape. The first three steps happen in the lab; the rest is the bioinformatics you'll learn in this track. <strong>Click any computational step to jump straight to its lesson.</strong></p>
 
                 <div class="ngswf">
                     <div class="phase-h"><span class="chip lab">In the lab</span> Wet-lab steps</div>
@@ -329,17 +335,27 @@
                 <div class="quiz">
                 <div class="quiz-q-src">What are paired-end reads, and why are they useful?</div>
                 <button data-opt>Two reads from a single base, doubling the quality score</button>
-                <button data-opt data-correct>Each fragment is read from both ends, giving a known gap that helps placement</button>
+                <button data-opt data-correct>Each fragment is read from both ends, whose approximate distance apart helps placement</button>
                 <button data-opt>Reads joined from two different samples to save money</button>
-                <div class="quiz-explain">Paired-end means each fragment is read from both ends, producing a pair of reads with a known gap between them. That extra information makes it much easier to place a fragment correctly, especially across repetitive regions.</div>
+                <div class="quiz-explain">Paired-end means each fragment is read from both ends, producing a pair of reads whose approximate distance apart is known. That extra information makes it much easier to place a fragment correctly, especially across repetitive regions.</div>
             </div>
                 <div class="quiz">
-                <div class="quiz-q-src">What file format holds the raw reads that come straight off the sequencer?</div>
+                <div class="quiz-q-src">What file format holds the raw reads you start your analysis from?</div>
                 <button data-opt>VCF</button>
                 <button data-opt>BAM</button>
                 <button data-opt data-correct>FASTQ</button>
-                <div class="quiz-explain">The sequencer outputs raw reads as FASTQ. Later steps turn that into a BAM of mapped reads and finally a VCF of variants, but FASTQ is where the workflow begins.</div>
+                <div class="quiz-explain">Raw reads are delivered as FASTQ (the machine's own image-based files are converted to FASTQ before you receive them). Later steps turn that into a BAM of mapped reads and finally a VCF of variants, but FASTQ is where the workflow begins.</div>
             </div>
+
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Bentley DR, Balasubramanian S, Swerdlow HP, et al. Accurate whole human genome sequencing using reversible terminator chemistry. <em>Nature</em> 456: 53-59, 2008. (the Illumina chemistry) <a href="https://doi.org/10.1038/nature07517" target="_blank" rel="noopener">doi:10.1038/nature07517</a></li>
+                        <li>Goodwin S, McPherson JD, McCombie WR. Coming of age: ten years of next-generation sequencing technologies. <em>Nature Reviews Genetics</em> 17: 333-351, 2016. <a href="https://doi.org/10.1038/nrg.2016.49" target="_blank" rel="noopener">doi:10.1038/nrg.2016.49</a></li>
+                        <li>Satam H, Joshi K, Mangrolia U, et al. Next-generation sequencing technology: current trends and advancements. <em>Biology (Basel)</em> 12: 997, 2023. <a href="https://doi.org/10.3390/biology12070997" target="_blank" rel="noopener">doi:10.3390/biology12070997</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
+                </div>
 
                 <a class="next-lesson" href="ngs-fastqc.html" target="_blank" rel="noopener">
                     <span>Next in Track 2</span>

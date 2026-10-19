@@ -118,6 +118,12 @@
             .lesson-header h1 { font-size: 2.2rem; }
             .modules td:first-child { width: auto; }
         }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -179,7 +185,7 @@
 
                 <h2>Garbage in, garbage out</h2>
                 <p>Raw sequencing reads are never perfect. The machine makes mistakes (more often toward the end of each read), leftover <strong>adapter</strong> sequence can cling to the reads, and sometimes a whole run just goes wrong. If you feed bad reads into alignment and variant calling, you get confident-looking nonsense. <strong>Quality control</strong> is the cheap, fast step that catches these problems before they cost you hours.</p>
-                <p><strong>FastQC</strong> is the tool everyone uses for it. You point it at a FASTQ file, and it produces a tidy HTML report full of graphs, one per quality "module". Your job is to read those graphs.</p>
+                <p><strong>FastQC</strong> is the most widely used tool for it. You point it at a FASTQ file, and it produces a tidy HTML report full of graphs, one per quality "module". Your job is to read those graphs.</p>
 
                 <div class="colab-cta">
                     <div>
@@ -192,7 +198,7 @@
                 <h2><span class="step-num">1</span>Install FastQC and get some reads</h2>
                 <p>In Colab, a line starting with <code class="inline">!</code> runs a command-line (shell) command instead of Python. First, install FastQC:</p>
                 <pre><span class="c"># the "!" tells Colab to run a shell command</span>
-<span class="p">!</span>apt-get -qq install -y fastqc
+<span class="p">!</span>apt-get -qq update <span class="p">&amp;&amp;</span> apt-get -qq install -y fastqc
 <span class="p">!</span>fastqc --version</pre>
                 <p>Then we need a FASTQ file to inspect. The notebook generates a small example with a realistic quality drop toward the end of each read, so the report shows the pattern you'll meet in real data. (On your own data, you would just point FastQC at your real <code class="inline">.fastq</code> or <code class="inline">.fastq.gz</code> file instead.)</p>
 
@@ -218,7 +224,7 @@
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Phred quality score</h4>
-                    <p>A number that says how confident the machine is in a base. A Phred score of 20 means a 1-in-100 chance the base is wrong; 30 means 1-in-1000; 40 means 1-in-10,000. Higher is better. In the per-base quality plot, green is good (above ~28), amber is so-so, and red is poor. This is the same score encoded as symbols on the quality line of a <a href="track1-sequences-fasta-fastq.html" target="_blank" rel="noopener">FASTQ record</a>.</p>
+                    <p>A number that says how confident the machine is in a base. A Phred score of 20 means a 1-in-100 chance the base is wrong; 30 means 1-in-1000; 40 means 1-in-10,000. Higher is better. In the per-base quality plot, green is good (above ~28), amber is so-so, and red is poor. This is the same score encoded as symbols (Phred+33: a symbol's ASCII code minus 33 gives the score) on the quality line of a <a href="track1-sequences-fasta-fastq.html" target="_blank" rel="noopener">FASTQ record</a>.</p>
                 </div>
 
                 <div class="jargon">
@@ -271,6 +277,15 @@
                 <button data-opt>BWA-MEM</button>
                 <div class="quiz-explain">MultiQC scans a folder of FastQC reports and merges them into a single interactive summary, so you can spot the odd-one-out sample at a glance.</div>
             </div>
+
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Cock PJ, Fields CJ, Goto N, Heuer ML, Rice PM. The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants. <em>Nucleic Acids Research</em> 38: 1767-1771, 2010. (FASTQ and Phred+33) <a href="https://doi.org/10.1093/nar/gkp1137" target="_blank" rel="noopener">doi:10.1093/nar/gkp1137</a></li>
+                        <li>Ewels P, Magnusson M, Lundin S, K&auml;ller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. <em>Bioinformatics</em> 32: 3047-3048, 2016. <a href="https://doi.org/10.1093/bioinformatics/btw354" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btw354</a></li>
+                    </ol>
+                    <p class="reviewed">FastQC itself has no journal paper; cite it as: Andrews S. FastQC: a quality control tool for high throughput sequence data. Babraham Bioinformatics, <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/" target="_blank" rel="noopener">project page</a>.<br>Last reviewed: October 2026.</p>
+                </div>
 
                 <a class="next-lesson" href="ngs-trimming.html" target="_blank" rel="noopener">
                     <span>Next in Track 2</span>

@@ -120,6 +120,12 @@
             .logo-img { height: 40px; }
             .lesson-header h1 { font-size: 2.2rem; }
         }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -229,7 +235,7 @@
                 <pre><span class="p">!</span>samtools flagstat aligned.sorted.bam
 <span class="c"># Pull only the reads covering positions 1000-1100 on chr1:</span>
 <span class="p">!</span>samtools view aligned.sorted.bam chr1:1000-1100 <span class="p">|</span> wc -l</pre>
-                <p>That region query is the payoff of indexing. On a real, multi-gigabyte BAM it returns in a fraction of a second instead of minutes.</p>
+                <p>That region query is the payoff of indexing. On a real, multi-gigabyte BAM it typically returns in well under a second instead of minutes.</p>
 
                 <div class="warn">
                     <h4>⚠️ Sort before you index</h4>
@@ -239,12 +245,14 @@
                 <h2><span class="step-num">5</span>How deep is the coverage?</h2>
                 <p><strong>Coverage</strong> (or depth) is how many reads overlap a given position. It's one of the most important quality numbers in genomics: variant callers trust a position more when many reads agree on it.</p>
                 <pre><span class="p">!</span>samtools depth aligned.sorted.bam <span class="p">|</span> head
-<span class="c"># average depth across all covered positions:</span>
-<span class="p">!</span>samtools depth aligned.sorted.bam <span class="p">|</span> awk '{sum+=$3} END {print "mean depth:", sum/NR}'</pre>
+<span class="c"># average depth across ALL positions (-a includes positions with zero reads):</span>
+<span class="p">!</span>samtools depth -a aligned.sorted.bam <span class="p">|</span> awk '{sum+=$3} END {print "mean depth:", sum/NR}'
+<span class="c"># or let samtools summarise coverage per chromosome:</span>
+<span class="p">!</span>samtools coverage aligned.sorted.bam</pre>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Coverage / depth</h4>
-                    <p><strong>Coverage</strong> (often written like "30x") is the average number of reads stacked over each base. Higher coverage means more evidence at every position, so you can call variants with more confidence. Too little coverage and you can't tell a real variant from a sequencing error.</p>
+                    <p><strong>Coverage</strong> (often written like "30x") is the average number of reads stacked over each base, averaged over <em>all</em> positions, including any with no reads (that is why the command above uses <code class="inline">-a</code>; without it, empty positions are skipped and the average looks better than it is). Higher coverage means more evidence at every position, so you can call variants with more confidence. Too little coverage and you can't tell a real variant from a sequencing error.</p>
                 </div>
 
                 <h2>Where this leads</h2>
@@ -252,7 +260,7 @@
 
                 <div class="levelup">
                     <h4>🔶 Level up: mark duplicates</h4>
-                    <p>Real pipelines add one more step before variant calling: marking <strong>PCR duplicates</strong> (identical reads created during library prep, which can bias variant calls). Tools like <code class="inline">samtools markdup</code> or Picard's <code class="inline">MarkDuplicates</code> flag them so callers can ignore them. The principle is the same survival-kit thinking: clean the BAM before you trust it.</p>
+                    <p>Real pipelines add one more step before variant calling: marking <strong>PCR duplicates</strong> (identical reads created during library prep, which can bias variant calls). Tools like <code class="inline">samtools markdup</code> or Picard's <code class="inline">MarkDuplicates</code> flag them so callers can ignore them (for paired-end data, run <code class="inline">samtools fixmate -m</code> on name-sorted reads first, as the variant-calling lesson shows). The principle is the same survival-kit thinking: clean the BAM before you trust it.</p>
                 </div>
 
                 <h2>Check your understanding</h2>
@@ -292,6 +300,16 @@
                 <button data-opt>Marking duplicates converts the BAM back into FASTQ</button>
                 <div class="quiz-explain">PCR and optical duplicates are copies of the same original fragment. Left in, they inflate the apparent evidence at a position and can cause false variant calls, so tools like samtools markdup or Picard flag them first.</div>
             </div>
+
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Li H, Handsaker B, Wysoker A, et al. The Sequence Alignment/Map format and SAMtools. <em>Bioinformatics</em> 25: 2078-2079, 2009. <a href="https://doi.org/10.1093/bioinformatics/btp352" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp352</a></li>
+                        <li>Danecek P, Bonfield JK, Liddle J, et al. Twelve years of SAMtools and BCFtools. <em>GigaScience</em> 10: giab008, 2021. <a href="https://doi.org/10.1093/gigascience/giab008" target="_blank" rel="noopener">doi:10.1093/gigascience/giab008</a></li>
+                        <li>Bonfield JK, Marshall J, Danecek P, et al. HTSlib: C library for reading/writing high-throughput sequencing data. <em>GigaScience</em> 10: giab007, 2021. (BAM, CRAM and indexes) <a href="https://doi.org/10.1093/gigascience/giab007" target="_blank" rel="noopener">doi:10.1093/gigascience/giab007</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
+                </div>
 
                 <a class="next-lesson" href="ngs-variant-calling.html" target="_blank" rel="noopener">
                     <span>Next in Track 2 · The capstone</span>

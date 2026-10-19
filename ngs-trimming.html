@@ -115,6 +115,12 @@
             .logo-img { height: 40px; }
             .lesson-header h1 { font-size: 2.2rem; }
         }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -178,14 +184,14 @@
                 <p>Trimming is housekeeping for reads. It does three jobs:</p>
                 <ul>
                     <li><strong>Adapter trimming</strong>: when a DNA fragment is shorter than the read, the machine reads past the real sequence into the adapter. That adapter is not biology, so it is cut off.</li>
-                    <li><strong>Quality trimming</strong>: the low-quality bases that pile up at the 3' end of reads are trimmed away, so you do not align unreliable letters.</li>
+                    <li><strong>Quality trimming</strong>: when you switch it on, the low-quality bases that pile up at the 3' end of reads are trimmed away, so you do not align unreliable letters.</li>
                     <li><strong>Length filtering</strong>: if a read becomes too short after trimming (or was always bad), it is dropped entirely.</li>
                 </ul>
                 <p>The result is a new FASTQ file with cleaner reads, ready for alignment.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>fastp</h4>
-                    <p><strong>fastp</strong> is a single, fast tool that does adapter trimming, quality trimming, and filtering in one step. It even auto-detects the adapter sequence for you and writes its own before-and-after quality report, so you can see exactly what it cleaned. Older alternatives you'll see in papers are Trimmomatic and cutadapt; fastp is the modern, beginner-friendly default.</p>
+                    <p><strong>fastp</strong> is a single, fast tool that does adapter trimming, quality trimming, and filtering in one step. It even auto-detects the adapter sequence for you and writes its own before-and-after quality report, so you can see exactly what it cleaned. Other widely used tools are Trimmomatic and cutadapt (often run through Trim Galore); fastp is a popular all-in-one choice and the one we use here.</p>
                 </div>
 
                 <div class="colab-cta">
@@ -202,19 +208,29 @@
 <span class="p">!</span>fastp --version</pre>
 
                 <h2><span class="step-num">2</span>Trim with one command</h2>
-                <p>The core command takes an input file (<code class="inline">-i</code>) and writes a cleaned output file (<code class="inline">-o</code>). By default fastp auto-detects adapters and trims low-quality bases. The <code class="inline">-h</code> and <code class="inline">-j</code> options save its HTML and JSON reports. One caveat: adapter auto-detection is most reliable for <em>paired-end</em> data (it uses the overlap between mates). For single-end reads it is weaker, so if the report shows reads are still under-trimmed, pass the adapter explicitly with <code class="inline">--adapter_sequence</code>.</p>
-                <pre><span class="p">!</span>fastp -i reads.fastq -o reads.trimmed.fastq -h fastp.html -j fastp.json</pre>
+                <p>The core command takes an input file (<code class="inline">-i</code>) and writes a cleaned output file (<code class="inline">-o</code>). Two defaults are worth knowing. For adapters, fastp finds them on its own for paired-end data (by overlapping the two mates) and tries to auto-detect them for single-end data, which can miss them. For quality, by default it only throws away whole reads that are mostly low quality; it does <em>not</em> trim bad bases off the ends unless you ask. So for our single-end example we name the adapter and switch on 3' quality trimming. The <code class="inline">-h</code> and <code class="inline">-j</code> options save its HTML and JSON reports.</p>
+                <pre><span class="p">!</span>fastp -i reads.fastq -o reads.trimmed.fastq \
+      --adapter_sequence AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \
+      --cut_right \
+      -h fastp.html -j fastp.json</pre>
+                <p><code class="inline">--adapter_sequence</code> is the standard Illumina adapter (the one planted in our reads). <code class="inline">--cut_right</code> slides a small window along each read and cuts it off where the quality drops too low.</p>
                 <p>As it runs, fastp prints a summary: how many reads went in, how many passed the filters, how many had adapters trimmed, and the quality before and after. That summary <em>is</em> your before-and-after QC.</p>
 
                 <h2><span class="step-num">3</span>Confirm it worked</h2>
-                <p>A quick count shows that some reads were dropped (the ones too short or too poor to keep), and fastp's report shows the adapter content gone and the average quality up.</p>
+                <p>Two quick checks. The read count tells you whether any reads were dropped (with these settings almost none are, because few become too short). The quality numbers from fastp's JSON report show the real change: the share of bases at Q20 or better goes up after trimming. In our test, about 900 of the 3,000 reads had adapter trimmed, and Q20 rose from about 91% to about 99%.</p>
                 <pre><span class="p">!</span>echo "Before: $(( $(wc -l &lt; reads.fastq)/4 )) reads"
-<span class="p">!</span>echo "After:  $(( $(wc -l &lt; reads.trimmed.fastq)/4 )) reads"</pre>
+<span class="p">!</span>echo "After:  $(( $(wc -l &lt; reads.trimmed.fastq)/4 )) reads"
+
+<span class="k">import</span> json
+r = json.load(open(<span class="s">"fastp.json"</span>))
+<span class="k">print</span>(<span class="s">"Q20 before:"</span>, <span class="k">round</span>(r[<span class="s">"summary"</span>][<span class="s">"before_filtering"</span>][<span class="s">"q20_rate"</span>], 3))
+<span class="k">print</span>(<span class="s">"Q20 after: "</span>, <span class="k">round</span>(r[<span class="s">"summary"</span>][<span class="s">"after_filtering"</span>][<span class="s">"q20_rate"</span>], 3))
+<span class="k">print</span>(<span class="s">"reads with adapter trimmed:"</span>, r[<span class="s">"adapter_cutting"</span>][<span class="s">"adapter_trimmed_reads"</span>])</pre>
                 <p>Open <code class="inline">fastp.html</code> (download it from the Colab file browser on the left) to see the full before-and-after graphs. This is the loop you repeat in real projects: QC, trim, QC again, until the reads are clean.</p>
 
                 <div class="warn">
                     <h4>⚠️ Do not over-trim</h4>
-                    <p>It is tempting to crank the settings up and cut aggressively, but over-trimming throws away good data and can bias your results. fastp's defaults are sensible for most data. Trim to fix real problems you saw in QC, not to chase a perfect-looking report.</p>
+                    <p>It is tempting to crank the settings up and cut aggressively, but over-trimming throws away good data and can bias your results. fastp's defaults are deliberately gentle. Trim to fix real problems you saw in QC, not to chase a perfect-looking report.</p>
                 </div>
 
                 <h2>Where the cleaned reads go next</h2>
@@ -222,13 +238,13 @@
 
                 <div class="levelup">
                     <h4>🔶 Level up: paired-end trimming</h4>
-                    <p>Most real sequencing is paired-end (two files, R1 and R2). fastp handles both at once and keeps the pairs in sync: <code class="inline">fastp -i R1.fastq -I R2.fastq -o R1.trimmed.fastq -O R2.trimmed.fastq</code>. The capital <code class="inline">-I</code> and <code class="inline">-O</code> are the second read of each pair.</p>
+                    <p>Most real sequencing is paired-end (two files, R1 and R2). fastp handles both at once and keeps the pairs in sync: <code class="inline">fastp -i R1.fastq -I R2.fastq -o R1.trimmed.fastq -O R2.trimmed.fastq -h fastp_pe.html -j fastp_pe.json</code>. The capital <code class="inline">-I</code> and <code class="inline">-O</code> are the second read of each pair.</p>
                 </div>
 
                 <h2>Check your understanding</h2>
                 <div class="quiz">
                 <div class="quiz-q-src">Why must adapter sequence be trimmed before alignment?</div>
-                <button data-opt data-correct>Adapter is artificial sequence; left on, it mismaps or fails to align</button>
+                <button data-opt data-correct>Adapter is artificial sequence; left on, it can reduce or distort alignment</button>
                 <button data-opt>Adapters make files too large to open</button>
                 <button data-opt>Adapters are the most important biological signal</button>
                 <div class="quiz-explain">Adapter is artificial sequence added in the lab, not part of the genome. If you leave it on, the aligner tries to match non-biological letters and either fails or maps reads to the wrong place. Removing it gives clean, biological sequence to align.</div>
@@ -249,7 +265,7 @@
             </div>
 
                 <div class="quiz">
-                <div class="quiz-q-src">Which older trimming tools will you still see cited in papers, before fastp became the default?</div>
+                <div class="quiz-q-src">Besides fastp, which trimming tools are widely used and cited?</div>
                 <button data-opt>BWA and Bowtie2</button>
                 <button data-opt>samtools and bcftools</button>
                 <button data-opt data-correct>Trimmomatic and cutadapt</button>
@@ -262,6 +278,16 @@
                 <button data-opt>It permanently deletes the reference genome</button>
                 <div class="quiz-explain">Over-trimming discards good sequence and can bias downstream results. fastp's defaults are sensible for most data; trim to fix real problems you saw in QC, not to chase a perfect-looking report.</div>
             </div>
+
+                <div class="refs">
+                    <h4>Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Chen S, Zhou Y, Chen Y, Gu J. fastp: an ultra-fast all-in-one FASTQ preprocessor. <em>Bioinformatics</em> 34: i884-i890, 2018. <a href="https://doi.org/10.1093/bioinformatics/bty560" target="_blank" rel="noopener">doi:10.1093/bioinformatics/bty560</a></li>
+                        <li>Chen S. Ultrafast one-pass FASTQ data preprocessing, quality control, and deduplication using fastp. <em>iMeta</em> 2: e107, 2023. <a href="https://doi.org/10.1002/imt2.107" target="_blank" rel="noopener">doi:10.1002/imt2.107</a></li>
+                        <li>Williams CR, Baccarella A, Parrish JZ, Kim CC. Trimming of sequence reads alters RNA-Seq gene expression estimates. <em>BMC Bioinformatics</em> 17: 103, 2016. (why not to over-trim) <a href="https://doi.org/10.1186/s12859-016-0956-2" target="_blank" rel="noopener">doi:10.1186/s12859-016-0956-2</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
+                </div>
 
                 <a class="next-lesson" href="ngs-alignment.html" target="_blank" rel="noopener">
                     <span>Next in Track 2</span>
