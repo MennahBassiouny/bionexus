@@ -180,9 +180,11 @@
             </figure>
             <p>Anything after a <code class="inline">#</code> is a comment; commands are <strong>case sensitive</strong>, so type them in lowercase (<code class="inline">ls</code>, not <code class="inline">LS</code>). On a Mac, run <code class="inline">setopt interactivecomments</code> once so lines with <code class="inline">#</code> comments work.</p>
 
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">Practise right here</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">Every code box on this page has a <strong>Run</strong> button that sends it to a real Linux terminal running in your browser. Nothing to install, no account. Practice files are already loaded: <code class="inline">seqs.fasta</code>, <code class="inline">genes.txt</code>, <code class="inline">names.txt</code>, <code class="inline">reads.txt</code> and <code class="inline">file.txt</code>. You can also type your own commands in the terminal. (Press <code class="inline">q</code> to leave <code class="inline">less</code>.)</p></div>
+
             <h2>1. Knowing where you are and moving around</h2>
             <p>The terminal always sits "inside" one folder. Three commands are your eyes and feet.</p>
-            <pre>pwd            <span class="c"># print working directory: where am I?</span>
+            <pre data-sandboxbio>pwd            <span class="c"># print working directory: where am I?</span>
 ls             <span class="c"># list what is in this folder</span>
 ls -l          <span class="c"># list with details (size, date)</span>
 cd Downloads   <span class="c"># change directory into Downloads (a brand-new WSL home folder may not have one yet)</span>
@@ -206,7 +208,7 @@ cd ~           <span class="c"># go to your home folder</span></pre>
             </figure>
 
             <h2>2. Creating and handling files and folders</h2>
-            <pre>mkdir project          <span class="c"># make a new folder</span>
+            <pre data-sandboxbio>mkdir project          <span class="c"># make a new folder</span>
 cd project
 touch notes.txt        <span class="c"># create an empty file</span>
 cp notes.txt copy.txt  <span class="c"># copy</span>
@@ -215,7 +217,7 @@ rm final.txt           <span class="c"># remove (careful: no recycle bin!)</span
             <div class="why"><h4>rm is forever</h4><p>The command line has no trash can. <code class="inline">rm</code> deletes immediately and permanently. Read the line twice before you run it, especially before <code class="inline">rm -r</code> (which deletes whole folders).</p></div>
 
             <h2>3. Looking inside files</h2>
-            <pre>cat file.txt       <span class="c"># dump the whole file to the screen</span>
+            <pre data-sandboxbio>cat file.txt       <span class="c"># dump the whole file to the screen</span>
 head file.txt      <span class="c"># first 10 lines</span>
 head -n 3 file.txt <span class="c"># first 3 lines</span>
 tail file.txt      <span class="c"># last 10 lines</span>
@@ -223,7 +225,7 @@ less file.txt      <span class="c"># scroll a big file (press q to quit)</span><
             <p><code class="inline">head</code> and <code class="inline">less</code> matter hugely in bioinformatics, where a single file can be gigabytes. You never want to <code class="inline">cat</code> a whole genome to your screen.</p>
 
             <h2>4. Searching and counting</h2>
-            <pre>grep <span class="s">"TP53"</span> genes.txt   <span class="c"># print lines containing "TP53"</span>
+            <pre data-sandboxbio>grep <span class="s">"TP53"</span> genes.txt   <span class="c"># print lines containing "TP53"</span>
 grep -c <span class="s">"&gt;"</span> seqs.fasta   <span class="c"># COUNT lines containing "&gt;"</span>
 wc -l file.txt           <span class="c"># count lines in a file</span>
 sort names.txt           <span class="c"># sort lines alphabetically</span>
@@ -246,11 +248,11 @@ sort names.txt | uniq    <span class="c"># sort, then remove duplicates</span></
                 </svg>
                 <figcaption>Read the file, keep the header lines, count them. Each tool does one job; the pipe chains them into an analysis.</figcaption>
             </figure>
-            <pre><span class="c"># "Take the file, keep header lines, then count them"</span>
+            <pre data-sandboxbio><span class="c"># "Take the file, keep header lines, then count them"</span>
 cat seqs.fasta | grep <span class="s">"&gt;"</span> | wc -l</pre>
 
             <h2>6. Saving output to a file</h2>
-            <pre>grep <span class="s">"&gt;"</span> seqs.fasta &gt; headers.txt   <span class="c"># write results to a NEW file</span>
+            <pre data-sandboxbio>grep <span class="s">"&gt;"</span> seqs.fasta &gt; headers.txt   <span class="c"># write results to a NEW file</span>
 grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class="c"># ADD to an existing file</span></pre>
             <div class="tryit"><strong>Try it:</strong> make a file with <code class="inline">echo "ATGC" &gt; dna.txt</code>, then read it back with <code class="inline">cat dna.txt</code>. You just created and read a file entirely from the keyboard.</div>
 
@@ -286,30 +288,30 @@ grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class=
 
             <div class="why" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px 20px; margin:22px 0;">
                 <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;">Check yourself</h4>
-                <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">The terminal does not run in this page, so here is what correct output looks like. Type each one and compare.</p>
-                <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">grep -c "&gt;" genes.fasta</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the number of sequences</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">echo "ATGC" &gt; dna.txt &amp;&amp; cat dna.txt</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">ATGC</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">wc -l &lt; reads.fastq</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the number of lines</td></tr></table></div>
+                <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">Run each one in the practice terminal (or your own) and compare.</p>
+                <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">grep -c "&gt;" seqs.fasta</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">4 (the practice file has four sequences)</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">echo "ATGC" &gt; dna.txt &amp;&amp; cat dna.txt</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">ATGC</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">wc -l &lt; reads.txt</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">8 (two reads, four lines each)</td></tr></table></div>
             <h2>Practice exercises</h2>
             <p>Open your terminal and try each one before you reveal the solution.</p>
 
             <p><strong>Exercise 1: find your feet.</strong> Print the folder you are in, list its contents with details, then move into a folder called <code class="inline">project</code>.</p>
             <details><summary>Show a worked solution</summary>
-<pre>pwd
+<pre data-sandboxbio>pwd
 ls -l
 cd project</pre></details>
 
             <p><strong>Exercise 2: peek, do not dump.</strong> Show only the first 3 lines of <code class="inline">reads.txt</code> without printing the whole file.</p>
             <details><summary>Show a worked solution</summary>
-<pre>head -n 3 reads.txt</pre></details>
+<pre data-sandboxbio>head -n 3 reads.txt</pre></details>
 
             <p><strong>Exercise 3: count sequences.</strong> Count how many sequences are in <code class="inline">seqs.fasta</code>, where every header line starts with <code class="inline">&gt;</code>. Try it with a pipe too.</p>
             <details><summary>Show a worked solution</summary>
-<pre>grep -c "&gt;" seqs.fasta
+<pre data-sandboxbio>grep -c "&gt;" seqs.fasta
 # or, with a pipe:
 cat seqs.fasta | grep "&gt;" | wc -l</pre></details>
 
             <p><strong>Exercise 4: save the result.</strong> Write just the header lines of <code class="inline">seqs.fasta</code> into a new file called <code class="inline">headers.txt</code>.</p>
             <details><summary>Show a worked solution</summary>
-<pre>grep "&gt;" seqs.fasta &gt; headers.txt</pre></details>
+<pre data-sandboxbio>grep "&gt;" seqs.fasta &gt; headers.txt</pre></details>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
@@ -363,6 +365,8 @@ cat seqs.fasta | grep "&gt;" | wc -l</pre></details>
             <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:18px;">Ready for more? <a href="bash-intermediate.html" target="_blank" rel="noopener" style="color:var(--primary-blue); font-weight:600;">Command Line Level 2 (Intermediate)</a> builds straight on this.</p>
 
         </div></div>
+        <p style="text-align:center; font-size:0.85rem; color:var(--text-gray); margin:10px 0 30px;">Practice terminal powered by <a href="https://sandbox.bio" target="_blank" rel="noopener" style="color:var(--primary-blue);">sandbox.bio</a> (runs in your browser; your commands stay on your computer).</p>
+    <script src="https://sandbox.bio/embed.js" data-cwd="bionexus-bash" data-height="380" data-config="sandbox/bash-basics.json"></script>
     </main>
 
     <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>

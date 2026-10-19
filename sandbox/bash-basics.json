@@ -1,0 +1,12 @@
+{
+  "files": [
+    { "url": "bash-basics/seqs.fasta", "path": "seqs.fasta" },
+    { "url": "bash-basics/genes.txt", "path": "genes.txt" },
+    { "url": "bash-basics/names.txt", "path": "names.txt" },
+    { "url": "bash-basics/reads.txt", "path": "reads.txt" },
+    { "url": "bash-basics/file.txt", "path": "file.txt" }
+  ],
+  "welcome": "BioNexus Hub practice terminal. Sample files are ready: seqs.fasta, genes.txt, names.txt, reads.txt, file.txt",
+  "welcomeCmd": "ls",
+  "setup": "mkdir -p Downloads project ~/Downloads ~/project && for d in project ~ ~/project; do cp seqs.fasta genes.txt names.txt reads.txt file.txt $d/ 2>/dev/null; done; true"
+}

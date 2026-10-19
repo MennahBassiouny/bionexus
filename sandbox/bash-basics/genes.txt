@@ -1,0 +1,6 @@
+gene	chromosome	length_kb
+TP53	17	19.1
+BRCA1	17	81.2
+EGFR	7	188.3
+MYC	8	5.4
+KRAS	12	45.7
