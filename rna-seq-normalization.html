@@ -6,19 +6,19 @@
     <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
     <link rel="canonical" href="https://bionexushub.com/rna-seq-normalization.html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="RNA-seq normalization explained: why raw counts depend on depth and gene length, what CPM, FPKM, and TPM each correct, and why DESeq2 needs raw counts.">
+    <meta name="description" content="RNA-seq normalization explained: why raw counts depend on depth and gene length, what CPM, FPKM, and TPM each correct, why TPM should not be compared across samples, and why DESeq2 needs raw counts.">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
     <meta property="og:title" content="RNA-seq Normalization: CPM, TPM, FPKM | BioNexus Hub">
-    <meta property="og:description" content="What CPM, FPKM, and TPM each correct for, why TPM beats FPKM across samples, and why DESeq2 and edgeR must get raw counts.">
+    <meta property="og:description" content="What CPM, FPKM, and TPM each correct for, why TPM is a within-sample unit, and why DESeq2 and edgeR must get raw counts.">
     <meta property="og:url" content="https://bionexushub.com/rna-seq-normalization.html">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="RNA-seq Normalization: CPM, TPM, FPKM | BioNexus Hub">
-    <meta name="twitter:description" content="CPM corrects depth; TPM and FPKM correct depth and length; DESeq2 needs raw counts.">
+    <meta name="twitter:description" content="TPM compares genes within a sample; DESeq2 normalized counts compare samples. DESeq2 needs raw counts.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>RNA-seq Normalization: CPM, TPM, FPKM - BioNexus Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -109,18 +109,53 @@
         .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
         .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
         .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        .why { background: rgba(91,156,248,0.07); border: 1px solid rgba(91,156,248,0.3); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 16px 20px; margin: 22px 0; }
+        .why h4 { color: var(--primary-blue); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .why p { font-size: 1rem; margin: 0; }
+        .warnbox { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-left: 4px solid var(--amber); border-radius: 10px; padding: 16px 20px; margin: 22px 0; }
+        .warnbox h4 { color: #b45309; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .warnbox p { font-size: 1rem; margin: 0; }
         .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
     </style>
 </head>
+<body>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="faq.html">Help</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
     <div class="lesson-header">
         <div class="container">
             <div class="lesson-body">
-                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">&larr; Roadmap</a> &nbsp;/&nbsp; Track 3: Differential expression &nbsp;/&nbsp; Normalization</div>
+                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">&larr; Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; Normalization</div>
                 <h1>RNA-seq Normalization: CPM, TPM, FPKM</h1>
-                <p class="promise">Raw counts are not comparable across genes or samples. Learn what CPM, FPKM, and TPM each correct for, why TPM beats FPKM, and the one rule that keeps DESeq2 happy.</p>
+                <p class="promise">Raw counts are not comparable across genes or samples. Learn what CPM, FPKM, and TPM each correct for, the trap of comparing TPM between samples, and the one rule that keeps DESeq2 happy.</p>
                 <div class="tags">
                     <span class="tag green">&#x1F7E2; Beginner</span>
-                    <span class="tag">&#x23F1;&#xFE0F; ~20 min</span>
+                    <span class="tag">&#x23F1;&#xFE0F; ~30 min</span>
                     <span class="tag">&#x1F9E0; Concepts + R</span>
                 </div>
             </div>
@@ -139,7 +174,7 @@
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
                 <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
-                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain why raw counts cannot be compared directly, say what CPM, FPKM, and TPM each correct for, explain why TPM is preferred over FPKM, and state the rule that DESeq2 and edgeR must receive raw integer counts, not normalized values.</p>
+                <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain why raw counts cannot be compared directly, say what CPM, FPKM, and TPM each correct for, explain why TPM is a within-sample unit that can mislead when you compare samples, choose the right values for comparing samples, and state the rule that DESeq2 and edgeR must receive raw integer counts, not normalized values.</p>
             </div>
 
             <h2>Why raw counts are not comparable</h2>
@@ -150,116 +185,203 @@
             </div>
 
             <h2><span class="step-num">1</span>What each method corrects for</h2>
-            <p><strong>CPM</strong> (counts per million) divides each count by the library size and multiplies by a million. It corrects for <strong>depth only</strong>, so it makes samples comparable but still treats a long gene as if it were more expressed than a short one. <strong>RPKM</strong> and <strong>FPKM</strong> (the F is for fragments, used with paired-end reads) correct for depth <em>and</em> gene length. <strong>TPM</strong> (transcripts per million) also corrects for both, but in an order that gives it a useful property: within every sample, all TPM values add up to the same total (one million). That fixed total is what makes TPM easier to compare across samples than FPKM, whose per-sample totals can drift.</p>
+            <p><strong>CPM</strong> (counts per million) divides each count by the library size and multiplies by a million. It corrects for <strong>depth only</strong>, so it still treats a long gene as if it were more expressed than a short one. <strong>RPKM</strong> and <strong>FPKM</strong> (the F is for fragments, used with paired-end reads) correct for depth <em>and</em> gene length. <strong>TPM</strong> (transcripts per million) also corrects for both, but in an order that gives it a tidy property: within every sample, all TPM values add up to the same total (one million). So a TPM value is simply <strong>a gene's share</strong> of that sample's transcripts. That makes TPM easier to read than FPKM <em>inside one sample</em>.</p>
             <figure class="viz">
-                <svg viewBox="0 0 600 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram showing CPM corrects depth only, FPKM and TPM correct depth and length, and TPM sums to a fixed total per sample">
+                <svg viewBox="0 0 600 236" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagram: CPM corrects depth only; FPKM and TPM correct depth and length and are for comparing genes within one sample; to compare samples use DESeq2 or edgeR normalized counts">
                     <g font-family="'Work Sans',sans-serif" font-size="12">
                     <text x="300" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">What gets corrected</text>
                     <rect x="40" y="44" width="150" height="150" rx="10" fill="rgba(91,156,248,0.1)" stroke="#5b9cf8"/>
                     <text x="115" y="68" text-anchor="middle" font-weight="700" fill="#0f172a">CPM</text>
-                    <text x="115" y="92" text-anchor="middle" fill="#10b981">depth: yes</text>
+                    <text x="115" y="92" text-anchor="middle" fill="#047857">depth: yes</text>
                     <text x="115" y="112" text-anchor="middle" fill="#b45309">length: no</text>
-                    <text x="115" y="150" text-anchor="middle" font-size="11" fill="#64748b">use within</text>
-                    <text x="115" y="166" text-anchor="middle" font-size="11" fill="#64748b">a sample</text>
+                    <text x="115" y="150" text-anchor="middle" font-size="11" fill="#64748b">quick checks and</text>
+                    <text x="115" y="166" text-anchor="middle" font-size="11" fill="#64748b">filtering low counts</text>
                     <rect x="225" y="44" width="150" height="150" rx="10" fill="rgba(245,158,11,0.1)" stroke="#f59e0b"/>
                     <text x="300" y="68" text-anchor="middle" font-weight="700" fill="#0f172a">FPKM</text>
-                    <text x="300" y="92" text-anchor="middle" fill="#10b981">depth: yes</text>
-                    <text x="300" y="112" text-anchor="middle" fill="#10b981">length: yes</text>
-                    <text x="300" y="150" text-anchor="middle" font-size="11" fill="#64748b">totals can</text>
-                    <text x="300" y="166" text-anchor="middle" font-size="11" fill="#64748b">drift between samples</text>
+                    <text x="300" y="92" text-anchor="middle" fill="#047857">depth: yes</text>
+                    <text x="300" y="112" text-anchor="middle" fill="#047857">length: yes</text>
+                    <text x="300" y="150" text-anchor="middle" font-size="11" fill="#64748b">older unit; totals</text>
+                    <text x="300" y="166" text-anchor="middle" font-size="11" fill="#64748b">differ by sample</text>
                     <rect x="410" y="44" width="150" height="150" rx="10" fill="rgba(168,85,247,0.1)" stroke="#a855f7"/>
                     <text x="485" y="68" text-anchor="middle" font-weight="700" fill="#0f172a">TPM</text>
-                    <text x="485" y="92" text-anchor="middle" fill="#10b981">depth: yes</text>
-                    <text x="485" y="112" text-anchor="middle" fill="#10b981">length: yes</text>
-                    <text x="485" y="150" text-anchor="middle" font-size="11" fill="#047857">every sample</text>
-                    <text x="485" y="166" text-anchor="middle" font-size="11" fill="#047857">sums to 1,000,000</text>
-                    <text x="300" y="218" text-anchor="middle" font-size="11" fill="#64748b">For differential expression, none of these: DESeq2 and edgeR take raw counts.</text>
+                    <text x="485" y="92" text-anchor="middle" fill="#047857">depth: yes</text>
+                    <text x="485" y="112" text-anchor="middle" fill="#047857">length: yes</text>
+                    <text x="485" y="150" text-anchor="middle" font-size="11" fill="#64748b">a share of 1,000,000:</text>
+                    <text x="485" y="166" text-anchor="middle" font-size="11" fill="#64748b">genes within a sample</text>
+                    <text x="300" y="222" text-anchor="middle" font-size="11.5" font-weight="600" fill="#0f172a">To compare samples or test for differences: DESeq2 / edgeR normalized counts.</text>
                     </g>
                 </svg>
-                <figcaption>CPM fixes depth; FPKM and TPM fix depth and length; only TPM gives every sample the same fixed total, which is why it travels better across samples.</figcaption>
+                <figcaption>CPM fixes depth; FPKM and TPM fix depth and length. All three describe one sample well. None of them is the right tool for comparing samples.</figcaption>
             </figure>
             <table class="dtable">
                 <thead>
                     <tr><th>Method</th><th>Corrects depth?</th><th>Corrects gene length?</th><th>Best used for</th></tr>
                 </thead>
                 <tbody>
-                    <tr><td>CPM</td><td>Yes</td><td>No</td><td>Quick sample-to-sample comparison and simple filtering of low-count genes</td></tr>
-                    <tr><td>FPKM / RPKM</td><td>Yes</td><td>Yes</td><td>Older within-sample reports; totals can differ between samples, so use with care</td></tr>
-                    <tr><td>TPM</td><td>Yes</td><td>Yes</td><td>Within-sample comparison and visualization; every sample sums to the same total</td></tr>
-                    <tr><td>DESeq2 median-of-ratios (or edgeR TMM)</td><td>Yes</td><td>No (length cancels in the test)</td><td>Differential expression; computed internally from raw counts, not something you precompute</td></tr>
+                    <tr><td>CPM</td><td>Yes</td><td>No</td><td>Quick checks and filtering out genes with very low counts</td></tr>
+                    <tr><td>FPKM / RPKM</td><td>Yes</td><td>Yes</td><td>Older reports; comparing genes within one sample. TPM has replaced it</td></tr>
+                    <tr><td>TPM</td><td>Yes</td><td>Yes</td><td>Comparing genes within one sample; reporting expression levels. Not reliable across samples whose RNA mix differs</td></tr>
+                    <tr><td>DESeq2 median-of-ratios (or edgeR TMM)</td><td>Yes, and also corrects for differences in RNA mix</td><td>No (the same gene is compared, so length cancels out)</td><td>Comparing the same gene across samples, and differential expression. Computed from raw counts</td></tr>
                 </tbody>
             </table>
 
-            <h2><span class="step-num">2</span>Why TPM beats FPKM across samples</h2>
-            <p>FPKM divides by length first and by a depth factor second, and the result is that the per-sample total of all FPKM values is not fixed: it can come out different for each sample. When you then compare a gene's FPKM between two samples, you are comparing fractions of two different totals, which is subtly misleading. TPM is built so the total is always one million in every sample, so a TPM value is a true proportion of that sample's transcript pool. That shared denominator is the reason TPM is the preferred unit for comparing the same gene across samples and for heatmaps and other visuals.</p>
+            <h2><span class="step-num">2</span>The TPM trap: comparing samples</h2>
+            <p>Because TPM is a share, it is tempting to think a gene's TPM in sample A and sample B can be compared directly. Researchers do this often, and a 2020 review in the journal <em>RNA</em> calls it a common misconception. The problem is that a share depends on <strong>everything else in the sample</strong>.</p>
+            <p>Imagine one gene, like hemoglobin (HBB) in a blood sample, suddenly makes up most of the RNA in sample B. TPM must still add up to one million. So every <em>other</em> gene's share shrinks, even though nothing happened to those genes. Their TPM drops, and it looks like they went down.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 600 190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two bars: in sample A HBB is one third of transcripts; in sample B HBB is five sixths, so the share of all other genes shrinks from two thirds to one sixth even though they did not change">
+                    <g font-family="'Work Sans',sans-serif" font-size="12">
+                    <text x="300" y="22" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">Same other genes, smaller share</text>
+                    <text x="80" y="66" text-anchor="end" font-weight="700" fill="#0f172a">Sample A</text>
+                    <rect x="90" y="48" width="160" height="28" fill="rgba(168,85,247,0.25)" stroke="#a855f7"/>
+                    <text x="170" y="66" text-anchor="middle" fill="#0f172a">HBB 33%</text>
+                    <rect x="250" y="48" width="320" height="28" fill="rgba(91,156,248,0.18)" stroke="#5b9cf8"/>
+                    <text x="410" y="66" text-anchor="middle" fill="#0f172a">all other genes 67%</text>
+                    <text x="80" y="122" text-anchor="end" font-weight="700" fill="#0f172a">Sample B</text>
+                    <rect x="90" y="104" width="400" height="28" fill="rgba(168,85,247,0.25)" stroke="#a855f7"/>
+                    <text x="290" y="122" text-anchor="middle" fill="#0f172a">HBB 83% (truly went up)</text>
+                    <rect x="490" y="104" width="80" height="28" fill="rgba(91,156,248,0.18)" stroke="#5b9cf8"/>
+                    <text x="530" y="122" text-anchor="middle" fill="#0f172a">17%</text>
+                    <text x="330" y="166" text-anchor="middle" font-size="11.5" fill="#64748b">The other genes did not change, but their TPM fell to a quarter.</text>
+                    </g>
+                </svg>
+                <figcaption>TPM is a share of a fixed total, so when one gene grows, every other gene's TPM shrinks.</figcaption>
+            </figure>
+            <p>The same thing happens when samples differ in how much ribosomal or mitochondrial RNA they contain, when they come from different tissues, or when they were prepared with different library protocols (for example poly(A) selection vs rRNA depletion). In all these cases the <strong>RNA mix</strong> (also called composition) differs, and TPM values stop being comparable.</p>
+            <p>DESeq2's median-of-ratios and edgeR's TMM were built for this. They assume that <strong>most genes do not change</strong> between samples, and they scale each sample using those stable genes. One very abundant gene cannot drag everything else down. In a study of tumor replicates, these normalized counts kept replicates of the same tumor together far better than TPM or FPKM did.</p>
+            <p>Try it yourself. The code below builds the hemoglobin example and compares TPM with DESeq2-style normalized counts. Press <strong>Run</strong>, then change the numbers and run it again.</p>
+            <div class="pycell"><script type="application/x-python">import math
+
+genes = ["HBB", "GENE2", "GENE3", "GENE4", "GENE5"]
+# Read counts. Both samples were sequenced to the same depth (1,500 reads).
+# In sample B, HBB truly went up 10 times. The other 4 genes did NOT change.
+A = [500, 200, 300, 400, 100]
+B = [1250, 50, 75, 100, 25]
+
+# TPM-style: each gene's share of the sample, per million
+# (all genes are 1 kb long here, so TPM and CPM give the same numbers)
+def per_million(counts):
+    total = sum(counts)
+    return [c / total * 1_000_000 for c in counts]
+
+tpm_A = per_million(A)
+tpm_B = per_million(B)
+
+# DESeq2-style median-of-ratios
+# 1. a "reference" for each gene = geometric mean across samples
+ref = [math.sqrt(a * b) for a, b in zip(A, B)]
+# 2. size factor = the MEDIAN of (count / reference) in that sample
+def median(xs):
+    xs = sorted(xs)
+    return xs[len(xs) // 2]
+sf_A = median([a / r for a, r in zip(A, ref)])
+sf_B = median([b / r for b, r in zip(B, ref)])
+norm_A = [a / sf_A for a in A]
+norm_B = [b / sf_B for b in B]
+
+print(f"{'gene':7}{'TPM A':>10}{'TPM B':>10}{'norm A':>10}{'norm B':>10}")
+for g, ta, tb, na, nb in zip(genes, tpm_A, tpm_B, norm_A, norm_B):
+    print(f"{g:7}{ta:10.0f}{tb:10.0f}{na:10.0f}{nb:10.0f}")
+print()
+print("TPM says GENE2-5 fell to a quarter in B. They did not change.")
+print("Normalized counts keep GENE2-5 equal and show HBB up 10x.")
+</script></div>
+            <div class="warnbox">
+                <h4>Rule of thumb</h4>
+                <p>Comparing <strong>genes within one sample</strong>? TPM is fine. Comparing <strong>the same gene across samples</strong>? Use DESeq2 or edgeR normalized counts. If you are handed only TPM from a database, compare samples only when they used the same protocol and have a similar RNA mix, and treat the result as a rough guide.</p>
+            </div>
 
             <h2><span class="step-num">3</span>The rule that keeps DESeq2 happy</h2>
-            <p>This is the part beginners get wrong most often. For <strong>differential expression</strong>, DESeq2 and edgeR do their <strong>own</strong> normalization internally, the median-of-ratios method in DESeq2 and TMM in edgeR, and they must be given <strong>raw integer counts</strong>. Never feed them CPM, FPKM, or TPM. Those values are already scaled and are no longer counts, and the statistical model that DESeq2 uses assumes count-like data with a specific mean to variance relationship. Use TPM (or CPM) for within-sample comparison, plotting, and reporting; hand DESeq2 the raw count matrix and let it normalize for you.</p>
-            <div class="why"><h4>One-line summary</h4><p>CPM corrects depth; FPKM and TPM correct depth and length; TPM is preferred across samples because every sample sums to the same total. For differential expression, give DESeq2 or edgeR raw counts and let them normalize internally.</p></div>
+            <p>This is the part beginners get wrong most often. For <strong>differential expression</strong>, DESeq2 and edgeR do their <strong>own</strong> normalization internally, the median-of-ratios method in DESeq2 and TMM in edgeR, and they must be given <strong>raw integer counts</strong>. Never feed them CPM, FPKM, or TPM. Those values are already scaled and are no longer counts, and the statistical model that DESeq2 uses assumes count data with a specific mean to variance relationship. Hand DESeq2 the raw count matrix and let it normalize for you.</p>
+            <div class="why"><h4>One-line summary</h4><p>CPM corrects depth; FPKM and TPM correct depth and length and describe genes within one sample. To compare samples, use DESeq2 or edgeR normalized counts. For differential expression, give DESeq2 or edgeR raw counts and let them normalize internally.</p></div>
 
-            <h2>A worked example</h2>
-            <p>CPM is the simplest formula. For gene <em>g</em> in a sample, CPM = (count for <em>g</em> / total mapped reads in that sample) &times; 1,000,000. The example below shows that calculation in R, then shows the contrasting rule: DESeq2 receives the raw count matrix, never a normalized one.</p>
-            <pre><code># --- CPM by hand (within-sample / visualization use) ---
-# counts: a gene-by-sample matrix of RAW integer counts
-counts &lt;- matrix(c(800, 400, 1500,
-                   100,  50,  300),
-                 nrow = 2, byrow = TRUE,
-                 dimnames = list(c("geneA", "geneB"),
-                                 c("s1", "s2", "s3")))
+            <h2>A worked example in R</h2>
+            <p>CPM is the simplest formula. For gene <em>g</em> in a sample, CPM = (count for <em>g</em> / total mapped reads in that sample) &times; 1,000,000. TPM first divides each count by gene length, then scales so the sample adds up to one million. The example below calculates both by hand, then gives the <em>raw</em> counts to DESeq2 and prints its normalized counts. Look at GENE2 to GENE6: their TPM drops in the treated samples, but their DESeq2 normalized counts stay flat. This code was tested with R 4.3 and DESeq2 1.42.</p>
+            <pre><code># A tiny RAW count matrix: 6 genes x 4 samples (2 control, 2 treated)
+counts &lt;- matrix(c(
+  500,  520, 1300, 1250,   # HBB: really goes up in treated
+  200,  210,   60,   55,   # GENE2 to GENE6: unchanged biologically,
+  300,  290,   80,   85,   #   but squeezed in treated samples because
+  400,  410,  110,  100,   #   HBB takes most of the reads
+  100,   95,   25,   30,
+  250,  260,   70,   65),
+  nrow = 6, byrow = TRUE,
+  dimnames = list(c("HBB", "GENE2", "GENE3", "GENE4", "GENE5", "GENE6"),
+                  c("ctrl1", "ctrl2", "trt1", "trt2")))
+storage.mode(counts) &lt;- "integer"          # raw counts are whole numbers
+gene_length_kb &lt;- c(0.6, 2.0, 1.5, 3.0, 1.0, 2.5)
 
-lib_size &lt;- colSums(counts)          # total mapped reads per sample
-cpm &lt;- t(t(counts) / lib_size) * 1e6 # divide each column by its depth, scale to per-million
-round(cpm, 1)
+# --- CPM: corrects depth only ---
+cpm &lt;- t(t(counts) / colSums(counts)) * 1e6
+round(cpm)
 
-# edgeR has a built-in equivalent:
-# library(edgeR); cpm(counts)
+# --- TPM: corrects length first, then depth; each sample sums to 1e6 ---
+rpk &lt;- counts / gene_length_kb             # reads per kilobase
+tpm &lt;- t(t(rpk) / colSums(rpk)) * 1e6
+round(tpm)
+colSums(tpm)                               # 1e6 in every sample
 
-# --- The rule for differential expression ---
-# DESeq2 takes the RAW count matrix and normalizes internally
-# (median-of-ratios). Do NOT pass it CPM / FPKM / TPM.
+# --- DESeq2: give it the RAW counts, it normalizes internally ---
 library(DESeq2)
-dds &lt;- DESeqDataSetFromMatrix(countData = counts_raw,  # raw integers
+sample_info &lt;- data.frame(condition = factor(c("control", "control",
+                                                "treated", "treated")),
+                          row.names = colnames(counts))
+dds &lt;- DESeqDataSetFromMatrix(countData = counts,
                               colData   = sample_info,
-                              design    = ~ cell + dex) # dex = treatment column
-dds &lt;- DESeq(dds)        # estimates size factors + dispersions internally
-res &lt;- results(dds)
+                              design    = ~ condition)
+dds &lt;- estimateSizeFactors(dds)            # median-of-ratios
+sizeFactors(dds)
+round(counts(dds, normalized = TRUE))      # use THESE to compare samples
 </code></pre>
+            <p>In the output, GENE2's TPM falls from about 68,000 in the controls to about 12,500 in the treated samples, while its DESeq2 normalized count stays between 104 and 112 in all four. Only HBB truly changed, and only the normalized counts show that.</p>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
                 <div class="quiz-q-src">Why can you not compare raw counts directly between two genes in the same sample?</div>
+                <button data-opt>Because the two genes were sequenced to different depths</button>
                 <button data-opt data-correct>A longer gene collects more reads, so gene length biases raw counts</button>
-                <button data-opt>Raw counts are always identical, so comparison is pointless</button>
-                <button data-opt>Counts cannot be compared because they are not numbers</button>
-                <div class="quiz-explain"><strong>Right.</strong> Within a sample, a longer gene is a bigger target and accumulates more reads at the same true expression, so length must be corrected before comparing genes.</div>
+                <button data-opt>Because raw counts must always be log-transformed before any comparison</button>
+                <div class="quiz-explain"><strong>Right.</strong> Within a sample, every gene shares the same sequencing depth, so depth is not the issue there. A longer gene is a bigger target and collects more reads at the same true expression, so length must be corrected before comparing genes.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">What does CPM correct for?</div>
-                <button data-opt data-correct>Sequencing depth (library size) only, not gene length</button>
+                <button data-opt>Both sequencing depth and gene length</button>
                 <button data-opt>Gene length only, not depth</button>
-                <button data-opt>Both depth and gene length</button>
-                <div class="quiz-explain"><strong>Correct.</strong> CPM scales by library size to make samples comparable, but it does not adjust for gene length.</div>
+                <button data-opt data-correct>Sequencing depth (library size) only, not gene length</button>
+                <div class="quiz-explain"><strong>Correct.</strong> CPM divides by library size, so it removes depth differences, but it does not adjust for gene length. TPM and FPKM correct both.</div>
             </div>
             <div class="quiz">
-                <div class="quiz-q-src">Why is TPM preferred over FPKM for comparing a gene across samples?</div>
-                <button data-opt data-correct>Every sample's TPM values sum to the same fixed total, so values are comparable proportions</button>
-                <button data-opt>TPM ignores gene length, which makes it simpler</button>
-                <button data-opt>FPKM cannot be computed from paired-end data</button>
-                <div class="quiz-explain"><strong>Exactly.</strong> TPM is built so each sample sums to one million; FPKM totals can drift between samples, making cross-sample comparison less reliable.</div>
+                <div class="quiz-q-src">In sample B, one gene suddenly makes up most of the RNA. The other genes did not change. What happens to the other genes' TPM in sample B?</div>
+                <button data-opt data-correct>It drops, because TPM is a share of a fixed total of one million</button>
+                <button data-opt>It stays the same, because TPM already corrects for sequencing depth</button>
+                <button data-opt>It rises, because TPM corrects for gene length</button>
+                <div class="quiz-explain"><strong>Exactly.</strong> TPM always adds up to one million per sample. When one gene takes a bigger share, every other gene's share shrinks, so their TPM falls even though they did not change. Correcting depth does not fix this.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">You are about to run DESeq2 for differential expression. What should you give it?</div>
+                <button data-opt>A matrix of TPM values, because they are already normalized</button>
                 <button data-opt data-correct>The raw integer count matrix; DESeq2 normalizes internally</button>
-                <button data-opt>A matrix of TPM values</button>
-                <button data-opt>A matrix of FPKM values</button>
-                <div class="quiz-explain"><strong>Right.</strong> DESeq2 uses median-of-ratios on raw counts. Passing it TPM or FPKM breaks the count-based model and gives invalid results.</div>
+                <button data-opt>A matrix of CPM values, to remove depth differences first</button>
+                <div class="quiz-explain"><strong>Right.</strong> DESeq2 uses median-of-ratios on raw counts, and its statistical model needs count data. Passing it TPM, FPKM, or CPM breaks that model and gives invalid results.</div>
             </div>
             <div class="quiz">
-                <div class="quiz-q-src">When is TPM the right choice?</div>
-                <button data-opt data-correct>Within-sample comparison, visualization, and reporting expression levels</button>
-                <button data-opt>As the input to DESeq2 or edgeR for differential testing</button>
-                <button data-opt>Whenever you want raw counts back</button>
-                <div class="quiz-explain"><strong>Correct.</strong> Use TPM for comparing and plotting expression; for differential testing, use raw counts and let the tool normalize.</div>
+                <div class="quiz-q-src">You want to see whether gene X differs between treated and control samples (no formal test yet, just a first look). Which values should you plot?</div>
+                <button data-opt>TPM, because every sample sums to one million</button>
+                <button data-opt>FPKM, because it corrects for gene length</button>
+                <button data-opt data-correct>DESeq2 (or edgeR) normalized counts</button>
+                <div class="quiz-explain"><strong>Correct.</strong> Comparing the same gene across samples is exactly what median-of-ratios and TMM normalization are for. TPM and FPKM can shift when the RNA mix differs between samples, and gene length does not matter when you compare one gene with itself.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Zhao S, Ye Z, Stanton R. Misuse of RPKM or TPM normalization when comparing across samples and sequencing protocols. <em>RNA</em> 26(8): 903-909, 2020. <a href="https://doi.org/10.1261/rna.074922.120" target="_blank" rel="noopener">doi:10.1261/rna.074922.120</a></li>
+                    <li>Zhao Y, Li M-C, Konat&eacute; MM, et al. TPM, FPKM, or normalized counts? A comparative study of quantification measures for the analysis of RNA-seq data from the NCI Patient-Derived Models Repository. <em>Journal of Translational Medicine</em> 19: 269, 2021. <a href="https://doi.org/10.1186/s12967-021-02936-w" target="_blank" rel="noopener">doi:10.1186/s12967-021-02936-w</a></li>
+                    <li>Wagner GP, Kin K, Lynch VJ. Measurement of mRNA abundance using RNA-seq data: RPKM measure is inconsistent among samples. <em>Theory in Biosciences</em> 131: 281-285, 2012. (Where TPM was proposed.) <a href="https://doi.org/10.1007/s12064-012-0162-3" target="_blank" rel="noopener">doi:10.1007/s12064-012-0162-3</a></li>
+                    <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15: 550, 2014. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
+                    <li>Robinson MD, Oshlack A. A scaling normalization method for differential expression analysis of RNA-seq data. <em>Genome Biology</em> 11: R25, 2010. (The TMM method used by edgeR.) <a href="https://doi.org/10.1186/gb-2010-11-3-r25" target="_blank" rel="noopener">doi:10.1186/gb-2010-11-3-r25</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="rna-seq-deseq2.html" target="_blank" rel="noopener">
