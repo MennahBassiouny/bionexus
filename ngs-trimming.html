@@ -252,7 +252,7 @@ r = json.load(open(<span class="s">"fastp.json"</span>))
                 <div class="sbx-wrap"><pre data-sandboxbio>echo "Before: $(( $(wc -l &lt; reads.fastq)/4 )) reads"
 echo "After:  $(( $(wc -l &lt; reads.trimmed.fastq)/4 )) reads"
 grep -A2 '"adapter_cutting"' fastp.json</pre></div>
-                <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">What you should see</h4><p style="font-size:1rem; margin:0;">1,780 reads before and after (none were short enough to drop), and roughly 130 reads with adapter trimmed: the reads whose DNA fragment was shorter than 100 bases ran into the adapter.</p></div>
+                <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">What you should see</h4><p style="font-size:1rem; margin:0;">1,780 reads before and after (none were short enough to drop), and 135 reads with adapter trimmed: the reads whose DNA fragment was shorter than 100 bases ran into the adapter.</p></div>
 
                 <h2>Check your understanding</h2>
                 <div class="quiz">
