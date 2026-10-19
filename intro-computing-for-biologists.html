@@ -71,6 +71,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} .gloss td:first-child{width:auto;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -122,7 +128,7 @@
 
             <div class="analogy">
                 <h3>A script is a lab protocol</h3>
-                <p>A <strong>script</strong> is just a list of precise steps, written down, that the computer follows exactly in order - exactly like a bench protocol. The difference: the computer never gets tired, never skips a step, and runs it on a million samples in seconds. <code># add reagent</code> in code is just "add reagent" in a protocol.</p>
+                <p>A <strong>script</strong> is just a list of precise steps, written down, that the computer follows exactly in order - exactly like a bench protocol. The difference: the computer never gets tired, never skips a step, and can run it on thousands of samples while you do something else. A line starting with <code>#</code> in code, like <code># add reagent</code>, is a comment: a note for humans, like a margin note in a protocol, which the computer skips.</p>
             </div>
 
             <h2>The core vocabulary</h2>
@@ -135,12 +141,12 @@
                 <tr><td>Loop</td><td>"Do this step for every item." Instead of pipetting 96 wells by hand, you write the instruction once and it repeats.</td></tr>
             </table></div>
 
-            <div class="why"><h4>Why loops are the moment it clicks</h4><p>A genome has millions of letters; an experiment has thousands of genes. You will never process them by hand. A loop lets you describe an action <em>once</em> and have it applied to everything - the same leap as going from one manual reaction to a 384-well plate. This is where coding starts saving you real time.</p></div>
+            <div class="why"><h4>Why loops are the moment it clicks</h4><p>A genome has millions to billions of letters (the human one about 3 billion); an experiment measures thousands of genes. You will never process them by hand. A loop lets you describe an action <em>once</em> and have it applied to everything - the same leap as going from one manual reaction to a 384-well plate. This is where coding starts saving you real time.</p></div>
 
             <h2>Where the work happens</h2>
             <div class="gloss"><table>
                 <tr><td>Terminal / command line</td><td>A text-based way to give the computer direct instructions by typing. It looks bare, but it's just the "bench" most bioinformatics tools are operated from.</td></tr>
-                <tr><td>File / plain text</td><td>Your data lives in files. Most bioinformatics files are <strong>plain text</strong> - readable letters and numbers, not a locked format like a Word doc. You can open and inspect them directly.</td></tr>
+                <tr><td>File / plain text</td><td>Your data lives in files. Many core bioinformatics files (FASTA, FASTQ, CSV) are <strong>plain text</strong> - readable letters and numbers you can open and inspect directly. Some are compressed to save space and need a tool to read.</td></tr>
                 <tr><td>File format</td><td>An agreed way of arranging data in a file (FASTA for sequences, CSV for tables). Like a standardized sample-labelling scheme everyone follows.</td></tr>
                 <tr><td>Notebook</td><td>A document (like Jupyter or Colab) that mixes code, results, and notes - your lab notebook, but the experiments are analyses that run right inside it.</td></tr>
             </table></div>
@@ -148,13 +154,13 @@
             <h2>The tools-and-setup words</h2>
             <div class="gloss"><table>
                 <tr><td>Package / library</td><td>A pre-made toolkit someone else wrote that you install and reuse - like ordering a ready-made assay kit instead of making every reagent yourself.</td></tr>
-                <tr><td>Install</td><td>Adding a tool or package to your computer so you can use it. A one-time setup step.</td></tr>
+                <tr><td>Install</td><td>Adding a tool or package to your computer so you can use it. Usually a one-time setup step.</td></tr>
                 <tr><td>Environment</td><td>A self-contained workspace holding a specific set of tools, so one project's setup never disturbs another's. Like keeping separate, labelled kits for separate experiments.</td></tr>
-                <tr><td>Bug / error</td><td>Something the computer couldn't do as written - usually a small mistake, not a disaster. The error message tells you where to look. Debugging is normal, constant, and not a sign of failure.</td></tr>
-                <tr><td>GitHub</td><td>An online home for code and projects - part backup, part portfolio, part shared lab notebook the world can see. Where you'll showcase finished work.</td></tr>
+                <tr><td>Bug / error</td><td>A bug is a mistake in your code; an error is the message you get when the computer can't run a line. The message tells you where to look. Some bugs give no error, just a wrong answer, so always sanity-check results. Debugging is normal and not a sign of failure.</td></tr>
+                <tr><td>GitHub</td><td>An online home for code and projects - part backup, part portfolio, part shared lab notebook you can make public or keep private. Where you'll showcase finished work.</td></tr>
             </table></div>
 
-            <div class="why"><h4>The mindset shift that helps most</h4><p>In the wet lab, a failed experiment can cost days and reagents. In code, "failure" is cheap - you run it, get an error, fix one line, run again, in seconds. So experiment freely. Breaking things costs nothing and teaches you fast. The red error text isn't judgment; it's just the computer telling you exactly what it needs.</p></div>
+            <div class="why"><h4>The mindset shift that helps most</h4><p>In the wet lab, a failed experiment can cost days and reagents. In code, "failure" is cheap - you run it, get an error, fix one line, run again, in seconds. So experiment freely (just keep a backup copy of your raw data). Breaking things usually costs little and teaches you fast. The red error text isn't judgment; it's just the computer telling you exactly what it needs.</p></div>
 
             <h2>You're ready for the keyboard</h2>
             <p>Scripts are protocols, functions are reusable assays, loops do a step to everything, the terminal is the bench, and packages are ready-made kits. That's the whole conceptual map. There's only one thing left to do in the Introduction - stop reading about code and write some. Next lesson, you'll run your very first lines of Python, right in your browser.</p>
@@ -164,38 +170,48 @@
                     <div class="quiz-q-src">A 'variable' in programming is best described as:</div>
                     <button data-opt data-correct>A named container that holds a value</button>
                     <button data-opt>A bug that crashes your program</button>
-                    <button data-opt>A type of microscope</button>
+                    <button data-opt>A reusable mini-protocol you run with different inputs</button>
                     <div class="quiz-explain">Correct. A variable is a named container that holds a value you can reuse later.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">What is the command line (terminal)?</div>
-                    <button data-opt>A social network for coders</button>
+                    <button data-opt>An online home for storing and sharing code</button>
                     <button data-opt data-correct>A text interface where you type commands to the computer</button>
-                    <button data-opt>A spreadsheet program</button>
+                    <button data-opt>A document that mixes code, results and notes</button>
                     <div class="quiz-explain">Right. The command line, or terminal, is a text interface where you type commands directly to the computer.</div>
                 </div>
 
                 <div class="quiz">
                     <div class="quiz-q-src">In this lesson, a script is compared to which familiar thing from the lab?</div>
                     <button data-opt data-correct>A lab protocol: a list of precise steps followed in order</button>
-                    <button data-opt>A broken centrifuge</button>
-                    <button data-opt>A random pile of unlabelled tubes</button>
+                    <button data-opt>A ready-made assay kit someone else prepared</button>
+                    <button data-opt>A labelled tube holding one value</button>
                     <div class="quiz-explain">Correct. A script is like a lab protocol: a list of precise steps the computer follows in order.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">What problem does a loop solve?</div>
-                    <button data-opt>It makes the computer slower on purpose</button>
+                    <button data-opt>It stores a value under a name so you can reuse it</button>
                     <button data-opt data-correct>It lets you describe an action once and apply it to many items automatically</button>
-                    <button data-opt>It permanently deletes your data files</button>
+                    <button data-opt>It keeps one project's tools separate from another's</button>
                     <div class="quiz-explain">Right. A loop lets you describe an action once and apply it automatically to many items.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">A package (or library) is best described as:</div>
-                    <button data-opt>A type of error message</button>
-                    <button data-opt>A social network for scientists</button>
+                    <button data-opt>The text-based screen where you type commands</button>
+                    <button data-opt>A self-contained workspace holding a specific set of tools</button>
                     <button data-opt data-correct>A pre-made toolkit someone else wrote that you install and reuse</button>
                     <div class="quiz-explain">Correct. A package or library is a ready-made toolkit written by others that you install and reuse.</div>
                 </div>
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Wilson G, Aruliah DA, Brown CT, et al. Best practices for scientific computing. <em>PLoS Biol</em> 12: e1001745, 2014. <a href="https://doi.org/10.1371/journal.pbio.1001745" target="_blank" rel="noopener">doi:10.1371/journal.pbio.1001745</a></li>
+                    <li>Wilson G, Bryan J, Cranston K, Kitzes J, Nederbragt L, Teal TK. Good enough practices in scientific computing. <em>PLoS Comput Biol</em> 13: e1005510, 2017. <a href="https://doi.org/10.1371/journal.pcbi.1005510" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1005510</a></li>
+                    <li>Software Carpentry. "The Unix Shell" lesson. <a href="https://swcarpentry.github.io/shell-novice/" target="_blank" rel="noopener">swcarpentry.github.io</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
+            </div>
+
             <a class="next-lesson" href="intro-first-python.html" target="_blank" rel="noopener">
                 <span>Last in the Introduction - hands on</span>
                 <h3>Your first 10 lines of Python in the browser →</h3>

@@ -407,6 +407,9 @@
     }
     var explainEl = quiz.querySelector('.quiz-explain');
     var explainHTML = explainEl ? explainEl.innerHTML : '';
+    // Explanations are shown after right AND wrong answers, so drop any
+    // hard-coded verdict ("Correct.", "Right.", ...) and add the real one below.
+    explainHTML = explainHTML.replace(/^\s*(<strong>)?\s*(Correct|Right|Exactly|Yes|That's right|Spot on)[.!]\s*(<\/strong>)?\s*/i, '');
 
     quiz.innerHTML = '';
     var q = document.createElement('div');
@@ -446,7 +449,10 @@
             }
           }
         }
-        if (explainHTML) explain.classList.add('show');
+        if (explainHTML) {
+          explain.innerHTML = (isCorrect ? '<strong>Correct.</strong> ' : '<strong>Not quite.</strong> ') + explainHTML;
+          explain.classList.add('show');
+        }
         if (onFirstAnswer) onFirstAnswer(isCorrect);
       });
       quiz.appendChild(btn);

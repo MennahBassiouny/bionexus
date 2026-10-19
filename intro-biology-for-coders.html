@@ -75,6 +75,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} .gloss td:first-child{width:auto;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -126,19 +132,19 @@
 
             <div class="analogy">
                 <h3>DNA is source code</h3>
-                <p>Every cell carries a complete copy of an organism's instructions, written in a 4-letter alphabet: <code>A, C, G, T</code>. That's <strong>DNA</strong> - think of it as a giant read-only source file that every cell stores but only runs parts of.</p>
+                <p>Almost every cell carries a complete copy of an organism's instructions, written in a 4-letter alphabet: <code>A, C, G, T</code>. That's <strong>DNA</strong> - think of it as a giant read-only source file that every cell stores but only runs parts of.</p>
             </div>
 
             <h2>The core vocabulary</h2>
             <div class="gloss"><table>
                 <tr><td>DNA</td><td>The instruction set, written in bases <code class="inline">A/C/G/T</code>. Like a program's source code - stored in every cell.</td></tr>
                 <tr><td>Base / nucleotide</td><td>A single letter (A, C, G, or T). The individual characters of the code.</td></tr>
-                <tr><td>Genome</td><td>The <em>entire</em> DNA of an organism - the whole codebase. The human genome is ~3 billion bases.</td></tr>
+                <tr><td>Genome</td><td>The <em>entire</em> DNA of an organism - the whole codebase. One copy of the human genome is about 3 billion bases (each cell holds two copies).</td></tr>
                 <tr><td>Chromosome</td><td>The genome split into big chunks for storage. Like separate files in a repo; humans have 23 pairs.</td></tr>
-                <tr><td>Gene</td><td>A meaningful segment of DNA with a specific job - most like a <strong>function</strong> in your codebase. Humans have ~20,000.</td></tr>
-                <tr><td>Protein</td><td>What a gene actually produces when "called" - the working machinery that does jobs in the cell. The function's <em>output</em>, and the thing that does real work.</td></tr>
-                <tr><td>RNA</td><td>A temporary working copy of a gene, made on demand. Like loading a function into memory to run it.</td></tr>
-                <tr><td>Mutation</td><td>A change in the DNA letters - a typo in the source. Some are harmless; some break things (cause disease).</td></tr>
+                <tr><td>Gene</td><td>A meaningful segment of DNA with a specific job - most like a <strong>function</strong> in your codebase. Humans have about 20,000 genes that make proteins, plus many more that make only RNA.</td></tr>
+                <tr><td>Protein</td><td>What most genes produce when "called" - the working machinery that does jobs in the cell. The function's <em>output</em>, and the thing that does most of the real work.</td></tr>
+                <tr><td>RNA</td><td>A working copy of a gene, made on demand. Like loading a function into memory to run it. Some RNAs are not copies on the way to a protein; they do jobs themselves.</td></tr>
+                <tr><td>Mutation</td><td>A change in the DNA letters - a typo in the source. Most are harmless; some break things (cause disease); a few are even helpful.</td></tr>
             </table></div>
 
             <h2>The "central dogma" - biology's main function call</h2>
@@ -150,9 +156,9 @@
                 <span class="arrow">→</span>
                 <span class="node">Protein<small>the output (translation)</small></span>
             </div>
-            <p>In programmer terms: <strong>transcription</strong> is copying a function's code out of the source file into memory (DNA → RNA), and <strong>translation</strong> is executing it to produce a result (RNA → protein). When biologists say a gene is "<strong>expressed</strong>," they mean it's currently being run - actively copied into RNA and made into protein.</p>
+            <p>In programmer terms: <strong>transcription</strong> is copying a function's code out of the source file into memory (DNA → RNA), and <strong>translation</strong> is executing it to produce a result (RNA → protein). When biologists say a gene is "<strong>expressed</strong>," they mean it's currently being run - actively copied into RNA (and, for protein-coding genes, usually made into protein).</p>
 
-            <div class="why"><h4>Why "gene expression" is the heart of so much bioinformatics</h4><p>Every cell has the same DNA, but a brain cell and a muscle cell are wildly different - because they <em>run different genes</em>. Measuring which genes are expressed, and how much, tells you what a cell is doing. That measurement (RNA-seq) is one of the most common analyses in the field, and it's the flagship project on this site.</p></div>
+            <div class="why"><h4>Why "gene expression" is the heart of so much bioinformatics</h4><p>Nearly every cell in your body has the same DNA, but a brain cell and a muscle cell are wildly different - because they <em>run different genes</em>. Measuring which genes are expressed, and how much, tells you what a cell is doing. That measurement (RNA-seq) is one of the most common analyses in the field, and it's the flagship project on this site.</p></div>
 
             <h2>A few more terms you'll meet constantly</h2>
             <div class="gloss"><table>
@@ -170,30 +176,30 @@
                     <div class="quiz-q-src">The 'central dogma' of biology describes information flowing as:</div>
                     <button data-opt data-correct>DNA to RNA to protein</button>
                     <button data-opt>Protein to RNA to DNA</button>
-                    <button data-opt>RNA to DNA to sugar</button>
+                    <button data-opt>DNA to protein to RNA</button>
                     <div class="quiz-explain">Correct. The central dogma describes genetic information flowing from DNA to RNA to protein.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">In this lesson, a gene is best described as:</div>
-                    <button data-opt>The entire organism</button>
+                    <button data-opt>The entire DNA of an organism</button>
                     <button data-opt data-correct>A stretch of DNA carrying instructions to make a product</button>
-                    <button data-opt>A single atom of carbon</button>
+                    <button data-opt>A temporary working copy made on demand</button>
                     <div class="quiz-explain">Right. A gene is a stretch of DNA that carries the instructions to make a product such as a protein.</div>
                 </div>
 
                 <div class="quiz">
                     <div class="quiz-q-src">DNA is written in an alphabet of how many letters (bases)?</div>
-                    <button data-opt>Two: 0 and 1</button>
+                    <button data-opt>Two: A and T</button>
                     <button data-opt data-correct>Four: A, C, G, and T</button>
-                    <button data-opt>Twenty-six, like the English alphabet</button>
+                    <button data-opt>Eight: four for genes and four for proteins</button>
                     <div class="quiz-explain">Correct. DNA uses a four-letter alphabet: A, C, G, and T.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">When biologists say a gene is 'expressed', what do they mean?</div>
                     <button data-opt data-correct>It is currently being run: copied into RNA and made into protein</button>
-                    <button data-opt>It has been permanently deleted from the genome</button>
-                    <button data-opt>It has been printed out onto paper</button>
-                    <div class="quiz-explain">Right. An expressed gene is actively being used: copied into RNA and made into protein, much like code being run.</div>
+                    <button data-opt>It is present in the genome, whether or not it is being used</button>
+                    <button data-opt>It contains a mutation that changes its letters</button>
+                    <div class="quiz-explain">Right. An expressed gene is actively being used: copied into RNA (and often made into protein), much like code being run.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">In the coding analogy, what is a genome?</div>
@@ -202,6 +208,17 @@
                     <button data-opt data-correct>The entire DNA of an organism, like the whole codebase</button>
                     <div class="quiz-explain">Correct. The genome is all of an organism's DNA, comparable to an entire codebase rather than a single function.</div>
                 </div>
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Crick F. Central dogma of molecular biology. <em>Nature</em> 227: 561-563, 1970. <a href="https://doi.org/10.1038/227561a0" target="_blank" rel="noopener">doi:10.1038/227561a0</a></li>
+                    <li>Nurk S, Koren S, Rhie A, et al. The complete sequence of a human genome. <em>Science</em> 376: 44-53, 2022. <a href="https://doi.org/10.1126/science.abj6987" target="_blank" rel="noopener">doi:10.1126/science.abj6987</a></li>
+                    <li>NHGRI. "Central Dogma", Talking Glossary of Genomic and Genetic Terms. <a href="https://www.genome.gov/genetics-glossary/Central-Dogma" target="_blank" rel="noopener">genome.gov</a></li>
+                    <li>GENCODE. Statistics about the current human GENCODE release (gene counts). <a href="https://www.gencodegenes.org/human/stats.html" target="_blank" rel="noopener">gencodegenes.org</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
+            </div>
+
             <a class="next-lesson" href="intro-computing-for-biologists.html" target="_blank" rel="noopener">
                 <span>Next in the Introduction</span>
                 <h3>Decode the jargon: the computing a biologist needs →</h3>
