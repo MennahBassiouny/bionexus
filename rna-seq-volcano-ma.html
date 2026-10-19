@@ -190,25 +190,33 @@
                 </div>
 
                 <h2><span class="step-num">1</span>Get a results table to plot</h2>
-                <p>We'll rebuild the results from the previous lesson so this notebook stands on its own. We keep both the raw <code class="inline">res</code> and the shrunken <code class="inline">res_shrunk</code>, because they differ in one column only: the shrunken version has steadier fold changes, while <code class="inline">padj</code> (the volcano's vertical axis) is identical in both. We use shrunken fold changes for the MA plot. (This example dataset is tiny, just 10 genes, so your plots will be sparse; with real data you will see thousands of points.)</p>
-                <pre><span class="k">library</span>(DESeq2)
+                <p>We'll rebuild the results from the previous lesson so this notebook stands on its own. We keep both the raw <code class="inline">res</code> and the shrunken <code class="inline">res_shrunk</code>, because they differ in one column only: the shrunken version has steadier fold changes, while <code class="inline">padj</code> (the volcano's vertical axis) is identical in both. We use shrunken fold changes for the MA plot. The data is the airway experiment from the flagship lesson: airway cells from 4 donors, untreated vs treated with the steroid dexamethasone.</p>
+                <pre>library(DESeq2)
 
-base <- <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
-counts <- as.matrix(read.csv(paste0(base, <span class="s">"test_counts.csv"</span>), row.names = 1))
-metadata <- read.csv(paste0(base, <span class="s">"test_metadata.csv"</span>), row.names = 1)
-metadata$condition <- factor(metadata$condition)
-metadata <- metadata[colnames(counts), , drop = FALSE]
+base &lt;- <span class="s">"https://raw.githubusercontent.com/MennahBassiouny/bionexus/main/"</span>
 
-dds <- DESeqDataSetFromMatrix(counts, metadata, design = ~ condition)
-dds <- DESeq(dds)
+<span class="c"># Count matrix: rows = genes (Ensembl IDs), columns = the 8 samples</span>
+counts  &lt;- as.matrix(read.csv(paste0(base, <span class="s">"airway-counts.csv"</span>), row.names = 1))
+<span class="c"># Sample table: which donor (cell) and whether it was treated (dex)</span>
+samples &lt;- read.csv(paste0(base, <span class="s">"airway-samples.csv"</span>), row.names = 1)
+<span class="c"># Gene names, so results show DUSP1 instead of ENSG00000120129</span>
+genes   &lt;- read.csv(paste0(base, <span class="s">"airway-genes.csv"</span>), row.names = 1)
 
-res        <- results(dds, contrast = c(<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>))
-res_shrunk <- lfcShrink(dds, coef = <span class="s">"condition_B_vs_A"</span>, type = <span class="s">"apeglm"</span>)</pre>
+samples$cell &lt;- factor(samples$cell)
+samples$dex  &lt;- factor(samples$dex, levels = c(<span class="s">"untrt"</span>, <span class="s">"trt"</span>))  <span class="c"># untreated = baseline</span>
+samples &lt;- samples[colnames(counts), ]   <span class="c"># same order as the count columns</span>
+
+dds &lt;- DESeqDataSetFromMatrix(counts, samples, design = ~ cell + dex)
+dds &lt;- DESeq(dds)
+
+res &lt;- results(dds, contrast = c(<span class="s">"dex"</span>, <span class="s">"trt"</span>, <span class="s">"untrt"</span>), alpha = 0.05)
+res$symbol &lt;- genes[rownames(res), <span class="s">"symbol"</span>]
+res_shrunk &lt;- lfcShrink(dds, coef = <span class="s">"dex_trt_vs_untrt"</span>, type = <span class="s">"apeglm"</span>)</pre>
 
                 <h2><span class="step-num">2</span>The MA plot (the health check)</h2>
                 <p>DESeq2 has this one built in. Use the <em>shrunken</em> results so low-count noise doesn't spray dots all over the edges.</p>
-                <pre>plotMA(res_shrunk, alpha = 0.05, ylim = c(-3, 3), main = <span class="s">"MA plot (shrunken)"</span>)</pre>
-                <p>How to read it: each dot is a gene. The horizontal axis is the average expression level (low on the left, high on the right). The vertical axis is the log2 fold change. Dots far from the centre line changed a lot; DESeq2 colours the significant ones (we set <code class="inline">alpha = 0.05</code> so it uses the same padj cutoff as the volcano plot; its default is 0.1). With real data (thousands of genes), a healthy MA plot is a fat cloud hugging the zero line, fanning out a little on the low-expression left side (where there's naturally more noise). If the whole cloud is tilted or curved away from zero, something may be off with normalization. More dots above than below (or the reverse) can simply be real biology.</p>
+                <pre>plotMA(res_shrunk, alpha = 0.05, ylim = c(-5, 5), main = <span class="s">"MA plot (shrunken)"</span>)</pre>
+                <p>How to read it: each dot is a gene. The horizontal axis is the average expression level (low on the left, high on the right). The vertical axis is the log2 fold change. Dots far from the centre line changed a lot; DESeq2 colours the significant ones (we set <code class="inline">alpha = 0.05</code> so it uses the same padj cutoff as the volcano plot; its default is 0.1). A healthy MA plot, like the one airway gives you, is a fat cloud hugging the zero line, fanning out a little on the low-expression left side (where there's naturally more noise). If the whole cloud is tilted or curved away from zero, something may be off with normalization. More dots above than below (or the reverse) can simply be real biology.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Why "MA"?</h4>
@@ -226,7 +234,7 @@ df$sig <- df$padj &lt; 0.05 &amp; abs(df$log2FoldChange) > 1
 plot(df$log2FoldChange, -log10(df$padj),
      pch = 20,
      col = ifelse(df$sig, <span class="s">"#a855f7"</span>, <span class="s">"#cbd5e1"</span>),
-     xlab = <span class="s">"log2 fold change (B vs A)"</span>,
+     xlab = <span class="s">"log2 fold change (treated vs untreated)"</span>,
      ylab = <span class="s">"-log10 adjusted p-value"</span>,
      main = <span class="s">"Volcano plot"</span>)
 
@@ -234,19 +242,19 @@ plot(df$log2FoldChange, -log10(df$padj),
 abline(h = -log10(0.05), lty = 2, col = <span class="s">"#64748b"</span>)
 abline(v = c(-1, 1), lty = 2, col = <span class="s">"#64748b"</span>)
 
-<span class="c"># label the five most significant genes</span>
-top <- head(df[order(df$padj), ], 5)
-text(top$log2FoldChange, -log10(top$padj), labels = rownames(top), pos = 3, cex = 0.7)</pre>
+<span class="c"># label the eight most significant genes with their names</span>
+top <- head(df[order(df$padj), ], 8)
+text(top$log2FoldChange, -log10(top$padj), labels = top$symbol, pos = 3, cex = 0.7)</pre>
 
                 <h2><span class="step-num">4</span>How to read a volcano plot</h2>
                 <p>Picture the plot as four regions:</p>
                 <ul>
-                    <li><strong>Top-right</strong>: strongly up in condition B, and highly significant. Your most interesting "up" genes.</li>
-                    <li><strong>Top-left</strong>: strongly down in B, highly significant. Your most interesting "down" genes.</li>
+                    <li><strong>Top-right</strong>: strongly up after treatment, and highly significant. Your most interesting "up" genes.</li>
+                    <li><strong>Top-left</strong>: strongly down after treatment, highly significant. Your most interesting "down" genes.</li>
                     <li><strong>Bottom middle</strong>: little change and low confidence. The quiet majority of genes.</li>
                     <li><strong>Far sides but low down</strong>: big fold change but weak significance. Treat these with caution, they're often low-count genes (this is exactly what shrinkage helps with).</li>
                 </ul>
-                <p>The dashed lines are your thresholds: above the horizontal line means <code class="inline">padj &lt; 0.05</code>, and outside the vertical lines means at least a two-fold change. In real data, the coloured dots in the upper corners are the genes you'd carry forward into the next step, functional enrichment.</p>
+                <p>The dashed lines are your thresholds: above the horizontal line means <code class="inline">padj &lt; 0.05</code>, and outside the vertical lines means at least a two-fold change. In airway you should see about 1,000 purple genes (significant and at least two-fold), with steroid-response genes like DUSP1 among the labelled ones at the top. The coloured dots in the upper corners are the genes you'd carry forward into the next step, functional enrichment.</p>
 
                 <div class="levelup">
                     <h4>🔶 Level up: publication-ready volcanoes</h4>
@@ -297,6 +305,7 @@ text(top$log2FoldChange, -log10(top$padj), labels = rownames(top), pos = 3, cex 
                         <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15: 550, 2014. (MA plots and fold-change shrinkage) <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
                         <li>Zhu A, Ibrahim JG, Love MI. Heavy-tailed prior distributions for sequence count data: removing the noise and preserving large differences. <em>Bioinformatics</em> 35: 2084-2092, 2019. (apeglm shrinkage) <a href="https://doi.org/10.1093/bioinformatics/bty895" target="_blank" rel="noopener">doi:10.1093/bioinformatics/bty895</a></li>
                         <li>Conesa A, Madrigal P, Tarazona S, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17: 13, 2016. <a href="https://doi.org/10.1186/s13059-016-0881-8" target="_blank" rel="noopener">doi:10.1186/s13059-016-0881-8</a></li>
+                        <li>Himes BE, Jiang X, Wagner P, et al. RNA-Seq transcriptome profiling identifies CRISPLD2 as a glucocorticoid responsive gene that modulates cytokine function in airway smooth muscle cells. <em>PLoS One</em> 9: e99625, 2014. (The airway dataset used in this lesson.) <a href="https://doi.org/10.1371/journal.pone.0099625" target="_blank" rel="noopener">doi:10.1371/journal.pone.0099625</a></li>
                     </ol>
                     <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>

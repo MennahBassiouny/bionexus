@@ -186,12 +186,12 @@
                 </div>
 
                 <h2><span class="step-num">1</span>The design formula: the most important line you'll write</h2>
-                <p>The design formula is how you tell DESeq2 what comparison you care about. In the flagship it was simply:</p>
-                <pre>design = ~ condition</pre>
-                <p>The tilde (<code class="inline">~</code>) means "model the counts as a function of...", and <code class="inline">condition</code> is the column in your metadata that splits the samples into groups (here, A and B). That one choice frames the whole analysis.</p>
-                <p>Real experiments are rarely that clean. Suppose your samples were processed in two different batches, and batch differences are leaking into your data. You can tell DESeq2 to account for that:</p>
-                <pre>design = ~ batch + condition</pre>
-                <p>This says: "test the effect of <code class="inline">condition</code> while holding <code class="inline">batch</code> constant." (The order of the terms does not change the estimates. By convention the variable you care about goes last, because <code class="inline">results()</code> reports the last variable by default.) A simple rule worth memorizing: <strong>the variable you actually want to test goes last</strong>, and anything you want to control for (batch, sex, age) goes before it.</p>
+                <p>The design formula is how you tell DESeq2 what comparison you care about. The simplest version names a single column of your sample table:</p>
+                <pre>design = ~ dex</pre>
+                <p>The tilde (<code class="inline">~</code>) means "model the counts as a function of...", and <code class="inline">dex</code> is the column that splits the samples into groups (here, untreated and dexamethasone-treated airway cells). That one choice frames the whole analysis.</p>
+                <p>Real experiments are rarely that clean. In the airway data, the 8 samples come from 4 different donors, and donors differ from each other naturally. In the flagship lesson you already told DESeq2 to account for that:</p>
+                <pre>design = ~ cell + dex</pre>
+                <p>This says: "test the effect of <code class="inline">dex</code> while holding <code class="inline">cell</code> (the donor) constant." The same idea works for a processing batch, for example <code class="inline">~ batch + condition</code>. (The order of the terms does not change the estimates. By convention the variable you care about goes last, because <code class="inline">results()</code> reports the last variable by default.) A simple rule worth memorizing: <strong>the variable you actually want to test goes last</strong>, and anything you want to control for (batch, sex, age) goes before it.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Batch effect</h4>
@@ -200,7 +200,7 @@
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Design formula</h4>
-                    <p>A short recipe that lists which sample features should be modeled. <code class="inline">~ condition</code> tests one factor. <code class="inline">~ batch + condition</code> removes the batch effect before testing condition, so the result reflects biology rather than which day a sample was prepared. Getting this right is often the difference between a real finding and an artifact.</p>
+                    <p>A short recipe that lists which sample features should be modeled. <code class="inline">~ dex</code> tests one factor. <code class="inline">~ cell + dex</code> (or <code class="inline">~ batch + dex</code>) accounts for the donor or batch while testing treatment, so the result reflects biology rather than which donor or which day a sample came from. Getting this right is often the difference between a real finding and an artifact.</p>
                 </div>
 
                 <h2><span class="step-num">2</span>What DESeq2 actually does (three moves)</h2>
@@ -216,36 +216,44 @@
 
                 <h2><span class="step-num">3</span>Run it, with two good habits</h2>
                 <p>Here is the workflow again, with two additions that real analyses use: filtering out genes with almost no reads, and checking the coefficient names.</p>
-                <pre><span class="k">library</span>(DESeq2)
+                <pre>library(DESeq2)
 
-base <- <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
-counts <- as.matrix(read.csv(paste0(base, <span class="s">"test_counts.csv"</span>), row.names = 1))
-metadata <- read.csv(paste0(base, <span class="s">"test_metadata.csv"</span>), row.names = 1)
-metadata$condition <- factor(metadata$condition)
-metadata <- metadata[colnames(counts), , drop = FALSE]
+base &lt;- <span class="s">"https://raw.githubusercontent.com/MennahBassiouny/bionexus/main/"</span>
 
-dds <- DESeqDataSetFromMatrix(countData = counts,
-                              colData   = metadata,
-                              design    = ~ condition)
+<span class="c"># Count matrix: rows = genes (Ensembl IDs), columns = the 8 samples</span>
+counts  &lt;- as.matrix(read.csv(paste0(base, <span class="s">"airway-counts.csv"</span>), row.names = 1))
+<span class="c"># Sample table: which donor (cell) and whether it was treated (dex)</span>
+samples &lt;- read.csv(paste0(base, <span class="s">"airway-samples.csv"</span>), row.names = 1)
+<span class="c"># Gene names, so results show DUSP1 instead of ENSG00000120129</span>
+genes   &lt;- read.csv(paste0(base, <span class="s">"airway-genes.csv"</span>), row.names = 1)
+
+samples$cell &lt;- factor(samples$cell)
+samples$dex  &lt;- factor(samples$dex, levels = c(<span class="s">"untrt"</span>, <span class="s">"trt"</span>))  <span class="c"># untreated = baseline</span>
+samples &lt;- samples[colnames(counts), ]   <span class="c"># same order as the count columns</span>
+
+dds &lt;- DESeqDataSetFromMatrix(countData = counts,
+                              colData   = samples,
+                              design    = ~ cell + dex)
 
 <span class="c"># Habit 1: drop genes with almost no reads (faster, less noise)</span>
-keep <- rowSums(counts(dds)) >= 10
-dds <- dds[keep, ]
+keep &lt;- rowSums(counts(dds)) &gt;= 10
+dds &lt;- dds[keep, ]
 
-dds <- DESeq(dds)
+dds &lt;- DESeq(dds)
 
 <span class="c"># Habit 2: see the coefficients DESeq2 estimated (you'll need a name in step 5)</span>
-resultsNames(dds)</pre>
+resultsNames(dds)   <span class="c"># ends with "dex_trt_vs_untrt"</span></pre>
 
                 <h2><span class="step-num">4</span>Read the results table properly</h2>
                 <p>Pull the comparison you want, then read what came back:</p>
-                <pre>res <- results(dds, contrast = c(<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>), alpha = 0.05)
-summary(res, alpha = 0.05)         <span class="c"># how many up / down at padj &lt; 0.05</span>
-head(res[order(res$padj), ], 10)   <span class="c"># the 10 most convincing genes</span></pre>
+                <pre>res &lt;- results(dds, contrast = c(<span class="s">"dex"</span>, <span class="s">"trt"</span>, <span class="s">"untrt"</span>), alpha = 0.05)
+summary(res)                                   <span class="c"># how many up / down at padj &lt; 0.05</span>
+res$symbol &lt;- genes[rownames(res), <span class="s">"symbol"</span>]   <span class="c"># readable gene names</span>
+head(res[order(res$padj), ], 10)               <span class="c"># the 10 most convincing genes</span></pre>
                 <p>Every column earns its place:</p>
                 <ul>
                     <li><strong>baseMean</strong>: the average normalized count for that gene across all samples. A sanity check on how expressed the gene is.</li>
-                    <li><strong>log2FoldChange</strong>: the effect size, on a log2 scale. Plus 1 means doubled in B vs A, minus 1 means halved. Sign is direction, size is magnitude.</li>
+                    <li><strong>log2FoldChange</strong>: the effect size, on a log2 scale. Plus 1 means doubled in treated vs untreated, minus 1 means halved. Sign is direction, size is magnitude.</li>
                     <li><strong>lfcSE</strong>: the standard error of that fold change, so how uncertain it is.</li>
                     <li><strong>stat</strong>: the test statistic (the fold change divided by its error).</li>
                     <li><strong>pvalue</strong>: the probability of seeing a change at least this large if the gene were truly unchanged.</li>
@@ -253,15 +261,15 @@ head(res[order(res$padj), ], 10)   <span class="c"># the 10 most convincing gene
                 </ul>
                 <p>To pull a clean list of hits, filter on both significance and effect size:</p>
                 <pre><span class="c"># significant AND at least a two-fold change</span>
-sig <- subset(res, padj < 0.05 & abs(log2FoldChange) > 1)
-nrow(sig)</pre>
-                <p>One thing that surprises beginners: some genes have <code class="inline">NA</code> in the <code class="inline">padj</code> column. That is not a bug. padj is <code class="inline">NA</code> when DESeq2 filtered a gene out for having counts too low to be likely to reach significance (this "independent filtering" gives your real hits more power), when a gene has zero counts in every sample, or when it has an extreme outlier count. Treat <code class="inline">NA</code> padj as "not testable", not "failed".</p>
+sig &lt;- subset(res, padj &lt; 0.05 &amp; abs(log2FoldChange) &gt; 1)
+nrow(sig)   <span class="c"># about 1,000 genes</span></pre>
+                <p>One thing that surprises beginners: some genes have <code class="inline">NA</code> in the <code class="inline">padj</code> column. That is not a bug. padj is <code class="inline">NA</code> when DESeq2 filtered a gene out for having counts too low to be likely to reach significance (this "independent filtering" gives your real hits more power), when a gene has zero counts in every sample, or when it has an extreme outlier count. Treat <code class="inline">NA</code> padj as "not testable", not "failed". In airway, with the filter from step 3, about 5,200 of the 22,000 remaining genes get NA for low counts.</p>
 
                 <h2><span class="step-num">5</span>Cleaner effect sizes: LFC shrinkage</h2>
                 <p>A low-count gene can show a huge fold change purely from noise (two reads versus eight reads is "4x", but it's meaningless). <strong>Shrinkage</strong> fixes this: it pulls unreliable fold changes toward zero while leaving well-measured genes almost untouched. The result is rankings you can trust and much cleaner volcano and MA plots.</p>
                 <pre><span class="c"># apeglm is the recommended shrinkage method; install it once if needed</span>
 <span class="c"># BiocManager::install("apeglm")</span>
-res_shrunk <- lfcShrink(dds, coef = <span class="s">"condition_B_vs_A"</span>, type = <span class="s">"apeglm"</span>)
+res_shrunk <- lfcShrink(dds, coef = <span class="s">"dex_trt_vs_untrt"</span>, type = <span class="s">"apeglm"</span>)
 head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                 <p>The <code class="inline">coef</code> name comes straight from <code class="inline">resultsNames(dds)</code> in step 3. Use the shrunken fold changes when you rank genes <em>by fold change</em> or plot fold changes (for example an MA plot). Shrinkage changes only the <code class="inline">log2FoldChange</code> column: <code class="inline">pvalue</code> and <code class="inline">padj</code> are the same in both.</p>
 
@@ -270,8 +278,8 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                 <pre>write.csv(as.data.frame(res), <span class="s">"deseq2_results.csv"</span>)</pre>
 
                 <div class="levelup">
-                    <h4>🔶 Level up: real data and real designs</h4>
-                    <p>Swap the example files for a published dataset like the <strong>airway</strong> experiment (GEO accession GSE52778). In R you can even load it ready-made with <code class="inline">BiocManager::install("airway")</code>. Try a design that controls for a covariate, for example <code class="inline">~ cell + dex</code>, and watch how accounting for the cell line sharpens the treatment effect.</p>
+                    <h4>🔶 Try this: test the design</h4>
+                    <p>Change the design to <code class="inline">~ dex</code> and rerun steps 3 and 4. You should lose roughly a third of your significant genes (about 2,700 instead of about 4,000). Why? Without <code class="inline">cell</code>, the natural differences between the 4 donors are treated as noise, which weakens the evidence for every gene. Then look at <code class="inline">resultsNames(dds)</code> for both designs and spot the difference.</p>
                     <p><a href="resources.html" target="_blank" rel="noopener">Find dataset links in Resources →</a></p>
                 </div>
 
@@ -324,6 +332,7 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                         <li>Anders S, Huber W. Differential expression analysis for sequence count data. <em>Genome Biology</em> 11: R106, 2010. (DESeq; median-of-ratios size factors) <a href="https://doi.org/10.1186/gb-2010-11-10-r106" target="_blank" rel="noopener">doi:10.1186/gb-2010-11-10-r106</a></li>
                         <li>Bourgon R, Gentleman R, Huber W. Independent filtering increases detection power for high-throughput experiments. <em>PNAS</em> 107: 9546-9551, 2010. (why some padj values are NA) <a href="https://doi.org/10.1073/pnas.0914005107" target="_blank" rel="noopener">doi:10.1073/pnas.0914005107</a></li>
                         <li>Li Y, Ge X, Peng F, Li W, Li JJ. Exaggerated false positives by popular differential expression methods when analyzing human population samples. <em>Genome Biology</em> 23: 79, 2022. (a caveat for large human cohorts) <a href="https://doi.org/10.1186/s13059-022-02648-4" target="_blank" rel="noopener">doi:10.1186/s13059-022-02648-4</a></li>
+                        <li>Himes BE, Jiang X, Wagner P, et al. RNA-Seq transcriptome profiling identifies CRISPLD2 as a glucocorticoid responsive gene that modulates cytokine function in airway smooth muscle cells. <em>PLoS One</em> 9: e99625, 2014. (The airway dataset used in this lesson.) <a href="https://doi.org/10.1371/journal.pone.0099625" target="_blank" rel="noopener">doi:10.1371/journal.pone.0099625</a></li>
                     </ol>
                     <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>

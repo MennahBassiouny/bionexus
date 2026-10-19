@@ -198,7 +198,7 @@
                 </div>
 
                 <h2><span class="step-num">1</span>Set up and get a ranked gene list</h2>
-                <p>Enrichment needs <em>real</em> gene IDs (so the tools can look up what each gene does), which our small synthetic dataset does not have. So we'll use a ready-made example list of real human genes that ships with the analysis package. It is a named vector: each gene's ID paired with its fold change, sorted from most up to most down. That is exactly the shape your own DESeq2 results take once you map them (we show how at the end).</p>
+                <p>Enrichment needs <em>real</em> gene IDs (so the tools can look up what each gene does), which means mapping your gene IDs to the IDs the annotation database uses. To keep the first run simple, we'll start with a ready-made list of real human genes that ships with the analysis package. It is a named vector: each gene's ID paired with its fold change, sorted from most up to most down. That is exactly the shape your own DESeq2 results take once you map them (we show how to do it with your airway results at the end).</p>
                 <pre><span class="c"># clusterProfiler is the standard R toolkit for enrichment</span>
 <span class="k">if</span> (!requireNamespace(<span class="s">"BiocManager"</span>, quietly = TRUE)) install.packages(<span class="s">"BiocManager"</span>)
 BiocManager::install(c(<span class="s">"clusterProfiler"</span>, <span class="s">"org.Hs.eg.db"</span>, <span class="s">"DOSE"</span>, <span class="s">"enrichplot"</span>), update = FALSE, ask = FALSE)
@@ -261,20 +261,23 @@ gseaplot2(gse, geneSetID = 1, title = gse$Description[1])</pre>
                 <p>The goal is not a giant table. It is a sentence: "the genes that changed are enriched for X, which makes sense because our treatment does Y." That sentence is the biological result of the whole analysis.</p>
 
                 <h2>Using your own DESeq2 results</h2>
-                <p>To run this on your own data, you need two small steps: translate your gene symbols into Entrez IDs, and rank them. Here is the bridge from a DESeq2 results table:</p>
-                <pre><span class="c"># res is your DESeq2 results data frame, with gene symbols as row names</span>
-ids <- bitr(rownames(res), fromType = <span class="s">"SYMBOL"</span>,
+                <p>To run this on your own data, you need two small steps: translate your gene IDs into Entrez IDs, and rank them. Here is the bridge from a DESeq2 results table:</p>
+                <pre><span class="c"># res is your DESeq2 results table from the airway lessons;</span>
+<span class="c"># its row names are Ensembl IDs (ENSG...). Map them to Entrez IDs.</span>
+ids &lt;- bitr(rownames(res), fromType = <span class="s">"ENSEMBL"</span>,
             toType = <span class="s">"ENTREZID"</span>, OrgDb = org.Hs.eg.db)
-ids <- ids[!duplicated(ids$SYMBOL) & !duplicated(ids$ENTREZID), ]  <span class="c"># keep one mapping per gene (the first)</span>
+ids &lt;- ids[!duplicated(ids$ENSEMBL) &amp; !duplicated(ids$ENTREZID), ]  <span class="c"># keep one mapping per gene (the first)</span>
 
 <span class="c"># build a ranked named vector (rank by the test statistic, high to low)</span>
-ranks <- res$stat
-names(ranks) <- rownames(res)
-ranks <- ranks[ids$SYMBOL]        <span class="c"># keep only genes that mapped</span>
-names(ranks) <- ids$ENTREZID      <span class="c"># rows now line up one-to-one</span>
-ranks <- ranks[!is.na(ranks)]
-ranks <- sort(ranks, decreasing = TRUE)
-<span class="c"># now feed 'ranks' into gseGO() exactly as above</span></pre>
+ranks &lt;- res$stat
+names(ranks) &lt;- rownames(res)
+ranks &lt;- ranks[ids$ENSEMBL]       <span class="c"># keep only genes that mapped</span>
+names(ranks) &lt;- ids$ENTREZID      <span class="c"># rows now line up one-to-one</span>
+ranks &lt;- ranks[!is.na(ranks)]
+ranks &lt;- sort(ranks, decreasing = TRUE)
+
+<span class="c"># now feed 'ranks' into gseGO() exactly as above</span>
+<span class="c"># (if your row names are gene symbols instead, use fromType = "SYMBOL")</span></pre>
 
                 <div class="levelup">
                     <h4>🔶 Level up</h4>

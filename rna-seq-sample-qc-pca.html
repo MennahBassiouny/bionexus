@@ -222,28 +222,37 @@
 
             <h2>A worked example</h2>
             <p>In DESeq2 the whole check is a few lines. You build the dataset, transform with <code class="inline">vst</code>, then call <code class="inline">plotPCA</code>, coloring points by the treatment column (<code class="inline">dex</code> in the airway dataset).</p>
-            <pre><code># install.packages("pheatmap")   # once
-# BiocManager::install("airway")  # once, the example dataset
+            <pre><code><span class="c"># install.packages("pheatmap")   # once</span>
 library(DESeq2)
-library(airway)
-data(airway)                       # 8 samples: 4 cell lines x treated/untreated
 
-# dds built from RAW counts, airway design ~ cell + dex
-dds &lt;- DESeqDataSet(airway, design = ~ cell + dex)
+base &lt;- <span class="s">"https://raw.githubusercontent.com/MennahBassiouny/bionexus/main/"</span>
 
-# variance stabilizing transform for QC / visualization only
+<span class="c"># Count matrix: rows = genes (Ensembl IDs), columns = the 8 samples</span>
+counts  &lt;- as.matrix(read.csv(paste0(base, <span class="s">"airway-counts.csv"</span>), row.names = 1))
+<span class="c"># Sample table: which donor (cell) and whether it was treated (dex)</span>
+samples &lt;- read.csv(paste0(base, <span class="s">"airway-samples.csv"</span>), row.names = 1)
+<span class="c"># Gene names, so results show DUSP1 instead of ENSG00000120129</span>
+genes   &lt;- read.csv(paste0(base, <span class="s">"airway-genes.csv"</span>), row.names = 1)
+
+samples$cell &lt;- factor(samples$cell)
+samples$dex  &lt;- factor(samples$dex, levels = c(<span class="s">"untrt"</span>, <span class="s">"trt"</span>))  <span class="c"># untreated = baseline</span>
+samples &lt;- samples[colnames(counts), ]   <span class="c"># same order as the count columns</span>
+
+<span class="c"># dds built from RAW counts, airway design ~ cell + dex</span>
+dds &lt;- DESeqDataSetFromMatrix(counts, samples, design = ~ cell + dex)
+
+<span class="c"># variance stabilizing transform for QC / visualization only</span>
 vsd &lt;- vst(dds, blind = TRUE)
 
-# PCA colored by the treatment column; look for two clusters
-plotPCA(vsd, intgroup = "dex")
+<span class="c"># PCA colored by treatment; look for two clusters</span>
+plotPCA(vsd, intgroup = <span class="s">"dex"</span>)
 
-# Second check: sample-to-sample distance heatmap
-sampleDists &lt;- dist(t(assay(vsd)))      # distances across all genes
+<span class="c"># Second check: sample-to-sample distance heatmap</span>
+sampleDists &lt;- dist(t(assay(vsd)))      <span class="c"># distances across all genes</span>
 mat &lt;- as.matrix(sampleDists)
 pheatmap::pheatmap(mat,
                    clustering_distance_rows = sampleDists,
-                   clustering_distance_cols = sampleDists)
-</code></pre>
+                   clustering_distance_cols = sampleDists)</code></pre>
 
             <h2>Check your understanding</h2>
             <div class="quiz">

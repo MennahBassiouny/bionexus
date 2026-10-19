@@ -192,60 +192,63 @@
 
                 <h2><span class="step-num">1</span>Set up and transform</h2>
                 <p>Rebuild the dataset from the previous lessons, then transform it. We'll also install <code class="inline">pheatmap</code>, a small, friendly package for drawing heatmaps.</p>
-                <pre><span class="k">library</span>(DESeq2)
+                <pre>library(DESeq2)
 install.packages(<span class="s">"pheatmap"</span>)   <span class="c"># small CRAN package, installs quickly</span>
-<span class="k">library</span>(pheatmap)
+library(pheatmap)
 
-base <- <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
-counts <- as.matrix(read.csv(paste0(base, <span class="s">"test_counts.csv"</span>), row.names = 1))
-metadata <- read.csv(paste0(base, <span class="s">"test_metadata.csv"</span>), row.names = 1)
-metadata$condition <- factor(metadata$condition)
-metadata <- metadata[colnames(counts), , drop = FALSE]
+base &lt;- <span class="s">"https://raw.githubusercontent.com/MennahBassiouny/bionexus/main/"</span>
 
-dds <- DESeqDataSetFromMatrix(counts, metadata, design = ~ condition)
-dds <- DESeq(dds)
-res <- results(dds, contrast = c(<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>))
+<span class="c"># Count matrix: rows = genes (Ensembl IDs), columns = the 8 samples</span>
+counts  &lt;- as.matrix(read.csv(paste0(base, <span class="s">"airway-counts.csv"</span>), row.names = 1))
+<span class="c"># Sample table: which donor (cell) and whether it was treated (dex)</span>
+samples &lt;- read.csv(paste0(base, <span class="s">"airway-samples.csv"</span>), row.names = 1)
+<span class="c"># Gene names, so results show DUSP1 instead of ENSG00000120129</span>
+genes   &lt;- read.csv(paste0(base, <span class="s">"airway-genes.csv"</span>), row.names = 1)
+
+samples$cell &lt;- factor(samples$cell)
+samples$dex  &lt;- factor(samples$dex, levels = c(<span class="s">"untrt"</span>, <span class="s">"trt"</span>))  <span class="c"># untreated = baseline</span>
+samples &lt;- samples[colnames(counts), ]   <span class="c"># same order as the count columns</span>
+
+dds &lt;- DESeqDataSetFromMatrix(counts, samples, design = ~ cell + dex)
+dds &lt;- DESeq(dds)
+res &lt;- results(dds, contrast = c(<span class="s">"dex"</span>, <span class="s">"trt"</span>, <span class="s">"untrt"</span>), alpha = 0.05)
 
 <span class="c"># the transformed values we'll use for every plot below</span>
-vsd <- varianceStabilizingTransformation(dds, blind = FALSE)
-<span class="c"># tip: on real datasets (1,000+ genes), vst(dds, blind = FALSE) is a faster shortcut;
-# it refuses tiny datasets like this 10-gene example</span></pre>
+vsd &lt;- vst(dds, blind = FALSE)</pre>
 
-                <h2><span class="step-num">2</span>Do my samples cluster by condition? (the QC heatmap)</h2>
+                <h2><span class="step-num">2</span>Do my samples cluster by treatment? (the QC heatmap)</h2>
                 <p>Before trusting any result, ask a basic question: do replicates of the same condition look alike? We answer it by measuring the distance between every pair of samples and drawing those distances as a heatmap.</p>
-                <pre>sampleDists <- dist(t(assay(vsd)))   <span class="c"># distance between samples</span>
-mat <- as.matrix(sampleDists)
+                <pre>sampleDists &lt;- dist(t(assay(vsd)))   <span class="c"># distance between samples</span>
+mat &lt;- as.matrix(sampleDists)
+ann &lt;- as.data.frame(colData(vsd)[, c(<span class="s">"dex"</span>, <span class="s">"cell"</span>)])   <span class="c"># colour bars: treatment and donor</span>
 
 pheatmap(mat,
          clustering_distance_rows = sampleDists,
          clustering_distance_cols = sampleDists,
+         annotation_col = ann,
          main = <span class="s">"Sample-to-sample distances"</span>)</pre>
-                <p>How to read it: in pheatmap's default colours, blue (cool) means a small distance, so the two samples are more similar, and red (warm) means they are less similar. You want samples of the same condition to sit together in tight blocks, with a clear split between groups. If one sample clusters with the wrong group, that's a red flag worth investigating: a possible sample swap, a batch effect, or an outlier. This single plot catches problems that would otherwise quietly ruin your conclusions.</p>
+                <p>How to read it: in pheatmap's default colours, blue (cool) means a small distance, so the two samples are more similar, and red (warm) means they are less similar. You want samples of the same condition to sit together in tight blocks, with a clear split between groups. In airway, the four untreated samples form one block and the four treated samples another. If one sample clusters with the wrong group, that's a red flag worth investigating: a possible sample swap, a batch effect, or an outlier. This single plot catches problems that would otherwise quietly ruin your conclusions.</p>
 
                 <h2><span class="step-num">3</span>The same question, even faster: PCA</h2>
                 <p>A PCA plot squeezes all the genes down to two axes that capture the biggest sources of variation, so you can see the grouping in one glance. DESeq2 has it built in.</p>
-                <pre>plotPCA(vsd, intgroup = <span class="s">"condition"</span>)</pre>
-                <p>Samples of the same condition should cluster together and the two conditions should separate, ideally along the first axis (PC1). PCA and the distance heatmap answer the same question two ways; seeing both agree is reassuring.</p>
+                <pre>plotPCA(vsd, intgroup = c(<span class="s">"dex"</span>, <span class="s">"cell"</span>))</pre>
+                <p>In airway, the untreated and treated samples separate along the first axis (PC1, about 48% of the variation), and the second axis (PC2, about 23%) mostly reflects which donor the cells came from. That is a healthy picture: the treatment is the biggest signal, and the donor effect is real but smaller, which is exactly why the design includes <code class="inline">cell</code>.</p>
 
                 <h2><span class="step-num">4</span>Which genes separate the groups? (the gene heatmap)</h2>
                 <p>Now the satisfying one. We take the most differentially expressed genes, scale each gene so we see its <em>pattern</em> rather than its absolute level, and let clustering arrange them.</p>
-                <pre><span class="c"># up to 30 of the most significant genes (padj &lt; 0.05)</span>
-sig <- which(!is.na(res$padj) &amp; res$padj &lt; 0.05)
-top <- head(sig[order(res$padj[sig])], 30)
-<span class="c"># (this 10-gene example has only a few hits; real data gives you a full 30)</span>
-mat <- assay(vsd)[top, ]
+                <pre><span class="c"># the 30 most significant genes (padj &lt; 0.05)</span>
+sig &lt;- which(!is.na(res$padj) &amp; res$padj &lt; 0.05)
+top &lt;- head(sig[order(res$padj[sig])], 30)
+mat &lt;- assay(vsd)[top, ]
 
 <span class="c"># z-score each gene across samples (centre and scale per row)</span>
-mat <- t(scale(t(mat)))
-
-<span class="c"># label the columns by condition</span>
-ann <- as.data.frame(colData(vsd)[, <span class="s">"condition"</span>, drop = FALSE])
+mat &lt;- t(scale(t(mat)))
+rownames(mat) &lt;- genes[rownames(mat), <span class="s">"symbol"</span>]   <span class="c"># show gene names</span>
 
 pheatmap(mat,
-         annotation_col = ann,
-         show_rownames = FALSE,
+         annotation_col = ann,   <span class="c"># treatment and donor bars, from above</span>
          main = <span class="s">"Top 30 genes (z-scored)"</span>)</pre>
-                <p>Read it as blocks of colour. A clean result shows two opposing blocks: a set of genes high (one colour) in condition A and low in B, and another set doing the reverse. The samples will usually group by condition here. That is expected, because we picked genes that differ between the conditions, so it is <strong>not</strong> independent proof that the hits are real. For an unbiased check, use the sample-distance heatmap above and a PCA, which use all genes.</p>
+                <p>Read it as blocks of colour. A clean result shows two opposing blocks: a set of genes high (red) in the untreated samples and low (blue) after treatment, and another set doing the reverse. The gene names on the right include steroid-response genes such as DUSP1, KLF15 and PER1. The samples will usually group by condition here. That is expected, because we picked genes that differ between the conditions, so it is <strong>not</strong> independent proof that the hits are real. For an unbiased check, use the sample-distance heatmap above and a PCA, which use all genes.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Z-score scaling</h4>
@@ -301,6 +304,7 @@ pheatmap(mat,
                         <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15: 550, 2014. (variance-stabilizing transformation, sample distances) <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
                         <li>Conesa A, Madrigal P, Tarazona S, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17: 13, 2016. <a href="https://doi.org/10.1186/s13059-016-0881-8" target="_blank" rel="noopener">doi:10.1186/s13059-016-0881-8</a></li>
                         <li>Gu Z, Eils R, Schlesner M. Complex heatmaps reveal patterns and correlations in multidimensional genomic data. <em>Bioinformatics</em> 32: 2847-2849, 2016. (ComplexHeatmap) <a href="https://doi.org/10.1093/bioinformatics/btw313" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btw313</a></li>
+                        <li>Himes BE, Jiang X, Wagner P, et al. RNA-Seq transcriptome profiling identifies CRISPLD2 as a glucocorticoid responsive gene that modulates cytokine function in airway smooth muscle cells. <em>PLoS One</em> 9: e99625, 2014. (The airway dataset used in this lesson.) <a href="https://doi.org/10.1371/journal.pone.0099625" target="_blank" rel="noopener">doi:10.1371/journal.pone.0099625</a></li>
                     </ol>
                     <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>

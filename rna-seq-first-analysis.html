@@ -212,51 +212,56 @@ BiocManager::install(<span class="s">"DESeq2"</span>, update = FALSE, ask = FALS
                 <pre><span class="k">library</span>(DESeq2)</pre>
 
                 <h2><span class="step-num">2</span>Load the data</h2>
-                <p>We'll use a tiny, ready-made example count matrix (just 10 genes, so your volcano plot will have only 10 dots; real data gives thousands) so everything runs in <em>seconds</em> and you can focus on the workflow. (When you're ready for a real published dataset, see the "Level up" box near the end - the steps are identical.)</p>
-                <p>Two files: a <strong>count matrix</strong> (genes × samples) and a <strong>metadata</strong> table that says which condition each sample belongs to.</p>
-                <pre>base <- <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
+                <p>We'll use a real published experiment, the <strong>airway</strong> study (Himes et al., 2014, GEO accession <strong>GSE52778</strong>). Researchers took airway smooth-muscle cells from <strong>4 donors</strong> and split each donor's cells in two: one half untreated, the other treated with <strong>dexamethasone</strong>, a steroid used to treat asthma. That gives 8 samples. It is one of the most widely used teaching datasets for exactly this workflow.</p>
+                <p>BioNexus keeps a copy as three small files, so it loads in seconds with nothing extra to install: a <strong>count matrix</strong> (genes × samples), a <strong>sample table</strong> saying which donor each sample came from and whether it was treated, and a <strong>gene table</strong> that turns gene IDs into readable names.</p>
+                <pre>base &lt;- <span class="s">"https://raw.githubusercontent.com/MennahBassiouny/bionexus/main/"</span>
 
-<span class="c"># Count matrix: rows = genes, columns = samples - exactly what DESeq2 wants.</span>
-counts <- as.matrix(read.csv(paste0(base, <span class="s">"test_counts.csv"</span>), row.names = 1))
+<span class="c"># Count matrix: rows = genes (Ensembl IDs), columns = the 8 samples</span>
+counts  &lt;- as.matrix(read.csv(paste0(base, <span class="s">"airway-counts.csv"</span>), row.names = 1))
+<span class="c"># Sample table: which donor (cell) and whether it was treated (dex)</span>
+samples &lt;- read.csv(paste0(base, <span class="s">"airway-samples.csv"</span>), row.names = 1)
+<span class="c"># Gene names, so results show DUSP1 instead of ENSG00000120129</span>
+genes   &lt;- read.csv(paste0(base, <span class="s">"airway-genes.csv"</span>), row.names = 1)
 
-<span class="c"># Metadata: one row per sample, with a "condition" column (values A and B).</span>
-metadata <- read.csv(paste0(base, <span class="s">"test_metadata.csv"</span>), row.names = 1)
-metadata$condition <- factor(metadata$condition)
+samples$cell &lt;- factor(samples$cell)
+samples$dex  &lt;- factor(samples$dex, levels = c(<span class="s">"untrt"</span>, <span class="s">"trt"</span>))  <span class="c"># untreated = baseline</span>
+samples &lt;- samples[colnames(counts), ]   <span class="c"># same order as the count columns</span>
 
-<span class="c"># Keep the metadata rows in the same order as the count columns.</span>
-metadata <- metadata[colnames(counts), , drop = FALSE]
-
-dim(counts)        <span class="c"># genes x samples</span>
-head(counts)</pre>
-                <p>Take a moment to actually look at <code class="inline">head(counts)</code> and <code class="inline">head(metadata)</code>. Getting comfortable <em>looking</em> at your data before analyzing it is one of the most underrated habits in bioinformatics - most real-world mistakes are caught just by eyeballing the table.</p>
+dim(counts)        <span class="c"># genes x samples: about 33,000 x 8</span>
+head(counts)
+samples</pre>
+                <p>Take a moment to actually look at <code class="inline">head(counts)</code> and <code class="inline">samples</code>. You should see 4 donors (the <code class="inline">cell</code> column), each with one <code class="inline">untrt</code> and one <code class="inline">trt</code> sample. Getting comfortable <em>looking</em> at your data before analyzing it is one of the most underrated habits in bioinformatics: most real-world mistakes are caught just by eyeballing the table.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Normalization</h4>
-                    <p>You can't compare raw counts directly between samples, because some samples are sequenced more deeply than others (more total reads), making every gene look "higher" just by accident. DESeq2 <em>normalizes</em> to correct for this - adjusting so that differences reflect real biology, not how much data each sample happened to get. The good news: it does this for you automatically in the next step.</p>
+                    <p>You can't compare raw counts directly between samples, because some samples are sequenced more deeply than others (more total reads), making every gene look "higher" just by accident. DESeq2 <em>normalizes</em> to correct for this, adjusting so that differences reflect real biology, not how much data each sample happened to get. The good news: it does this for you automatically in the next step.</p>
                 </div>
 
                 <h2><span class="step-num">3</span>Run the analysis</h2>
                 <p>This is where DESeq2 earns its reputation. In two lines it normalizes the data, models the counts statistically, and prepares everything needed to test each gene.</p>
-                <pre><span class="c"># Build the DESeq2 dataset. design = ~condition is the question we're asking.</span>
-dds <- DESeqDataSetFromMatrix(countData = counts,
-                              colData   = metadata,
-                              design    = ~ condition)
+                <pre><span class="c"># Build the DESeq2 dataset. The design is the question we're asking.</span>
+dds &lt;- DESeqDataSetFromMatrix(countData = counts,
+                              colData   = samples,
+                              design    = ~ cell + dex)
 
-dds <- DESeq(dds)   <span class="c"># fit the model - this does the real work</span></pre>
-                <p>The <code class="inline">design = ~ condition</code> part is you telling DESeq2: "the thing I care about is the difference between conditions A and B." That single choice frames the entire analysis.</p>
+dds &lt;- DESeq(dds)   <span class="c"># fit the model - this does the real work</span></pre>
+                <p>The <code class="inline">design = ~ cell + dex</code> part is you telling DESeq2: "the thing I care about is the treatment (<code class="inline">dex</code>), but remember that samples come in pairs from the same donor (<code class="inline">cell</code>)." In effect, each treated sample is compared with its own untreated partner, so differences between donors do not get mistaken for noise. That single line frames the entire analysis.</p>
 
                 <h2><span class="step-num">4</span>Read the results</h2>
-                <p>Now we ask, for every gene: is the difference between A and B big enough - and consistent enough - to be real?</p>
-                <pre><span class="c"># contrast = compare condition B vs A</span>
-res <- results(dds, contrast = c(<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>))
-res <- res[order(res$padj), ]   <span class="c"># sort by adjusted p-value</span>
-head(res, 10)                    <span class="c"># the 10 most convincing hits</span></pre>
+                <p>Now we ask, for every gene: is the difference between treated and untreated big enough, and consistent enough across the 4 donors, to be real?</p>
+                <pre><span class="c"># compare treated (trt) vs untreated (untrt)</span>
+res &lt;- results(dds, contrast = c(<span class="s">"dex"</span>, <span class="s">"trt"</span>, <span class="s">"untrt"</span>), alpha = 0.05)
+summary(res)                                   <span class="c"># how many genes went up / down</span>
+res$symbol &lt;- genes[rownames(res), <span class="s">"symbol"</span>]   <span class="c"># add readable gene names</span>
+res &lt;- res[order(res$padj), ]                  <span class="c"># sort by adjusted p-value</span>
+head(res, 10)                                  <span class="c"># the 10 most convincing hits</span></pre>
                 <p>The results table has a few columns that matter enormously:</p>
                 <ul>
-                    <li><strong>log2FoldChange</strong> - how much the gene changed, on a log2 scale. +1 means it doubled in B vs A; −1 means it halved. Sign tells you direction, size tells you magnitude.</li>
+                    <li><strong>log2FoldChange</strong> - how much the gene changed, on a log2 scale. +1 means it doubled in treated vs untreated; −1 means it halved. Sign tells you direction, size tells you magnitude.</li>
                     <li><strong>pvalue</strong> - the probability of seeing a change at least this big <em>if the gene truly did not change</em>.</li>
                     <li><strong>padj</strong> - the p-value <em>adjusted</em> for the fact that we tested thousands of genes at once. <strong>This is the one you trust</strong>, not the raw p-value.</li>
                 </ul>
+                <p><strong>What you should see:</strong> about 4,000 genes with padj &lt; 0.05 (roughly 2,200 up and 1,800 down). Near the top of the list are genes like <strong>DUSP1</strong>, <strong>KLF15</strong> and <strong>PER1</strong>. These are well-known genes switched on by steroids, so finding them is a sign the pipeline worked: a correct analysis recovers known biology. You will also notice that about half the genes have <code class="inline">NA</code> in padj. Those had counts too low to test, and DESeq2 set them aside on purpose (more in the next lesson).</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Why padj, not pvalue?</h4>
@@ -265,72 +270,55 @@ head(res, 10)                    <span class="c"># the 10 most convincing hits</
 
                 <h2><span class="step-num">5</span>Visualize: the volcano plot</h2>
                 <p>The volcano plot is the iconic RNA-seq figure. Each dot is a gene. The x-axis is how much it changed (fold change); the y-axis is how confident we are (significance). The genes that matter - big change <em>and</em> high confidence - fly up into the top corners, which is where the name comes from.</p>
-                <pre><span class="c"># Turn the results into a plain data frame and drop genes with no p-value</span>
-df <- as.data.frame(res)
-df <- df[!is.na(df$padj), ]
-df$sig <- df$padj &lt; 0.05
+                <pre><span class="c"># Turn the results into a plain data frame and drop genes with no padj</span>
+df &lt;- as.data.frame(res)
+df &lt;- df[!is.na(df$padj), ]
+df$sig &lt;- df$padj &lt; 0.05
 
 plot(df$log2FoldChange, -log10(df$padj),
      pch = 20,
      col = ifelse(df$sig, <span class="s">"#a855f7"</span>, <span class="s">"#cbd5e1"</span>),
-     xlab = <span class="s">"log2 fold change (B vs A)"</span>,
+     xlab = <span class="s">"log2 fold change (treated vs untreated)"</span>,
      ylab = <span class="s">"-log10 adjusted p-value"</span>,
      main = <span class="s">"Volcano plot - your first one!"</span>)
 abline(h = -log10(0.05), lty = 2, col = <span class="s">"#64748b"</span>)   <span class="c"># the padj &lt; 0.05 line</span></pre>
-                <p>That's it. You just took a count matrix, ran a real statistical workflow, identified the genes that change between conditions, and made the figure you'll see in thousands of published papers. The exact same five steps scale up to a real experiment with 20,000 genes.</p>
+                <p>That's it. You just took a real published experiment, ran a proper statistical workflow, found the genes that respond to a steroid drug, and made the figure you'll see in thousands of published papers. Your plot should show thousands of grey dots near the bottom and a purple spray of hits rising on both sides.</p>
 
                 <div class="levelup">
-                    <h4>🔶 Level up: run it on a real published dataset</h4>
-                    <p>Ready to use real biology? A great next dataset is the <strong>airway</strong> experiment (Himes et al., 2014, GEO accession <strong>GSE52778</strong>): human airway smooth-muscle cells treated with dexamethasone, a steroid used in asthma. It's the classic teaching dataset for exactly this workflow.</p>
-                    <p>The only thing that changes is <em>where the count matrix comes from</em> - load airway counts and metadata instead of the example files, set the <code class="inline">design</code> to <code class="inline">~ cell + dex</code> (the treatment column in the airway data is named <code class="inline">dex</code>), and compare the treatment levels with <code class="inline">contrast = c("dex", "trt", "untrt")</code> (or relevel <code class="inline">dex</code> first, as in the code below). Every other step is the same. That repeatability is the whole point. (Handy bonus: in R, the <code class="inline">airway</code> Bioconductor package ships this exact dataset ready to load.)</p>
-                    <p><a href="resources.html" target="_blank" rel="noopener">Find dataset links in Resources →</a></p>
+                    <h4>🔶 Try this: what does the design buy you?</h4>
+                    <p>Rerun step 3 with <code class="inline">design = ~ dex</code> (leaving out <code class="inline">cell</code>), then run step 4 again and compare <code class="inline">summary(res)</code>. You should find about <strong>2,700</strong> significant genes instead of about <strong>4,000</strong>. Before you read on, think about why.</p>
+                    <p>Answer: without <code class="inline">cell</code>, DESeq2 does not know the samples come in donor pairs, so natural differences between donors look like random noise. More noise means weaker evidence, so fewer genes pass. Real experiments have structure, and putting it in the design is one of the most valuable things you can do.</p>
                 </div>
 
                 <details>
                     <summary>Prefer Python? The same analysis with PyDESeq2</summary>
-                    <p>DESeq2 lives in R, but <strong>PyDESeq2</strong> is a faithful Python re-implementation that gives essentially the same results - handy if you work mostly in Python (e.g. alongside scanpy for single-cell). Here's the identical five-step workflow in Python:</p>
+                    <p>DESeq2 lives in R, but <strong>PyDESeq2</strong> is a Python re-implementation that gives very similar results - handy if you work mostly in Python (e.g. alongside scanpy for single-cell). Here's the same five-step workflow in Python:</p>
                     <pre><span class="c"># install once</span>
 !pip install pydeseq2
 
-<span class="k">import</span> pandas <span class="k">as</span> pd
-<span class="k">from</span> pydeseq2.dds <span class="k">import</span> DeseqDataSet
-<span class="k">from</span> pydeseq2.ds <span class="k">import</span> DeseqStats
+import pandas as pd
+from pydeseq2.dds import DeseqDataSet
+from pydeseq2.ds import DeseqStats
 
-base = <span class="s">"https://raw.githubusercontent.com/owkin/PyDESeq2/main/datasets/synthetic/"</span>
-counts = pd.read_csv(base + <span class="s">"test_counts.csv"</span>, index_col=0).T   <span class="c"># samples x genes for PyDESeq2</span>
-metadata = pd.read_csv(base + <span class="s">"test_metadata.csv"</span>, index_col=0)
+base = <span class="s">"https://raw.githubusercontent.com/MennahBassiouny/bionexus/main/"</span>
+counts  = pd.read_csv(base + <span class="s">"airway-counts.csv"</span>, index_col=0).T   <span class="c"># PyDESeq2 wants samples x genes</span>
+samples = pd.read_csv(base + <span class="s">"airway-samples.csv"</span>, index_col=0)
+genes   = pd.read_csv(base + <span class="s">"airway-genes.csv"</span>, index_col=0)
+samples = samples.loc[counts.index]                                 <span class="c"># same order as the counts</span>
 
-dds = DeseqDataSet(counts=counts, metadata=metadata, design=<span class="s">"~condition"</span>)
+dds = DeseqDataSet(counts=counts, metadata=samples, design=<span class="s">"~cell + dex"</span>)
 dds.deseq2()
 
-stat_res = DeseqStats(dds, contrast=[<span class="s">"condition"</span>, <span class="s">"B"</span>, <span class="s">"A"</span>])
+stat_res = DeseqStats(dds, contrast=[<span class="s">"dex"</span>, <span class="s">"trt"</span>, <span class="s">"untrt"</span>], alpha=0.05)
 stat_res.summary()
-res = stat_res.results_df.sort_values(<span class="s">"padj"</span>)
+res = stat_res.results_df.join(genes).sort_values(<span class="s">"padj"</span>)
 res.head(10)</pre>
-                    <p>The columns (<code class="inline">log2FoldChange</code>, <code class="inline">pvalue</code>, <code class="inline">padj</code>) and how you read them are exactly the same as the R version above.</p>
+                    <p>The columns (<code class="inline">log2FoldChange</code>, <code class="inline">pvalue</code>, <code class="inline">padj</code>) and how you read them are exactly the same as in R. The fold changes match R almost exactly; the adjusted p-values differ a little because of small differences in the internal statistics, so expect about 3,900 significant genes rather than 4,000 (tested with PyDESeq2 0.5.4).</p>
                 </details>
 
-                <h2 style="border-top:2px solid rgba(91,156,248,0.2); padding-top:40px;">Now do it on real data: the airway dataset</h2>
-                <p>The example matrix above kept things fast so you could see the workflow. Here is the <strong>same analysis on a real published experiment</strong>: the <strong>airway</strong> study (Himes et al., 2014, GEO accession GSE52778), human airway smooth-muscle cells treated with dexamethasone, a steroid used in asthma. In R, the Bioconductor <code class="inline">airway</code> package ships this exact dataset ready to load, so it is fully reproducible. Run this in Colab with an R runtime, or in RStudio.</p>
-                <pre><span class="c"># install once (a few minutes the first time)</span>
-<span class="k">if</span> (!requireNamespace(<span class="s">"BiocManager"</span>, quietly = <span class="k">TRUE</span>)) install.packages(<span class="s">"BiocManager"</span>)
-BiocManager::install(<span class="k">c</span>(<span class="s">"airway"</span>, <span class="s">"DESeq2"</span>))
-
-<span class="k">library</span>(airway); <span class="k">library</span>(DESeq2)
-data(<span class="s">"airway"</span>)                              <span class="c"># a real RNA-seq dataset, ready to use</span>
-airway$dex &lt;- relevel(airway$dex, <span class="s">"untrt"</span>)   <span class="c"># make "untreated" the baseline</span>
-
-<span class="c"># note the design: cell line is a blocking (pairing) term, treatment is what we test</span>
-dds &lt;- DESeqDataSet(airway, design = ~ cell + dex)
-dds &lt;- DESeq(dds)
-res &lt;- results(dds)
-
-summary(res, alpha = 0.05)                <span class="c"># how many genes up/down at padj &lt; 0.05</span>
-head(res[order(res$padj), ])              <span class="c"># the strongest hits</span></pre>
-
                 <div class="why" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.35); border-radius:10px; padding:16px 20px; margin:18px 0;">
-                    <h4 style="color:#b45309; font-size:0.95rem; margin-bottom:8px;">What real data adds (that the example hid)</h4>
-                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">This matrix has roughly <strong>64,000 genes</strong>, most of them barely expressed, so filtering and the negative-binomial model earn their keep. The design is <code class="inline">~ cell + dex</code>, not just <code class="inline">~ dex</code>: real experiments have structure (here, four cell lines), and ignoring it would bury the signal. The adjusted p-value does real work, thousands of genes cross raw p &lt; 0.05 but fewer survive FDR. And you can sanity-check the biology: top hits like <code class="inline">DUSP1</code>, <code class="inline">KLF15</code>, and <code class="inline">PER1</code> are known dexamethasone-responsive genes, so a correct pipeline recovers known biology.</p>
+                    <h4 style="color:#b45309; font-size:0.95rem; margin-bottom:8px;">Where this data comes from</h4>
+                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">The counts are from the Bioconductor <code class="inline">airway</code> package, which holds all 63,677 annotated genes; our copy keeps the 33,469 genes that have at least one read. In R you can also load the full version with <code class="inline">BiocManager::install("airway")</code>, then <code class="inline">library(airway); data(airway)</code>. The raw sequencing files are on GEO under GSE52778.</p>
                 </div>
 
                 <div class="why" style="background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:16px 20px; margin:22px 0;">
@@ -339,10 +327,10 @@ head(res[order(res$padj), ])              <span class="c"># the strongest hits</
                 </div>
                 <h2>Check your understanding</h2>
                 <div class="quiz" data-question="A gene has a log2 fold change of −2. What does that mean?">
-                    <button data-opt data-correct>It dropped to one-quarter of its level in B versus A</button>
-                    <button data-opt>It doubled in B versus A</button>
+                    <button data-opt data-correct>It dropped to one-quarter of its level in treated versus untreated samples</button>
+                    <button data-opt>It doubled in treated versus untreated samples</button>
                     <button data-opt>It changed by exactly 2 read counts</button>
-                    <div class="quiz-explain"><strong>Correct.</strong> On a log2 scale, −1 = halved and −2 = halved again, so one-quarter of the original level. The negative sign means it went <em>down</em> in B.</div>
+                    <div class="quiz-explain"><strong>Correct.</strong> On a log2 scale, −1 = halved and −2 = halved again, so one-quarter of the original level. The negative sign means it went <em>down</em> with treatment.</div>
                 </div>
                 <div class="quiz" data-question="Why do we look at padj instead of the raw pvalue?">
                     <button data-opt data-correct>Because testing thousands of genes at once produces many false positives by chance</button>
@@ -359,10 +347,10 @@ head(res[order(res$padj), ])              <span class="c"># the strongest hits</
 
 
                 <div class="quiz" data-question="What does a gene with a log2 fold change of +1 mean?">
-                    <button data-opt data-correct>It roughly doubled in B versus A</button>
-                    <button data-opt>It dropped by half in B versus A</button>
+                    <button data-opt data-correct>It roughly doubled in treated versus untreated samples</button>
+                    <button data-opt>It dropped by half in treated versus untreated samples</button>
                     <button data-opt>It gained exactly one extra read</button>
-                    <div class="quiz-explain"><strong>Correct.</strong> On a log2 scale, +1 means twice the level. The positive sign means the gene went <em>up</em> in B compared with A.</div>
+                    <div class="quiz-explain"><strong>Correct.</strong> On a log2 scale, +1 means twice the level. The positive sign means the gene went <em>up</em> in treated compared with untreated samples.</div>
                 </div>
                 <div class="quiz" data-question="A gene has a tiny log2 fold change but a very small padj. Is it worth reporting as a key result?">
                     <button data-opt data-correct>Probably not on its own: the change is statistically clear but biologically tiny</button>
