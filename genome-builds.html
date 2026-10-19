@@ -130,15 +130,15 @@
             </div>
 
             <h2>A reference genome has versions</h2>
-            <p>A reference genome is one agreed-upon sequence that everyone aligns their reads against, so results are comparable. But the reference is improved over time as sequencing gets better and gaps are filled. Each released version is a <strong>build</strong> (also called an assembly). For human, the two you will meet constantly are <strong>GRCh37</strong> (UCSC calls it <strong>hg19</strong>) and the newer <strong>GRCh38</strong> (<strong>hg38</strong>). The very newest, gapless build is <strong>T2T-CHM13</strong> (telomere-to-telomere).</p>
+            <p>A reference genome is one agreed-upon sequence that everyone aligns their reads against, so results are comparable. But the reference is improved over time as sequencing gets better and gaps are filled. Each released version is a <strong>build</strong> (also called an assembly). For human, the two you will meet constantly are <strong>GRCh37</strong> (UCSC calls it <strong>hg19</strong>) and the newer <strong>GRCh38</strong> (<strong>hg38</strong>). <strong>T2T-CHM13</strong> (telomere-to-telomere, 2022) is the first complete, gapless human assembly. It comes from a single cell line and is not a GRC release, so GRCh38 is still the default for most tools; a draft human pangenome reference followed in 2023.</p>
             <p>The crucial consequence: when the assembly changes, sequence is added, removed, and shifted, so the same base of DNA gets a different coordinate in each build. A position like <code class="inline">chr7:55,249,071</code> means one thing in hg19 and a different thing in hg38.</p>
 
             <h2><span class="step-num">1</span>The same gene, different numbers</h2>
             <p>Consider the gene EGFR. It is the same gene in every build, but its coordinates differ because the surrounding assembly shifted. This is exactly why you must always record which build your coordinates use.</p>
             <table class="dtable">
                 <tr><th>Build</th><th>UCSC name</th><th>EGFR start (chr7, approx.)</th></tr>
-                <tr><td><strong>GRCh37</strong></td><td>hg19</td><td>chr7:55,086,725</td></tr>
-                <tr><td><strong>GRCh38</strong></td><td>hg38</td><td>chr7:55,019,017</td></tr>
+                <tr><td><strong>GRCh37</strong></td><td>hg19</td><td>chr7: about 55.09 million</td></tr>
+                <tr><td><strong>GRCh38</strong></td><td>hg38</td><td>chr7: about 55.02 million</td></tr>
                 <tr><td><strong>T2T-CHM13</strong></td><td>chm13v2.0</td><td>different again (newest, gapless)</td></tr>
             </table>
             <figure class="viz">
@@ -155,8 +155,8 @@
                     <text x="275" y="145" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="12" fill="#0f172a">EGFR</text>
                     <line x1="335" y1="74" x2="275" y2="126" stroke="#10b981" stroke-width="2" stroke-dasharray="4 3"/>
                     <g font-family="'JetBrains Mono',monospace" font-size="11" fill="#64748b">
-                    <text x="335" y="40" text-anchor="middle" fill="#5b9cf8">~55,086,725</text>
-                    <text x="275" y="172" text-anchor="middle" fill="#a855f7">~55,019,017</text>
+                    <text x="335" y="40" text-anchor="middle" fill="#5b9cf8">~55.09 million</text>
+                    <text x="275" y="172" text-anchor="middle" fill="#a855f7">~55.02 million</text>
                     </g>
                     <text x="320" y="192" text-anchor="middle" font-family="'Work Sans',sans-serif" font-size="12" fill="#10b981">Same gene, shifted coordinate. liftOver follows the dashed line.</text>
                 </svg>
@@ -170,15 +170,16 @@ liftOver input.bed hg19ToHg38.over.chain.gz output.bed unmapped.bed
 
 <span class="c"># CrossMap does the same job and also handles BAM, VCF, GFF</span>
 CrossMap bed hg19ToHg38.over.chain.gz input.bed output.bed</pre>
-            <div class="why"><h4>Why some regions do not lift</h4><p>If a stretch of DNA was rearranged or is missing in the target build, it has no clean mapping, so liftOver drops it into the <code class="inline">unmapped</code> file instead of guessing. Always check that file; silently losing features is a common mistake.</p></div>
+            <div class="why"><h4>Why some regions do not lift</h4><p>If a stretch of DNA was rearranged or is missing in the target build, it has no clean mapping, so liftOver drops it into the <code class="inline">unmapped</code> file instead of guessing. Always check that file; silently losing features is a common mistake. Lifting can also change a region's size, so check results that matter. For VCFs, use a VCF-aware tool (<code class="inline">CrossMap vcf</code> or Picard LiftoverVcf) that also checks the REF base; and if you have the raw reads, re-aligning them to the new build is the cleanest option.</p></div>
 
             <h2><span class="step-num">3</span>The chr-prefix naming trap</h2>
-            <p>Builds also differ in how chromosomes are named. <strong>UCSC</strong> writes <code class="inline">chr1</code>, <code class="inline">chrX</code>; <strong>Ensembl</strong> writes <code class="inline">1</code>, <code class="inline">X</code> with no "chr". The underlying sequence can be identical, but a tool comparing <code class="inline">chr1</code> to <code class="inline">1</code> finds zero matches because the strings differ. If your overlaps mysteriously come back empty, check the chromosome names first.</p>
+            <p>Providers also name chromosomes differently, even for the same build. <strong>UCSC</strong> writes <code class="inline">chr1</code>, <code class="inline">chrX</code>; <strong>Ensembl</strong> writes <code class="inline">1</code>, <code class="inline">X</code> with no "chr". The underlying sequence can be identical, but a tool comparing <code class="inline">chr1</code> to <code class="inline">1</code> finds zero matches because the strings differ. If your overlaps mysteriously come back empty, check the chromosome names first.</p>
             <pre><span class="c"># strip the chr prefix to match Ensembl-style names</span>
 sed 's/^chr//' ucsc_style.bed &gt; ensembl_style.bed
 
 <span class="c"># or add it to go the other way</span>
 sed 's/^/chr/' ensembl_style.bed &gt; ucsc_style.bed</pre>
+            <div class="warn" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.35); border-left:4px solid #f59e0b; border-radius:10px; padding:14px 18px; margin:16px 0;"><p style="margin:0; font-size:1rem;"><strong>Careful:</strong> these one-liners only fix the main chromosomes. The mitochondrion is <code class="inline">chrM</code> at UCSC but <code class="inline">MT</code> at Ensembl, extra contigs have completely different names, and the second command would also put <code class="inline">chr</code> in front of any header lines. For real work, use a proper name-mapping table (UCSC and Ensembl publish them) or a tool option such as <code class="inline">CrossMap --chromid</code>.</p></div>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
@@ -191,12 +192,12 @@ sed 's/^/chr/' ensembl_style.bed &gt; ucsc_style.bed</pre>
             <div class="quiz">
                 <div class="quiz-q-src">Why does the same DNA position have a different coordinate in hg19 vs hg38?</div>
                 <button data-opt data-correct>The assembly changed, so sequence was added, removed and shifted</button>
-                <button data-opt>Coordinates are random in each release</button>
+                <button data-opt>Each build uses a different coordinate system (0-based vs 1-based)</button>
                 <button data-opt>hg38 uses 0-based and hg19 uses 1-based</button>
                 <div class="quiz-explain"><strong>Correct.</strong> Each build is a revised assembly; insertions, deletions and rearrangements move coordinates, which is why you must record the build.</div>
             </div>
             <div class="quiz">
-                <div class="quiz-q-src">What do you need, besides a tool, to convert coordinates between two builds?</div>
+                <div class="quiz-q-src">What do you need, besides a tool, to convert coordinates between two builds with liftOver or CrossMap?</div>
                 <button data-opt data-correct>A chain file describing how regions map between the builds</button>
                 <button data-opt>A constant offset to add to every position</button>
                 <button data-opt>The original FASTQ reads</button>
@@ -215,6 +216,17 @@ sed 's/^/chr/' ensembl_style.bed &gt; ucsc_style.bed</pre>
                 <button data-opt>It contains the converted coordinates you actually want</button>
                 <button data-opt>It lists the chain file version</button>
                 <div class="quiz-explain"><strong>Correct.</strong> Regions that were rearranged or are missing in the target build cannot be lifted, so they go to the unmapped file. Ignoring it silently loses features.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Schneider VA, Graves-Lindsay T, Howe K, et al. Evaluation of GRCh38 and de novo haploid genome assemblies demonstrates the enduring quality of the reference assembly. <em>Genome Research</em> 27: 849-864, 2017. <a href="https://doi.org/10.1101/gr.213611.116" target="_blank" rel="noopener">doi:10.1101/gr.213611.116</a></li>
+                    <li>Nurk S, Koren S, Rhie A, et al. The complete sequence of a human genome. <em>Science</em> 376: 44-53, 2022. <a href="https://doi.org/10.1126/science.abj6987" target="_blank" rel="noopener">doi:10.1126/science.abj6987</a></li>
+                    <li>Zhao H, Sun Z, Wang J, et al. CrossMap: a versatile tool for coordinate conversion between genome assemblies. <em>Bioinformatics</em> 30: 1006-1007, 2014. <a href="https://doi.org/10.1093/bioinformatics/btt730" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btt730</a></li>
+                    <li>Liao WW, Asri M, Ebler J, et al. A draft human pangenome reference. <em>Nature</em> 617: 312-324, 2023. <a href="https://doi.org/10.1038/s41586-023-05896-x" target="_blank" rel="noopener">doi:10.1038/s41586-023-05896-x</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="reference-genomes.html" target="_blank" rel="noopener">

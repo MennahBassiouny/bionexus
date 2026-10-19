@@ -71,6 +71,12 @@
         .viz { margin:24px 0; text-align:center; }
         .viz svg { width:100%; max-width:680px; height:auto; }
         .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -146,7 +152,7 @@ res <- list(gene = "TP53", scores = c(2.1, 3.4))
 res$gene             # pull a named piece
 res[["scores"]][2]    # second score: 3.4
 </script></div>
-            <div class="why"><h4>Vector vs list, in one line</h4><p>A vector holds many values of the <em>same</em> type; a list holds <em>any</em> mix of objects. A data frame is really just a list of equal-length vectors, which is why <code class="inline">$</code> works on both.</p></div>
+            <div class="why"><h4>Vector vs list, in one line</h4><p>A vector holds many values of the <em>same</em> type; a list holds <em>any</em> mix of objects. A data frame is really just a list of equal-length vectors, which is why <code class="inline">$</code> works on lists and data frames (but not on plain vectors).</p></div>
 
             <h2>3. Do something to every row, column, or item</h2>
             <figure class="viz">
@@ -167,7 +173,7 @@ res[["scores"]][2]    # second score: 3.4
                 </svg>
                 <figcaption>The apply family runs a function (here sum) across each row or column at once, with no loop to write.</figcaption>
             </figure>
-            <p>R prefers you not to write loops. The <strong>apply family</strong> runs a function across a whole structure at once.</p>
+            <p>Loops work fine in R, but the <strong>apply family</strong> is a shorter way to write many of them: it runs a function across a whole structure at once.</p>
             <div class="rcell"><script type="text/x-r">
 m <- matrix(c(2,4,6, 1,3,5), nrow = 2, byrow = TRUE)
 
@@ -254,7 +260,7 @@ head(joined, 8)
   geom_col() +
   facet_wrap(~ gene, scales = <span class="s">"free_y"</span>) +   <span class="c"># one mini-plot per gene, each with its own y-axis</span>
   theme_minimal()</pre>
-            <p class="rtry" style="margin:14px 0 0; font-size:0.95rem; color:var(--text-gray);">Try it: which genes go up in the treated samples? Then delete <code class="inline">, scales = "free_y"</code> and Run again to see why it is there.</p>
+            <p class="rtry" style="margin:14px 0 0; font-size:0.95rem; color:var(--text-gray);">Try it: which genes go up in the treated samples? Then delete <code class="inline">, scales = "free_y"</code> and Run again to see why it is there. (These are raw counts, so this is only a first look; the <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">DESeq2 lesson</a> shows how to test it properly.)</p>
             <div class="rcell" data-packages="dplyr,tidyr,ggplot2"><script type="text/x-r">
 library(dplyr); library(tidyr); library(ggplot2)
 counts  <- read.csv("https://bionexushub.com/practice-counts.csv")
@@ -271,7 +277,7 @@ ggplot(joined, aes(sample, count, fill = condition)) +
             <p>For a deeper, opinionated take on making honest, readable figures, see <a href="plots-that-tell-the-truth.html" target="_blank" rel="noopener">Plots that tell the truth</a>.</p>
 
             <h2>8. Bioconductor: where the biology packages live <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
-            <p>Everyday packages come from <strong>CRAN</strong> (<code class="inline">install.packages</code>). Most <em>bioinformatics</em> packages live in a separate home called <strong>Bioconductor</strong>, installed through one helper.</p>
+            <p>Everyday packages come from <strong>CRAN</strong> (<code class="inline">install.packages</code>). Most <em>genomics and RNA-seq</em> packages live in a separate home called <strong>Bioconductor</strong>, installed through one helper. Each Bioconductor release needs a matching R version (Bioconductor 3.23 needs R 4.6), so install the current R first.</p>
             <pre>install.packages(<span class="s">"BiocManager"</span>)      <span class="c"># the gateway, installed once</span>
 BiocManager::install(<span class="s">"DESeq2"</span>)        <span class="c"># then any Bioconductor package</span></pre>
             <div class="why"><h4>Good to know</h4><p>DESeq2, edgeR, limma, and most RNA-seq and genomics tools are on Bioconductor, not CRAN. You will meet DESeq2 properly in the <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">RNA-seq differential expression</a> lesson.</p></div>
@@ -321,18 +327,11 @@ mean_or_zero(<span class="k">c</span>())             <span class="c"># 0</span><
                 <div class="quiz-explain"><strong>Right.</strong> A join lines up rows by a shared column (for example sample) and glues the columns together.</div>
             </div>
             <div class="quiz">
-                <div class="quiz-q-src">Where do most bioinformatics R packages, such as DESeq2, come from?</div>
+                <div class="quiz-q-src">Where do most genomics R packages, such as DESeq2, come from?</div>
                 <button data-opt data-correct>Bioconductor, installed with BiocManager::install()</button>
                 <button data-opt>CRAN, installed with install.packages()</button>
                 <button data-opt>They are built into base R</button>
                 <div class="quiz-explain"><strong>Correct.</strong> Everyday packages come from CRAN, but DESeq2, edgeR, limma and most genomics tools live on Bioconductor.</div>
-            </div>
-            <div class="quiz">
-                <div class="quiz-q-src">How does a list differ from a vector in R?</div>
-                <button data-opt data-correct>A list can hold a mix of types and objects; a vector holds values of one type</button>
-                <button data-opt>A list can only hold numbers</button>
-                <button data-opt>There is no difference</button>
-                <div class="quiz-explain"><strong>Right.</strong> A vector is all-one-type; a list is a flexible container, which is why a data frame is really a list of equal-length vectors.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">You want the average expression per chromosome from a data frame. Which tidyverse pattern does it?</div>
@@ -344,16 +343,9 @@ mean_or_zero(<span class="k">c</span>())             <span class="c"># 0</span><
             <div class="quiz">
                 <div class="quiz-q-src">What does <code class="inline">expr[expr &gt; 10]</code> return?</div>
                 <button data-opt data-correct>The elements of expr whose value is greater than 10</button>
-                <button data-opt>The number 10, repeated for each element</button>
+                <button data-opt>TRUE or FALSE for each element</button>
                 <button data-opt>The first 10 elements of expr</button>
-                <div class="quiz-explain"><code class="inline">expr &gt; 10</code> is a TRUE/FALSE vector; indexing with it keeps the elements marked TRUE.</div>
-            </div>
-            <div class="quiz">
-                <div class="quiz-q-src">What does <code class="inline">apply(m, 2, mean)</code> compute?</div>
-                <button data-opt>The mean of every row</button>
-                <button data-opt data-correct>The mean of every column</button>
-                <button data-opt>One overall mean of the whole matrix</button>
-                <div class="quiz-explain">The second argument picks the margin: 1 means rows, 2 means columns. So this is the mean of each column.</div>
+                <div class="quiz-explain"><code class="inline">expr &gt; 10</code> on its own gives the TRUE/FALSE vector; indexing with it keeps the elements marked TRUE.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">What does <code class="inline">pivot_longer</code> do?</div>
@@ -361,6 +353,17 @@ mean_or_zero(<span class="k">c</span>())             <span class="c"># 0</span><
                 <button data-opt>Sorts the table by its longest column</button>
                 <button data-opt>Deletes columns that contain missing values</button>
                 <div class="quiz-explain">It turns many value-columns into two columns (a name and a value), giving the one-row-per-observation shape ggplot expects.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Wickham H, Cetinkaya-Rundel M, Grolemund G. <em>R for Data Science</em>, 2nd ed. (2023), chapter 27 "A field guide to base R". <a href="https://r4ds.hadley.nz/base-R.html" target="_blank" rel="noopener">r4ds.hadley.nz</a></li>
+                    <li>Wickham H, Cetinkaya-Rundel M, Grolemund G. <em>R for Data Science</em>, 2nd ed. (2023), chapter 5 "Data tidying". <a href="https://r4ds.hadley.nz/data-tidy.html" target="_blank" rel="noopener">r4ds.hadley.nz</a></li>
+                    <li>Wickham H, Cetinkaya-Rundel M, Grolemund G. <em>R for Data Science</em>, 2nd ed. (2023), chapter 19 "Joins". <a href="https://r4ds.hadley.nz/joins.html" target="_blank" rel="noopener">r4ds.hadley.nz</a></li>
+                    <li>Huber W, Carey VJ, Gentleman R, et al. Orchestrating high-throughput genomic analysis with Bioconductor. <em>Nat Methods</em> 12: 115-121, 2015. <a href="https://doi.org/10.1038/nmeth.3252" target="_blank" rel="noopener">doi:10.1038/nmeth.3252</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="r-project.html" target="_blank" rel="noopener">

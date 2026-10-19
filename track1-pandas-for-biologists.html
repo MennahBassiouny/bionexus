@@ -83,6 +83,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -135,18 +141,18 @@
 
 genes = pd.DataFrame({
     <span class="s">"gene"</span>:   [<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>, <span class="s">"MYC"</span>],
-    <span class="s">"length"</span>: [<span class="o">19149</span>, <span class="o">81189</span>, <span class="o">188307</span>, <span class="o">5318</span>],
+    <span class="s">"length"</span>: [<span class="o">25800</span>, <span class="o">81200</span>, <span class="o">192600</span>, <span class="o">7500</span>],   <span class="c"># approximate gene lengths in bp (rounded)</span>
     <span class="s">"chrom"</span>:  [<span class="s">"17"</span>, <span class="s">"17"</span>, <span class="s">"7"</span>, <span class="s">"8"</span>],
 })
 genes.head()        <span class="c"># preview the first rows</span>
 genes[<span class="s">"length"</span>]      <span class="c"># pull out one column</span></pre>
 
-            <h2>The four moves you'll use constantly</h2>
+            <h2>The moves you'll use constantly</h2>
             <pre><span class="c"># 1. FILTER rows by a condition</span>
 big = genes[genes[<span class="s">"length"</span>] &gt; <span class="o">10000</span>]
 
-<span class="c"># 2. SORT</span>
-genes.sort_values(<span class="s">"length"</span>, ascending=<span class="k">False</span>)
+<span class="c"># 2. SORT (sorting returns a new table, so save it to a name)</span>
+genes_sorted = genes.sort_values(<span class="s">"length"</span>, ascending=<span class="k">False</span>)
 
 <span class="c"># 3. a new COLUMN computed from others</span>
 genes[<span class="s">"length_kb"</span>] = genes[<span class="s">"length"</span>] / <span class="o">1000</span>
@@ -154,7 +160,7 @@ genes[<span class="s">"length_kb"</span>] = genes[<span class="s">"length"</span
 <span class="c"># 4. SUMMARIZE - overall and per group</span>
 <span class="k">print</span>(genes[<span class="s">"length"</span>].mean())
 genes.groupby(<span class="s">"chrom"</span>)[<span class="s">"length"</span>].mean()   <span class="c"># average length per chromosome</span></pre>
-            <div class="why"><h4>Why pandas is worth learning once</h4><p>Filter, sort, compute, group, summarize - these five verbs answer most questions you'll ever ask of a data table, whether it's 4 genes or 40,000. Learn them here and they pay off in every later track, including the RNA-seq results table.</p></div>
+            <div class="why"><h4>Why pandas is worth learning once</h4><p>Filter, sort, compute, group, summarize - these five verbs answer most questions you'll ever ask of a data table, whether it's 4 genes or 40,000. Two more you'll use all the time: <code class="inline">df.describe()</code> gives count, mean, min and max for every numeric column in one go, and <code class="inline">pd.merge(table_a, table_b, on="gene")</code> joins two tables that share a column (the <a href="track1-enrichment.html" target="_blank" rel="noopener">next lesson</a> covers merging in detail). Learn them here and they pay off in every later track, including the RNA-seq results table.</p></div>
 
             <h2>Reading real files</h2>
             <p>Real data usually arrives as a CSV. One line loads it:</p>
@@ -208,9 +214,10 @@ df = pd.DataFrame(rows)
 df</pre>
 
                 <h3 style="font-family:'Crimson Pro',serif; color:var(--deep-navy); margin:18px 0 8px;"><span class="step-num">3</span>Ask questions of your table</h3>
-                <pre>df.sort_values(<span class="s">"GC_percent"</span>, ascending=<span class="k">False</span>)        <span class="c"># most GC-rich first</span>
+                <pre>df = df.sort_values(<span class="s">"GC_percent"</span>, ascending=<span class="k">False</span>)   <span class="c"># most GC-rich first</span>
+<span class="k">print</span>(df)
 <span class="k">print</span>(<span class="s">"Mean GC%:"</span>, <span class="k">round</span>(df[<span class="s">"GC_percent"</span>].mean(), <span class="o">1</span>))
-<span class="k">print</span>(<span class="s">"Longest gene:"</span>, df.loc[df[<span class="s">"length"</span>].idxmax(), <span class="s">"gene"</span>])
+<span class="k">print</span>(<span class="s">"Longest mRNA:"</span>, df.loc[df[<span class="s">"length"</span>].idxmax(), <span class="s">"gene"</span>])
 
 <span class="c"># save your summary - your deliverable</span>
 df.to_csv(<span class="s">"gene_summary.csv"</span>, index=<span class="k">False</span>)</pre>
@@ -231,7 +238,7 @@ plt.ylabel(<span class="s">"GC %"</span>); plt.tight_layout(); plt.show()</pre>
 
             <p><strong>Put it on your portfolio.</strong> Save the notebook and <code class="inline">gene_summary.csv</code> to a GitHub repo with a short README explaining what it does. That's a real, shareable piece of work - exactly what the reproducibility-and-career track will help you polish.</p>
 
-            <details><summary>The translate or fetch warned about something - did it fail?</summary><p>Warnings (like a sequence length not being a multiple of three) aren't errors - the code still produced your table. Read the message, but if you got a DataFrame, you succeeded.</p></details>
+            <details><summary>The fetch printed a warning - did it fail?</summary><p>Warnings (like Biopython reminding you to set an email) aren't errors - the code still produced your table. Read the message, but if you got a DataFrame at the end, it worked.</p></details>
 
             <h2>Check your understanding</h2>
                 <div class="quiz">
@@ -269,6 +276,15 @@ plt.ylabel(<span class="s">"GC %"</span>); plt.tight_layout(); plt.show()</pre>
                     <button data-opt>pd.concat([lengths, expression], axis=0)</button>
                     <div class="quiz-explain">Right. pd.merge joins two DataFrames on a shared key column, here gene, lining up the rows that share the same gene ID.</div>
                 </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Ziemann M, Eren Y, El-Osta A. Gene name errors are widespread in the scientific literature. <em>Genome Biology</em> 17: 177, 2016. (why code beats spreadsheets for gene tables) <a href="https://doi.org/10.1186/s13059-016-1044-7" target="_blank" rel="noopener">doi:10.1186/s13059-016-1044-7</a></li>
+                    <li>O'Leary NA, Wright MW, Brister JR, et al. Reference sequence (RefSeq) database at NCBI: current status, taxonomic expansion, and functional annotation. <em>Nucleic Acids Research</em> 44: D733-D745, 2016. (the NM_ records in the project) <a href="https://doi.org/10.1093/nar/gkv1189" target="_blank" rel="noopener">doi:10.1093/nar/gkv1189</a></li>
+                </ol>
+                <p class="reviewed">pandas itself: McKinney W. Data structures for statistical computing in Python. Proceedings of the 9th Python in Science Conference, 56-61, 2010. <a href="https://doi.org/10.25080/Majora-92bf1922-00a" target="_blank" rel="noopener">doi:10.25080/Majora-92bf1922-00a</a>.<br>Last reviewed: October 2026.</p>
+            </div>
 
             <a class="next-lesson" href="learn.html" target="_blank" rel="noopener">
                 <span>You've completed the data-literacy track</span>

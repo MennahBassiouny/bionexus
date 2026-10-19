@@ -75,6 +75,12 @@
         .viz { margin:24px 0; text-align:center; }
         .viz svg { width:100%; max-width:680px; height:auto; }
         .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -134,7 +140,7 @@
             <pre>name=<span class="s">"genes.fasta"</span>
 <span class="k">echo</span> <span class="s">"$name"</span>              <span class="c"># prints: genes.fasta</span>
 <span class="k">echo</span> <span class="s">"I am in $PWD"</span>        <span class="c"># $PWD is the current folder</span></pre>
-            <div class="why"><h4>Always quote your variables</h4><p>Write <code class="inline">"$name"</code>, not <code class="inline">$name</code>. The quotes keep filenames with spaces in one piece. Forgetting them is the single most common beginner bug in shell scripts.</p></div>
+            <div class="why"><h4>Always quote your variables</h4><p>Write <code class="inline">"$name"</code>, not <code class="inline">$name</code>. The quotes keep filenames with spaces in one piece. Forgetting them is one of the most common beginner bugs in shell scripts.</p></div>
 
             <h2>2. Capture a command's output</h2>
             <p><strong>Command substitution</strong> with <code class="inline">$( )</code> runs a command and hands you its result to store or print.</p>
@@ -192,10 +198,10 @@
                 <figcaption>Permissions in one picture: 755 gives the owner full rights (rwx), and everyone else read and execute (r-x).</figcaption>
             </figure>
             <p>Put commands in a <code class="inline">.sh</code> file and you have a reusable tool. The first line (the "shebang") tells the system to run it with bash.</p>
-            <pre><span class="c"># file: count_seqs.sh</span>
-#!/bin/bash
+            <pre>#!/bin/bash
+<span class="c"># file: count_seqs.sh</span>
 <span class="c"># count sequences in the FASTA file given as the first argument</span>
-<span class="k">grep</span> -c <span class="s">"&gt;"</span> <span class="s">"$1"</span></pre>
+<span class="k">grep</span> -c <span class="s">"^&gt;"</span> <span class="s">"$1"</span>   <span class="c"># ^ means "at the start of the line"</span></pre>
             <p>Then make it executable and run it:</p>
             <pre><span class="k">chmod</span> +x count_seqs.sh
 ./count_seqs.sh genes.fasta</pre>
@@ -216,7 +222,7 @@
             <h2>7. Finding files: find and xargs <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
             <pre><span class="k">find</span> . -name <span class="s">"*.fastq"</span>          <span class="c"># every FASTQ in this folder and below</span>
 <span class="k">find</span> . -name <span class="s">"*.sam"</span> | <span class="k">xargs</span> <span class="k">rm</span>   <span class="c"># feed the results to another command (careful: rm!)</span></pre>
-            <div class="why"><h4>Look before you delete</h4><p>A <code class="inline">find ... | xargs rm</code> deletes every match with no undo. Run the <code class="inline">find</code> on its own first to see exactly what it lists, then add the <code class="inline">rm</code>.</p></div>
+            <div class="why"><h4>Look before you delete</h4><p>Deleting with <code class="inline">find</code> removes every match with no undo. Run the <code class="inline">find</code> on its own first to see exactly what it lists, then delete with <code class="inline">find . -name "*.sam" -delete</code> (safer than piping to <code class="inline">xargs rm</code>, which breaks on filenames with spaces).</p></div>
 
             <h2>8. Getting data and unpacking it <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
             <pre><span class="k">wget</span> https://example.org/data.tar.gz   <span class="c"># download a file (or: curl -O ...)</span>
@@ -244,7 +250,7 @@
 
             <div class="why" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px 20px; margin:22px 0;">
                 <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;">Check yourself</h4>
-                <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">R and the terminal do not run in this page, so here is what correct output looks like. Type each one and compare.</p>
+                <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">The terminal does not run in this page, so here is what correct output looks like. Type each one and compare.</p>
                 <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">count=$(grep -c "&gt;" genes.fasta); echo $count</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the sequence count</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">echo $(( $(wc -l &lt; reads.fastq) / 4 ))</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the number of reads</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">awk '{print $2}' table.txt</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the second column</td></tr></table></div>
             <h2>Check your understanding</h2>
             <div class="quiz">
@@ -257,16 +263,9 @@
             <div class="quiz">
                 <div class="quiz-q-src">What does the first line of a script, <code class="inline">#!/bin/bash</code> (the "shebang"), do?</div>
                 <button data-opt data-correct>Tells the system to run the file with bash</button>
-                <button data-opt>Is just a comment with no effect</button>
-                <button data-opt>Deletes the script after it runs</button>
+                <button data-opt>Makes the script run faster</button>
+                <button data-opt>Makes the file executable, so you can skip chmod</button>
                 <div class="quiz-explain"><strong>Correct.</strong> The shebang names the interpreter, so <code>./script.sh</code> knows to run with bash.</div>
-            </div>
-            <div class="quiz">
-                <div class="quiz-q-src">You want every <code class="inline">.fastq</code> file in this folder and all folders below it. Which command?</div>
-                <button data-opt data-correct>find . -name "*.fastq"</button>
-                <button data-opt>ls *.fastq</button>
-                <button data-opt>grep .fastq</button>
-                <div class="quiz-explain"><strong>Right.</strong> <code>find</code> searches recursively down the folder tree; <code>ls *.fastq</code> only looks in the current folder.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">Your loop <code class="inline">for f in *.fasta; do mv $f data/; done</code> fails on a file named <code class="inline">my reads.fasta</code>. What is the fix?</div>
@@ -283,18 +282,19 @@
                 <div class="quiz-explain"><code class="inline">$( )</code> runs the command inside and hands back its output, which you then store in the variable.</div>
             </div>
             <div class="quiz">
-                <div class="quiz-q-src">Why write <code class="inline">"$f"</code> with quotes inside a loop?</div>
-                <button data-opt data-correct>So filenames containing spaces are still treated as one name</button>
-                <button data-opt>Quotes make the loop run faster</button>
-                <button data-opt>It is only needed for numbers, not filenames</button>
-                <div class="quiz-explain">Without quotes, a filename like <code class="inline">my reads.fastq</code> would be split into two pieces. Quoting keeps it whole.</div>
-            </div>
-            <div class="quiz">
                 <div class="quiz-q-src">What does <code class="inline">chmod +x script.sh</code> do?</div>
                 <button data-opt data-correct>Marks the script as executable so you can run it with ./script.sh</button>
                 <button data-opt>Encrypts the script</button>
                 <button data-opt>Deletes the script after it runs</button>
                 <div class="quiz-explain">The <code class="inline">+x</code> adds the "execute" permission, which a file needs before the shell will run it as a program.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Wilson G, Bryan J, Cranston K, et al. Good enough practices in scientific computing. <em>PLoS Computational Biology</em> 13: e1005510, 2017. (why script and automate) <a href="https://doi.org/10.1371/journal.pcbi.1005510" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1005510</a></li>
+                </ol>
+                <p class="reviewed">Official documentation:<br>The Unix Shell: Loops, The Carpentries: <a href="https://swcarpentry.github.io/shell-novice/05-loop.html" target="_blank" rel="noopener">swcarpentry.github.io</a>.<br>GNU Bash Reference Manual: <a href="https://www.gnu.org/software/bash/manual/bash.html" target="_blank" rel="noopener">www.gnu.org</a>.<br>Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="bash-project.html" target="_blank" rel="noopener">

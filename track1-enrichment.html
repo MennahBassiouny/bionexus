@@ -77,6 +77,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -151,7 +157,7 @@ h.close()
             <pre><span class="k">for</span> feat <span class="k">in</span> rec.features:
     <span class="k">if</span> feat.type <span class="k">in</span> (<span class="s">"source"</span>, <span class="s">"gene"</span>, <span class="s">"CDS"</span>):
         <span class="k">print</span>(feat.type, <span class="s">"→"</span>, <span class="k">dict</span>(feat.qualifiers))</pre>
-            <div class="why"><h4>Decode the jargon: CDS</h4><p>A <strong>CDS</strong> (coding sequence) feature marks the exact part of the record that gets translated into protein. Pull its <code class="inline">/translation</code> qualifier and you have the official protein - no guessing where the gene starts. Qualifier values come back as lists, so you read them like <code class="inline">feat.qualifiers["gene"][0]</code>.</p></div>
+            <div class="why"><h4>Decode the jargon: CDS</h4><p>A <strong>CDS</strong> (coding sequence) feature marks the exact part of the record that gets translated into protein. Pull its <code class="inline">/translation</code> qualifier and you have NCBI's annotated protein - no guessing where the gene starts. Qualifier values come back as lists, so you read them like <code class="inline">feat.qualifiers["gene"][0]</code>.</p></div>
 
             <h2>2. Compressed &amp; large files</h2>
             <p>Real sequencing files are huge and almost always <strong>gzipped</strong> - you'll see names ending in <code class="inline">.fastq.gz</code>. You don't need to unzip them; Python's <code class="inline">gzip</code> module reads them on the fly.</p>
@@ -167,11 +173,12 @@ h.close()
     <span class="k">print</span>(rec.id, <span class="k">len</span>(rec.seq))</pre>
 
             <div class="why"><h4>The golden rule for big files: don't load it all</h4><p>A FASTQ file can be tens of gigabytes - far more than your computer's memory. The trick is to <strong>stream</strong>: loop over records one at a time with <code class="inline">SeqIO.parse</code> (which yields them lazily) instead of building a giant list. The loop above already does this - it never holds more than one record in memory, so it works on a 10-line file or a 100-million-read file unchanged.</p></div>
-            <pre><span class="c"># count millions of reads using almost no memory</span>
+            <pre><span class="c"># count records using almost no memory (for real reads use a .fastq.gz and "fastq")</span>
 total = <span class="o">0</span>
-<span class="k">for</span> rec <span class="k">in</span> SeqIO.parse(gzip.open(<span class="s">"demo.fasta.gz"</span>, <span class="s">"rt"</span>), <span class="s">"fasta"</span>):
-    total += <span class="o">1</span>
-<span class="k">print</span>(<span class="s">"reads:"</span>, total)</pre>
+<span class="k">with</span> gzip.open(<span class="s">"demo.fasta.gz"</span>, <span class="s">"rt"</span>) <span class="k">as</span> handle:   <span class="c"># "with" closes the file for you</span>
+    <span class="k">for</span> rec <span class="k">in</span> SeqIO.parse(handle, <span class="s">"fasta"</span>):
+        total += <span class="o">1</span>
+<span class="k">print</span>(<span class="s">"records:"</span>, total)</pre>
 
             <h2>3. Joining two tables</h2>
             <p>This is the pandas skill that unlocks real analysis. Your measurements live in one table; the information about each sample (which is control, which is treated) lives in another. To analyze them together, you <strong>merge</strong> on a shared column.</p>
@@ -192,13 +199,13 @@ merged = counts.merge(samples, on=<span class="s">"sample"</span>)
 
 <span class="c"># now you can ask cross-table questions</span>
 merged.groupby(<span class="s">"condition"</span>)[<span class="s">"gene_count"</span>].mean()</pre>
-            <div class="why"><h4>Why merging is everywhere</h4><p>Nearly every real analysis is "table A + table B." An RNA-seq count matrix means nothing until you join it to the <strong>sample sheet</strong> that says which columns are treated vs. control - that join is literally step one of the flagship project. Learn <code class="inline">merge</code> and you've learned the connective tissue of data analysis.</p></div>
+            <div class="why"><h4>Why merging is everywhere</h4><p>Nearly every real analysis is "table A + table B." An RNA-seq count matrix means nothing until you match it to the <strong>sample sheet</strong> that says which columns are treated vs. control (because samples are the matrix's columns, you first flip it with <code class="inline">.T</code> or reshape it with <code class="inline">melt</code> before a merge) - that join is literally step one of the flagship project. Learn <code class="inline">merge</code> and you've learned the connective tissue of data analysis.</p></div>
 
             <div class="challenge">
                 <h3>🚀 Put it together</h3>
                 <ul>
                     <li>Fetch a gene as GenBank and print its organism and every <code class="inline">gene</code> name in the record.</li>
-                    <li>Extract the <code class="inline">/translation</code> from the CDS feature and compare it to <code class="inline">rec.seq.translate()</code>.</li>
+                    <li>Extract the <code class="inline">/translation</code> from the CDS feature and compare it to <code class="inline">feat.extract(rec.seq).translate(to_stop=True)</code>. (Translating the whole record would not match, because an mRNA record also includes untranslated regions before and after the coding part.)</li>
                     <li>Download a real <code class="inline">.fasta.gz</code> (e.g., a small genome) and count its sequences by streaming - never building a list.</li>
                     <li>Make a fake counts table and sample sheet, merge them, and compute the mean per condition.</li>
                 </ul>
@@ -239,7 +246,17 @@ merged.groupby(<span class="s">"condition"</span>)[<span class="s">"gene_count"<
                 <button data-opt>The compressed data size of the record</button>
                 <button data-opt>The list of all databases the sequence appears in</button>
                 <button data-opt data-correct>The exact part of the sequence that gets translated into protein</button>
-                <div class="quiz-explain">A CDS (coding sequence) feature marks the region that becomes protein. Its <code class="inline">/translation</code> qualifier gives the official protein with no guessing where the gene starts.</div>
+                <div class="quiz-explain">A CDS (coding sequence) feature marks the region that becomes protein. Its <code class="inline">/translation</code> qualifier gives NCBI's annotated protein with no guessing where the gene starts.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Cock PJ, Antao T, Chang JT, et al. Biopython: freely available Python tools for computational molecular biology and bioinformatics. <em>Bioinformatics</em> 25: 1422-1423, 2009. <a href="https://doi.org/10.1093/bioinformatics/btp163" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp163</a></li>
+                    <li>Sayers EW, Bolton EE, Fine AM, et al. Database resources of the National Center for Biotechnology Information in 2026. <em>Nucleic Acids Research</em> 54: D20-D27, 2026. <a href="https://doi.org/10.1093/nar/gkaf1060" target="_blank" rel="noopener">doi:10.1093/nar/gkaf1060</a></li>
+                    <li>Dyer SC, Austine-Orimoloye O, Azov AG, et al. Ensembl 2025. <em>Nucleic Acids Research</em> 53: D948-D957, 2025. <a href="https://doi.org/10.1093/nar/gkae1071" target="_blank" rel="noopener">doi:10.1093/nar/gkae1071</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="learn.html" target="_blank" rel="noopener">

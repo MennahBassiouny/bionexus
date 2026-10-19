@@ -80,6 +80,12 @@
         .glossary dt { font-weight:700; color:var(--deep-navy); margin-top:10px; }
         .glossary dd { color:var(--text-gray); margin:2px 0 0; }
         .lesson-body h3 { font-family:'Crimson Pro',serif; font-size:1.4rem; color:var(--deep-navy); margin:30px 0 10px; }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -174,7 +180,7 @@ print("Hello, bioinformatics!")   # this line prints a message
             </figure>
             <pre>dna = <span class="s">"ATGC"</span>        <span class="c"># put the text "ATGC" into a box called dna</span>
 <span class="k">print</span>(dna)            <span class="c"># show what is in the box  ->  ATGC</span></pre>
-            <div class="why"><h4>Naming rules, kept simple</h4><p>A name can use letters, numbers, and underscores, but cannot start with a number or contain spaces. Pick names that describe the data: <code class="inline">dna</code>, <code class="inline">gene_count</code>, <code class="inline">gc_percent</code>. Good names make code read almost like English.</p></div>
+            <div class="why"><h4>Naming rules, kept simple</h4><p>A name can use letters, numbers, and underscores, but cannot start with a number, contain spaces, or be a Python keyword such as <code class="inline">if</code> or <code class="inline">for</code>. Pick names that describe the data: <code class="inline">dna</code>, <code class="inline">gene_count</code>, <code class="inline">gc_percent</code>. Good names make code read almost like English.</p></div>
 
             <h2>2. The core data types (the heart of the language)</h2>
             <p>Every piece of data in Python has a <strong>type</strong>: what kind of thing it is. There are six you must know. Here they are in plain English. Do not memorize this table; just know it is here to come back to.</p>
@@ -185,7 +191,7 @@ print("Hello, bioinformatics!")   # this line prints a message
                 <tr><td><strong>float</strong></td><td>A number with a decimal point.</td><td><code>66.7</code></td></tr>
                 <tr><td><strong>bool</strong> (boolean)</td><td>A yes/no value: only <code>True</code> or <code>False</code>.</td><td><code>True</code></td></tr>
                 <tr><td><strong>list</strong></td><td>An ordered collection of several values in one box.</td><td><code>["TP53", "EGFR"]</code></td></tr>
-                <tr><td><strong>dict</strong> (dictionary)</td><td>A set of labelled pairs: each label (key) points to a value.</td><td><code>{"A": 10, "G": 7}</code></td></tr>
+                <tr><td><strong>dict</strong> (dictionary)</td><td>A collection of labelled pairs: each label (key) points to a value.</td><td><code>{"A": 10, "G": 7}</code></td></tr>
             </table>
             <p>You can ask Python the type of anything with <code class="inline">type()</code>. Run this:</p>
             <div class="pycell"><script type="application/x-python">
@@ -198,9 +204,9 @@ print(type(True))     # bool (True/False)
             <h3>2a. Text (strings)</h3>
             <p>A <strong>string</strong> is text in quotes. A DNA sequence is just a string. Python gives strings handy abilities: count letters, measure length, and pick out single characters by position.</p>
             <pre>dna = <span class="s">"ATGCGT"</span>
-<span class="k">len</span>(dna)            <span class="c"># length: how many letters  ->  6</span>
-dna.count(<span class="s">"G"</span>)      <span class="c"># how many G's  ->  2</span>
-dna[<span class="o">0</span>]              <span class="c"># the FIRST letter  ->  A</span></pre>
+<span class="k">print</span>(<span class="k">len</span>(dna))            <span class="c"># length: how many letters  ->  6</span>
+<span class="k">print</span>(dna.count(<span class="s">"G"</span>))      <span class="c"># how many G's  ->  2</span>
+<span class="k">print</span>(dna[<span class="o">0</span>])              <span class="c"># the FIRST letter  ->  A</span></pre>
             <p>That last line is the tricky one for everyone at first: Python counts positions starting from <strong>0</strong>, not 1. Here is the picture:</p>
             <figure class="viz">
                 <svg viewBox="0 0 540 130" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The string ATGCGT with positions numbered 0 to 5">
@@ -295,8 +301,8 @@ else:
                 <figcaption>A list of gene names. <code class="inline">genes[1]</code> is "BRCA1".</figcaption>
             </figure>
             <pre>genes = [<span class="s">"TP53"</span>, <span class="s">"BRCA1"</span>, <span class="s">"EGFR"</span>, <span class="s">"MYC"</span>]
-genes[<span class="o">1</span>]            <span class="c"># "BRCA1"</span>
-<span class="k">len</span>(genes)          <span class="c"># 4</span>
+<span class="k">print</span>(genes[<span class="o">1</span>])            <span class="c"># BRCA1</span>
+<span class="k">print</span>(<span class="k">len</span>(genes))          <span class="c"># 4</span>
 genes.append(<span class="s">"KRAS"</span>)  <span class="c"># add one to the end</span></pre>
 
             <h2>5. Dictionaries: labelled lookups</h2>
@@ -319,12 +325,13 @@ genes.append(<span class="s">"KRAS"</span>)  <span class="c"># add one to the en
                 <figcaption>Each key (a base) points to its value (a count). You look up <code class="inline">counts["G"]</code> to get 9.</figcaption>
             </figure>
             <pre>counts = {<span class="s">"A"</span>: <span class="o">10</span>, <span class="s">"C"</span>: <span class="o">7</span>, <span class="s">"G"</span>: <span class="o">9</span>, <span class="s">"T"</span>: <span class="o">12</span>}
-counts[<span class="s">"G"</span>]          <span class="c"># look up G's count  ->  9</span>
+<span class="k">print</span>(counts[<span class="s">"G"</span>])          <span class="c"># look up G's count  ->  9</span>
 counts[<span class="s">"N"</span>] = <span class="o">2</span>        <span class="c"># add a new pair</span></pre>
 
             <h2>6. Loops: do something to every item</h2>
             <p>A <strong>loop</strong> repeats an instruction for each item in a collection, so you write it once and Python applies it to everything. This is the moment programming starts saving you real time.</p>
-            <pre><span class="k">for</span> gene <span class="k">in</span> genes:
+            <pre><span class="c"># uses the genes list from the example above</span>
+<span class="k">for</span> gene <span class="k">in</span> genes:
     <span class="k">print</span>(gene, <span class="s">"has"</span>, <span class="k">len</span>(gene), <span class="s">"letters"</span>)</pre>
             <p>You can loop over the letters of a sequence too. Here we count each base by hand:</p>
             <div class="pycell"><script type="application/x-python">
@@ -406,21 +413,9 @@ print(round(gc, 1))   # 75.0</pre></details>
                 <button data-opt>A string, because bases are letters</button>
                 <div class="quiz-explain"><strong>Right.</strong> A dictionary maps each key (a base) to a value (its count), which is exactly the labelled-lookup job dictionaries are for.</div>
             </div>
-            <div class="quiz" data-question="You start with an empty dictionary, counts = {}, then loop over a sequence doing counts[base] += 1. The first base raises a KeyError. Why, and what is the clean fix?">
-                <button data-opt data-correct>The key does not exist yet the first time you see a base; use counts[base] = counts.get(base, 0) + 1</button>
-                <button data-opt>Switch to counts[base] = counts[base] + 1; it is the += operator itself that triggers the KeyError</button>
-                <button data-opt>The += operator does not work on dictionaries; you need counts.append(base) instead</button>
-                <div class="quiz-explain"><strong>Right.</strong> += needs the key to already hold a number. <code>counts.get(base, 0)</code> returns 0 when the base has not been seen yet, so the very first count works.</div>
-            </div>
-            <div class="quiz" data-question="What is a variable?">
-                <button data-opt data-correct>A named box that stores a piece of data for later use</button>
-                <button data-opt>A word Python already knows, like print or len</button>
-                <button data-opt>A number that can never change</button>
-                <div class="quiz-explain"><strong>Right.</strong> A variable is a name attached to a value, like the box <code>dna</code> holding "ATGC".</div>
-            </div>
             <div class="quiz" data-question="Which type would you use for a DNA sequence like ATGC?">
                 <button data-opt data-correct>A string (str), because it is text in quotes</button>
-                <button data-opt>A list, because it is a sequence of separate bases</button>
+                <button data-opt>A number (int), because it is short</button>
                 <button data-opt>A variable, because we save it in a name like dna</button>
                 <div class="quiz-explain"><strong>Correct.</strong> Text, including a DNA sequence, is a string: characters inside quotes.</div>
             </div>
@@ -441,6 +436,15 @@ print(round(gc, 1))   # 75.0</pre></details>
                 <button data-opt>Only when a program is over 100 lines long</button>
                 <button data-opt>Only for maths; a function can return a number but cannot work on strings</button>
                 <div class="quiz-explain"><strong>Right.</strong> A function lets you write the logic once and reuse it, which keeps code short and clear.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Python Software Foundation. The Python Tutorial, chapters 3 to 5. <a href="https://docs.python.org/3/tutorial/index.html" target="_blank" rel="noopener">docs.python.org</a></li>
+                    <li>Carey MA, Papin JA. Ten simple rules for biologists learning to program. <em>PLoS Comput Biol</em> 14: e1005871, 2018. <a href="https://doi.org/10.1371/journal.pcbi.1005871" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1005871</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="python-project.html" target="_blank" rel="noopener">

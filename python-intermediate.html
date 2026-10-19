@@ -71,6 +71,12 @@
         .viz { margin:24px 0; text-align:center; }
         .viz svg { width:100%; max-width:680px; height:auto; }
         .viz figcaption { font-size:0.9rem; color:var(--text-gray); margin-top:10px; }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -150,7 +156,7 @@ lengths = []
 
 <span class="c"># The same result as a comprehension</span>
 lengths = [<span class="k">len</span>(s) <span class="k">for</span> s <span class="k">in</span> seqs]</pre>
-            <p>Read it right to left: "for each <code class="inline">s</code> in seqs, give me <code class="inline">len(s)</code>." You can build dictionaries the same way. Run this and change the sequences.</p>
+            <p>Read it as "<code class="inline">len(s)</code> for each <code class="inline">s</code> in seqs." You can build dictionaries the same way. Run this and change the sequences.</p>
             <div class="pycell"><script type="application/x-python">
 seqs = ["ATGC", "GGGCCC", "ATATAT"]
 
@@ -190,9 +196,9 @@ for base in seq:
 
 print("cleaned:", clean)
 
-# break: stop at the first stop-codon letter "*"
-for i, base in enumerate("ATGC*GG"):
-    if base == "*":
+# break: stop at the first stop "*" in a protein sequence
+for i, aa in enumerate("MKV*LL"):
+    if aa == "*":
         print("stop found at position", i)
         break
 </script></div>
@@ -226,10 +232,10 @@ def safe_gc(seq):
     try:
         return round((seq.count("G") + seq.count("C")) / len(seq) * 100, 1)
     except ZeroDivisionError:
-        return 0.0      # an empty sequence has no GC content
+        return None     # empty sequence: GC content is undefined
 
 print(safe_gc("GGCC"))   # 100.0
-print(safe_gc(""))       # 0.0 instead of a crash
+print(safe_gc(""))       # None instead of a crash
 </script></div>
             <div class="why"><h4>Catch only what you expect</h4><p>Name the specific error (here, <code class="inline">ZeroDivisionError</code>) rather than catching everything. A blanket <code class="inline">except</code> can hide real bugs by swallowing errors you actually wanted to see.</p></div>
 
@@ -271,6 +277,7 @@ m = re.search(r"chr(\w+)", header)
 print("chromosome:", m.group(1))
 
 # pull out every number in the line
+# (notice it also catches the digits inside the gene names)
 print("numbers:", re.findall(r"\d+", header))
 </script></div>
             <details><summary>What do those symbols mean?</summary>
@@ -347,23 +354,17 @@ print(first_base("ATGC"))   # A
 print(first_base(""))       # empty</pre></details>
 
             <h2>Check your understanding</h2>
-            <div class="quiz" data-question="What does <code>break</code> do inside a loop?">
+            <div class="quiz" data-question="What does break do inside a loop?">
                 <button data-opt data-correct>Stops the loop immediately and moves on to the code after it</button>
                 <button data-opt>Skips the rest of the current turn but keeps looping</button>
                 <button data-opt>Restarts the loop from the beginning</button>
                 <div class="quiz-explain"><strong>Correct.</strong> <code>break</code> exits the loop entirely. (The one that skips just the current turn is <code>continue</code>.)</div>
             </div>
-            <div class="quiz" data-question="A function ends with <code>return len(seq), gc</code>. What do you get back when you call it?">
+            <div class="quiz" data-question="A function ends with return len(seq), gc. What do you get back when you call it?">
                 <button data-opt data-correct>Two values together (a tuple) that you can unpack into two variables</button>
                 <button data-opt>Only the first value, len(seq)</button>
                 <button data-opt>An error; a function can only return one thing</button>
                 <div class="quiz-explain"><strong>Right.</strong> Returning comma-separated values gives back a tuple, so <code>length, gc = seq_stats(...)</code> unpacks both at once.</div>
-            </div>
-            <div class="quiz" data-question="Why move reusable functions into their own .py module and import them?">
-                <button data-opt data-correct>So you can write the function once and reuse it across many scripts without copying</button>
-                <button data-opt>Because Python refuses to run functions in the same file as other code</button>
-                <button data-opt>It makes the functions run faster</button>
-                <div class="quiz-explain"><strong>Exactly.</strong> A module lets one tested function serve every analysis, which is how real bioinformatics code is organised.</div>
             </div>
             <div class="quiz" data-question="You loop over many files to compute GC content, but one file is empty and the script crashes with ZeroDivisionError. What is the soundest fix?">
                 <button data-opt data-correct>Wrap the calculation in try / except ZeroDivisionError (or check the length first) so one empty file does not stop the whole run</button>
@@ -377,17 +378,21 @@ print(first_base(""))       # empty</pre></details>
                 <button data-opt>Nothing; comprehensions cannot use len()</button>
                 <div class="quiz-explain"><strong>Right.</strong> A list comprehension builds a new list by applying an expression (here <code>len(s)</code>) to every item.</div>
             </div>
-            <div class="quiz" data-question="Why wrap risky code in try / except?">
-                <button data-opt data-correct>So one bad value can be handled instead of crashing the whole script</button>
-                <button data-opt>It makes the code run faster</button>
-                <button data-opt>It is required around every function in Python</button>
-                <div class="quiz-explain"><strong>Exactly.</strong> Real data is messy; catching the specific error you expect lets the program recover and keep going.</div>
-            </div>
             <div class="quiz" data-question="What does zip(genes, chrom) let you do?">
                 <button data-opt data-correct>Loop over both lists together, one pair at a time</button>
-                <button data-opt>Compress the lists into a smaller file</button>
+                <button data-opt>Join the two lists into one longer list</button>
                 <button data-opt>Sort both lists alphabetically</button>
                 <div class="quiz-explain"><strong>Correct.</strong> <code>zip</code> pairs up items from two (or more) lists so you can loop over them side by side.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Python Software Foundation. The Python Tutorial, chapter 8: Errors and exceptions. <a href="https://docs.python.org/3/tutorial/errors.html" target="_blank" rel="noopener">docs.python.org</a></li>
+                    <li>Python Software Foundation. The Python Tutorial, chapter 6: Modules, and section 5.1.3: List comprehensions. <a href="https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions" target="_blank" rel="noopener">docs.python.org</a></li>
+                    <li>Harris CR, Millman KJ, van der Walt SJ, et al. Array programming with NumPy. <em>Nature</em> 585: 357-362, 2020. <a href="https://doi.org/10.1038/s41586-020-2649-2" target="_blank" rel="noopener">doi:10.1038/s41586-020-2649-2</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="track1-pandas-for-biologists.html" target="_blank" rel="noopener">

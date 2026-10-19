@@ -77,6 +77,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -125,21 +131,21 @@
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: fetch a real gene from NCBI; calculate base composition and GC content; translate a gene into its protein; and produce a chart in Python.</p>
             </div>
 
-            <p>This is where it gets real. You'll pull an actual gene sequence from <strong>NCBI</strong> - the same database working scientists use every day - and analyze it with the Python you just learned. The gene is <strong>human insulin (accession NM_000207)</strong>: the molecule that lets your body use sugar, and the first protein ever made as a medicine.</p>
+            <p>This is where it gets real. You'll pull an actual gene sequence from <strong>NCBI</strong> - the same database working scientists use every day - and analyze it with the Python you just learned. The gene is <strong>human insulin (accession NM_000207)</strong>: the molecule that lets your body use sugar, and the first medicine made with recombinant DNA technology (approved in 1982).</p>
 
             <div class="colab-cta">
                 <div>
                     <p>▶ Code along</p>
                     <p>Use a Jupyter notebook in your <code class="inline">bionexus</code> environment, or open a free Colab. Run each block as you go.</p>
                 </div>
-                <a class="colab-btn" href="https://colab.research.google.com/github/MennahBassiouny/bionexus/blob/main/nb-python-project.ipynb" target="_blank" rel="noopener">Open a blank Colab →</a>
+                <a class="colab-btn" href="https://colab.research.google.com/github/MennahBassiouny/bionexus/blob/main/nb-python-project.ipynb" target="_blank" rel="noopener">Open this project in Colab →</a>
             </div>
 
             <h2><span class="step-num">1</span>Fetch a real gene from NCBI</h2>
-            <p>Biopython's <code class="inline">Entrez</code> module talks to NCBI for you. (NCBI just asks that you tell them who you are via an email - any address is fine.)</p>
+            <p>Biopython's <code class="inline">Entrez</code> module talks to NCBI for you. (NCBI asks you to say who you are with an email address. Use your real one, so NCBI can contact you if something goes wrong; please don't make one up.) In Colab, run <code class="inline">!pip install biopython</code> first.</p>
             <pre><span class="k">from</span> Bio <span class="k">import</span> Entrez, SeqIO
 
-Entrez.email = <span class="s">"your.email@example.com"</span>   <span class="c"># put any email here</span>
+Entrez.email = <span class="s">"your.email@example.com"</span>   <span class="c"># use your own email</span>
 
 <span class="c"># Fetch the human insulin mRNA as a FASTA record</span>
 handle = Entrez.efetch(db=<span class="s">"nucleotide"</span>, id=<span class="s">"NM_000207"</span>,
@@ -168,16 +174,22 @@ seq = <span class="k">str</span>(record.seq)
     <span class="k">return</span> <span class="k">round</span>((s.count(<span class="s">"G"</span>) + s.count(<span class="s">"C"</span>)) / <span class="k">len</span>(s) * <span class="o">100</span>, <span class="o">1</span>)
 
 <span class="k">print</span>(<span class="s">"GC content:"</span>, gc_content(seq), <span class="s">"%"</span>)</pre>
-            <div class="why"><h4>Why GC content is interesting</h4><p>GC pairs bond more tightly than AT pairs, so GC-rich regions are more stable and often mark important, actively-used genes. Comparing GC content across genes and organisms is a real, everyday bioinformatics task.</p></div>
+            <div class="why"><h4>Why GC content is interesting</h4><p>A G-C pair is held by three hydrogen bonds and an A-T pair by two, and GC-rich DNA is generally more stable. GC content varies a lot between genes and between genomes. Comparing GC content across genes and organisms is a real, everyday bioinformatics task.</p></div>
 
             <h2><span class="step-num">4</span>From gene to protein</h2>
-            <p>The whole point of insulin's gene is the protein it builds. Biopython can translate the coding sequence into amino acids for you:</p>
+            <p>The whole point of insulin's gene is the protein it builds. But an mRNA record starts with a stretch that is <strong>not</strong> translated (the 5' untranslated region), so first find the start codon, <code class="inline">ATG</code>, then let Biopython translate from there:</p>
             <pre><span class="k">from</span> Bio.Seq <span class="k">import</span> Seq
 
-protein = Seq(seq).translate(to_stop=<span class="k">True</span>)
+start = seq.find(<span class="s">"ATG"</span>)              <span class="c"># first start codon</span>
+<span class="k">print</span>(<span class="s">"Start codon at position"</span>, start)
+
+cds = seq[start:]
+cds = cds[:<span class="k">len</span>(cds) // <span class="o">3</span> * <span class="o">3</span>]          <span class="c"># keep whole codons only</span>
+protein = Seq(cds).translate(to_stop=<span class="k">True</span>)
 <span class="k">print</span>(<span class="s">"Protein length:"</span>, <span class="k">len</span>(protein), <span class="s">"amino acids"</span>)
 <span class="k">print</span>(<span class="s">"First 20:"</span>, protein[:<span class="o">20</span>])</pre>
-            <p>The first amino acids you see (starting <code class="inline">M...</code>, the standard "start" residue) are the beginning of the real insulin protein. You just decoded a gene.</p>
+            <p>You should see <strong>110 amino acids</strong> starting <code class="inline">MALWMRLLPLL...</code>. That is <strong>preproinsulin</strong>, the protein the ribosome actually makes; the cell then trims it into the 51-amino-acid insulin hormone. You just decoded a gene.</p>
+            <div class="why"><h4>Why not translate the whole record?</h4><p>If you translate from base 1, Biopython reads the untranslated region in the wrong frame and gives you nonsense. For insulin the first ATG is the real start, but that is not true for every gene. The reliable way is to use the coding region (CDS) that NCBI annotates in the GenBank record.</p></div>
 
             <h2><span class="step-num">5</span>Visualize it</h2>
             <pre><span class="k">import</span> matplotlib.pyplot <span class="k">as</span> plt
@@ -205,43 +217,56 @@ plt.show()</pre>
             <h2>What you just did</h2>
             <p>Step back and notice the shape of what happened: you connected to a real scientific database, retrieved real data, applied your own code to it, and produced a result and a figure. That loop - <em>get data → analyze → visualize</em> - is the core of nearly every bioinformatics project, no matter how advanced. You now own the whole pattern.</p>
 
-            <details><summary>The translation gave a warning about length not being a multiple of three. Is that bad?</summary><p>Not necessarily - the FASTA includes untranslated regions around the coding sequence, so the full mRNA isn't a clean multiple of three. For a precise translation you'd extract just the coding region (CDS); for this project, <code class="inline">to_stop=True</code> gives you the protein up to the first stop, which is what we want.</p></details>
+            <details><summary>I got a "Partial codon" warning when translating. Is that bad?</summary><p>Not for this project. It means the piece you translated was not a whole number of codons, because the end of the mRNA (the 3' untranslated region) is included. The line <code class="inline">cds[:len(cds) // 3 * 3]</code> trims the leftover bases so the warning goes away, and <code class="inline">to_stop=True</code> stops at the first stop codon anyway.</p></details>
 
                 <h2>Check your understanding</h2>
                 <div class="quiz">
                     <div class="quiz-q-src">In the project, where do you fetch the real gene sequence from?</div>
                     <button data-opt data-correct>NCBI</button>
                     <button data-opt>A spreadsheet on your desktop</button>
-                    <button data-opt>A random number generator</button>
+                    <button data-opt>The Protein Data Bank (PDB)</button>
+                    <div class="quiz-explain">The project downloads the insulin mRNA record NM_000207 from NCBI's nucleotide database with Biopython's Entrez module.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">Turning a gene's DNA into a protein sequence is called:</div>
-                    <button data-opt>Encryption</button>
+                    <button data-opt>Transcription</button>
                     <button data-opt data-correct>Translation</button>
-                    <button data-opt>Compression</button>
+                    <button data-opt>Replication</button>
+                    <div class="quiz-explain">Transcription copies DNA into RNA; translation reads the RNA three bases (one codon) at a time to build the protein.</div>
                 </div>
 
                 <div class="quiz">
                     <div class="quiz-q-src">Which Biopython module does the project use to talk to NCBI and fetch the gene?</div>
                     <button data-opt data-correct>Entrez</button>
                     <button data-opt>matplotlib</button>
-                    <button data-opt>PowerPoint</button>
+                    <button data-opt>SeqIO.write</button>
                     <div class="quiz-explain">Biopython's Entrez module connects to NCBI to retrieve records; you set Entrez.email and call efetch to download the FASTA.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">In the project, what does GC content measure?</div>
                     <button data-opt>The number of genes in a genome</button>
                     <button data-opt data-correct>The percentage of bases that are G or C</button>
-                    <button data-opt>The age of the sequence</button>
-                    <div class="quiz-explain">GC content is the share of G and C bases in a sequence; GC pairs bond more tightly, so GC-rich regions tend to be more stable.</div>
+                    <button data-opt>The share of bases that are A or T</button>
+                    <div class="quiz-explain">GC content is the share of G and C bases in a sequence; GC-rich DNA is generally more stable because a G-C pair has three hydrogen bonds.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">The general pattern the project teaches is best summarised as:</div>
-                    <button data-opt>Delete, then ignore, then forget</button>
-                    <button data-opt>Print, then close, then exit</button>
+                    <button data-opt>Visualize, then get data, then analyze</button>
+                    <button data-opt>Analyze, then get data, then publish</button>
                     <button data-opt data-correct>Get data, then analyze, then visualize</button>
                     <div class="quiz-explain">Fetching real data, processing it, and producing a figure is the get data, analyze, visualize loop at the core of nearly every bioinformatics project.</div>
                 </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Cock PJA, Antao T, Chang JT, et al. Biopython: freely available Python tools for computational molecular biology and bioinformatics. <em>Bioinformatics</em> 25: 1422-1423, 2009. <a href="https://doi.org/10.1093/bioinformatics/btp163" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp163</a></li>
+                    <li>Biopython Tutorial and Cookbook, chapter "Accessing NCBI's Entrez databases". <a href="https://biopython.org/docs/latest/Tutorial/chapter_entrez.html" target="_blank" rel="noopener">biopython.org</a></li>
+                    <li>NCBI Nucleotide record NM_000207 (Homo sapiens insulin, INS, mRNA). <a href="https://www.ncbi.nlm.nih.gov/nuccore/NM_000207" target="_blank" rel="noopener">ncbi.nlm.nih.gov</a></li>
+                    <li>Perkel JM. Programming: Pick up Python. <em>Nature</em> 518: 125-126, 2015. <a href="https://doi.org/10.1038/518125a" target="_blank" rel="noopener">doi:10.1038/518125a</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
+            </div>
 
             <a class="next-lesson" href="r-install.html" target="_blank" rel="noopener">
                 <span>Next foundation</span>

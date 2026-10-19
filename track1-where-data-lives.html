@@ -78,6 +78,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -142,7 +148,7 @@
                 </div>
                 <div class="db-card">
                     <h3>GEO</h3>
-                    <p>Gene Expression Omnibus - a giant archive of expression experiments (including RNA-seq) you can re-analyze, like the dataset in our flagship project.</p>
+                    <p>Gene Expression Omnibus - a giant archive of functional genomics experiments, mostly gene expression (including RNA-seq) you can re-analyze, like the dataset in our flagship project.</p>
                     <a href="https://www.ncbi.nlm.nih.gov/geo/" target="_blank" rel="noopener">GEO →</a>
                 </div>
                 <div class="db-card">
@@ -172,7 +178,7 @@
 
             <pre><span class="k">from</span> Bio <span class="k">import</span> Entrez, SeqIO
 
-Entrez.email = <span class="s">"your.email@example.com"</span>   <span class="c"># any email works</span>
+Entrez.email = <span class="s">"your.email@example.com"</span>   <span class="c"># use your real email: NCBI uses it to contact you before blocking heavy traffic</span>
 
 <span class="c"># fetch the human beta-globin mRNA (the sickle-cell gene) by accession</span>
 handle = Entrez.efetch(db=<span class="s">"nucleotide"</span>, id=<span class="s">"NM_000518"</span>,
@@ -182,15 +188,15 @@ handle.close()
 
 <span class="k">print</span>(record.description)
 <span class="k">print</span>(<span class="s">"Length:"</span>, <span class="k">len</span>(record.seq), <span class="s">"bases"</span>)</pre>
-            <p>That's the same pattern from the <a href="python-project.html" target="_blank" rel="noopener">Python project</a> - and it works for any accession. Swap the <code class="inline">id</code> and you can fetch any gene, on demand, in two lines.</p>
+            <p>That's the same pattern from the <a href="python-project.html" target="_blank" rel="noopener">Python project</a> - and it works for any accession. Swap the <code class="inline">id</code> and you can fetch any sequence record, on demand, with a few lines of code.</p>
 
-            <div class="fallback"><strong>Network blocked?</strong> Some school or work networks block NCBI. If the fetch fails, download the FASTA by hand from <code class="inline">ncbi.nlm.nih.gov/nuccore/NM_000518</code> (Send to → File → FASTA) and load it with <code class="inline">SeqIO.read("file.fasta", "fasta")</code>.</p></div>
+            <div class="fallback"><strong>Network blocked?</strong> Some school or work networks block NCBI. If the fetch fails, download the FASTA by hand from <code class="inline">ncbi.nlm.nih.gov/nuccore/NM_000518</code> (Send to → File → FASTA) and load it with <code class="inline">SeqIO.read("file.fasta", "fasta")</code>.</div>
 
             <h2>Searching, not just fetching</h2>
             <p>Don't have an accession yet? <code class="inline">Entrez.esearch</code> finds matching records first:</p>
             <pre>search = Entrez.esearch(db=<span class="s">"nucleotide"</span>, term=<span class="s">"BRCA1 Homo sapiens mRNA"</span>, retmax=<span class="s">5</span>)
 results = Entrez.read(search)
-<span class="k">print</span>(results[<span class="s">"IdList"</span>])   <span class="c"># a list of matching record IDs</span></pre>
+<span class="k">print</span>(results[<span class="s">"IdList"</span>])   <span class="c"># matching IDs (NCBI's numeric IDs, not NM_ accessions; add idtype="acc" to get accessions)</span></pre>
             <p>Search to find IDs, then fetch those IDs - that two-step dance is the heart of programmatic data access.</p>
 
             <h2>Check your understanding</h2>
@@ -221,14 +227,25 @@ results = Entrez.read(search)
                 <button data-opt data-correct>So NCBI can contact you about heavy usage</button>
                 <button data-opt>So your results are kept private from other users</button>
                 <button data-opt>Because the sequence is emailed to you instead of downloaded</button>
-                <div class="quiz-explain">NCBI just asks for an email so they can reach you about heavy usage. Any working email address is fine.</div>
+                <div class="quiz-explain">NCBI just asks for an email so they can reach you about heavy usage. Use your own real address so they can actually contact you.</div>
             </div>
             <div class="quiz">
-                <div class="quiz-q-src">You have a paper that mentions accession NM_000518. What is the two-step pattern if you instead only had a gene name?</div>
+                <div class="quiz-q-src">You only have a gene name, not an accession. What is the two-step pattern to get its sequence?</div>
                 <button data-opt>Translate first, then fetch</button>
                 <button data-opt>Compress the file, then upload it</button>
                 <button data-opt data-correct>Search with esearch to get IDs, then efetch those IDs</button>
                 <div class="quiz-explain">When you lack an accession, <code class="inline">Entrez.esearch</code> finds matching record IDs first, then you fetch those IDs. Search to find, then fetch is the heart of programmatic access.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Sayers EW, Beck J, Bolton EE, et al. Database resources of the National Center for Biotechnology Information in 2025. <em>Nucleic Acids Research</em> 53: D20-D29, 2025. <a href="https://doi.org/10.1093/nar/gkae979" target="_blank" rel="noopener">doi:10.1093/nar/gkae979</a></li>
+                    <li>Barrett T, Wilhite SE, Ledoux P, et al. NCBI GEO: archive for functional genomics data sets--update. <em>Nucleic Acids Research</em> 41: D991-D995, 2013. <a href="https://doi.org/10.1093/nar/gks1193" target="_blank" rel="noopener">doi:10.1093/nar/gks1193</a></li>
+                    <li>Katz K, Shutov O, Lapoint R, et al. The Sequence Read Archive: a decade more of explosive growth. <em>Nucleic Acids Research</em> 50: D387-D390, 2022. <a href="https://doi.org/10.1093/nar/gkab1053" target="_blank" rel="noopener">doi:10.1093/nar/gkab1053</a></li>
+                    <li>Himes BE, Jiang X, Wagner P, et al. RNA-Seq transcriptome profiling identifies CRISPLD2 as a glucocorticoid responsive gene that modulates cytokine function in airway smooth muscle cells. <em>PLoS One</em> 9: e99625, 2014. (GSE52778, the airway dataset) <a href="https://doi.org/10.1371/journal.pone.0099625" target="_blank" rel="noopener">doi:10.1371/journal.pone.0099625</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="track1-pandas-for-biologists.html" target="_blank" rel="noopener">

@@ -137,14 +137,14 @@
                 <tr><td><strong>Ensembl</strong></td><td>Genes, transcripts, annotation, comparative genomics</td><td>BioMart and a REST API</td></tr>
                 <tr><td><strong>UniProt</strong></td><td>Protein sequences and functional annotation</td><td>REST API and a mapping tool</td></tr>
             </table>
-            <div class="why"><h4>RefSeq vs GenBank</h4><p>GenBank is the raw submitted record; RefSeq is NCBI's curated, non-redundant reference set (RefSeq transcript IDs start with <code class="inline">NM_</code> for mRNAs). When you want a single canonical record per gene, you usually want RefSeq.</p></div>
+            <div class="why"><h4>RefSeq vs GenBank</h4><p>GenBank is the archive of sequences as researchers submitted them; RefSeq is NCBI's non-redundant reference set, mostly curated (curated mRNAs start with <code class="inline">NM_</code>; computer-predicted ones start with <code class="inline">XM_</code>). When you want a single canonical record per gene, you usually want RefSeq.</p></div>
 
             <h2><span class="step-num">1</span>ID types and why mapping matters</h2>
             <p>The same gene is named differently in different systems, and tools only join data when the IDs match exactly. A gene symbol is human-friendly but ambiguous and changes over time; the stable database IDs are what you should key your analysis on.</p>
             <table class="dtable">
                 <tr><th>ID type</th><th>Example</th><th>Source</th></tr>
                 <tr><td>Gene symbol</td><td>TP53</td><td>HGNC (human-friendly, can change)</td></tr>
-                <tr><td>Ensembl gene ID</td><td>ENSG00000141510</td><td>Ensembl (stable)</td></tr>
+                <tr><td>Ensembl gene ID</td><td>ENSG00000141510</td><td>Ensembl (stable and versioned, e.g. ENSG00000141510.18)</td></tr>
                 <tr><td>Entrez / NCBI gene ID</td><td>7157</td><td>NCBI (a number)</td></tr>
                 <tr><td>RefSeq transcript</td><td>NM_000546</td><td>NCBI RefSeq</td></tr>
                 <tr><td>UniProt accession</td><td>P04637</td><td>UniProt (protein)</td></tr>
@@ -178,12 +178,12 @@
             <p>Public APIs are a shared resource. Good citizenship keeps them fast for everyone and keeps you from being blocked.</p>
             <ul>
                 <li><strong>Identify yourself:</strong> for NCBI Entrez, always set <code class="inline">Entrez.email</code> (and an API key for higher limits).</li>
-                <li><strong>Respect rate limits:</strong> without a key, NCBI allows only a few requests per second, so batch your queries instead of looping one ID at a time.</li>
+                <li><strong>Respect rate limits:</strong> NCBI allows 3 requests per second without an API key and 10 with one. Biopython slows your requests to stay under the limit, but asking for many IDs in one call is still faster and kinder than looping one ID at a time.</li>
                 <li><strong>Cache results:</strong> save what you download so a re-run does not hit the server again.</li>
             </ul>
 
             <h2><span class="step-num">3</span>Worked example: Biopython Entrez efetch</h2>
-            <p>This snippet (shown for illustration, not meant to be run as-is) fetches a nucleotide record from NCBI with Biopython. Note the email set up front, which Entrez requires.</p>
+            <p>This snippet (shown for illustration, not meant to be run as-is) fetches a nucleotide record from NCBI with Biopython. Note the email set up front: NCBI asks every user to set an email (Biopython warns if you leave it out) so they can contact you before blocking heavy traffic.</p>
             <pre><span class="c"># illustration only -- set a real email before running</span>
 <span class="h">from</span> Bio <span class="h">import</span> Entrez, SeqIO
 
@@ -227,7 +227,7 @@ handle.close()
                 <button data-opt data-correct>Entrez.email</button>
                 <button data-opt>The genome build</button>
                 <button data-opt>A BED file path</button>
-                <div class="quiz-explain"><strong>Right.</strong> NCBI requires Entrez.email so they can reach you before blocking misbehaving traffic. An API key raises your rate limit further.</div>
+                <div class="quiz-explain"><strong>Right.</strong> NCBI asks you to set Entrez.email so they can reach you before blocking misbehaving traffic (Biopython warns if you leave it out). An API key raises your rate limit further.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">Your dataset uses gene symbols and another uses Entrez IDs. What do you need to join them?</div>
@@ -235,6 +235,17 @@ handle.close()
                 <button data-opt>A genome chain file</button>
                 <button data-opt>To sort both files with sort -k1,1 -k2,2n</button>
                 <div class="quiz-explain"><strong>Correct.</strong> Tools only match identical IDs, so you map one system to the other. Ensembl BioMart or the R package org.Hs.eg.db both do this.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Sayers EW, Bolton EE, Fine AM, et al. Database resources of the National Center for Biotechnology Information in 2026. <em>Nucleic Acids Research</em> 54: D20-D27, 2026. <a href="https://doi.org/10.1093/nar/gkaf1060" target="_blank" rel="noopener">doi:10.1093/nar/gkaf1060</a></li>
+                    <li>Yates AD, Austine-Orimoloye O, Azov AG, et al. Ensembl 2026. <em>Nucleic Acids Research</em> 54: D1053-D1060, 2026. <a href="https://doi.org/10.1093/nar/gkaf1239" target="_blank" rel="noopener">doi:10.1093/nar/gkaf1239</a></li>
+                    <li>UniProt Consortium. UniProt: the Universal Protein Knowledgebase in 2025. <em>Nucleic Acids Research</em> 53: D609-D617, 2025. <a href="https://doi.org/10.1093/nar/gkae1010" target="_blank" rel="noopener">doi:10.1093/nar/gkae1010</a></li>
+                    <li>Seal RL, Braschi B, Gray K, et al. Genenames.org: the HGNC resources in 2023. <em>Nucleic Acids Research</em> 51: D1003-D1009, 2023. (who names human genes) <a href="https://doi.org/10.1093/nar/gkac888" target="_blank" rel="noopener">doi:10.1093/nar/gkac888</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="track1-where-data-lives.html" target="_blank" rel="noopener">

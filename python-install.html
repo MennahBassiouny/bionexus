@@ -74,6 +74,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -133,7 +139,7 @@
 
             <div class="why">
                 <h4>Decode the jargon: environment</h4>
-                <p>An "environment" is a self-contained box holding a specific Python version and set of packages. Project A can use one box, Project B another, and they never collide. It's the single best habit for avoiding the dreaded "it worked yesterday" problem.</p>
+                <p>An "environment" is a self-contained box holding its own set of packages, built on top of the Python you created it with. Project A can use one box, Project B another, and they never collide. It's the single best habit for avoiding the dreaded "it worked yesterday" problem.</p>
             </div>
 
             <h2>Step 1 - Download &amp; install Python</h2>
@@ -142,10 +148,11 @@
             <div class="os-block">
                 <h3>🪟 <span>Windows</span> <span class="os-badge">Windows 10/11</span></h3>
                 <ol>
-                    <li>Download the <strong>Windows installer (64-bit)</strong> <code class="inline">.exe</code> from python.org.</li>
-                    <li><strong>Important:</strong> on the very first installer screen, tick <strong>"Add python.exe to PATH"</strong> at the bottom - this lets you run Python from any terminal. Then click <strong>Install Now</strong>.</li>
+                    <li>On python.org/downloads, download the <strong>Python install manager</strong> for Windows (it is also in the Microsoft Store as "Python Install Manager").</li>
+                    <li>Run it and accept the defaults. It installs the latest Python and sets up the <code class="inline">python</code> and <code class="inline">py</code> commands for you, so there is no PATH box to tick.</li>
                     <li>When it finishes, open a <strong>new</strong> Command Prompt or PowerShell from the Start menu. This is your Python-aware terminal.</li>
                 </ol>
+                <p style="font-size:0.92rem; color:var(--text-gray);">Older guides show a "Windows installer (64-bit)" with an "Add python.exe to PATH" box. That installer is being retired (no new versions after Python 3.15). If you use it, do tick that box.</p>
             </div>
 
             <div class="os-block">
@@ -153,8 +160,9 @@
                 <ol>
                     <li>Download the <strong>macOS 64-bit universal2 installer</strong> (<code class="inline">.pkg</code>) - one file works on both Apple Silicon and Intel.</li>
                     <li>Double-click it and follow the wizard, accepting the defaults.</li>
+                    <li>Then open <strong>Applications → Python 3.x</strong> and double-click <strong>Install Certificates.command</strong>. Without this, downloads from Python (such as fetching a gene from NCBI) can fail with a <code class="inline">CERTIFICATE_VERIFY_FAILED</code> error.</li>
                 </ol>
-                <p>macOS ships with an old system Python, so on a Mac you'll usually type <code class="inline">python3</code> and <code class="inline">pip3</code> (the python.org installer sets these up for you).</p>
+                <p>macOS may also offer its own <code class="inline">python3</code> through Apple's developer tools; use the python.org one. On a Mac you'll usually type <code class="inline">python3</code> and <code class="inline">pip3</code> (the python.org installer sets these up for you).</p>
             </div>
 
             <div class="os-block">
@@ -177,8 +185,11 @@ pip --version</pre>
             <p>You should see a version number for each (for example <code class="inline">Python 3.13.x</code>). If you do - Python is installed. 🎉 <em>On macOS and Linux, use <code class="inline">python3</code> and <code class="inline">pip3</code> if plain <code class="inline">python</code> isn't found.</em></p>
 
             <h2>Step 3 - Make your first environment</h2>
-            <p>Let's create an isolated workspace (a "virtual environment") for your BioNexus learning, then install the core packages into it:</p>
-            <pre><span class="c"># 1. Create a virtual environment called "bionexus"</span>
+            <p>Let's make a folder for your BioNexus work, create an isolated workspace (a "virtual environment") inside it, then install the core packages:</p>
+            <pre><span class="c"># 0. Make a work folder and move into it</span>
+mkdir bionexus-work
+cd bionexus-work
+<span class="c"># 1. Create a virtual environment called "bionexus" inside it</span>
 python -m venv bionexus          <span class="c"># use python3 on macOS/Linux</span>
 
 <span class="c"># 2. Activate it (do this every time you work)</span>
@@ -187,7 +198,7 @@ source bionexus/bin/activate     <span class="c"># macOS / Linux</span>
 
 <span class="c"># 3. With it active, install the packages you'll use</span>
 pip install jupyter pandas numpy matplotlib biopython</pre>
-            <p>When the environment is active, you'll see <code class="inline">(bionexus)</code> at the start of your prompt - that's how you know which box you're working in. Type <code class="inline">deactivate</code> to leave it.</p>
+            <p>Keeping the environment inside your work folder means editors such as VS Code find it automatically when you open that folder. When the environment is active, you'll see <code class="inline">(bionexus)</code> at the start of your prompt - that's how you know which box you're working in. Type <code class="inline">deactivate</code> to leave it.</p>
 
             <div class="why">
                 <h4>What about conda / Miniconda?</h4>
@@ -209,7 +220,7 @@ pip install jupyter pandas numpy matplotlib biopython</pre>
             <ol>
                 <li>Go to <strong>jetbrains.com/pycharm/download</strong> and choose your operating system (Windows, macOS, or Linux).</li>
                 <li>Run the installer and accept the defaults. On Windows you can tick "Add bin folder to PATH" and a desktop shortcut if you'd like.</li>
-                <li>Open PyCharm, choose <strong>New Project</strong>, and point it at the <code class="inline">bionexus</code> virtual environment you made in Step 3 (<em>Settings → Project → Python Interpreter → Add Interpreter → Existing</em>) - or let PyCharm create a fresh environment for you.</li>
+                <li>Open PyCharm, choose <strong>New Project</strong>, and point it at the <code class="inline">bionexus</code> virtual environment you made in Step 3 (<em>Settings → Project → Python Interpreter → Add Interpreter → Add Local Interpreter → Select existing</em>) - or let PyCharm create a fresh environment for you.</li>
             </ol>
             <div class="why">
                 <h4>Is PyCharm free?</h4>
@@ -222,36 +233,37 @@ pip install jupyter pandas numpy matplotlib biopython</pre>
             </div>
 
             <h2>Stuck? Common snags</h2>
-            <details><summary>"python is not recognized" on Windows</summary><p>You most likely didn't tick <strong>"Add python.exe to PATH"</strong> during install. Re-run the installer, choose <strong>Modify</strong>, enable that option (or reinstall and tick the box), then open a <strong>new</strong> terminal. As a quick workaround you can also use the <code class="inline">py</code> launcher: <code class="inline">py --version</code>.</p></details>
+            <details><summary>"python is not recognized" on Windows</summary><p>First, close the terminal and open a <strong>new</strong> one. If you used the older Windows installer, you most likely didn't tick <strong>"Add python.exe to PATH"</strong>: re-run it, choose <strong>Modify</strong>, enable that option, then open a new terminal. Or switch to the Python install manager, which sets this up for you. As a quick workaround you can also use the <code class="inline">py</code> launcher: <code class="inline">py --version</code>.</p></details>
             <details><summary>"python --version" shows Python 2.x (macOS / Linux)</summary><p>Older systems map <code class="inline">python</code> to version 2. Use <code class="inline">python3</code> and <code class="inline">pip3</code> instead - e.g. <code class="inline">python3 -m venv bionexus</code>.</p></details>
-            <details><summary>"Activate.ps1 cannot be loaded" in PowerShell</summary><p>PowerShell blocks scripts by default. Run this once: <code class="inline">Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code>, then activate again - or just use Command Prompt, where <code class="inline">bionexus\Scripts\activate.bat</code> works without any changes.</p></details>
+            <details><summary>"Activate.ps1 cannot be loaded" in PowerShell</summary><p>On Windows 10 and 11, PowerShell blocks scripts by default. Run this once: <code class="inline">Set-ExecutionPolicy -Scope CurrentUser RemoteSigned</code>, then activate again - or just use Command Prompt, where <code class="inline">bionexus\Scripts\activate.bat</code> works without any changes.</p></details>
             <details><summary>"pip is not recognized" / not found</summary><p>Use <code class="inline">python -m pip install ...</code> (or <code class="inline">python3 -m pip</code> on Mac/Linux). Routing through <code class="inline">python -m</code> always finds the right pip, even when the bare <code class="inline">pip</code> command isn't on your PATH.</p></details>
 
                 <h2>Check your understanding</h2>
                 <div class="quiz">
                     <div class="quiz-q-src">Which tool installs Python packages?</div>
-                    <button data-opt>Excel</button>
+                    <button data-opt>venv</button>
                     <button data-opt data-correct>pip</button>
                     <button data-opt>git</button>
+                    <div class="quiz-explain">pip installs packages. venv creates the environment they go into, and git tracks changes to your code.</div>
                 </div>
 
                 <div class="quiz">
-                    <div class="quiz-q-src">During the Windows install, why does the lesson tell you to tick "Add python.exe to PATH"?</div>
-                    <button data-opt data-correct>So you can run Python from any terminal window</button>
-                    <button data-opt>So Python installs faster</button>
-                    <button data-opt>So Python deletes older versions automatically</button>
-                    <div class="quiz-explain">Adding Python to PATH lets the python and pip commands work from any Command Prompt or PowerShell window, which is why the lesson flags it as important.</div>
+                    <div class="quiz-q-src">You just installed Python, but the terminal says "python is not recognized". What should you try first?</div>
+                    <button data-opt data-correct>Close the terminal and open a new one, then try again</button>
+                    <button data-opt>Reinstall your operating system</button>
+                    <button data-opt>Type the command in capital letters</button>
+                    <div class="quiz-explain">A terminal that was open during the install does not see the new commands. A new terminal usually fixes it; if not, see the "Stuck?" section.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">What is a virtual environment (like the bionexus one you create)?</div>
-                    <button data-opt>A second monitor for coding</button>
-                    <button data-opt data-correct>An isolated workspace holding its own Python version and packages so projects do not collide</button>
+                    <button data-opt>A copy of your whole computer running inside Python</button>
+                    <button data-opt data-correct>An isolated workspace holding its own set of packages so projects do not collide</button>
                     <button data-opt>A website that runs your Python in the cloud</button>
-                    <div class="quiz-explain">A virtual environment is a self-contained box of a Python version and packages, so one project's installs never break another's.</div>
+                    <div class="quiz-explain">A virtual environment is a self-contained box of packages, built on the Python you created it with,, so one project's installs never break another's.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">After activating your environment, how can you tell it is active?</div>
-                    <button data-opt>The screen turns green</button>
+                    <button data-opt>The terminal window changes colour</button>
                     <button data-opt>Python prints a warning every time</button>
                     <button data-opt data-correct>Your prompt starts with (bionexus)</button>
                     <div class="quiz-explain">When a virtual environment is active, its name appears in parentheses at the start of your prompt, such as (bionexus), and you type deactivate to leave it.</div>
@@ -259,11 +271,21 @@ pip install jupyter pandas numpy matplotlib biopython</pre>
 
                 <div class="quiz">
                     <div class="quiz-q-src">On macOS and Linux, what should you type if plain python and pip are not found?</div>
-                    <button data-opt>restart the whole computer first</button>
+                    <button data-opt>py2 and pip2</button>
                     <button data-opt data-correct>python3 and pip3</button>
-                    <button data-opt>sudo delete python</button>
+                    <button data-opt>python.exe and pip.exe</button>
                     <div class="quiz-explain">Older Macs and Linux systems may map python to an old version, so the lesson tells you to use python3 and pip3 instead, for example python3 -m venv bionexus.</div>
                 </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Python Software Foundation. Using Python on Windows. <a href="https://docs.python.org/3/using/windows.html" target="_blank" rel="noopener">docs.python.org</a></li>
+                    <li>Python Software Foundation. venv: creation of virtual environments. <a href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener">docs.python.org</a></li>
+                    <li>Python Packaging Authority. Installing packages (Python Packaging User Guide). <a href="https://packaging.python.org/en/latest/tutorials/installing-packages/" target="_blank" rel="noopener">packaging.python.org</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
+            </div>
 
             <a class="next-lesson" href="python-basics.html" target="_blank" rel="noopener"><span>Next in the Python series</span><h3>Python basics with real biological data →</h3></a>
         </div></div>

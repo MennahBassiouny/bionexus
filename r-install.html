@@ -74,6 +74,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -130,13 +136,13 @@
             <h2>Two pieces, and why</h2>
             <p>You install <strong>two</strong> things. <strong>R</strong> is the actual language and engine. <strong>RStudio</strong> is the workspace you'll spend your time in - it gives you a code editor, your plots, your data, and your console all in one window. R is the car; RStudio is the comfortable dashboard. Install R first, then RStudio.</p>
 
-            <div class="why"><h4>Why R for bioinformatics?</h4><p>R was built by statisticians, and the gold-standard tools for RNA-seq, differential expression, and genomics - DESeq2, edgeR, limma, and the whole Bioconductor project - live in R. If you want to work with expression data, R is unavoidable, and that's a good thing.</p></div>
+            <div class="why"><h4>Why R for bioinformatics?</h4><p>R was built by statisticians, and the gold-standard tools for RNA-seq, differential expression, and genomics - DESeq2, edgeR, limma, and the whole Bioconductor project - live in R. R is the standard home for expression analysis, so learning it opens all of those tools to you.</p></div>
 
             <h2>Step 1 - Install R (from CRAN)</h2>
             <p>R is distributed by <strong>CRAN</strong> (the Comprehensive R Archive Network) at <code class="inline">cran.r-project.org</code>. Pick your OS:</p>
 
             <div class="os-block">
-                <h3>🪟 <span>Windows</span> <span class="os-badge">Windows 10/11</span></h3>
+                <h3>🪟 <span>Windows</span> <span class="os-badge">Windows</span></h3>
                 <ol>
                     <li>Go to <code class="inline">cran.r-project.org</code> → "Download R for Windows" → "base" → "Download R for Windows".</li>
                     <li>Run the <code class="inline">.exe</code> installer and accept the defaults.</li>
@@ -146,7 +152,7 @@
                 <h3>🍎 <span>macOS</span> <span class="os-badge">Intel &amp; Apple Silicon</span></h3>
                 <ol>
                     <li>Go to <code class="inline">cran.r-project.org</code> → "Download R for macOS".</li>
-                    <li>Pick the right <code class="inline">.pkg</code>: <strong>arm64</strong> for Apple Silicon (M1-M4), or the Intel build for older Macs.</li>
+                    <li>Pick the right <code class="inline">.pkg</code>: <strong>arm64</strong> for any Apple Silicon (M-series) Mac running macOS 14 or newer, or the <strong>x86_64</strong> build for Intel Macs.</li>
                     <li>Open the <code class="inline">.pkg</code> and follow the installer.</li>
                 </ol>
             </div>
@@ -159,7 +165,8 @@ sudo apt install r-base</pre>
             </div>
 
             <h2>Step 2 - Install RStudio Desktop (free)</h2>
-            <p>Go to <strong>posit.co/download/rstudio-desktop</strong> and download the free <strong>RStudio Desktop</strong> for your OS. It will detect the R you just installed automatically.</p>
+            <p>Go to the <a href="https://docs.posit.co/ide/user/download.html" target="_blank" rel="noopener" style="color:var(--primary-blue); font-weight:600;">RStudio Desktop download page</a> and download the free <strong>RStudio Desktop</strong> for your OS. It will detect the R you just installed automatically.</p>
+            <p style="font-size:0.95rem; color:var(--text-gray);">Current RStudio versions need <strong>Windows 11</strong> or <strong>macOS 14 or newer</strong> (64-bit Linux is fine). On an older computer, check the download page for an older release, or skip RStudio for now and use the in-browser R cells on this site.</p>
             <ul>
                 <li><strong>Windows:</strong> run the <code class="inline">.exe</code> installer.</li>
                 <li><strong>macOS:</strong> open the <code class="inline">.dmg</code> and drag RStudio into Applications.</li>
@@ -178,37 +185,39 @@ sudo apt install r-base</pre>
             <p>Packages add features. We'll grab the <strong>tidyverse</strong> (the modern toolkit for data work) and <strong>palmerpenguins</strong> (a friendly real dataset we'll use in the project). In the Console:</p>
             <pre><span class="k">install.packages</span>(<span class="s">"tidyverse"</span>)
 <span class="k">install.packages</span>(<span class="s">"palmerpenguins"</span>)</pre>
-            <p>This downloads from CRAN and can take a few minutes the first time - that's normal. Say "yes" to any prompts.</p>
+            <p>This downloads from CRAN and can take a few minutes the first time - that's normal. If R asks to use a <strong>personal library</strong>, say yes. If it asks whether to <strong>install from sources</strong> packages that need compilation, say <strong>no</strong> (compiling needs extra tools, such as Rtools on Windows).</p>
 
-            <div class="why"><h4>Decode the jargon: Bioconductor</h4><p>CRAN is R's general package store. <strong>Bioconductor</strong> is a second store dedicated to biology - it's where DESeq2 and friends live. You install from it a little differently (<code class="inline">BiocManager::install("DESeq2")</code>). You don't need it yet, but now the name won't surprise you when it shows up in Track 3.</p></div>
+            <div class="why"><h4>Decode the jargon: Bioconductor</h4><p>CRAN is R's general package store. <strong>Bioconductor</strong> is a second store dedicated to biology - it's where DESeq2 and friends live. You install from it a little differently: first <code class="inline">install.packages("BiocManager")</code> once, then <code class="inline">BiocManager::install("DESeq2")</code>. You don't need it yet, but now the name won't surprise you when it shows up in Track 3.</p></div>
 
             <div class="checkpoint">
                 <h4>✅ You're ready when…</h4>
-                <p>RStudio opens, <code class="inline">1 + 1</code> returns <code class="inline">2</code> in the Console, and <code class="inline">library(tidyverse)</code> runs without an error. On to the basics.</p>
+                <p>RStudio opens, <code class="inline">1 + 1</code> returns <code class="inline">2</code> in the Console, and <code class="inline">library(tidyverse)</code> runs without an error. It prints some red "Attaching packages" and "Conflicts ... masks" text: that is a normal message, not an error. On to the basics.</p>
             </div>
 
             <h2>Stuck? Common snags</h2>
-            <details><summary>RStudio says it can't find R</summary><p>This happens if RStudio was installed before R, or you have multiple R versions. In RStudio go to Tools → Global Options → General → and set the R version, or simply reinstall R then restart RStudio.</p></details>
+            <details><summary>RStudio says it can't find R</summary><p>This happens if RStudio was installed before R, or you have multiple R versions. On Windows, go to Tools → Global Options → General and choose the R version. On macOS or Linux (or if that does not help), reinstall R and then restart RStudio.</p></details>
             <details><summary>install.packages fails with a "non-zero exit status" on Linux</summary><p>Some R packages need system libraries to compile. The error usually names what's missing (e.g. <code class="inline">libcurl</code>, <code class="inline">libxml2</code>). Install the matching <code class="inline">-dev</code> package with apt (e.g. <code class="inline">sudo apt install libcurl4-openssl-dev</code>) and try again.</p></details>
 
                 <h2>Check your understanding</h2>
                 <div class="quiz">
                     <div class="quiz-q-src">Where do you download R itself from?</div>
                     <button data-opt data-correct>CRAN</button>
-                    <button data-opt>The Apple App Store only</button>
+                    <button data-opt>The RStudio (Posit) website, which includes R</button>
                     <button data-opt>NCBI</button>
+                    <div class="quiz-explain">R itself comes from CRAN. RStudio is a separate download that needs R to be installed already.</div>
                 </div>
                 <div class="quiz">
-                    <div class="quiz-q-src">What is RStudio?</div>
-                    <button data-opt>A cloud database of genomes</button>
-                    <button data-opt data-correct>A friendly desktop editor (IDE) for writing and running R</button>
-                    <button data-opt>A separate language that replaces R</button>
+                    <div class="quiz-q-src">After library(tidyverse) you see red text listing "Conflicts" and functions that are "masked". What does it mean?</div>
+                    <button data-opt data-correct>It is a normal start-up message; the packages loaded fine</button>
+                    <button data-opt>The install failed and you must reinstall R</button>
+                    <button data-opt>Your data has been deleted</button>
+                    <div class="quiz-explain">Red is not always an error. The message only tells you that some tidyverse functions share names with base R functions. Only text starting with "Error" means R stopped.</div>
                 </div>
 
                 <div class="quiz">
                     <div class="quiz-q-src">What does the lesson say RStudio adds on top of R?</div>
                     <button data-opt data-correct>A friendly workspace with a code editor, plots, data, and console in one window</button>
-                    <button data-opt>A faster internet connection</button>
+                    <button data-opt>Extra statistics that plain R cannot do</button>
                     <button data-opt>A replacement language so you no longer need R</button>
                     <div class="quiz-explain">R is the engine and RStudio is the workspace around it, giving you the editor, plots, data, and console together; the lesson calls R the car and RStudio the dashboard.</div>
                 </div>
@@ -226,6 +235,17 @@ sudo apt install r-base</pre>
                     <button data-opt data-correct>install.packages("tidyverse")</button>
                     <div class="quiz-explain">Inside the RStudio Console you run install.packages("tidyverse"), which downloads and installs the package from CRAN.</div>
                 </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>CRAN. R for macOS (arm64 and Intel builds, system requirements). <a href="https://mac.r-project.org/bin/macosx/" target="_blank" rel="noopener">mac.r-project.org</a></li>
+                    <li>Posit. RStudio User Guide: Download RStudio. <a href="https://docs.posit.co/ide/user/download.html" target="_blank" rel="noopener">docs.posit.co</a></li>
+                    <li>Wickham H, Cetinkaya-Rundel M, Grolemund G. <em>R for Data Science</em>, 2nd ed. (2023), chapter 2 "Workflow: basics". <a href="https://r4ds.hadley.nz/workflow-basics.html" target="_blank" rel="noopener">r4ds.hadley.nz</a></li>
+                    <li>Huber W, Carey VJ, Gentleman R, et al. Orchestrating high-throughput genomic analysis with Bioconductor. <em>Nat Methods</em> 12: 115-121, 2015. <a href="https://doi.org/10.1038/nmeth.3252" target="_blank" rel="noopener">doi:10.1038/nmeth.3252</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
+            </div>
 
             <a class="next-lesson" href="r-first-steps.html" target="_blank" rel="noopener">
                 <span>Next in the R series (2 of 5)</span>

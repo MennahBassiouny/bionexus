@@ -75,6 +75,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -130,13 +136,13 @@
 ATGGCCCTGTGGATGCGCCTCCTGCCCCTGCTGGCGCTGCTG
 GCCCTCTGGGGACCTGACCCAGCCGCAGCCTTTGTGAACCAA</pre>
             <p>That's it. A file can hold one record or millions, each starting with its own <code class="inline">&gt;</code> header. FASTA is used for genes, genomes, proteins - any sequence where you don't need quality information.</p>
-            <div class="why"><h4>The <code class="inline">&gt;</code> is your friend</h4><p>Because every record starts with <code class="inline">&gt;</code>, counting sequences is as easy as counting header lines - exactly the <code class="inline">grep -c "&gt;"</code> trick from the <a href="bash-project.html" target="_blank" rel="noopener">Bash project</a>. One symbol, huge convenience.</p></div>
+            <div class="why"><h4>The <code class="inline">&gt;</code> is your friend</h4><p>Because every record starts with <code class="inline">&gt;</code>, counting sequences is as easy as counting header lines - exactly the <code class="inline">grep -c "^&gt;"</code> trick (<code class="inline">^</code> means "at the start of a line") from the <a href="bash-project.html" target="_blank" rel="noopener">Bash project</a>. One symbol, huge convenience.</p></div>
 
             <h2>FASTQ - sequences <em>with quality</em></h2>
             <p>Sequencing machines aren't perfect - each base is read with a certain confidence. <strong>FASTQ</strong> captures that. Every record is exactly <strong>four lines</strong>:</p>
             <pre><span class="h">@read1</span>                          <span class="c"># 1. ID line, starts with @</span>
 ATGCGTACGTTAGCCGTA             <span class="c"># 2. the sequence</span>
-+                              <span class="c"># 3. a separator (just a +)</span>
++                              <span class="c"># 3. a separator: a +, sometimes followed by the read ID again</span>
 IIIIIIIHHHHHGGGFFF             <span class="c"># 4. one quality score per base</span></pre>
             <p>Line 4 has one character for each base in line 2, encoding how confident the machine was about that base. Those symbols look cryptic, but they map to numbers.</p>
 
@@ -166,7 +172,7 @@ IIIIIIIHHHHHGGGFFF             <span class="c"># 4. one quality score per base</
                 <figcaption style="text-align:center; color:#64748b; font-size:0.9rem; margin-top:8px;">Four lines per record. Lines 2 and 4 are always the same length - one quality score for every base.</figcaption>
             </figure>
 
-            <div class="why"><h4>Decode the jargon: Phred quality scores</h4><p>Each quality character represents a <strong>Phred score</strong> - a number saying how likely the base is wrong. A score of 30 means a 1-in-1,000 chance of error (99.9% confident); 40 means 1-in-10,000. The characters are just those numbers shifted into printable symbols. You rarely read them by eye - tools like FastQC summarize them for you - but now you know what line 4 <em>is</em>.</p></div>
+            <div class="why"><h4>Decode the jargon: Phred quality scores</h4><p>Each quality character represents a <strong>Phred score</strong> - a number saying how likely the base is wrong. A score of 30 means a 1-in-1,000 chance of error (99.9% confident); 40 means 1-in-10,000. The characters are those numbers turned into printable symbols: in modern files (Phred+33), a character's ASCII code minus 33 gives the score, so <code class="inline">I</code> = 40. (Some very old Illumina files used +64.) You rarely read them by eye - tools like FastQC summarize them for you - but now you know what line 4 <em>is</em>.</p></div>
 
             <h2>Hands-on: read both formats</h2>
             <p>Let's actually parse them with Biopython (you installed it in the foundations track; in Colab, run <code class="inline">!pip install biopython</code> first).</p>
@@ -192,7 +198,7 @@ IIIIIIIHHHHHGGGFFF             <span class="c"># 4. one quality score per base</
 <span class="c"># read every record</span>
 <span class="k">for</span> record <span class="k">in</span> SeqIO.parse(<span class="s">"demo.fasta"</span>, <span class="s">"fasta"</span>):
     <span class="k">print</span>(record.id, <span class="s">"|"</span>, <span class="k">len</span>(record.seq), <span class="s">"bases |"</span>, record.seq)</pre>
-            <p><code class="inline">SeqIO.parse</code> hands you one <strong>record</strong> at a time, each with an <code class="inline">.id</code> (the header) and a <code class="inline">.seq</code> (the sequence). That single pattern reads a 2-line file or a 2-million-line file the same way.</p>
+            <p><code class="inline">SeqIO.parse</code> hands you one <strong>record</strong> at a time, each with an <code class="inline">.id</code> (the first word of the header; the full line is in <code class="inline">.description</code>) and a <code class="inline">.seq</code> (the sequence). That single pattern reads a 2-line file or a 2-million-line file the same way.</p>
 
             <p>Now a FASTQ record - note we also get quality scores:</p>
             <pre><span class="k">with</span> <span class="k">open</span>(<span class="s">"demo.fastq"</span>, <span class="s">"w"</span>) <span class="k">as</span> f:
@@ -209,7 +215,7 @@ rec = <span class="k">next</span>(SeqIO.parse(<span class="s">"demo.fastq"</span
                 <button data-opt data-correct>Count the header lines that start with &gt;</button>
                 <button data-opt>Count every line in the file</button>
                 <button data-opt>Divide the file size by 60</button>
-                <div class="quiz-explain">Count the header lines - every record starts with <code class="inline">&gt;</code>. From the command line that's <code class="inline">grep -c "&gt;" file.fasta</code>; in Python, count the records from <code class="inline">SeqIO.parse</code>.</div>
+                <div class="quiz-explain">Count the header lines - every record starts with <code class="inline">&gt;</code>. From the command line that's <code class="inline">grep -c "^&gt;" file.fasta</code>; in Python, count the records from <code class="inline">SeqIO.parse</code>.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">What's the key difference between FASTA and FASTQ?</div>
@@ -231,7 +237,7 @@ rec = <span class="k">next</span>(SeqIO.parse(<span class="s">"demo.fastq"</span
                 <button data-opt data-correct>It is a separator between the sequence and the quality scores</button>
                 <button data-opt>It marks the end of the file</button>
                 <button data-opt>It stores a second copy of the sequence</button>
-                <div class="quiz-explain">Line 3 is a separator, just a <code class="inline">+</code>, sitting between the sequence (line 2) and the quality line (line 4). It carries no data of its own.</div>
+                <div class="quiz-explain">Line 3 is a separator, just a <code class="inline">+</code>, sitting between the sequence (line 2) and the quality line (line 4). It sometimes repeats the read ID after the +, but it never holds new information.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">In a FASTQ record, how does the length of the quality line compare to the sequence line?</div>
@@ -239,6 +245,16 @@ rec = <span class="k">next</span>(SeqIO.parse(<span class="s">"demo.fastq"</span
                 <button data-opt>It is always shorter, one score per record</button>
                 <button data-opt>It is twice as long as the sequence</button>
                 <div class="quiz-explain">Lines 2 and 4 are always the same length because there is exactly one quality character for every base in the sequence.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Cock PJ, Fields CJ, Goto N, Heuer ML, Rice PM. The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants. <em>Nucleic Acids Research</em> 38: 1767-1771, 2010. <a href="https://doi.org/10.1093/nar/gkp1137" target="_blank" rel="noopener">doi:10.1093/nar/gkp1137</a></li>
+                    <li>Ewing B, Green P. Base-calling of automated sequencer traces using phred. II. Error probabilities. <em>Genome Research</em> 8: 186-194, 1998. (the Phred score) <a href="https://doi.org/10.1101/gr.8.3.186" target="_blank" rel="noopener">doi:10.1101/gr.8.3.186</a></li>
+                    <li>Cock PJ, Antao T, Chang JT, et al. Biopython: freely available Python tools for computational molecular biology and bioinformatics. <em>Bioinformatics</em> 25: 1422-1423, 2009. <a href="https://doi.org/10.1093/bioinformatics/btp163" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp163</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="track1-file-formats.html" target="_blank" rel="noopener">

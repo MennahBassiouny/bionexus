@@ -93,6 +93,7 @@
         .errcard h3 { margin:0 0 6px; font-family:'JetBrains Mono',monospace; font-size:1rem; color:#b91c1c; }
         .errcard p { font-size:1rem; color:var(--text-gray); margin:0; }
         @media (max-width:768px){ .dtable{display:block; overflow-x:auto; font-size:0.9rem;} .dtable th,.dtable td{padding:8px 9px;} .dtable code{word-break:break-word;} }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -298,7 +299,7 @@ mena(c(2, 4, 6))   # should be mean()
 
             <div class="errcard"><h3>Error: unexpected numeric constant (or symbol, or string constant)</h3><p><strong>Means:</strong> R could not read your code as a sentence. <strong>Usual cause:</strong> a missing comma between items, or a missing operator. R points with <code class="inline">^</code> at roughly where it got confused.</p></div>
             <div class="rcell"><script type="text/x-r">
-lengths <- c(19.1, 81.2 188.3)   # one comma is missing
+gene_len <- c(19.1, 81.2 188.3)   # one comma is missing
 </script></div>
 
             <div class="errcard"><h3>Error: unexpected end of input (or a + that will not go away)</h3><p><strong>Means:</strong> something was opened and never closed: a bracket <code class="inline">(</code>, a brace <code class="inline">{</code>, or a quote <code class="inline">"</code>. In RStudio's Console this shows up as the <code class="inline">+</code> prompt; press Esc and fix the line.</p></div>
@@ -314,7 +315,7 @@ dose * 2
 
             <div class="errcard"><h3>Error: there is no package called 'palmerpenguins'</h3><p><strong>Means:</strong> you ran <code class="inline">library()</code> for a package that is not installed on this computer. <strong>Fix:</strong> run <code class="inline">install.packages("palmerpenguins")</code> once in the Console, then <code class="inline">library(palmerpenguins)</code> again. (This one only happens in RStudio, so there is no box for it here.)</p></div>
 
-            <div class="why" style="margin-top:30px;"><h4>A warning is not an error</h4><p>Red text that starts with <strong>Warning</strong> means R did the job but wants you to notice something, for example <code class="inline">as.numeric("abc")</code> gives <code class="inline">NA</code> with "NAs introduced by coercion". Read it, decide whether it matters, and carry on. Only <strong>Error</strong> means R stopped.</p></div>
+            <div class="why" style="margin-top:30px;"><h4>A warning is not an error</h4><p>Red text that starts with <strong>Warning</strong> means R did the job but wants you to notice something, for example <code class="inline">as.numeric("abc")</code> gives <code class="inline">NA</code> with "NAs introduced by coercion". Read it, decide whether it matters, and carry on. Only <strong>Error</strong> means R stopped. Red text with no "Error" or "Warning" (for example the start-up text some packages print) is just a message.</p></div>
 
             <h3>A three-step routine for any error</h3>
             <ol>
@@ -395,8 +396,9 @@ mean(gene_lengths)                         # 3. lowercase g, to match the name
                     <li>Posit. "Using RStudio Projects" (support article). <a href="https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects" target="_blank" rel="noopener">support.posit.co</a></li>
                     <li>Posit. RStudio IDE User Guide: "Pane Layout". <a href="https://docs.posit.co/ide/user/ide/guide/ui/ui-panes.html" target="_blank" rel="noopener">docs.posit.co</a></li>
                     <li>Bryan J. "Project-oriented workflow". Tidyverse blog (2017). <a href="https://tidyverse.org/blog/2017/12/workflow-vs-script/" target="_blank" rel="noopener">tidyverse.org</a></li>
+                    <li>Wilson G, Bryan J, Cranston K, Kitzes J, Nederbragt L, Teal TK. Good enough practices in scientific computing. <em>PLoS Comput Biol</em> 13: e1005510, 2017. <a href="https://doi.org/10.1371/journal.pcbi.1005510" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1005510</a></li>
                 </ol>
-                <p style="font-size:0.85rem; color:var(--text-gray); margin:12px 0 0;">Last reviewed: October 2026</p>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="r-basics.html" target="_blank" rel="noopener">

@@ -77,6 +77,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -136,7 +142,7 @@
 <span class="k">print</span>(dna.complement())        <span class="c"># pair each base (A↔T, G↔C)</span>
 <span class="k">print</span>(dna.reverse_complement()) <span class="c"># the other strand, read 5'→3'</span>
 <span class="k">print</span>(dna.transcribe())        <span class="c"># DNA → RNA (T becomes U)</span>
-<span class="k">print</span>(dna.translate())          <span class="c"># RNA/DNA → protein (amino acids)</span></pre>
+<span class="k">print</span>(dna.translate())          <span class="c"># codons → amino acids, read from the first letter (it does not look for a start codon)</span></pre>
             <div class="why"><h4>Decode the jargon: reverse complement</h4><p>DNA is double-stranded. If one strand reads <code class="inline">ATGC</code>, the partner strand reads <code class="inline">GCAT</code> (complement each base, then reverse the order). You need the <strong>reverse complement</strong> constantly - for example, when a gene sits on the opposite strand. Biopython does it in one call.</p></div>
 
             <h2>SeqIO: reading files (the pattern that scales)</h2>
@@ -162,7 +168,7 @@
             <p>Whatever records you've kept or changed, <code class="inline">SeqIO.write()</code> saves them back to a file in any format.</p>
             <pre>SeqIO.write(keep, <span class="s">"filtered.fasta"</span>, <span class="s">"fasta"</span>)
 <span class="k">print</span>(<span class="s">"Saved filtered.fasta"</span>)</pre>
-            <p>That's the full cycle - <strong>read → manipulate → write</strong> - and it's the backbone of countless real scripts. You now have the tools to process a sequence file of any size.</p>
+            <p>That's the full cycle - <strong>read → manipulate → write</strong> - and it's the backbone of countless real scripts. And because <code class="inline">SeqIO.parse</code> reads one record at a time, the same loop works on very large files too, as long as you write records out as you go instead of collecting them all in a list.</p>
 
             <div class="challenge">
                 <h3>🚀 Make it your own</h3>
@@ -210,6 +216,15 @@
                 <button data-opt data-correct>The partner strand read 5' to 3' (complement each base, then reverse the order)</button>
                 <button data-opt>The sequence translated into protein</button>
                 <div class="quiz-explain"><code class="inline">reverse_complement()</code> gives the opposite strand: it complements each base (A with T, G with C) and reverses the order. You need it constantly when a gene sits on the other strand.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Cock PJ, Antao T, Chang JT, et al. Biopython: freely available Python tools for computational molecular biology and bioinformatics. <em>Bioinformatics</em> 25: 1422-1423, 2009. <a href="https://doi.org/10.1093/bioinformatics/btp163" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp163</a></li>
+                    <li>Sayers EW, Bolton EE, Fine AM, et al. Database resources of the National Center for Biotechnology Information in 2026. <em>Nucleic Acids Research</em> 54: D20-D27, 2026. <a href="https://doi.org/10.1093/nar/gkaf1060" target="_blank" rel="noopener">doi:10.1093/nar/gkaf1060</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="track1-where-data-lives.html" target="_blank" rel="noopener">

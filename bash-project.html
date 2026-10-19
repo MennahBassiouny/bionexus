@@ -73,6 +73,12 @@
         footer p { color:rgba(255,255,255,0.6); }
         .menu-toggle { display:none; background:none; border:none; font-size:1.5rem; color:var(--text-dark); cursor:pointer; }
         @media (max-width:768px){ .menu-toggle{display:block;} nav ul{display:none; position:absolute; top:100%; left:0; right:0; background:white; flex-direction:column; padding:20px; box-shadow:0 8px 16px rgba(0,0,0,0.1);} nav ul.active{display:flex;} .logo-img{height:40px;} .lesson-header h1{font-size:2.2rem;} }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -95,9 +101,9 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Bash series (3 of 3)</div>
+            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; Bash series (4 of 4)</div>
             <h1>Project: Wrangle a Real Data File</h1>
-            <p class="promise">Download a real FASTA file of human genes and answer questions about it - how many sequences, how long, how GC-rich - using nothing but the command line. This is genuine bioinformatics.</p>
+            <p class="promise">Download a real FASTA file of human mRNA (transcript) sequences and answer questions about it - how many sequences, how long, how GC-rich - using nothing but the command line. This is genuine bioinformatics.</p>
             <div class="tags">
                 <span class="tag green">🟢→🟡 Beginner project</span>
                 <span class="tag">⏱️ ~1.5 hr</span>
@@ -121,24 +127,25 @@
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: download a real FASTA file; count and inspect its sequences; measure the total sequence length; and compute GC content, all from the command line.</p>
             </div>
 
-            <p>Bioinformaticians spend a surprising amount of time just <em>interrogating files</em> from the command line before any heavy analysis - how big is it, how many records, does it contain what I expect? That's exactly this project. You'll grab a real FASTA file of three human genes and answer real questions about it.</p>
+            <p>Bioinformaticians spend a surprising amount of time just <em>interrogating files</em> from the command line before any heavy analysis - how big is it, how many records, does it contain what I expect? That's exactly this project. You'll grab a real FASTA file of three human mRNA sequences and answer real questions about it.</p>
 
             <h2><span class="step-num">1</span>Get the data</h2>
             <p>Make a workspace and download three real human gene sequences (insulin, beta-globin, and APP) straight from NCBI:</p>
             <pre>mkdir fasta-project
 cd fasta-project
 
-curl <span class="s">"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NM_000207,NM_000518,NM_000484&rettype=fasta&retmode=text"</span> -o genes.fasta</pre>
+curl <span class="s">"https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=nuccore&id=NM_000207,NM_000518,NM_000484&rettype=fasta&retmode=text"</span> -f -o genes.fasta
+head -3 genes.fasta   <span class="c"># check you got sequences, not an error page</span></pre>
             <p>(If <code class="inline">curl</code> isn't found, try <code class="inline">wget</code> with the same URL and <code class="inline">-O genes.fasta</code>.)</p>
 
-            <div class="fallback"><strong>No internet, or NCBI blocked?</strong> Create a small real FASTA by hand instead - paste this whole block into your terminal and press Enter:
+            <div class="fallback"><strong>No internet, or NCBI blocked?</strong> Create a short real excerpt by hand instead (the first 42 letters of each gene's coding sequence) - paste this whole block into your terminal and press Enter:
             <pre><span class="k">cat</span> &gt; genes.fasta &lt;&lt;<span class="s">'EOF'</span>
 &gt;gene1 insulin
 ATGGCCCTGTGGATGCGCCTCCTGCCCCTGCTGGCGCTGCTG
 &gt;gene2 hemoglobin_beta
 ATGGTGCATCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCC
-&gt;gene3 albumin
-ATGAAGTGGGTAACCTTTATTTCCCTTCTTTTTCTCTTTAGC
+&gt;gene3 APP
+ATGCTGCCCGGTTTGGCACTGCTCCTGCTGGCCGCCTGGACG
 <span class="s">EOF</span></pre>
             Every command below works the same on this file.</div>
 
@@ -149,7 +156,7 @@ wc -l genes.fasta    <span class="c"># how many lines total?</span></pre>
             <h2><span class="step-num">3</span>How many sequences?</h2>
             <p>Every FASTA record starts with a <code class="inline">&gt;</code> header line. So counting headers counts sequences:</p>
             <pre>grep -c <span class="s">"&gt;"</span> genes.fasta</pre>
-            <p>That's the single most common FASTA sanity-check in all of bioinformatics - and you can now do it instantly.</p>
+            <p>It's one of the most common FASTA sanity checks, and you can now do it instantly. (Pros often write <code class="inline">grep -c "^&gt;"</code>, where <code class="inline">^</code> means "only at the start of a line".)</p>
 
             <h2><span class="step-num">4</span>What are they?</h2>
             <pre>grep <span class="s">"&gt;"</span> genes.fasta            <span class="c"># list just the header lines</span>
@@ -175,7 +182,7 @@ awk <span class="s">"BEGIN{printf \"GC%% = %.1f\n\", $gc/$total*100}"</span></pr
                 <h3>🚀 Make it your own</h3>
                 <ul>
                     <li>Download a <strong>different set of genes</strong> by editing the <code class="inline">id=</code> list in the URL (any NCBI nucleotide accessions).</li>
-                    <li>Use <code class="inline">grep -c "N"</code> to count ambiguous bases (Ns) - a quick quality check.</li>
+                    <li>Count ambiguous bases (Ns) with <code class="inline">grep -v "^&gt;" genes.fasta | tr -cd 'Nn' | wc -c</code> - a quick quality check. (A plain <code class="inline">grep -c "N"</code> would count <em>lines</em> containing an N, including headers like NM_000207.)</li>
                     <li>Count how many headers mention a keyword: <code class="inline">grep "&gt;" genes.fasta | grep -c "insulin"</code>.</li>
                     <li>Save your whole session as a <strong>shell script</strong> (<code class="inline">analyze.sh</code>) and run it with <code class="inline">bash analyze.sh</code> - your first automation.</li>
                     <li><strong>Portfolio move:</strong> put the script and a short README on GitHub.</li>
@@ -222,6 +229,14 @@ awk <span class="s">"BEGIN{printf \"GC%% = %.1f\n\", $gc/$total*100}"</span></pr
                     <button data-opt data-correct>Interrogating files: how big, how many records, does it contain what I expect</button>
                     <div class="quiz-explain">Much real work is just inspecting files from the command line (size, record count, contents) before any heavy analysis, which is exactly what this project practices.</div>
                 </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Pearson WR, Lipman DJ. Improved tools for biological sequence comparison. <em>PNAS</em> 85: 2444-2448, 1988. (where the FASTA format comes from) <a href="https://doi.org/10.1073/pnas.85.8.2444" target="_blank" rel="noopener">doi:10.1073/pnas.85.8.2444</a></li>
+                </ol>
+                <p class="reviewed">Official documentation:<br>NCBI E-utilities in depth (EFetch): <a href="https://www.ncbi.nlm.nih.gov/books/NBK25499/" target="_blank" rel="noopener">www.ncbi.nlm.nih.gov</a>.<br>GNU Coreutils manual (wc, tr): <a href="https://www.gnu.org/software/coreutils/manual/" target="_blank" rel="noopener">www.gnu.org</a>.<br>Last reviewed: October 2026.</p>
+            </div>
 
             <a class="next-lesson" href="learn.html" target="_blank" rel="noopener">
                 <span>You've finished the foundations 🎉</span>

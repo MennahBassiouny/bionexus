@@ -80,6 +80,12 @@
         .glossary dt { font-weight:700; color:var(--deep-navy); margin-top:10px; }
         .glossary dd { color:var(--text-gray); margin:2px 0 0; }
         .lesson-body h3 { font-family:'Crimson Pro',serif; font-size:1.4rem; color:var(--deep-navy); margin:30px 0 10px; }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -258,7 +264,7 @@ genes$length_kb    # pull out one column by name with $
 </script></div>
 
             <h2>5. The tidyverse: five verbs that do most of the work</h2>
-            <p>The <strong>tidyverse</strong> is a popular set of R packages for data work. Five verbs cover the vast majority of it. The two you will reach for first are <code class="inline">filter</code> (keep rows) and <code class="inline">select</code> (keep columns). The picture makes the difference obvious.</p>
+            <p>The <strong>tidyverse</strong> is a popular set of R packages for data work. Five verbs cover a lot of everyday work. The two you will reach for first are <code class="inline">filter</code> (keep rows) and <code class="inline">select</code> (keep columns). The picture makes the difference obvious.</p>
             <figure class="viz">
                 <svg viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="filter keeps rows, select keeps columns">
                     <g font-family="'Work Sans',sans-serif">
@@ -294,7 +300,7 @@ genes |>
   filter(length_kb > 50) |>     # keep rows where the gene is long
   arrange(desc(length_kb))      # sort, longest first
 </script></div>
-            <div class="why"><h4>The pipe <code class="inline">|&gt;</code></h4><p>The pipe passes the result of one step into the next, so you read top to bottom as a sentence: "take genes, <em>then</em> filter, <em>then</em> sort." It is the backbone of tidyverse code.</p></div>
+            <div class="why"><h4>The pipe <code class="inline">|&gt;</code></h4><p>The pipe passes the result of one step into the next, so you read top to bottom as a sentence: "take genes, <em>then</em> filter, <em>then</em> sort." It is the backbone of tidyverse code. Older code (and many tutorials) use <code class="inline">%&gt;%</code> instead; for simple steps like these the two do the same thing. <code class="inline">|&gt;</code> needs R 4.1 or newer.</p></div>
 
             <h2>6. Your first plot with ggplot2</h2>
             <p><strong>ggplot2</strong> builds a graph in layers: start with the <strong>data</strong>, say what goes on each axis (the <strong>aesthetics</strong>, <code class="inline">aes</code>), then add a <strong>geom</strong>, the kind of mark to draw.</p>
@@ -412,23 +418,16 @@ mean(genes$length_kb)  # 96.2</pre></details>
             <div class="quiz">
                 <div class="quiz-q-src">How do you pull a single column out of a data frame by name?</div>
                 <button data-opt data-correct>With the dollar sign, e.g. genes$length_kb</button>
-                <button data-opt>With square brackets, e.g. genes[length_kb]</button>
+                <button data-opt>With a colon, e.g. genes:length_kb</button>
                 <button data-opt>With a dot, e.g. genes.length_kb</button>
-                <div class="quiz-explain"><strong>Correct.</strong> <code>$</code> selects a named column from a data frame (or a named element from a list).</div>
+                <div class="quiz-explain"><strong>Correct.</strong> <code>$</code> selects a named column from a data frame (or a named element from a list). Square brackets with the name in quotes, <code>genes[["length_kb"]]</code>, also work.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">You have a data frame <code class="inline">genes</code> and want only the rows on chromosome 17. Which line is correct?</div>
                 <button data-opt data-correct>genes |&gt; filter(chromosome == "17")</button>
                 <button data-opt>genes |&gt; select(chromosome == "17")</button>
                 <button data-opt>genes |&gt; filter(chromosome = "17")</button>
-                <div class="quiz-explain"><strong>Correct.</strong> <code>filter()</code> keeps rows by a condition, and a condition uses two equals signs (<code>==</code>). <code>select()</code> is for columns, and a single <code>=</code> would be an assignment.</div>
-            </div>
-            <div class="quiz">
-                <div class="quiz-q-src">What does <code class="inline">gc &lt;- 41.5</code> do?</div>
-                <button data-opt data-correct>Stores the value 41.5 in a name called gc</button>
-                <button data-opt>Checks whether gc is less than 41.5</button>
-                <button data-opt>Prints 41.5 to the screen</button>
-                <div class="quiz-explain">The arrow <code class="inline">&lt;-</code> assigns: it puts the value on the right into the name on the left.</div>
+                <div class="quiz-explain"><strong>Correct.</strong> <code>filter()</code> keeps rows by a condition, and a condition uses two equals signs (<code>==</code>). <code>select()</code> is for columns. With a single <code>=</code>, dplyr stops with an error that asks whether you meant <code>==</code>.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">In R, what is <code class="inline">expr[1]</code>?</div>
@@ -438,18 +437,21 @@ mean(genes$length_kb)  # 96.2</pre></details>
                 <div class="quiz-explain">R numbers positions starting at 1, so <code class="inline">expr[1]</code> is the first element.</div>
             </div>
             <div class="quiz">
-                <div class="quiz-q-src">What is the difference between <code class="inline">filter()</code> and <code class="inline">select()</code>?</div>
-                <button data-opt data-correct>filter keeps rows; select keeps columns</button>
-                <button data-opt>filter keeps columns; select keeps rows</button>
-                <button data-opt>filter sorts the rows; select renames the columns</button>
-                <div class="quiz-explain">Rows are observations (filter) and columns are variables (select). Rows = filter, columns = select.</div>
-            </div>
-            <div class="quiz">
                 <div class="quiz-q-src">A data frame is best described as...</div>
                 <button data-opt data-correct>A table where columns are variables and rows are observations</button>
                 <button data-opt>A vector: a single row of values that are all the same type</button>
                 <button data-opt>One column pulled out of a table with the dollar sign</button>
                 <div class="quiz-explain">A data frame is R's spreadsheet: a table of columns (variables) and rows (observations).</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Wickham H, Cetinkaya-Rundel M, Grolemund G. <em>R for Data Science</em>, 2nd ed. (2023), chapter 3 "Data transformation". <a href="https://r4ds.hadley.nz/data-transform.html" target="_blank" rel="noopener">r4ds.hadley.nz</a></li>
+                    <li>Wickham H, Cetinkaya-Rundel M, Grolemund G. <em>R for Data Science</em>, 2nd ed. (2023), chapter 1 "Data visualization". <a href="https://r4ds.hadley.nz/data-visualize.html" target="_blank" rel="noopener">r4ds.hadley.nz</a></li>
+                    <li>Wickham H, Averick M, Bryan J, et al. Welcome to the Tidyverse. <em>J Open Source Softw</em> 4(43): 1686, 2019. <a href="https://doi.org/10.21105/joss.01686" target="_blank" rel="noopener">doi:10.21105/joss.01686</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="r-project.html" target="_blank" rel="noopener">
