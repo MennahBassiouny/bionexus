@@ -177,7 +177,7 @@
                     <li>"It works on my machine but not yours" (your versions differ from a collaborator's).</li>
                     <li>Installing one tool downgrades another and quietly corrupts an old project.</li>
                 </ul>
-                <p>This is <strong>dependency hell</strong>, and it is the single biggest reason computational analyses fail to reproduce. The fix is to stop installing everything into one shared pile.</p>
+                <p>This is <strong>dependency hell</strong>, and it is one of the most common reasons computational analyses fail to reproduce. The fix is to stop installing everything into one shared pile.</p>
 
                 <h2>The solution: isolated environments</h2>
                 <p>A <strong>conda environment</strong> is a self-contained folder with its own Python/R and its own exact set of package versions, isolated from everything else on your computer. You make one environment per project. Inside it, you install whatever versions that project needs; nothing leaks out to break other projects, and nothing else can break it. Switch projects, switch environments, and each one stays exactly as you left it.</p>
@@ -203,13 +203,14 @@
                 <p>Conda downloads packages from <strong>channels</strong> (repositories). Two matter enormously:</p>
                 <ul>
                     <li><strong>conda-forge</strong>: a huge community channel for general-purpose packages.</li>
-                    <li><strong>bioconda</strong>: the channel for bioinformatics software, over 10,000 tools (samtools, bwa, STAR, salmon, and almost anything else you will need), maintained by a large community. Bioconda is the reason "install this genomics tool" is usually a one-line command instead of an afternoon of compiling.</li>
+                    <li><strong>bioconda</strong>: the channel for bioinformatics software, over 12,000 packages (samtools, bwa, STAR, salmon, and almost anything else you will need), maintained by a large community. Bioconda is the reason "install this genomics tool" is usually a one-line command instead of an afternoon of compiling.</li>
                 </ul>
                 <p>Because of how channel priority works, the recommended one-time setup orders the channels so bioconda and conda-forge resolve correctly:</p>
                 <pre><span class="c"># one-time channel setup (order matters)</span>
-conda config <span class="p">--add</span> channels conda-forge
 conda config <span class="p">--add</span> channels bioconda
+conda config <span class="p">--add</span> channels conda-forge   <span class="c"># added last = highest priority</span>
 conda config <span class="p">--set</span> channel_priority strict</pre>
+                <p>Install conda itself with <strong>Miniforge</strong>, which uses conda-forge by default. Anaconda's own <code class="inline">defaults</code> channel has license terms: it is free for individuals, universities and companies with 200 or fewer employees, but larger organizations need a paid plan. Bioconda no longer recommends adding <code class="inline">defaults</code>.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Channel</h4>
@@ -235,12 +236,13 @@ conda deactivate</pre>
                 <p>Notice you pinned versions (<code class="inline">samtools=1.19</code>). That is deliberate: pinning is what makes a result reproducible months later. The two biggest habits to build are <strong>one environment per project</strong> and <strong>never install into the base environment</strong> (keep base clean so a bad install cannot break conda itself).</p>
 
                 <h2>The reproducibility payoff: environment.yml</h2>
-                <p>Here is where this connects to the rest of Track 6. You can write your entire environment to a single text file, <code class="inline">environment.yml</code>, and commit it to your Git repository. Anyone, including future-you on a new laptop, can recreate the exact setup from it:</p>
+                <p>Here is where this connects to the rest of Track 6. You can write your entire environment to a single text file, <code class="inline">environment.yml</code>, and commit it to your Git repository. Anyone, including future-you on a new laptop, can rebuild the same setup from it:</p>
                 <pre><span class="c"># environment.yml</span>
 name: rnaseq
 channels:
   <span class="p">-</span> conda-forge
   <span class="p">-</span> bioconda
+  <span class="p">-</span> nodefaults
 dependencies:
   <span class="p">-</span> python=3.11
   <span class="p">-</span> samtools=1.19
@@ -256,11 +258,11 @@ conda env create <span class="p">-f</span> environment.yml</pre>
 
                 <div class="warn">
                     <h4>⚠️ Use --from-history, and know the platform caveat</h4>
-                    <p>A plain <code class="inline">conda env export</code> writes every low-level dependency and pins them to your operating system's specific builds, which often will not recreate on a different OS. <code class="inline">--from-history</code> records only the packages you actually asked for, which is far more portable. For bit-for-bit reproducibility across machines, the next step up is a container (Docker), where conda environments are commonly used as the base, see Nüst et al. (2020) on writing reproducible Dockerfiles.</p>
+                    <p>A plain <code class="inline">conda env export</code> writes every low-level dependency and pins them to your operating system's specific builds, which often will not recreate on a different OS. <code class="inline">--from-history</code> records only the packages you actually asked for, which is far more portable. But it keeps only the versions you typed and skips pip installs, so open the file and add versions (check them with <code class="inline">conda list</code>). For an exact, locked record, use a lockfile tool such as conda-lock or pixi. For bit-for-bit reproducibility across machines, the next step up is a container (Docker), where conda environments are commonly used as the base. See Nüst et al. (2020) on writing reproducible Dockerfiles.</p>
                 </div>
 
                 <h2>Speed: mamba and the modern solver</h2>
-                <p>Conda used to be slow at "solving" the dependency puzzle for big environments. <strong>Mamba</strong> is a drop-in, much faster reimplementation of the solver; you can often just replace <code class="inline">conda</code> with <code class="inline">mamba</code> in the commands above. The good news is that modern conda has adopted the same fast solver (libmamba) by default, so recent installations are already quick. (You may also hear about <strong>pixi</strong>, a newer project-focused tool built on the same ecosystem.) The concepts in this lesson are identical whichever front-end you use.</p>
+                <p>Conda used to be slow at "solving" the dependency puzzle for big environments. <strong>Mamba</strong> is a drop-in, much faster reimplementation of conda (written in C++); you can often just replace <code class="inline">conda</code> with <code class="inline">mamba</code> in the commands above. The good news is that modern conda has adopted the same fast solver (libmamba) by default, so recent installations are already quick. (You may also hear about <strong>pixi</strong>, a newer project-focused tool built on the same ecosystem.) The concepts in this lesson are identical whichever front-end you use.</p>
 
                 <h2>Your habits checklist</h2>
                 <ol>
@@ -277,20 +279,20 @@ conda env create <span class="p">-f</span> environment.yml</pre>
                     <button data-opt>Their computer is simply faster, which changes the output; nothing can be done</button>
                     <button data-opt data-correct>You are probably running different software versions; pin versions and share a committed environment.yml so they can recreate your exact environment</button>
                     <button data-opt>They must re-download the raw data, because data always changes between machines</button>
-                    <button data-opt>Conda cannot help here; the only fix is to email them your whole hard drive</button>
-                    <div class="quiz-explain"><strong>Correct.</strong> Same code and data but different results almost always means a different compute environment, different tool or library versions. Pinning versions and sharing an <code class="inline">environment.yml</code> lets a collaborator rebuild the identical environment, which is exactly the "compute environment control" pillar of reproducibility.</div>
+                    <button data-opt>Different operating systems round numbers differently, so only switching to your OS will fix it</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> Same code and data but different results most often means a different compute environment (multi-threaded tools and random seeds can also cause small differences), different tool or library versions. Pinning versions and sharing an <code class="inline">environment.yml</code> lets a collaborator rebuild the identical environment, which is exactly the "compute environment control" pillar of reproducibility.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">A beginner installs every tool into the conda "base" environment with pip whenever conda is slow. Two months in, multiple projects break. Which combination of habits would best have prevented this?</div>
                     <button data-opt>Install everything into base, but back up the laptop weekly</button>
-                    <button data-opt data-correct>Use a separate environment per project, keep base clean, prefer conda (bioconda/conda-forge) for tools, and pin versions, mixing unmanaged pip installs into shared base is what caused the conflicts</button>
+                    <button data-opt data-correct>Use a separate environment per project, keep base clean, prefer conda (bioconda/conda-forge) for tools, and pin versions; mixing unmanaged pip installs into shared base is what caused the conflicts</button>
                     <button data-opt>Switch entirely to pip and never use conda for anything</button>
-                    <button data-opt>Reinstall the operating system after each project</button>
+                    <button data-opt>Keep using base, but run conda update --all before each new project</button>
                     <div class="quiz-explain"><strong>Exactly.</strong> Cramming tools into base and mixing ad-hoc pip installs is the classic recipe for dependency hell: one install silently changes a dependency another project relied on. Per-project environments, a clean base, conda-first installation, and pinned versions keep each project isolated and stable.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">You run <code>conda env export &gt; environment.yml</code> on macOS and send it to a colleague on Linux, who finds it will not build. What is the issue and the better command?</div>
-                    <button data-opt>environment.yml files never work across people; use a screenshot of your packages instead</button>
+                    <button data-opt>The file is missing a "name:" line, so conda cannot build it on another machine</button>
                     <button data-opt data-correct>A full export pins OS-specific builds that do not exist on Linux; exporting with conda env export --from-history records only the packages you requested and is far more portable</button>
                     <button data-opt>The colleague must switch to macOS; conda only works on one OS at a time</button>
                     <button data-opt>The file failed because environment names cannot be shared between users</button>
@@ -302,26 +304,26 @@ conda env create <span class="p">-f</span> environment.yml</pre>
                     <div class="quiz-q-src">Why does conda dominate bioinformatics setups, whereas a pure Python project might happily use only venv and pip?</div>
                     <button data-opt>conda is the only tool that can install Python packages at all</button>
                     <button data-opt data-correct>Many core bioinformatics tools (aligners, samtools, variant callers) are compiled C/C++ programs with system libraries, which conda can install alongside Python and R but pip cannot</button>
-                    <button data-opt>pip refuses to run on Linux, the main bioinformatics platform</button>
+                    <button data-opt>conda environments run code faster than venv environments, so analyses finish sooner</button>
                     <div class="quiz-explain"><strong>Correct.</strong> venv and pip manage Python packages from PyPI only. Conda is both a package and environment manager that can install non-Python tools and their C libraries, which is exactly what genomics pipelines need. You can still use pip inside a conda environment for Python-only packages.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">During one-time setup you run the channel commands and finish with <code>conda config --set channel_priority strict</code>. What does strict channel priority help you avoid?</div>
                     <button data-opt>It speeds up downloads by skipping checksums</button>
-                    <button data-opt>It deletes the base environment to free disk space</button>
+                    <button data-opt>It forces conda to always install the newest version of every package</button>
                     <button data-opt data-correct>It makes conda prefer higher-priority channels (like bioconda and conda-forge) consistently, avoiding a class of subtle, hard-to-debug version conflicts</button>
                     <div class="quiz-explain"><strong>Right.</strong> Strict channel priority tells conda to resolve packages from higher-priority channels first instead of mixing builds across channels, which prevents the kind of inconsistent dependency mixes that cause silent breakage. It is part of the recommended bioconda plus conda-forge setup.</div>
                 </div>
                 <div class="refs">
                     <h4>Sources &amp; further reading</h4>
                     <ol>
-                        <li>Grüning B, et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. <em>Nature Methods</em> 15, 475–476, 2018. <a href="https://doi.org/10.1038/s41592-018-0046-7" target="_blank" rel="noopener">doi:10.1038/s41592-018-0046-7</a></li>
+                        <li>Grüning B, et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. <em>Nature Methods</em> 15, 475-476, 2018. <a href="https://doi.org/10.1038/s41592-018-0046-7" target="_blank" rel="noopener">doi:10.1038/s41592-018-0046-7</a></li>
                         <li>Ziemann M, Poulain P, Bora A. The five pillars of computational reproducibility: bioinformatics and beyond. <em>Briefings in Bioinformatics</em> 24(6), bbad375, 2023. <a href="https://doi.org/10.1093/bib/bbad375" target="_blank" rel="noopener">doi:10.1093/bib/bbad375</a></li>
                         <li>Nüst D, et al. Ten simple rules for writing Dockerfiles for reproducible data science. <em>PLOS Computational Biology</em> 16(11): e1008316, 2020. <a href="https://doi.org/10.1371/journal.pcbi.1008316" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1008316</a></li>
                         <li>Conda documentation: Managing environments. <a href="https://docs.conda.io/projects/conda/en/stable/user-guide/tasks/manage-environments.html" target="_blank" rel="noopener">docs.conda.io</a></li>
                         <li>Bioconda documentation and tool index. <a href="https://bioconda.github.io/" target="_blank" rel="noopener">bioconda.github.io</a></li>
                     </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
                 <a class="next-lesson" href="portfolio.html" target="_blank" rel="noopener">
                     <span>Next in Track 6</span>

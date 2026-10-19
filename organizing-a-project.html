@@ -7,19 +7,19 @@
     <link rel="canonical" href="https://bionexushub.com/organizing-a-project.html">
     <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Git and GitHub for scientists, explained in plain English: why version control matters, the difference between Git and GitHub, and the everyday commit-and-push loop that protects your work and shows it off.">
+    <meta name="description" content="How to organize a bioinformatics project: a folder layout that scales, read-only raw data, file-naming habits, and a README that makes your work reproducible.">
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
     <meta property="og:title" content="Organizing a Bioinformatics Project | BioNexus Hub">
-    <meta property="og:description" content="Why version control matters, Git vs GitHub, and the everyday commit-and-push loop, explained simply for scientists.">
+    <meta property="og:description" content="Folder layout, read-only raw data, naming habits and a README: simple habits for reproducible bioinformatics projects.">
     <meta property="og:url" content="https://bionexushub.com/organizing-a-project.html">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Organizing a Bioinformatics Project | BioNexus Hub">
-    <meta name="twitter:description" content="Version control, Git vs GitHub, and the commit-and-push loop, explained simply.">
+    <meta name="twitter:description" content="Folder layout, read-only raw data, naming habits and a README, explained simply.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>Organizing a Bioinformatics Project - BioNexus Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -112,6 +112,12 @@
         .dtable { width:100%; border-collapse:collapse; margin:18px 0; font-size:1rem; }
         .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
         .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
 </head>
 <body>
@@ -157,7 +163,7 @@
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
                 <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
-                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Helpful to have used version control and environments first; see <a href="git-github.html" target="_blank" rel="noopener">Git &amp; GitHub for scientists</a> and <a href="conda-environments.html" target="_blank" rel="noopener">Conda environments</a>.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Helpful to have done Git first; see <a href="git-github.html" target="_blank" rel="noopener">Git &amp; GitHub for scientists</a> and <a href="conda-environments.html" target="_blank" rel="noopener">Conda environments</a> (which comes next).</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
@@ -197,7 +203,7 @@
 
             <h2><span class="step-num">2</span>Treat raw data as read-only</h2>
             <p>The single most important rule: <strong>never edit your raw data in place.</strong> Download it, put it in <code class="inline">data/raw/</code>, and from then on only ever read from it; every change goes to a new file in <code class="inline">data/processed/</code>. If a step goes wrong, you can always rerun from untouched originals. On the command line you can even lock it:</p>
-            <pre>chmod -w data/raw/*    <span class="c"># remove write permission, so you cannot overwrite it by accident</span></pre>
+            <pre>chmod -w data/raw/*    <span class="c"># remove write permission, so you cannot overwrite it by accident (it does not stop rm -f, so keep a backup)</span></pre>
 
             <h2><span class="step-num">3</span>Name things so you can find them</h2>
             <p>Good names save hours. A few habits:</p>
@@ -212,14 +218,14 @@
             <p>A short <code class="inline">README.md</code> at the top of the project is the difference between work someone can reuse and a folder no one (including you in six months) can decode. It does not need to be long. Say: what the project is, where the data came from, and the order to run the scripts in.</p>
             <pre><span class="c"># Airway RNA-seq re-analysis</span>
 
-Differential expression of dexamethasone-treated airway cells.
+Differential expression of dexamethasone-treated airway smooth muscle cells.
 Data: GEO GSE52778 (Himes et al. 2014).
 
 <span class="c">## How to run</span>
 1. scripts/01_download.sh   - fetch the data
 2. scripts/02_quantify.sh   - reads to counts
 3. scripts/03_deseq2.R      - differential expression -> results/</pre>
-            <div class="why"><h4>The reproducibility test</h4><p>Could a colleague clone your project folder and, by reading only the README, reproduce your results? If yes, you have done this right. Pair this layout with a pinned environment (see the <a href="conda-environments.html" target="_blank" rel="noopener">conda lesson</a>) and version control (the <a href="git-github.html" target="_blank" rel="noopener">Git lesson</a>), and your work is genuinely reproducible.</p></div>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">The reproducibility test</h4><p>Could a colleague clone your project folder and, by reading only the README, reproduce your results? If yes, you have done this right. Pair this layout with a pinned environment (see the <a href="conda-environments.html" target="_blank" rel="noopener">conda lesson</a>) and version control (the <a href="git-github.html" target="_blank" rel="noopener">Git lesson</a>), and your work is genuinely reproducible.</p></div>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
@@ -233,14 +239,14 @@ Data: GEO GSE52778 (Himes et al. 2014).
                 <div class="quiz-q-src">Why name files with dates like 2026-06-17?</div>
                 <button data-opt data-correct>So they sort in chronological order and the name is unambiguous</button>
                 <button data-opt>Because Git requires that exact format</button>
-                <button data-opt>It makes the files smaller</button>
+                <button data-opt>Because the operating system reads the date and uses it as the file's creation time</button>
                 <div class="quiz-explain"><strong>Correct.</strong> Year-month-day sorts correctly and removes guesswork about which file is newer.</div>
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">What is the single most important rule for your raw data?</div>
                 <button data-opt data-correct>Never edit it in place; keep it read-only and write changes to new files</button>
                 <button data-opt>Always edit it directly to save disk space</button>
-                <button data-opt>Delete it once you have started the analysis</button>
+                <button data-opt>Keep only the cleaned version once processing works, to save space</button>
                 <div class="quiz-explain"><strong>Right.</strong> Untouched raw data means you can always rerun from a clean start. Make changes into <code class="inline">data/processed/</code>.</div>
             </div>
             <div class="quiz">
@@ -256,6 +262,16 @@ Data: GEO GSE52778 (Himes et al. 2014).
                 <button data-opt>It is required by GitHub and has no other use</button>
                 <button data-opt>To store the raw sequencing data</button>
                 <div class="quiz-explain"><strong>Exactly.</strong> A README that states what the project is, where the data came from, and the order to run things is the heart of a reproducible project.</div>
+            </div>
+
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Noble WS. A quick guide to organizing computational biology projects. <em>PLoS Comput Biol</em> 5: e1000424, 2009. <a href="https://doi.org/10.1371/journal.pcbi.1000424" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1000424</a></li>
+                    <li>Wilson G, Bryan J, Cranston K, Kitzes J, Nederbragt L, Teal TK. Good enough practices in scientific computing. <em>PLoS Comput Biol</em> 13: e1005510, 2017. <a href="https://doi.org/10.1371/journal.pcbi.1005510" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1005510</a></li>
+                    <li>Himes BE, Jiang X, Wagner P, et al. RNA-Seq transcriptome profiling identifies CRISPLD2 as a glucocorticoid responsive gene that modulates cytokine function in airway smooth muscle cells. <em>PLoS One</em> 9: e99625, 2014. <a href="https://doi.org/10.1371/journal.pone.0099625" target="_blank" rel="noopener">doi:10.1371/journal.pone.0099625</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
             <a class="next-lesson" href="conda-environments.html" target="_blank" rel="noopener">
