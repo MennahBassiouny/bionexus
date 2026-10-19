@@ -399,6 +399,12 @@
     var qsrcEl = quiz.querySelector('.quiz-q-src');
     var qsrcHTML = qsrcEl ? qsrcEl.innerHTML : '';
     var opts = Array.prototype.slice.call(quiz.querySelectorAll('[data-opt]'));
+    // Shuffle answer order on every page load (Fisher-Yates), so the correct
+    // answer is never in a predictable position.
+    for (var s = opts.length - 1; s > 0; s--) {
+      var r = Math.floor(Math.random() * (s + 1));
+      var tmp = opts[s]; opts[s] = opts[r]; opts[r] = tmp;
+    }
     var explainEl = quiz.querySelector('.quiz-explain');
     var explainHTML = explainEl ? explainEl.innerHTML : '';
 
@@ -419,6 +425,7 @@
       btn.type = 'button';
       btn.textContent = o.textContent.trim();
       var isCorrect = o.hasAttribute('data-correct');
+      if (isCorrect) btn.setAttribute('data-correct', '');
       btn.addEventListener('click', function () {
         if (answered) return;
         answered = true;
@@ -433,7 +440,7 @@
           // reveal the correct one
           var correctBtns = quiz.querySelectorAll('.quiz-opt');
           for (var j = 0; j < correctBtns.length; j++) {
-            if (opts[j] && opts[j].hasAttribute('data-correct')) {
+            if (correctBtns[j].hasAttribute('data-correct')) {
               correctBtns[j].classList.add('correct');
               correctBtns[j].innerHTML = correctBtns[j].textContent + '<span class="mark">✓</span>';
             }
