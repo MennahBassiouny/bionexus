@@ -173,16 +173,16 @@
                 <p>Biology is noisy. Two genetically identical cells given the identical treatment will not produce identical measurements. So when you see gene X go up 1.4-fold between treated and control, the real question is never "did it change?" (the numbers are always at least slightly different). The question is: <strong>could a difference this big have happened just by chance, given how noisy the measurements are?</strong> Statistics is the toolkit for answering that question honestly. Skip it, and you will confidently report noise as discovery.</p>
 
                 <h2>Distributions: the shape of your data</h2>
-                <p>A <strong>distribution</strong> describes how often each value occurs. It is the single most important concept here, because every statistical test assumes your data follow some distribution, and choosing the wrong one gives wrong answers. Three you will meet constantly:</p>
+                <p>A <strong>distribution</strong> describes how often each value occurs. It is the single most important concept here, because most statistical tests assume your data follow some distribution, and choosing the wrong one gives wrong answers. Three you will meet constantly:</p>
                 <ul>
                     <li><strong>Normal (Gaussian, the "bell curve").</strong> Symmetric, described by a mean and a standard deviation. Heights, measurement errors, and many log-transformed quantities are roughly normal. Many classic tests (the t-test) assume it.</li>
-                    <li><strong>Binomial.</strong> Counts of successes out of a fixed number of yes/no trials, like how many of 50 sequencing reads carry the alternate allele. The foundation of variant calling.</li>
+                    <li><strong>Binomial.</strong> Counts of successes out of a fixed number of yes/no trials, like how many of 50 sequencing reads carry the alternate allele. A building block of many variant-calling models.</li>
                     <li><strong>Negative binomial.</strong> The workhorse for <strong>RNA-seq counts</strong>. Read counts per gene are non-negative integers and are "overdispersed" (their variance is larger than a simple Poisson would predict because of biological variability between samples). This is exactly why DESeq2 and edgeR model counts with the negative binomial rather than assuming a normal bell curve, and why you should never run a plain t-test on raw counts.</li>
                 </ul>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Standard deviation</h4>
-                    <p>A measure of spread: how far, on average, individual values sit from the mean. Small standard deviation means the data cluster tightly; large means they are spread out. Noise lives here, and statistical tests are essentially comparing the size of an effect against the size of this spread.</p>
+                    <p>A measure of spread: roughly, the typical distance of individual values from the mean. Small standard deviation means the data cluster tightly; large means they are spread out. Noise lives here, and statistical tests are essentially comparing the size of an effect against the size of this spread.</p>
                 </div>
 
                 <h2>The null hypothesis and the logic of a test</h2>
@@ -192,7 +192,7 @@
                 <h2>What a p-value actually is</h2>
                 <p>Here is the precise definition, worth memorizing word for word:</p>
                 <p style="background:rgba(91,156,248,0.08); border-left:4px solid var(--primary-blue); padding:16px 20px; border-radius:8px;"><strong>A p-value is the probability of observing data at least as extreme as what you saw, <em>assuming the null hypothesis is true.</em></strong></p>
-                <p>A small p-value (say 0.001) means: if there were truly no effect, data this extreme would happen only 1 time in 1000. That is surprising enough that most fields agree to "reject the null." The conventional, and entirely arbitrary, threshold is <strong>0.05</strong>, a convention from Ronald Fisher in the 1920s, not a law of nature.</p>
+                <p>A small p-value (say 0.001) means: if there were truly no effect, data at least this extreme would happen only about 1 time in 1000. That is surprising enough that most fields agree to "reject the null." The conventional, and entirely arbitrary, threshold is <strong>0.05</strong>, a convention from Ronald Fisher in the 1920s, not a law of nature.</p>
 
                 <div class="warn">
                     <h4>⚠️ What a p-value is NOT (the misreadings that ruin papers)</h4>
@@ -220,7 +220,7 @@ p_value = as_extreme / n_experiments
 print(f"Observed: {observed_heads} heads out of {n_flips}")
 print(f"Simulated p-value: {p_value:.4f}")
 print("Interpretation: if the coin were truly fair, a result this")
-print(f"extreme would occur about {p_value*100:.1f}% of the time.")
+print(f"extreme would occur about {p_value*100:.2f}% of the time.")
 </script></div>
 
                 <p>Change <code class="inline">observed_heads</code> to 52 and rerun: the p-value shoots up, because 52 heads is not surprising for a fair coin at all. Change it to 70 and it nearly vanishes. You are watching the definition of a p-value in action.</p>
@@ -232,7 +232,7 @@ print(f"extreme would occur about {p_value*100:.1f}% of the time.")
                     <tbody>
                         <tr><td><strong>Fold change / log<sub>2</sub> fold change</strong></td><td>How many times larger one group's value is than another's</td><td>RNA-seq, the x-axis of every volcano plot</td></tr>
                         <tr><td><strong>Cohen's d</strong></td><td>Difference between two means measured in standard deviations</td><td>Comparing continuous measurements between two groups</td></tr>
-                        <tr><td><strong>Odds ratio / relative risk</strong></td><td>How much an exposure changes the odds of an outcome</td><td>GWAS, epidemiology, case-control studies</td></tr>
+                        <tr><td><strong>Odds ratio / relative risk</strong></td><td>How much an exposure multiplies the odds (odds ratio) or the risk (relative risk) of an outcome</td><td>GWAS, epidemiology, case-control studies</td></tr>
                         <tr><td><strong>Correlation coefficient (r)</strong></td><td>Strength and direction of a linear relationship</td><td>Comparing two continuous variables</td></tr>
                     </tbody>
                 </table>
@@ -244,7 +244,7 @@ print(f"extreme would occur about {p_value*100:.1f}% of the time.")
                 </div>
 
                 <h2>Sample size, power, and why small studies mislead</h2>
-                <p><strong>Statistical power</strong> is the probability that your study will detect a real effect if one exists. It rises with sample size and with effect size, and falls when the data are noisy. Underpowered studies (too few samples, common in biology where samples are expensive) have two nasty properties: they miss real effects (false negatives), and the "significant" hits they do report are <strong>inflated and often wrong</strong> in direction or magnitude, the "winner's curse." This is a major driver of the reproducibility crisis. Three biological replicates is a starting point for RNA-seq, not a guarantee of adequate power.</p>
+                <p><strong>Statistical power</strong> is the probability that your study will detect a real effect if one exists. It rises with sample size and with effect size, and falls when the data are noisy. Underpowered studies (too few samples, common in biology where samples are expensive) have two nasty properties: they miss real effects (false negatives), and the "significant" hits they do report tend to have <strong>inflated effect sizes</strong>, and are sometimes even in the wrong direction, the "winner's curse." This is a major driver of the reproducibility crisis. Three biological replicates is a starting point for RNA-seq, not a guarantee of adequate power.</p>
 
                 <h2>The mental checklist for any result</h2>
                 <ol>
@@ -260,21 +260,21 @@ print(f"extreme would occur about {p_value*100:.1f}% of the time.")
                     <button data-opt data-correct>That is a misinterpretation: the p-value is the probability of data this extreme if the null were true, not the probability that the alternative hypothesis is true</button>
                     <button data-opt>The reviewer is correct; 1 minus the p-value is the probability the effect is real</button>
                     <button data-opt>The reviewer is correct only if the sample size is large</button>
-                    <button data-opt>The p-value should be reported as 0.98 instead to reflect this</button>
+                    <button data-opt>The p-value means there is a 2% chance the result is a false positive</button>
                     <div class="quiz-explain"><strong>Correct.</strong> A p-value is computed <em>assuming the null is true</em>; it cannot tell you the probability that the null (or the alternative) is true. Converting "p = 0.02" into "98% chance it's real" is one of the most common and serious statistical errors, flagged explicitly in the ASA's 2016 statement.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">Gene A: log<sub>2</sub> fold change 0.05, p = 1e-12. Gene B: log<sub>2</sub> fold change 3.0, p = 0.03. A collaborator wants to follow up only Gene A because its p-value is far smaller. What is the soundest critique?</div>
                     <button data-opt>Gene A is clearly the better hit; smaller p-value always wins</button>
                     <button data-opt data-correct>Gene A's effect size is negligible (a ~3.5% change) despite the tiny p-value, likely driven by large sample size; Gene B shows an 8-fold change and is more likely biologically meaningful</button>
-                    <button data-opt>Both genes should be discarded because neither p-value is below 1e-15</button>
+                    <button data-opt>Gene A is better because tiny fold changes are more reliable than large ones</button>
                     <button data-opt>Gene B's result is impossible because a large fold change must give a small p-value</button>
                     <div class="quiz-explain"><strong>Exactly.</strong> A microscopic p-value with a near-zero effect size usually signals a real-but-trivial difference detected because the study was highly powered. Gene B's log<sub>2</sub>FC of 3.0 is an 8-fold change, biologically substantial. You need both axes; significance alone is not a ranking of importance.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">A colleague runs a standard Student's t-test directly on raw RNA-seq read counts and is puzzled that established tools like DESeq2 give different results. What is the core statistical problem?</div>
-                    <button data-opt>The t-test is fine; DESeq2 must have a bug</button>
-                    <button data-opt>Raw counts should always be rounded to the nearest 100 before testing</button>
+                    <button data-opt>The t-test is fine as long as each group has at least 3 replicates</button>
+                    <button data-opt>The t-test only fails because RNA-seq samples are not paired</button>
                     <button data-opt data-correct>Read counts are non-negative, integer, and overdispersed, so they violate the t-test's normality assumption; count data are better modeled with a negative binomial distribution as DESeq2/edgeR do</button>
                     <button data-opt>The t-test requires exactly equal sample sizes, which RNA-seq never has</button>
                     <div class="quiz-explain"><strong>Right.</strong> The t-test assumes roughly normally distributed values. RNA-seq counts are discrete, bounded at zero, and overdispersed (variance &gt; mean). DESeq2 and edgeR model them with the negative binomial and share information across genes to estimate dispersion, which is why they are the field standard and a raw t-test is not.</div>
@@ -282,35 +282,35 @@ print(f"extreme would occur about {p_value*100:.1f}% of the time.")
 
 
                 <div class="quiz">
-                    <div class="quiz-q-src">Why do tools like DESeq2 and edgeR model RNA-seq read counts with a negative binomial distribution rather than a normal one?</div>
-                    <button data-opt>Because the negative binomial is easier to compute than the normal distribution</button>
-                    <button data-opt>Because read counts are always perfectly symmetric around their mean</button>
-                    <button data-opt data-correct>Because read counts are non-negative integers that are overdispersed (variance larger than a simple Poisson predicts due to biological variability between samples)</button>
-                    <div class="quiz-explain"><strong>Correct.</strong> Gene-level counts are discrete, bounded at zero, and overdispersed, so a normal bell curve fits poorly. The negative binomial captures that extra variance, which is why it is the standard for count-based RNA-seq tools.</div>
+                    <div class="quiz-q-src">A drug lowers a blood biomarker by 0.3% with p &lt; 0.0001 in 50,000 patients. What is the best summary?</div>
+                    <button data-opt data-correct>Statistically significant but probably not clinically important: the effect is tiny</button>
+                    <button data-opt>Highly important, because the p-value is extremely small</button>
+                    <button data-opt>Not real, because large studies always give false positives</button>
+                    <div class="quiz-explain">A tiny p-value shows the effect is detectable, not that it is big. With a huge sample, even a 0.3% change is "significant." Always look at the effect size too.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">A study uses only two replicates per group and reports a single "significant" hit. Why should you be cautious about that hit even if its p-value is below 0.05?</div>
                     <button data-opt data-correct>Underpowered studies miss real effects and tend to report inflated, sometimes wrong-direction estimates for the hits they do find (the "winner's curse")</button>
-                    <button data-opt>A p-value below 0.05 from any sample size is fully trustworthy</button>
-                    <button data-opt>Two replicates always guarantee adequate statistical power</button>
+                    <button data-opt>A p-value below 0.05 means the effect size is accurately estimated regardless of sample size</button>
+                    <button data-opt>Small studies make p-values more conservative, so the hit is even more trustworthy</button>
                     <div class="quiz-explain"><strong>Right.</strong> Low statistical power both misses true effects and exaggerates the surviving "significant" ones in magnitude or direction. This winner's-curse effect is a key driver of irreproducible results, so small-sample hits deserve extra skepticism and replication.</div>
                 </div>
                 <div class="refs">
                     <h4>Sources &amp; further reading</h4>
                     <ol>
-                        <li>Wasserstein RL, Lazar NA. The ASA Statement on p-Values: Context, Process, and Purpose. <em>The American Statistician</em>, 2016. <a href="https://doi.org/10.1080/00031305.2016.1154108" target="_blank" rel="noopener">doi:10.1080/00031305.2016.1154108</a></li>
-                        <li>Amrhein V, Greenland S, McShane B. Retire statistical significance. <em>Nature</em> 567, 305–307, 2019. (One of the most-discussed statistics commentaries ever, signed by 800+ scientists.) <a href="https://doi.org/10.1038/d41586-019-00857-9" target="_blank" rel="noopener">doi:10.1038/d41586-019-00857-9</a></li>
-                        <li>Wasserstein RL, Schirm AL, Lazar NA. Moving to a World Beyond "p &lt; 0.05". <em>The American Statistician</em> 73(sup1), 1–19, 2019. <a href="https://doi.org/10.1080/00031305.2019.1583913" target="_blank" rel="noopener">doi:10.1080/00031305.2019.1583913</a></li>
-                        <li>Nuzzo R. Scientific method: Statistical errors. <em>Nature</em>, 2014. (A readable tour of how p-values are misused.)</li>
-                        <li>Halsey LG, et al. The fickle P value generates irreproducible results. <em>Nature Methods</em>, 2015.</li>
-                        <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em>, 2014. (Why counts use the negative binomial.)</li>
-                        <li>Button KS, et al. Power failure: why small sample size undermines the reliability of neuroscience. <em>Nature Reviews Neuroscience</em>, 2013.</li>
+                        <li>Wasserstein RL, Lazar NA. The ASA statement on p-values: context, process, and purpose. <em>The American Statistician</em> 70(2): 129-133, 2016. <a href="https://doi.org/10.1080/00031305.2016.1154108" target="_blank" rel="noopener">doi:10.1080/00031305.2016.1154108</a></li>
+                        <li>Amrhein V, Greenland S, McShane B. Scientists rise up against statistical significance. <em>Nature</em> 567: 305-307, 2019. <a href="https://doi.org/10.1038/d41586-019-00857-9" target="_blank" rel="noopener">doi:10.1038/d41586-019-00857-9</a></li>
+                        <li>Wasserstein RL, Schirm AL, Lazar NA. Moving to a world beyond "p &lt; 0.05". <em>The American Statistician</em> 73(sup1): 1-19, 2019. <a href="https://doi.org/10.1080/00031305.2019.1583913" target="_blank" rel="noopener">doi:10.1080/00031305.2019.1583913</a></li>
+                        <li>Nuzzo R. Scientific method: statistical errors. <em>Nature</em> 506: 150-152, 2014. <a href="https://doi.org/10.1038/506150a" target="_blank" rel="noopener">doi:10.1038/506150a</a></li>
+                        <li>Halsey LG, Curran-Everett D, Vowler SL, Drummond GB. The fickle P value generates irreproducible results. <em>Nat Methods</em> 12: 179-185, 2015. <a href="https://doi.org/10.1038/nmeth.3288" target="_blank" rel="noopener">doi:10.1038/nmeth.3288</a></li>
+                        <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biol</em> 15: 550, 2014. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
+                        <li>Button KS, Ioannidis JPA, Mokrysz C, Nosek BA, Flint J, Robinson ESJ, Munafò MR. Power failure: why small sample size undermines the reliability of neuroscience. <em>Nat Rev Neurosci</em> 14: 365-376, 2013. <a href="https://doi.org/10.1038/nrn3475" target="_blank" rel="noopener">doi:10.1038/nrn3475</a></li>
                     </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
-                <a class="next-lesson" href="multiple-testing.html" target="_blank" rel="noopener">
+                <a class="next-lesson" href="which-statistical-test.html" target="_blank" rel="noopener">
                     <span>Next in Track 5</span>
-                    <h3>The multiple-testing problem →</h3>
+                    <h3>Which statistical test should I use? →</h3>
                 </a>
 
             </div>

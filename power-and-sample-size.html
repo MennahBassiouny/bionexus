@@ -175,7 +175,7 @@
 
             <h2>What power actually is</h2>
             <p><strong>Statistical power</strong> is the probability that your study detects a real effect when one truly exists. Put another way, it is one minus the false-negative rate: if an effect is real and your power is 0.8, you have an 80 percent chance of finding it and a 20 percent chance of missing it (a false negative, or "Type II error").</p>
-            <p>Most fields aim for power of at least <strong>0.8</strong>. A study with power well below that is "underpowered": even when the biology is real, the experiment is more likely than not to come up empty.</p>
+            <p>Most fields aim for power of at least <strong>0.8</strong>. A study with power well below that is "underpowered": even when the biology is real, the experiment has a high chance of coming up empty (and below 0.5, it is more likely to miss than to find it).</p>
 
             <h2><span class="step-num">1</span>The four levers that raise power</h2>
             <p>Power goes up when any of these improve:</p>
@@ -190,47 +190,54 @@
 
             <h2><span class="step-num">2</span>More samples push the curve past 0.8</h2>
             <figure class="viz">
-                <svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A power curve showing statistical power on the vertical axis rising as sample size increases on the horizontal axis, crossing the 0.8 target line at a sample size around 16 per group">
+                <svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A power curve showing statistical power on the vertical axis rising as sample size increases on the horizontal axis, crossing the 0.8 target line at about 26 per group for a large effect (d = 0.8)">
                     <g font-family="'Work Sans',sans-serif" font-size="12">
                     <line x1="80" y1="40" x2="80" y2="350" stroke="#0f172a" stroke-width="2"/>
                     <line x1="80" y1="350" x2="620" y2="350" stroke="#0f172a" stroke-width="2"/>
                     <text x="46" y="200" text-anchor="middle" transform="rotate(-90 46 200)" fill="#0f172a" font-weight="600">power</text>
                     <text x="350" y="395" text-anchor="middle" fill="#0f172a" font-weight="600">sample size per group (n)</text>
                     <text x="64" y="354" text-anchor="end" font-size="10" fill="#64748b">0</text>
-                    <text x="64" y="222" text-anchor="end" font-size="10" fill="#64748b">0.5</text>
-                    <line x1="76" y1="218" x2="80" y2="218" stroke="#0f172a" stroke-width="2"/>
-                    <text x="64" y="138" text-anchor="end" font-size="10" fill="#64748b">0.8</text>
-                    <line x1="76" y1="134" x2="80" y2="134" stroke="#0f172a" stroke-width="2"/>
-                    <text x="64" y="56" text-anchor="end" font-size="10" fill="#64748b">1.0</text>
-                    <line x1="80" y1="134" x2="620" y2="134" stroke="#10b981" stroke-width="1.5" stroke-dasharray="6 4"/>
-                    <text x="612" y="126" text-anchor="end" font-size="11" fill="#047857" font-weight="600">target 0.8</text>
-                    <path d="M 80 338 C 180 320, 250 250, 320 170 C 360 128, 420 92, 500 72 C 550 62, 600 58, 620 56" fill="none" stroke="#5b9cf8" stroke-width="3"/>
-                    <line x1="338" y1="134" x2="338" y2="350" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="4 3"/>
-                    <circle cx="338" cy="134" r="5" fill="#a855f7"/>
-                    <text x="346" y="172" font-size="11" fill="#6b21a8" font-weight="600">n that reaches 0.8</text>
-                    <text x="120" y="320" font-size="10.5" fill="#b45309">underpowered: likely to miss a real effect</text>
+                    <text x="64" y="214" text-anchor="end" font-size="10" fill="#64748b">0.5</text>
+                    <line x1="76" y1="210" x2="80" y2="210" stroke="#0f172a" stroke-width="2"/>
+                    <text x="64" y="130" text-anchor="end" font-size="10" fill="#64748b">0.8</text>
+                    <line x1="76" y1="126" x2="80" y2="126" stroke="#0f172a" stroke-width="2"/>
+                    <text x="64" y="74" text-anchor="end" font-size="10" fill="#64748b">1.0</text>
+                    <line x1="76" y1="70" x2="80" y2="70" stroke="#0f172a" stroke-width="2"/>
+                    <line x1="80" y1="126" x2="620" y2="126" stroke="#10b981" stroke-width="1.5" stroke-dasharray="6 4"/>
+                    <text x="612" y="118" text-anchor="end" font-size="11" fill="#047857" font-weight="600">target 0.8</text>
+                    <path d="M 80 350 L 98.0 327.8 L 107.0 316.6 L 116.0 305.2 L 125.0 293.8 L 134.0 282.5 L 143.0 271.4 L 152.0 260.5 L 161.0 249.8 L 170.0 239.4 L 179.0 229.3 L 188.0 219.6 L 197.0 210.2 L 206.0 201.3 L 215.0 192.7 L 224.0 184.5 L 233.0 176.8 L 242.0 169.4 L 251.0 162.4 L 260.0 155.8 L 269.0 149.6 L 278.0 143.8 L 287.0 138.3 L 296.0 133.2 L 305.0 128.4 L 314.0 123.9 L 323.0 119.7 L 332.0 115.8 L 341.0 112.2 L 350.0 108.8 L 359.0 105.7 L 368.0 102.8 L 377.0 100.1 L 386.0 97.6 L 395.0 95.3 L 404.0 93.2 L 413.0 91.2 L 422.0 89.4 L 431.0 87.7 L 440.0 86.2 L 449.0 84.8 L 458.0 83.5 L 467.0 82.3 L 476.0 81.2 L 485.0 80.2 L 494.0 79.3 L 503.0 78.5 L 512.0 77.7 L 521.0 77.0 L 530.0 76.4 L 539.0 75.8 L 548.0 75.2 L 557.0 74.8 L 566.0 74.3 L 575.0 73.9 L 584.0 73.5 L 593.0 73.2 L 602.0 72.9 L 611.0 72.6 L 620.0 72.4" fill="none" stroke="#5b9cf8" stroke-width="3"/>
+                    <line x1="309.7" y1="126" x2="309.7" y2="350" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="4 3"/>
+                    <circle cx="309.7" cy="126" r="5" fill="#a855f7"/>
+                    <text x="318" y="172" font-size="11" fill="#6b21a8" font-weight="600">n = 26 reaches 0.8</text>
+                    <text x="170" y="366" text-anchor="middle" font-size="10" fill="#64748b">10</text>
+                    <text x="260" y="366" text-anchor="middle" font-size="10" fill="#64748b">20</text>
+                    <text x="350" y="366" text-anchor="middle" font-size="10" fill="#64748b">30</text>
+                    <text x="440" y="366" text-anchor="middle" font-size="10" fill="#64748b">40</text>
+                    <text x="530" y="366" text-anchor="middle" font-size="10" fill="#64748b">50</text>
+                    <text x="620" y="366" text-anchor="middle" font-size="10" fill="#64748b">60</text>
+                    <text x="302" y="342" text-anchor="end" font-size="10" fill="#b45309">underpowered: likely to miss a real effect</text>
                     </g>
                 </svg>
-                <figcaption>Power climbs with sample size and levels off near 1. The dashed green line is the usual 0.8 target; the smallest n that crosses it is the sample size you want.</figcaption>
+                <figcaption>Power for a large effect (Cohen's d = 0.8, alpha = 0.05) climbs with sample size and levels off near 1. The dashed green line is the usual 0.8 target; the smallest n that crosses it is the sample size you want.</figcaption>
             </figure>
 
             <h2><span class="step-num">3</span>Why underpowered studies are doubly dangerous</h2>
             <p>An underpowered study does two bad things, not one.</p>
-            <p><strong>First, it misses real effects.</strong> That is the obvious cost: low power means most true findings slip through undetected, wasting the experiment.</p>
-            <p><strong>Second, the "significant" hits it does report tend to be wrong.</strong> When power is low, only an unusually large random bump clears the significance threshold, so the effects that survive are <strong>exaggerated in size, and sometimes even wrong in their direction (sign)</strong>. This is the <strong>winner's curse</strong>: the published effect from a small study is often bigger than the truth, and fails to replicate. Low power therefore hurts both sensitivity and the trustworthiness of whatever does turn up.</p>
-            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">In practice: RNA-seq replicates</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">Adding <strong>biological replicates</strong> is the main lever for power. For RNA-seq, <strong>3 replicates per group is a common practical minimum</strong>, and more is better, especially for detecting smaller fold changes or working with noisy tissue. Technical replicates do not substitute for biological ones.</p></div>
+            <p><strong>First, it misses real effects.</strong> That is the obvious cost: low power means many true findings slip through undetected, wasting the experiment.</p>
+            <p><strong>Second, the "significant" hits it does report are less trustworthy.</strong> When power is low, only an unusually large random bump clears the significance threshold, so the effects that survive are <strong>exaggerated in size, and sometimes even wrong in their direction (sign)</strong>. This is the <strong>winner's curse</strong>: the published effect from a small study is often bigger than the truth, and fails to replicate. Low power also means a larger share of the "significant" hits are false positives. Low power therefore hurts both sensitivity and the trustworthiness of whatever does turn up.</p>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">In practice: RNA-seq replicates</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">Adding <strong>biological replicates</strong> is the main lever for power. For RNA-seq, <strong>3 replicates per group is a common practical minimum</strong>, but a large benchmark recommends at least 6 (and 12+ to catch small changes), and more is better, especially for detecting smaller fold changes or working with noisy tissue. Technical replicates do not substitute for biological ones.</p></div>
 
             <h2><span class="step-num">4</span>Do the power analysis before the study</h2>
             <p>Power, effect size, sample size, and alpha are linked: fix any three and the fourth is determined. A <strong>power analysis</strong> uses that link, before you collect data, to solve for the sample size that will give you adequate power for the effect you care about. You do this with the R <code class="inline">pwr</code> package, or by simulation for more complex designs.</p>
             <div class="warn"><h4>Never report post-hoc power</h4><p>"Post-hoc power" computed from your own observed p-value tells you nothing new: it is just the p-value re-expressed, and a non-significant result will always look underpowered. Plan power <strong>before</strong> the study using an effect size you decide in advance, not after the fact from your own result.</p></div>
 
             <h2><span class="step-num">5</span>Worked example: solving for n in R</h2>
-            <p>Suppose you want power of 0.8 at the usual alpha of 0.05, and you care about a moderately large effect (Cohen's d of 0.8). Ask the <code class="inline">pwr</code> package how many samples per group that needs:</p>
+            <p>Suppose you want power of 0.8 at the usual alpha of 0.05, and you care about a large effect (Cohen's d of 0.8). Ask the <code class="inline">pwr</code> package how many samples per group that needs:</p>
             <pre><span class="c"># install.packages("pwr"); library(pwr)</span>
 pwr<span class="p">::</span><span class="p">pwr.t.test</span>(d <span class="p">=</span> <span class="s">0.8</span>, power <span class="p">=</span> <span class="s">0.8</span>, sig.level <span class="p">=</span> <span class="s">0.05</span>)
 
 <span class="c">#      Two-sample t test power calculation</span>
-<span class="c">#               n = 25.5      &lt;- per group, round UP to 26</span>
+<span class="c">#               n = 25.52458  &lt;- per group, round UP to 26   (output shortened)</span>
 <span class="c">#               d = 0.8</span>
 <span class="c">#       sig.level = 0.05</span>
 <span class="c">#           power = 0.8</span></pre>
@@ -259,7 +266,7 @@ pwr<span class="p">::</span><span class="p">pwr.t.test</span>(d <span class="p">
             <div class="quiz">
                 <div class="quiz-q-src">Besides missing real effects, what else does an underpowered study tend to do?</div>
                 <button data-opt data-correct>Exaggerate the effects it does report, sometimes even getting the sign wrong (the winner's curse)</button>
-                <button data-opt>Guarantee that every significant result is correct</button>
+                <button data-opt>Make its significant results more trustworthy, because only strong effects get through</button>
                 <button data-opt>Make the p-values smaller than they should be every time</button>
                 <div class="quiz-explain"><strong>Exactly.</strong> When power is low, only unusually large random bumps reach significance, so reported effects are inflated and can even point the wrong way.</div>
             </div>
@@ -267,7 +274,7 @@ pwr<span class="p">::</span><span class="p">pwr.t.test</span>(d <span class="p">
                 <div class="quiz-q-src">For an RNA-seq experiment, what is a commonly cited practical minimum number of biological replicates per group?</div>
                 <button data-opt data-correct>3 per group, with more being better</button>
                 <button data-opt>1 per group is plenty</button>
-                <button data-opt>Technical replicates instead of biological ones</button>
+                <button data-opt>10 per group is the minimum; anything less is unusable</button>
                 <div class="quiz-explain"><strong>Right.</strong> Three biological replicates per group is a common minimum for RNA-seq, and adding more improves power, especially for smaller effects.</div>
             </div>
             <div class="quiz">
@@ -278,9 +285,21 @@ pwr<span class="p">::</span><span class="p">pwr.t.test</span>(d <span class="p">
                 <div class="quiz-explain"><strong>Correct.</strong> Plan power before collecting data using a pre-specified effect size. Post-hoc power from your own result just restates the p-value and is uninformative.</div>
             </div>
 
-            <a class="next-lesson" href="stats-essentials.html" target="_blank" rel="noopener">
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Button KS, Ioannidis JPA, Mokrysz C, Nosek BA, Flint J, Robinson ESJ, Munafò MR. Power failure: why small sample size undermines the reliability of neuroscience. <em>Nat Rev Neurosci</em> 14: 365-376, 2013. <a href="https://doi.org/10.1038/nrn3475" target="_blank" rel="noopener">doi:10.1038/nrn3475</a></li>
+                    <li>Gelman A, Carlin J. Beyond power calculations: assessing Type S (sign) and Type M (magnitude) errors. <em>Perspect Psychol Sci</em> 9: 641-651, 2014. <a href="https://doi.org/10.1177/1745691614551642" target="_blank" rel="noopener">doi:10.1177/1745691614551642</a></li>
+                    <li>Schurch NJ, Schofield P, Gierliński M, et al. How many biological replicates are needed in an RNA-seq experiment and which differential expression tool should you use? <em>RNA</em> 22: 839-851, 2016. <a href="https://doi.org/10.1261/rna.053959.115" target="_blank" rel="noopener">doi:10.1261/rna.053959.115</a></li>
+                    <li>Hoenig JM, Heisey DM. The abuse of power: the pervasive fallacy of power calculations for data analysis. <em>The American Statistician</em> 55: 19-24, 2001. <a href="https://doi.org/10.1198/000313001300339897" target="_blank" rel="noopener">doi:10.1198/000313001300339897</a></li>
+                    <li>Champely S. pwr: basic functions for power analysis (R package). <a href="https://cran.r-project.org/package=pwr" target="_blank" rel="noopener">CRAN</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
+            </div>
+
+            <a class="next-lesson" href="multiple-testing.html" target="_blank" rel="noopener">
                 <span>Next in Track 5</span>
-                <h3>The statistics you cannot avoid &rarr;</h3>
+                <h3>The multiple-testing problem &rarr;</h3>
             </a>
 
         </div></div>

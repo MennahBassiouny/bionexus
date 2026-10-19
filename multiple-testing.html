@@ -172,7 +172,7 @@
                 <h2>The problem, in one number</h2>
                 <p>Recall what p &lt; 0.05 means: if the null hypothesis is true, you will still get a "significant" result 5% of the time, purely by chance. That is the false-positive rate baked into the threshold. It is acceptable when you run <em>one</em> test. But genomics never runs one test.</p>
                 <p>A typical RNA-seq experiment tests every gene for differential expression, around <strong>20,000 tests</strong> in one analysis. Suppose, in the worst case, that <em>not a single gene truly changed</em>. How many would still cross p &lt; 0.05 by chance alone?</p>
-                <p style="background:rgba(245,158,11,0.1); border-left:4px solid var(--amber); padding:16px 20px; border-radius:8px;"><strong>20,000 × 0.05 = 1,000 false positives.</strong> A thousand genes flagged "significant" from a dataset with zero real signal.</p>
+                <p style="background:rgba(245,158,11,0.1); border-left:4px solid var(--amber); padding:16px 20px; border-radius:8px;"><strong>20,000 × 0.05 = about 1,000 false positives expected.</strong> A thousand genes flagged "significant" from a dataset with zero real signal.</p>
                 <p>If you hand in that gene list, almost all of it could be noise, and you would have no way to tell the real hits from the garbage. That is the multiple-testing (or multiple-comparisons) problem. GWAS is even more extreme: millions of variants tested at once.</p>
 
                 <h2>Two different things you might want to control</h2>
@@ -188,7 +188,7 @@
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>False discovery rate (FDR)</h4>
-                    <p>If your significant list is controlled at 5% FDR, you expect about 5% of the genes on that list to be false positives. It is a property of the <em>whole list</em>, not of any one gene. This is exactly what "we report genes at FDR &lt; 0.05" means in a methods section.</p>
+                    <p>If your significant list is controlled at 5% FDR, you expect, on average, at most about 5% of the genes on that list to be false positives. It is a property of the <em>whole list</em>, not of any one gene. This is exactly what "we report genes at FDR &lt; 0.05" means in a methods section.</p>
                 </div>
 
                 <h2>Fix 1: Bonferroni (controls FWER)</h2>
@@ -196,13 +196,13 @@
                 <p>Bonferroni is correct, simple, and bulletproof, but <strong>very conservative</strong>: by guarding against even a single false positive, it throws away many genuine effects (false negatives). In GWAS the famous "genome-wide significance" threshold of p &lt; 5×10⁻⁸ is a Bonferroni-style correction reflecting roughly a million independent common variants tested across the genome (it is a fixed community standard, not recalculated per study). For a 20,000-gene RNA-seq study, Bonferroni is usually too strict and you lose real biology.</p>
 
                 <h2>Fix 2: Benjamini-Hochberg (controls FDR)</h2>
-                <p>This is the genomics workhorse, the method behind the <code class="inline">padj</code> (DESeq2) and <code class="inline">FDR</code> (edgeR, limma) columns you will actually use. The Benjamini-Hochberg (BH) procedure (1995) controls the false discovery rate instead of the family-wise error rate, so it is far more powerful while still keeping your hit list honest.</p>
+                <p>This is the genomics workhorse, the method behind the <code class="inline">padj</code> (DESeq2) and <code class="inline">FDR</code> (edgeR) and <code class="inline">adj.P.Val</code> (limma) columns you will actually use. The Benjamini-Hochberg (BH) procedure (1995) controls the false discovery rate instead of the family-wise error rate, so it is far more powerful while still keeping your hit list honest.</p>
                 <p>The algorithm is surprisingly simple:</p>
                 <ol>
                     <li>Sort all <em>m</em> p-values from smallest to largest. Give each a rank <em>i</em> (1, 2, 3, …).</li>
                     <li>For each, compute the "BH critical value" <strong>(i / m) × Q</strong>, where Q is your chosen FDR (say 0.05).</li>
                     <li>Find the largest rank <em>i</em> where the p-value is still ≤ its critical value.</li>
-                    <li>Call that p-value and <em>everything ranked below it</em> significant.</li>
+                    <li>Call that p-value and <em>every p-value with a smaller rank</em> significant.</li>
                 </ol>
                 <p>The "adjusted p-value" (q-value-like number) reported in your results is this procedure expressed per gene, so you can simply filter <code class="inline">padj &lt; 0.05</code> and trust that your list is controlled at 5% FDR.</p>
 
@@ -242,15 +242,15 @@ print(f"Bonferroni p < {bonf_thresh:.4f}  -> {bonf_hits} significant (very stric
 print(f"Benjamini-Hochberg FDR -> {bh_hits} significant (the genomics standard)")
 </script></div>
 
-                <p>Try editing the list: add twenty entries of <code class="inline">0.9</code> (null genes) and rerun. The naive count barely moves, but it should: those extra tests are exactly the multiple-testing burden that BH and Bonferroni account for and a raw cutoff ignores.</p>
+                <p>Try editing the list: add twenty entries of <code class="inline">0.9</code> (null genes) and rerun. The naive count does not move at all (still 6), but BH drops from 3 to 1 and Bonferroni stays at 1: those extra tests are exactly the multiple-testing burden that BH and Bonferroni account for and a raw cutoff ignores.</p>
 
                 <h2>A free diagnostic: the p-value histogram</h2>
                 <p>Before trusting any large set of p-values, plot their histogram. Under the null (nothing real), p-values are <strong>uniformly distributed</strong>, a flat histogram. Real signal shows up as a <strong>spike near zero</strong> on top of that flat background. Two warning shapes:</p>
                 <ul>
-                    <li><strong>A spike near 1, or a hill in the middle:</strong> something is wrong with your test or model (often a mis-specified or overly conservative test). FDR correction on these is meaningless.</li>
+                    <li><strong>A spike near 1, or a hill in the middle:</strong> something is wrong with your test or model (often a mis-specified or overly conservative test). FDR results from these may be unreliable until you find the cause (a spike near 1 often comes from low-count genes).</li>
                     <li><strong>Perfectly flat with no spike at zero:</strong> you likely have no real signal, so a long "significant" list after correction should make you suspicious.</li>
                 </ul>
-                <p>This one plot catches more analysis bugs than almost anything else, and you will learn to read it in the next lesson on honest visualization.</p>
+                <p>This one plot catches many analysis bugs, and you will learn to read it in the next lesson on honest visualization.</p>
 
                 <div class="warn">
                     <h4>⚠️ The cardinal sins of multiple testing</h4>
@@ -287,7 +287,7 @@ print(f"Benjamini-Hochberg FDR -> {bh_hits} significant (the genomics standard)"
                     <button data-opt>The analysis is broken; p-values should never be flat</button>
                     <button data-opt data-correct>This is the healthy expected shape: the flat part is the null genes (uniform p-values) and the spike near 0 reflects genuinely differentially expressed genes</button>
                     <button data-opt>A spike near 0 means the experiment failed and should be repeated</button>
-                    <button data-opt>It means every gene is differentially expressed</button>
+                    <button data-opt>The spike near 0 is an artifact; only the flat part should be trusted</button>
                     <div class="quiz-explain"><strong>Right.</strong> Under the null, p-values are uniform (flat). Real signal adds an excess of very small p-values, the spike near 0. This flat-plus-spike shape is exactly what you want to see, and it tells you FDR correction will behave sensibly. A spike near 1 or a central hump would instead signal a modeling problem.</div>
                 </div>
 
@@ -309,13 +309,13 @@ print(f"Benjamini-Hochberg FDR -> {bh_hits} significant (the genomics standard)"
                 <div class="refs">
                     <h4>Sources &amp; further reading</h4>
                     <ol>
-                        <li>Benjamini Y, Hochberg Y. Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing. <em>J. Royal Statistical Society B</em>, 1995. (The original BH procedure.)</li>
-                        <li>Storey JD, Tibshirani R. Statistical significance for genomewide studies. <em>PNAS</em>, 2003. (q-values.) <a href="https://doi.org/10.1073/pnas.1530509100" target="_blank" rel="noopener">doi:10.1073/pnas.1530509100</a></li>
-                        <li>Noble WS. How does multiple testing correction work? <em>Nature Biotechnology</em>, 2009. (A classic plain-English primer.)</li>
-                        <li>Korthauer K, et al. A practical guide to methods controlling false discoveries in computational biology. <em>Genome Biology</em> 20, 118, 2019. (Modern, covariate-aware FDR methods benchmarked across RNA-seq, single-cell, microbiome, ChIP-seq, and GWAS.) <a href="https://doi.org/10.1186/s13059-019-1716-1" target="_blank" rel="noopener">doi:10.1186/s13059-019-1716-1</a></li>
-                        <li>Love MI, Huber W, Anders S. DESeq2. <em>Genome Biology</em>, 2014. (The <code>padj</code> column is BH-adjusted.)</li>
+                        <li>Benjamini Y, Hochberg Y. Controlling the false discovery rate: a practical and powerful approach to multiple testing. <em>J R Stat Soc B</em> 57: 289-300, 1995. <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02031.x" target="_blank" rel="noopener">doi:10.1111/j.2517-6161.1995.tb02031.x</a></li>
+                        <li>Storey JD, Tibshirani R. Statistical significance for genomewide studies. <em>Proc Natl Acad Sci USA</em> 100: 9440-9445, 2003. <a href="https://doi.org/10.1073/pnas.1530509100" target="_blank" rel="noopener">doi:10.1073/pnas.1530509100</a></li>
+                        <li>Noble WS. How does multiple testing correction work? <em>Nat Biotechnol</em> 27: 1135-1137, 2009. <a href="https://doi.org/10.1038/nbt1209-1135" target="_blank" rel="noopener">doi:10.1038/nbt1209-1135</a></li>
+                        <li>Korthauer K, Kimes PK, Duvallet C, Reyes A, Subramanian A, Teng M, Shukla C, Alm EJ, Hicks SC. A practical guide to methods controlling false discoveries in computational biology. <em>Genome Biol</em> 20: 118, 2019. <a href="https://doi.org/10.1186/s13059-019-1716-1" target="_blank" rel="noopener">doi:10.1186/s13059-019-1716-1</a></li>
+                        <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biol</em> 15: 550, 2014. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
                     </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
                 <a class="next-lesson" href="plots-that-tell-the-truth.html" target="_blank" rel="noopener">
                     <span>Next in Track 5</span>

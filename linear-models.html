@@ -211,7 +211,7 @@
                 </svg>
                 <figcaption>The fitted line (purple) summarizes the cloud of measured points (blue). The intercept is where it crosses x = 0; the slope is rise over run, how much y moves per unit of x.</figcaption>
             </figure>
-            <p>Each real point sits a little above or below the line. Those gaps are the <strong>residuals</strong>. Regression chooses the slope and intercept that make those residuals as small as possible overall (the "least squares" fit).</p>
+            <p>Each real point sits a little above or below the line. Those gaps are the <strong>residuals</strong>. Regression chooses the slope and intercept that make those residuals as small as possible overall (the "least squares" fit (it minimizes the sum of squared residuals)).</p>
 
             <h2><span class="step-num">2</span>Multiple regression: holding the others constant</h2>
             <p>Real biology rarely has one cause. <strong>Multiple regression</strong> just adds more predictors:</p>
@@ -227,32 +227,34 @@
                 <tr><td>ANCOVA</td><td>one categorical plus one numeric predictor</td><td>group difference adjusted for the numeric covariate</td></tr>
                 <tr><td>Pearson correlation</td><td>one numeric predictor (both variables standardized)</td><td>the strength of the linear relationship</td></tr>
             </table>
-            <p>When you compare two groups with a t-test, you are fitting <code class="inline">y = b0 + b1&times;group</code> where group is 0 for one group and 1 for the other. The intercept <code class="inline">b0</code> is the first group's mean, and the slope <code class="inline">b1</code> is exactly how much the second group differs. ANOVA is the same idea with a categorical predictor that has more than two levels. Learn the linear model once and these tests stop being separate things to memorize.</p>
-            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">Why this matters in bioinformatics</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">The workhorse RNA-seq tools, DESeq2, edgeR, and limma, are all <strong>generalized linear models</strong> underneath: linear models extended to handle count data and non-normal noise. The "design formula" you write for them, such as <code class="inline">~ condition + batch</code>, is exactly the predictor list of a linear model. Understanding lm() is the foundation for understanding those tools.</p></div>
+            <p>When you compare two groups with a classic (equal-variance) t-test, you are fitting <code class="inline">y = b0 + b1&times;group</code> where group is 0 for one group and 1 for the other. The intercept <code class="inline">b0</code> is the first group's mean, and the slope <code class="inline">b1</code> is exactly how much the second group differs. ANOVA is the same idea with a categorical predictor that has more than two levels. Learn the linear model once and these tests stop being separate things to memorize.</p>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">Why this matters in bioinformatics</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">The workhorse RNA-seq tools are all built on linear models: DESeq2 and edgeR use <strong>generalized linear models</strong> (linear models extended to count data), and limma fits ordinary linear models to log-transformed expression values. The "design formula" you write for them, such as <code class="inline">~ condition + batch</code>, is exactly the predictor list of a linear model. Understanding lm() is the foundation for understanding those tools.</p></div>
 
             <h2><span class="step-num">4</span>Worked example: fitting lm() in R</h2>
             <p>Suppose you measured a gene's expression at several drug doses and want to know how strongly expression tracks dose. In R you fit the model and read its summary:</p>
             <pre><span class="c"># expression measured across a range of doses</span>
+dose       <span class="p">&lt;-</span> c(0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5)
+expression <span class="p">&lt;-</span> c(5.0, 6.2, 5.4, 6.9, 6.2, 7.9, 6.9, 8.6, 7.7, 9.4)
 fit <span class="p">&lt;-</span> <span class="p">lm</span>(expression <span class="p">~</span> dose)
 <span class="p">summary</span>(fit)
 
 <span class="c"># Coefficients:</span>
 <span class="c">#               Estimate  Std. Error  t value  Pr(&gt;|t|)</span>
-<span class="c"># (Intercept)     5.20       0.41      12.7    1.1e-06</span>
-<span class="c"># dose            0.85       0.12       7.1    9.3e-05   &lt;- slope b1</span>
+<span class="c"># (Intercept)     5.17       0.39      13.2    1.03e-06</span>
+<span class="c"># dose            0.82       0.15       5.6    0.000507  &lt;- slope b1</span>
 <span class="c">#</span>
-<span class="c"># Multiple R-squared: 0.78</span></pre>
+<span class="c"># Multiple R-squared: 0.80   (output shortened)</span></pre>
             <p>How to read it:</p>
             <ul>
-                <li>The <strong>dose estimate (0.85)</strong> is the slope: expression rises by about 0.85 units for every one-unit increase in dose.</li>
-                <li>Its <strong>p-value (9.3e-05)</strong> tests whether that slope differs from zero. Small p means dose is associated with expression more than you would expect by chance.</li>
-                <li>The <strong>(Intercept) 5.20</strong> is the predicted expression at dose zero.</li>
-                <li><strong>R-squared (0.78)</strong> is the fraction of variation in expression that the model explains: here about 78 percent.</li>
+                <li>The <strong>dose estimate (0.82)</strong> is the slope: expression rises by about 0.82 units for every one-unit increase in dose.</li>
+                <li>Its <strong>p-value (0.000507)</strong> tests whether that slope differs from zero. Small p means dose is associated with expression more than you would expect by chance.</li>
+                <li>The <strong>(Intercept) 5.17</strong> is the predicted expression at dose zero.</li>
+                <li><strong>R-squared (0.80)</strong> is the fraction of variation in expression that the model explains: here about 80 percent.</li>
             </ul>
             <p>To run a t-test as a linear model instead, you would write <code class="inline">lm(expression ~ group)</code> with a two-level group, and the group coefficient is the difference in means.</p>
 
             <h2><span class="step-num">5</span>A quick word on assumptions</h2>
-            <p>Linear models trust two things, and it is worth a glance before believing the numbers. First, that the relationship is <strong>roughly linear</strong> (a straight line is a fair summary, not a curve). Second, that the <strong>residuals</strong> are reasonably symmetric, similar in spread across the range, and not strongly patterned. A quick <code class="inline">plot(fit)</code> in R shows residual plots that flag obvious problems. If the relationship curves, you may need to transform a variable or use a different model.</p>
+            <p>Linear models trust three things, and it is worth a glance before believing the numbers. First, that the relationship is <strong>roughly linear</strong> (a straight line is a fair summary, not a curve). Second, that the <strong>residuals</strong> are reasonably symmetric, similar in spread across the range, and not strongly patterned. Third, that each data point is <strong>independent</strong>: technical replicates of the same sample are not separate data points. A quick <code class="inline">plot(fit)</code> in R shows residual plots that flag obvious problems. If the relationship curves, you may need to transform a variable or use a different model.</p>
             <div class="warn"><h4>Common trap</h4><p>The intercept is only meaningful if <code class="inline">x = 0</code> is a real, sensible value. For a dose that never reaches zero, the intercept is just a mathematical anchor for the line, not a quantity to interpret on its own.</p></div>
 
             <h2>Check your understanding</h2>
@@ -260,7 +262,7 @@ fit <span class="p">&lt;-</span> <span class="p">lm</span>(expression <span clas
                 <div class="quiz-q-src">In the model y = b0 + b1*x, what does the slope b1 represent?</div>
                 <button data-opt data-correct>How much y changes for each one-unit increase in x</button>
                 <button data-opt>The value of y when x equals zero</button>
-                <button data-opt>The total number of data points in the sample</button>
+                <button data-opt>How strongly x and y are correlated, from -1 to 1</button>
                 <div class="quiz-explain"><strong>Right.</strong> The slope is the change in the outcome per one-unit change in the predictor. The intercept b0 is the value of y when x is zero.</div>
             </div>
             <div class="quiz">
@@ -273,8 +275,8 @@ fit <span class="p">&lt;-</span> <span class="p">lm</span>(expression <span clas
             <div class="quiz">
                 <div class="quiz-q-src">Which statement about familiar tests and linear models is true?</div>
                 <button data-opt data-correct>A two-group t-test is a linear model with one binary predictor, and ANOVA is one with a categorical predictor</button>
-                <button data-opt>Linear models and t-tests are completely unrelated methods</button>
-                <button data-opt>ANOVA can never be written as a regression</button>
+                <button data-opt>A t-test is a linear model, but ANOVA cannot be written as one</button>
+                <button data-opt>Linear models can only use numeric predictors, so group comparisons need separate tests</button>
                 <div class="quiz-explain"><strong>Exactly.</strong> The t-test and ANOVA are special cases of the linear model, differing only in whether the predictor is binary or categorical.</div>
             </div>
             <div class="quiz">
@@ -286,15 +288,26 @@ fit <span class="p">&lt;-</span> <span class="p">lm</span>(expression <span clas
             </div>
             <div class="quiz">
                 <div class="quiz-q-src">Why does understanding lm() help with RNA-seq tools like DESeq2, edgeR, and limma?</div>
-                <button data-opt data-correct>They are generalized linear models, and their design formula is the linear model's predictor list</button>
-                <button data-opt>They avoid statistics entirely and just sort genes by fold change</button>
-                <button data-opt>They are unrelated to regression and use no model at all</button>
-                <div class="quiz-explain"><strong>Correct.</strong> Those tools are generalized linear models built for count data; the design formula you write is exactly the predictor structure of a linear model.</div>
+                <button data-opt data-correct>They are built on linear models (GLMs for DESeq2/edgeR, linear models for limma), and their design formula is the model's predictor list</button>
+                <button data-opt>They run a separate t-test on each gene's raw counts</button>
+                <button data-opt>They only work for experiments with exactly two groups</button>
+                <div class="quiz-explain"><strong>Correct.</strong> DESeq2 and edgeR are generalized linear models for counts and limma fits linear models to log-expression; the design formula you write is exactly the predictor structure of a linear model.</div>
             </div>
 
-            <a class="next-lesson" href="which-statistical-test.html" target="_blank" rel="noopener">
+            <div class="refs">
+                <h4>Sources &amp; further reading</h4>
+                <ol>
+                    <li>Altman N, Krzywinski M. Simple linear regression. <em>Nat Methods</em> 12: 999-1000, 2015. <a href="https://doi.org/10.1038/nmeth.3627" target="_blank" rel="noopener">doi:10.1038/nmeth.3627</a></li>
+                    <li>Krzywinski M, Altman N. Multiple linear regression. <em>Nat Methods</em> 12: 1103-1104, 2015. <a href="https://doi.org/10.1038/nmeth.3665" target="_blank" rel="noopener">doi:10.1038/nmeth.3665</a></li>
+                    <li>Ritchie ME, Phipson B, Wu D, Hu Y, Law CW, Shi W, Smyth GK. limma powers differential expression analyses for RNA-sequencing and microarray studies. <em>Nucleic Acids Res</em> 43: e47, 2015. <a href="https://doi.org/10.1093/nar/gkv007" target="_blank" rel="noopener">doi:10.1093/nar/gkv007</a></li>
+                    <li>Lindeløv JK. "Common statistical tests are linear models (or: how to teach stats)". <a href="https://lindeloev.github.io/tests-as-linear/" target="_blank" rel="noopener">lindeloev.github.io</a></li>
+                </ol>
+                <p class="reviewed">Last reviewed: October 2026.</p>
+            </div>
+
+            <a class="next-lesson" href="power-and-sample-size.html" target="_blank" rel="noopener">
                 <span>Next in Track 5</span>
-                <h3>Which statistical test should I use? &rarr;</h3>
+                <h3>Power and sample size &rarr;</h3>
             </a>
 
         </div></div>

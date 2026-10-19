@@ -178,7 +178,7 @@
                 <p>When you put a chart in a paper or a slide, you are making a claim and asking the viewer to believe it at a glance. That power cuts both ways. Small, "innocent" choices, where the axis starts, whether you show the spread, which colors you pick, can exaggerate a tiny effect into a dramatic one or bury a real signal. The goal of this lesson is a single discipline: <strong>let the reader see what the data actually say, and make the honest reading the easy one.</strong></p>
 
                 <h2>Deception 1: the truncated y-axis</h2>
-                <p>The most common chart crime. A bar chart whose y-axis starts at, say, 98 instead of 0 turns a 2% difference into a bar that looks five times taller than its neighbor. For <strong>bar charts, the y-axis must start at zero</strong>, because the bar's <em>length</em> is the visual encoding of the value and a truncated baseline lies about that length. (Line charts of a trend can sometimes justify a non-zero baseline, but you must label it clearly.)</p>
+                <p>The most common chart crime. A bar chart whose y-axis starts at, say, 98 instead of 0 can turn a 2% difference into a bar that looks several times taller than its neighbor. For <strong>bar charts, the y-axis must start at zero</strong>, because the bar's <em>length</em> is the visual encoding of the value and a truncated baseline lies about that length. (Line charts of a trend can sometimes justify a non-zero baseline, but you must label it clearly.)</p>
 
                 <div class="warn">
                     <h4>⚠️ Spot it instantly</h4>
@@ -191,7 +191,7 @@
                 <h3>See why summaries lie: Anscombe's quartet</h3>
                 <p>In 1973 the statistician Francis Anscombe built four datasets with <em>nearly identical</em> means, variances, and correlations, yet wildly different shapes (a clean line, a curve, a line dragged by one outlier, and a vertical cluster with a single far point). The summary statistics cannot tell them apart; only a plot can. The cell below computes the stats for two of them so you can see the numbers match. Press Run (first run loads Python in your browser).</p>
 
-                <div class="pycell"><script type="application/x-python"># Two of Anscombe's four classic datasets (same y-values reordered to different x)
+                <div class="pycell"><script type="application/x-python"># Two of Anscombe's four classic datasets (same x-values, different y-values)
 x1 = [10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5]
 y1 = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68]
 
@@ -208,7 +208,7 @@ def stats(x, y):
     r = cov/(sx*sy)
     return mx, my, var_y, r
 
-for name, (x, y) in {"Dataset 1 (clean line)": (x1, y1),
+for name, (x, y) in {"Dataset 1 (noisy straight line)": (x1, y1),
                      "Dataset 2 (a curve!)":  (x2, y2)}.items():
     mx, my, vy, r = stats(x, y)
     print(f"{name}")
@@ -224,14 +224,14 @@ print("Lesson: never trust a mean without seeing the distribution.")
                 <h2>Deception 3: color that misleads</h2>
                 <p>Color is data, so it has to be honest too. Three rules:</p>
                 <ul>
-                    <li><strong>Avoid the rainbow ("jet") colormap.</strong> It is not perceptually uniform: equal steps in value look like unequal steps in color, inventing false boundaries and hiding real ones. Use a perceptually uniform map such as <strong>viridis</strong> for continuous data, the default in modern tools for exactly this reason.</li>
-                    <li><strong>Design for color-blind readers.</strong> Roughly 1 in 12 men cannot distinguish red from green, the single most common chart color pair. Use color-blind-safe palettes (Okabe-Ito, viridis) and reinforce color with shape or labels so the figure still works in grayscale.</li>
+                    <li><strong>Avoid the rainbow ("jet") colormap.</strong> It is not perceptually uniform: equal steps in value look like unequal steps in color, inventing false boundaries and hiding real ones. Use a perceptually uniform map such as <strong>viridis</strong> for continuous data, the default in matplotlib and built into ggplot2 for exactly this reason.</li>
+                    <li><strong>Design for color-blind readers.</strong> Roughly 1 in 12 men (of European ancestry) has red-green color-vision deficiency and struggles to tell red from green, the single most common chart color pair. Use color-blind-safe palettes (Okabe-Ito, viridis) and reinforce color with shape or labels so the figure still works in grayscale.</li>
                     <li><strong>Use diverging palettes for diverging data.</strong> A heatmap of log fold changes (negative to positive around zero) should use a two-hue diverging scale centered at zero, not a single-hue ramp that hides the sign.</li>
                 </ul>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Perceptually uniform colormap</h4>
-                    <p>A color scale where equal differences in the data correspond to equal perceived differences in color. Viridis and its relatives are designed this way; the old rainbow/jet map is not, which is why it distorts heatmaps and is now discouraged in journals.</p>
+                    <p>A color scale where equal differences in the data correspond to equal perceived differences in color. Viridis and its relatives are designed this way; the old rainbow/jet map is not, which is why it distorts heatmaps and is now widely discouraged.</p>
                 </div>
 
                 <h2>Deception 4: chartjunk and the wrong chart</h2>
@@ -244,7 +244,7 @@ print("Lesson: never trust a mean without seeing the distribution.")
                         <tr><td><strong>Volcano plot</strong></td><td>Effect size (log<sub>2</sub>FC, x) vs significance (−log<sub>10</sub> adjusted p, y)</td><td>Use the <em>adjusted</em> p-value; mark both thresholds; don't truncate axes to exaggerate</td></tr>
                         <tr><td><strong>MA plot</strong></td><td>Log fold change vs mean expression</td><td>Reveals whether fold changes depend on expression level (a normalization check)</td></tr>
                         <tr><td><strong>PCA plot</strong></td><td>Samples in reduced dimensions</td><td>Label the % variance on each axis; color by the real biological group, and check for batch effects</td></tr>
-                        <tr><td><strong>Heatmap</strong></td><td>Expression across genes × samples</td><td>State whether values are scaled (z-scored) per row; use a diverging, perceptually uniform palette</td></tr>
+                        <tr><td><strong>Heatmap</strong></td><td>Expression across genes × samples</td><td>State whether values are scaled (z-scored) per row; use a diverging palette centered at zero for z-scores or fold changes, and a sequential one (viridis) for unscaled values</td></tr>
                         <tr><td><strong>p-value histogram</strong></td><td>Distribution of all raw p-values</td><td>Your first diagnostic: flat + spike at 0 is healthy (see the multiple-testing lesson)</td></tr>
                     </tbody>
                 </table>
@@ -265,31 +265,31 @@ print("Lesson: never trust a mean without seeing the distribution.")
                     <p>This is the Track 5 portfolio piece. Find a misleading chart, in a news article, a company slide, a preprint, or make one yourself, and write a short before/after.</p>
                     <p><strong>1. Diagnose.</strong> Name every problem: truncated axis, hidden distribution, bad colormap, dual axes, chartjunk, wrong chart type.</p>
                     <p><strong>2. Fix.</strong> Redraw it honestly (Python with matplotlib/seaborn, or R with ggplot2). Start bar axes at zero, show the data points, switch to viridis, add a proper caption with n and the test.</p>
-                    <p><strong>3. Explain.</strong> Write 3 to 5 sentences on what the original implied versus what the data actually support. Put the before, the after, and the explanation in your portfolio repo, it is a small piece that demonstrates exactly the judgment employers look for. See <a href="git-github.html" target="_blank" rel="noopener">Git &amp; GitHub for scientists</a> for hosting it.</p>
+                    <p><strong>3. Explain.</strong> Write 3 to 5 sentences on what the original implied versus what the data actually support. Put the before, the after, and the explanation in your portfolio repo; it is a small piece that demonstrates exactly the judgment employers look for. See <a href="git-github.html" target="_blank" rel="noopener">Git &amp; GitHub for scientists</a> for hosting it.</p>
                 </div>
 
                 <h2>Check your understanding</h2>
                 <div class="quiz">
-                    <div class="quiz-q-src">A slide shows two bars for a biomarker: control at 100 and treated at 103, but the y-axis runs from 98 to 105, making the treated bar look roughly four times taller. What is the right critique?</div>
+                    <div class="quiz-q-src">A slide shows two bars for a biomarker: control at 100 and treated at 103, but the y-axis runs from 98 to 105, making the treated bar look two and a half times taller. What is the right critique?</div>
                     <button data-opt>The chart is fine; the axis was chosen to show detail</button>
                     <button data-opt data-correct>The truncated y-axis exaggerates a ~3% difference; a bar chart must start at zero because the bar's length encodes the value, and the data points and sample size should also be shown</button>
                     <button data-opt>The problem is only the color, not the axis</button>
-                    <button data-opt>Bars should never be used, so the chart is unfixable</button>
-                    <div class="quiz-explain"><strong>Correct.</strong> A bar encodes its value by length, so a non-zero baseline lies about the magnitude. A 100-vs-103 difference is about 3%, not the fourfold the picture implies. Start the axis at zero, and ideally show the underlying points and n so the reader can judge the spread.</div>
+                    <button data-opt>The axis is fine, but the bars should be replaced with a line chart</button>
+                    <div class="quiz-explain"><strong>Correct.</strong> A bar encodes its value by length, so a non-zero baseline lies about the magnitude. A 100-vs-103 difference is about 3%, not the 2.5-fold the picture implies. Start the axis at zero, and ideally show the underlying points and n so the reader can judge the spread.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">A collaborator argues a bar-of-means plot is sufficient because "the means and error bars summarize the groups." Using the Anscombe idea, what is the strongest counter?</div>
                     <button data-opt>There is no counter; means and error bars are always sufficient</button>
                     <button data-opt data-correct>Datasets with identical means, variances, and correlations can have completely different shapes (outliers, non-linearity, multimodality), so a bar of means can hide the real structure; showing the data points (dot/box/violin) is necessary</button>
                     <button data-opt>Error bars should simply be made larger to capture the spread</button>
-                    <button data-opt>The fix is to use a pie chart instead</button>
+                    <button data-opt>The fix is to switch from standard error to standard deviation bars</button>
                     <div class="quiz-explain"><strong>Exactly.</strong> Anscombe's quartet demonstrates that identical summary statistics can correspond to radically different data. A bar of means discards distribution shape, outliers, and sample size. For the small samples typical in biology, plot every point.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">A reviewer asks you to replace the rainbow (jet) colormap on your expression heatmap. Beyond aesthetics, what is the substantive reason?</div>
                     <button data-opt>Rainbow uses too much ink and slows down printing</button>
                     <button data-opt data-correct>The rainbow map is not perceptually uniform, so equal data steps appear as unequal color steps, creating false boundaries and obscuring real gradients; a perceptually uniform map like viridis (also more color-blind friendly) represents the values faithfully</button>
-                    <button data-opt>Rainbow colormaps are copyrighted and cannot be used in journals</button>
+                    <button data-opt>Rainbow has too few colors to show fine differences in value</button>
                     <button data-opt>There is no real reason; it is purely a matter of taste</button>
                     <div class="quiz-explain"><strong>Right.</strong> Jet/rainbow distorts perception: bright bands appear where the data are smooth and gradients flatten where the data change, inventing or hiding structure. Perceptually uniform maps (viridis and relatives) keep equal data differences looking equal and are more accessible to color-blind readers.</div>
                 </div>
@@ -306,20 +306,20 @@ print("Lesson: never trust a mean without seeing the distribution.")
                     <div class="quiz-q-src">A figure uses dual y-axes to overlay two unrelated time series and "show" they move together. Why is this a misleading-figure red flag?</div>
                     <button data-opt data-correct>The apparent correlation can be manufactured simply by choosing the two axis scales, so the visual relationship may not reflect the data</button>
                     <button data-opt>Dual y-axes are impossible to render in matplotlib or ggplot2</button>
-                    <button data-opt>Two axes always use too much ink and lower the data-ink ratio below zero</button>
+                    <button data-opt>Dual y-axes are fine as long as both axes start at zero</button>
                     <div class="quiz-explain"><strong>Right.</strong> With independent scales on each axis you can slide two series into apparent lockstep, implying a correlation the data may not support. It is a classic trick of deceptive figures, which is why dual y-axes are discouraged for comparing series.</div>
                 </div>
                 <div class="refs">
                     <h4>Sources &amp; further reading</h4>
                     <ol>
-                        <li>Anscombe FJ. Graphs in Statistical Analysis. <em>The American Statistician</em>, 1973. (The quartet.)</li>
-                        <li>Tufte ER. <em>The Visual Display of Quantitative Information.</em> Graphics Press, 2001. (Data-ink ratio, chartjunk.)</li>
-                        <li>Weissgerber TL, et al. Beyond bar and line graphs: time for a new data presentation paradigm. <em>PLOS Biology</em>, 2015. <a href="https://doi.org/10.1371/journal.pbio.1002128" target="_blank" rel="noopener">doi:10.1371/journal.pbio.1002128</a></li>
-                        <li>Crameri F, Shephard GE, Heron PJ. The misuse of colour in science communication. <em>Nature Communications</em>, 2020. (Why to drop rainbow maps.)</li>
-                        <li>Jambor H. A checklist for designing and improving the visualization of scientific data. <em>Nature Cell Biology</em> 27, 879–883, 2025. (A current, evidence-based figure checklist for biologists.) <a href="https://doi.org/10.1038/s41556-025-01684-z" target="_blank" rel="noopener">doi:10.1038/s41556-025-01684-z</a></li>
-                        <li>Okabe M, Ito K. Color Universal Design (color-blind-safe palette), 2008. <a href="https://jfly.uni-koeln.de/color/" target="_blank" rel="noopener">jfly color guide</a></li>
+                        <li>Anscombe FJ. Graphs in statistical analysis. <em>The American Statistician</em> 27: 17-21, 1973. <a href="https://doi.org/10.1080/00031305.1973.10478966" target="_blank" rel="noopener">doi:10.1080/00031305.1973.10478966</a></li>
+                        <li>Tufte ER. <em>The Visual Display of Quantitative Information</em>, 2nd ed. Graphics Press, 2001. (Data-ink ratio, chartjunk.)</li>
+                        <li>Weissgerber TL, Milic NM, Winham SJ, Garovic VD. Beyond bar and line graphs: time for a new data presentation paradigm. <em>PLoS Biol</em> 13: e1002128, 2015. <a href="https://doi.org/10.1371/journal.pbio.1002128" target="_blank" rel="noopener">doi:10.1371/journal.pbio.1002128</a></li>
+                        <li>Crameri F, Shephard GE, Heron PJ. The misuse of colour in science communication. <em>Nat Commun</em> 11: 5444, 2020. <a href="https://doi.org/10.1038/s41467-020-19160-7" target="_blank" rel="noopener">doi:10.1038/s41467-020-19160-7</a></li>
+                        <li>Jambor HK. A checklist for designing and improving the visualization of scientific data. <em>Nat Cell Biol</em> 27: 879-883, 2025. <a href="https://doi.org/10.1038/s41556-025-01684-z" target="_blank" rel="noopener">doi:10.1038/s41556-025-01684-z</a></li>
+                        <li>Okabe M, Ito K. Color Universal Design (CUD): how to make figures and presentations that are friendly to colorblind people. J*Fly, 2002 (updated 2008). <a href="https://jfly.uni-koeln.de/color/" target="_blank" rel="noopener">jfly.uni-koeln.de</a></li>
                     </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
                 <a class="next-lesson" href="learn.html#track-6" target="_blank" rel="noopener">
                     <span>You finished Track 5</span>
