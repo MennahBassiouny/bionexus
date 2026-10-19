@@ -205,7 +205,7 @@
 
                 <span class="module-tag">Module 2 of 4</span>
                 <h2>How pairwise alignment actually works</h2>
-                <p style="background:rgba(91,156,248,0.07); border-left:3px solid var(--primary-blue); padding:12px 16px; border-radius:8px; font-size:0.98rem;">📘 <strong>New to this?</strong> This module shows what happens under the hood. You can skim it on a first pass and still use BLAST well, the most practical, job-ready skills are in Modules 3 and 4.</p>
+                <p style="background:rgba(91,156,248,0.07); border-left:3px solid var(--primary-blue); padding:12px 16px; border-radius:8px; font-size:0.98rem;">📘 <strong>New to this?</strong> This module shows what happens under the hood. You can skim it on a first pass and still use BLAST well; the most practical, job-ready skills are in Modules 3 and 4.</p>
                 <p>An alignment is scored: you reward matches, penalise mismatches, and penalise <strong>gaps</strong> (insertions or deletions). The "best" alignment is the one with the highest total score. The breakthrough that made this tractable was <strong>dynamic programming</strong>: instead of trying every possible alignment (astronomically many), you build the optimal alignment from optimal sub-alignments in a scoring matrix.</p>
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Dynamic programming</h4>
@@ -260,7 +260,7 @@ print(a2)
 
                 <span class="module-tag">Module 3 of 4</span>
                 <h2>BLAST, done right</h2>
-                <p><strong>BLAST</strong> (Basic Local Alignment Search Tool) is a fast heuristic for the same problem: given your query, find the best local alignments against a huge database in seconds. It does this by first finding short exact "word" matches and only then extending the promising ones, trading guaranteed optimality for enormous speed. It is, by citation count, one of the most influential tools ever published.</p>
+                <p><strong>BLAST</strong> (Basic Local Alignment Search Tool) is a fast heuristic for the same problem: given your query, find the best local alignments against a huge database in seconds. It does this by first finding short "word" matches (exact for DNA, near-exact for proteins) and only then extending the promising ones, trading guaranteed optimality for enormous speed. It is, by citation count, one of the most influential tools ever published.</p>
                 <p>First, pick the right program for your sequences:</p>
                 <table class="ctable">
                     <thead><tr><th>Program</th><th>Query</th><th>Database</th></tr></thead>
@@ -269,15 +269,16 @@ print(a2)
                         <tr><td><code class="inline">blastp</code></td><td>protein</td><td>protein</td></tr>
                         <tr><td><code class="inline">blastx</code></td><td>nucleotide (translated)</td><td>protein</td></tr>
                         <tr><td><code class="inline">tblastn</code></td><td>protein</td><td>nucleotide (translated)</td></tr>
+                        <tr><td><code class="inline">tblastx</code></td><td>nucleotide (translated)</td><td>nucleotide (translated)</td></tr>
                     </tbody>
                 </table>
                 <p>For function questions, prefer protein-level searches (<code class="inline">blastp</code>, <code class="inline">blastx</code>): protein sequence is more conserved than DNA, so it detects more distant relationships.</p>
 
                 <h3>Hands-on: run a BLAST search</h3>
-                <p>No install needed for this part. Go to the <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi" target="_blank" rel="noopener">NCBI BLAST</a> site, choose <code class="inline">blastn</code> or <code class="inline">blastp</code>, paste a FASTA sequence, pick a database (start with <code class="inline">nr</code>), and run it. Then read the results, which is the skill most people get wrong.</p>
+                <p>No install needed for this part. Go to the <a href="https://blast.ncbi.nlm.nih.gov/Blast.cgi" target="_blank" rel="noopener">NCBI BLAST</a> site, choose <code class="inline">blastn</code> or <code class="inline">blastp</code>, paste a FASTA sequence, pick a database (for <code class="inline">blastn</code> the default is <code class="inline">core_nt</code>; for <code class="inline">blastp</code> the default is now <code class="inline">ClusteredNR</code>, a faster, less redundant version of <code class="inline">nr</code>), and run it. Then read the results, which is the skill most people get wrong.</p>
                 <div class="pro">
                     <h4>🧪 Try this exact example (recommended for your first time)</h4>
-                    <p>Open <a href="https://www.uniprot.org/uniprotkb/P68871/entry" target="_blank" rel="noopener">UniProt P68871</a> (human hemoglobin subunit beta, "HBB"), copy its protein sequence, and run <code class="inline">blastp</code> against <code class="inline">nr</code>. <strong>What you should see:</strong> the top hit is human beta-globin itself at ~100% identity with an E-value at or near 0; just below it, beta-globins from other mammals (chimp, mouse, and so on), lower percent identity but still tiny E-values. Those lower-identity hits are real homologs, which is exactly the homology-vs-identity point from Module 1.</p>
+                    <p>Open <a href="https://www.uniprot.org/uniprotkb/P68871/entry" target="_blank" rel="noopener">UniProt P68871</a> (human hemoglobin subunit beta, "HBB"), copy its protein sequence, and run <code class="inline">blastp</code> against the default database (ClusteredNR, or <code class="inline">nr</code>). <strong>What you should see:</strong> the top hits are human beta-globin and other primates at ~100% identity (the chimp protein is identical to ours), with E-values at or near 0. Lower down you will see human delta-globin (~93%, a related gene in our own genome, called a paralog) and beta-globins from other mammals such as mouse (~80%). They have lower percent identity but still tiny E-values. Those lower-identity hits are real homologs, which is exactly the homology-vs-identity point from Module 1.</p>
                 </div>
 
                 <div class="warn">
@@ -291,13 +292,13 @@ print(a2)
 
                 <div class="pro">
                     <h4>🛠️ Go professional: command-line BLAST+</h4>
-                    <p>The web tool is great for one sequence; real work runs thousands. Install the command-line suite once and you can script it: <code class="inline">conda install -c bioconda blast</code> (see the <a href="conda-environments.html" target="_blank" rel="noopener">Conda mini-lesson</a>), then build a database with <code class="inline">makeblastdb</code> and search with <code class="inline">blastn -query q.fa -db mydb -evalue 1e-5 -outfmt 6</code>. The tabular <code class="inline">-outfmt 6</code> output is what you parse in a pipeline. This is the same BLAST+ from Camacho et al. (2009) cited below.</p>
+                    <p>The web tool is great for one sequence; real work runs thousands. Install the command-line suite once and you can script it: <code class="inline">conda create -n blast -c conda-forge -c bioconda blast</code> (see the <a href="conda-environments.html" target="_blank" rel="noopener">Conda mini-lesson</a>), then build a database with <code class="inline">makeblastdb</code> and search with <code class="inline">blastn -query q.fa -db mydb -evalue 1e-5 -outfmt 6</code>. The tabular <code class="inline">-outfmt 6</code> output is what you parse in a pipeline. This is the same BLAST+ from Camacho et al. (2009) cited below.</p>
                 </div>
 
                 <span class="module-tag">Module 4 of 4</span>
                 <h2>Aligning many sequences: MSA</h2>
                 <p>A <strong>multiple sequence alignment (MSA)</strong> lines up three or more sequences at once, revealing the columns that are conserved across a whole family. Conserved columns often mark functionally critical residues (an active site, a binding pocket), and an MSA is the starting point for building phylogenetic trees, profiles, and HMMs.</p>
-                <p>Because the exact solution is computationally explosive for many sequences, MSA tools use <em>progressive</em> and <em>iterative</em> heuristics. The standard, free tools are <strong>Clustal Omega</strong> and <strong>MUSCLE</strong>; both run with no install through the <a href="https://www.ebi.ac.uk/jdispatcher/msa" target="_blank" rel="noopener">EMBL-EBI web services</a>.</p>
+                <p>Because the exact solution is computationally explosive for many sequences, MSA tools use <em>progressive</em> and <em>iterative</em> heuristics. The standard, free tools are <strong>Clustal Omega</strong>, <strong>MAFFT</strong> and <strong>MUSCLE</strong>; all run with no install through the <a href="https://www.ebi.ac.uk/jdispatcher/msa" target="_blank" rel="noopener">EMBL-EBI web services</a>.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Conserved column</h4>
@@ -339,7 +340,7 @@ print(a2)
                     <button data-opt data-correct>blastx (translate the DNA and search a protein database), because protein sequence is more conserved than DNA and detects more distant functional relationships</button>
                     <button data-opt>tblastn, because it searches your DNA query against proteins directly</button>
                     <button data-opt>It does not matter; all BLAST programs have identical sensitivity</button>
-                    <div class="quiz-explain"><strong>Correct.</strong> For function, search at the protein level: proteins tolerate synonymous and conservative changes, so they stay recognizable over far greater evolutionary distance than DNA. <code class="inline">blastx</code> translates your nucleotide query in all frames and searches a protein database, the most sensitive choice for a function question.</div>
+                    <div class="quiz-explain"><strong>Correct.</strong> For function, search at the protein level: many DNA changes do not alter the protein (synonymous changes) and many protein changes swap similar amino acids, so proteins stay recognizable over far greater evolutionary distance than DNA. <code class="inline">blastx</code> translates your nucleotide query in all frames and searches a protein database, the most sensitive choice for a function question.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">In a multiple sequence alignment of a protein family, one column is identical across all 30 sequences, including very distantly related ones. What is the most reasonable interpretation?</div>
@@ -353,19 +354,21 @@ print(a2)
                 <div class="refs">
                     <h4>Sources &amp; further reading</h4>
                     <ol>
-                        <li>Needleman SB, Wunsch CD. A general method applicable to the search for similarities in the amino acid sequence of two proteins. <em>J Mol Biol</em> 48:443–453, 1970. (Global alignment by dynamic programming.)</li>
-                        <li>Smith TF, Waterman MS. Identification of common molecular subsequences. <em>J Mol Biol</em> 147:195–197, 1981. (Local alignment.)</li>
-                        <li>Altschul SF, Gish W, Miller W, Myers EW, Lipman DJ. Basic local alignment search tool. <em>J Mol Biol</em> 215:403–410, 1990. (The original BLAST.)</li>
-                        <li>Camacho C, et al. BLAST+: architecture and applications. <em>BMC Bioinformatics</em> 10:421, 2009. <a href="https://doi.org/10.1186/1471-2105-10-421" target="_blank" rel="noopener">doi:10.1186/1471-2105-10-421</a></li>
-                        <li>Sievers F, et al. Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. <em>Mol Syst Biol</em> 7:539, 2011. <a href="https://doi.org/10.1038/msb.2011.75" target="_blank" rel="noopener">doi:10.1038/msb.2011.75</a></li>
-                        <li>Curriculum alignment: <a href="https://www.ebi.ac.uk/training/" target="_blank" rel="noopener">EMBL-EBI Training</a>, <a href="https://training.galaxyproject.org/" target="_blank" rel="noopener">Galaxy Training Network (Sequence analysis)</a>, and the ISCB bioinformatics core competencies (Mulder et al., <em>PLOS Comput Biol</em>, 2018).</li>
+                        <li>Needleman SB, Wunsch CD. A general method applicable to the search for similarities in the amino acid sequence of two proteins. <em>J Mol Biol</em> 48: 443-453, 1970. (Global alignment.) <a href="https://doi.org/10.1016/0022-2836(70)90057-4" target="_blank" rel="noopener">doi:10.1016/0022-2836(70)90057-4</a></li>
+                        <li>Smith TF, Waterman MS. Identification of common molecular subsequences. <em>J Mol Biol</em> 147: 195-197, 1981. (Local alignment.) <a href="https://doi.org/10.1016/0022-2836(81)90087-5" target="_blank" rel="noopener">doi:10.1016/0022-2836(81)90087-5</a></li>
+                        <li>Henikoff S, Henikoff JG. Amino acid substitution matrices from protein blocks. <em>Proc Natl Acad Sci USA</em> 89: 10915-10919, 1992. (BLOSUM.) <a href="https://doi.org/10.1073/pnas.89.22.10915" target="_blank" rel="noopener">doi:10.1073/pnas.89.22.10915</a></li>
+                        <li>Altschul SF, Gish W, Miller W, Myers EW, Lipman DJ. Basic local alignment search tool. <em>J Mol Biol</em> 215: 403-410, 1990. (The original BLAST.) <a href="https://doi.org/10.1016/S0022-2836(05)80360-2" target="_blank" rel="noopener">doi:10.1016/S0022-2836(05)80360-2</a></li>
+                        <li>Camacho C, Coulouris G, Avagyan V, et al. BLAST+: architecture and applications. <em>BMC Bioinformatics</em> 10: 421, 2009. <a href="https://doi.org/10.1186/1471-2105-10-421" target="_blank" rel="noopener">doi:10.1186/1471-2105-10-421</a></li>
+                        <li>Sievers F, Wilm A, Dineen D, et al. Fast, scalable generation of high-quality protein multiple sequence alignments using Clustal Omega. <em>Mol Syst Biol</em> 7: 539, 2011. <a href="https://doi.org/10.1038/msb.2011.75" target="_blank" rel="noopener">doi:10.1038/msb.2011.75</a></li>
+                        <li>Mulder N, Schwartz R, Brazas MD, et al. The development and application of bioinformatics core competencies to improve bioinformatics training and education. <em>PLoS Comput Biol</em> 14: e1005772, 2018. <a href="https://doi.org/10.1371/journal.pcbi.1005772" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1005772</a></li>
+                        <li>NCBI Insights. "Faster, better results for protein BLAST searches" (ClusteredNR as the default). <a href="https://ncbiinsights.ncbi.nlm.nih.gov/2025/05/22/faster-better-results-protein-blast/" target="_blank" rel="noopener">ncbiinsights.ncbi.nlm.nih.gov</a></li>
                     </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
 
                 <a class="next-lesson" href="blast-alignment-advanced.html" target="_blank" rel="noopener">
                     <span>Ready for more? Level 2</span>
-                    <h3>Sequence Alignment &amp; BLAST — Advanced →</h3>
+                    <h3>Sequence Alignment &amp; BLAST: Advanced →</h3>
                 </a>
 
             </div>

@@ -11,17 +11,17 @@
     <link rel="icon" type="image/png" href="favicon.png">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="BioNexus Hub">
-    <meta property="og:title" content="Sequence Alignment & BLAST — Advanced (Level 2) | BioNexus Hub">
+    <meta property="og:title" content="Sequence Alignment & BLAST: Advanced (Level 2) | BioNexus Hub">
     <meta property="og:description" content="Affine gaps, E-value statistics, BLAST's heuristic limits, and remote-homology detection (PSI-BLAST, HMMER, Foldseek). The professional depth, with a graded assessment.">
     <meta property="og:url" content="https://bionexushub.com/blast-alignment-advanced.html">
     <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Sequence Alignment & BLAST — Advanced (Level 2) | BioNexus Hub">
+    <meta name="twitter:title" content="Sequence Alignment & BLAST: Advanced (Level 2) | BioNexus Hub">
     <meta name="twitter:description" content="The professional depth behind alignment and BLAST, with a graded assessment.">
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
-    <title>Sequence Alignment & BLAST — Advanced (Level 2) - BioNexus Hub</title>
+    <title>Sequence Alignment & BLAST: Advanced (Level 2) - BioNexus Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -158,7 +158,7 @@
         <div class="container">
             <div class="lesson-body">
                 <div class="breadcrumb"><a href="minicourses.html" target="_blank" rel="noopener">← Mini-courses</a> &nbsp;/&nbsp; Sequence Alignment &amp; BLAST &nbsp;/&nbsp; <strong>Level 2: Advanced</strong></div>
-                <h1>Sequence Alignment &amp; BLAST — Advanced</h1>
+                <h1>Sequence Alignment &amp; BLAST: Advanced</h1>
                 <p class="promise">You finished the essentials; now the professional depth. This Level 2 companion covers the parts that separate someone who runs BLAST from someone who understands it: affine gap penalties, the statistics that actually produce an E-value, why BLAST is a heuristic that can miss real homologs, and how to find the distant relatives BLAST cannot, using PSI-BLAST, profile HMMs, and structure search.</p>
                 <div class="tags">
                     <span class="tag purple">🎓 Mini-course · Level 2</span>
@@ -193,11 +193,11 @@
 
                 <span class="module-tag">Module 1 of 4</span>
                 <h2>Affine gap penalties: not all gaps are equal</h2>
-                <p>In Level 1 the demo charged a flat penalty per gap position. That is biologically wrong. A single insertion or deletion of five bases is <em>one</em> mutational event; five separate one-base gaps are <em>five</em> events, and far less likely. A flat (linear) penalty scores them the same. The fix is an <strong>affine gap penalty</strong>: a larger one-time cost to <em>open</em> a gap, plus a small cost to <em>extend</em> it. This makes one long gap much cheaper than many short ones, which matches how indels actually happen. Gotoh (1982) showed how to compute this efficiently.</p>
+                <p>In Level 1 the demo charged a flat penalty per gap position. That is biologically unrealistic. A single insertion or deletion of five bases is <em>one</em> mutational event; five separate one-base gaps are <em>five</em> events, and far less likely. A flat (linear) penalty scores them the same. The fix is an <strong>affine gap penalty</strong>: a larger one-time cost to <em>open</em> a gap, plus a small cost to <em>extend</em> it. This makes one long gap much cheaper than many short ones, which matches how indels actually happen. Gotoh (1982) showed how to compute this efficiently.</p>
 
                 <div class="jargon">
                     <h4><span>Decode the jargon</span>Gap-open vs gap-extend</h4>
-                    <p>Two separate penalties. <strong>Gap-open</strong> is paid once when a gap starts (e.g., −10); <strong>gap-extend</strong> is paid for each additional position in that same gap (e.g., −1). Total cost of a gap of length L is: open + (L × extend). This is why aligners cluster indels into single runs rather than scattering them.</p>
+                    <p>Two separate penalties. <strong>Gap-open</strong> is paid once when a gap starts (e.g., −10); <strong>gap-extend</strong> is paid for each additional position in that same gap (e.g., −1). Total cost of a gap of length L is: open + (L × extend) (this is BLAST's convention; some tools count the first gap position inside the open cost). This is why aligners cluster indels into single runs rather than scattering them.</p>
                 </div>
 
                 <h3>See the difference (in your browser)</h3>
@@ -224,19 +224,19 @@ print("Linear: both score -15 -> it cannot tell one indel from five. That is the
 
                 <span class="module-tag">Module 2 of 4</span>
                 <h2>The statistics behind the E-value</h2>
-                <p>In Level 1 you learned to trust the E-value. Here is what it is made of. The <strong>Karlin-Altschul</strong> theory (1990) says that the number of chance high-scoring alignments follows a known distribution, giving the famous form:</p>
+                <p>In Level 1 you learned to trust the E-value. Here is what it is made of. The <strong>Karlin-Altschul</strong> theory (1990) says that the number of chance high-scoring alignments follows a known distribution (proven for alignments without gaps; for gapped BLAST the constants are estimated by simulation), giving the famous form:</p>
                 <pre><span class="c"># Expected number of chance hits scoring at least S</span>
 E = K · m · n · e^(-λS)</pre>
-                <p>where <strong>m</strong> is your query length, <strong>n</strong> is the total database length, <strong>S</strong> is the alignment score, and <strong>K</strong> and <strong>λ</strong> are constants set by the scoring system. Three consequences a professional internalizes:</p>
+                <p>where <strong>m</strong> is your query length, <strong>n</strong> is the total database length (BLAST actually uses slightly shortened "effective" lengths), <strong>S</strong> is the alignment score, and <strong>K</strong> and <strong>λ</strong> are constants set by the scoring system. Three consequences a professional internalizes:</p>
                 <ul>
                     <li><strong>Bigger database, worse E-value.</strong> The same alignment becomes less surprising in a larger database (n goes up, E goes up). Your hit's significance is not absolute; it depends on what you searched against.</li>
-                    <li><strong>Longer query, worse E-value</strong> for the same score (m goes up). This is why the <strong>bit score</strong> exists: it is the score rescaled by K and λ so it is comparable across searches.</li>
+                    <li><strong>Longer query, worse E-value</strong> for the same score (m goes up). This is why the <strong>bit score</strong> exists: it is the score rescaled by K and λ so it is comparable across searches. (Bit score S′ = (λS − ln K)/ln 2, and then E = m·n·2<sup>−S′</sup>.)</li>
                     <li><strong>Score must clear the noise.</strong> Because E falls exponentially in S, a small increase in alignment score sharply drops the E-value.</li>
                 </ul>
 
                 <div class="xlink">
                     <h4>🔗 Connection: a BLAST search is a multiple-testing problem</h4>
-                    <p>When you BLAST one query against millions of database sequences, you are making millions of comparisons, exactly the situation from the statistics track. The E-value already builds the database size (n) into the calculation, so it <em>is</em> the multiple-testing correction for a single search: it answers "how many hits this good would I expect by chance across this whole database?" See <a href="multiple-testing.html" target="_blank" rel="noopener">The multiple-testing problem</a> for the general principle.</p>
+                    <p>When you BLAST one query against millions of database sequences, you are making millions of comparisons, exactly the situation from the statistics track. The E-value already builds the database size (n) into the calculation, so it <em>is</em> the multiple-testing correction for a single search: it answers "how many hits this good would I expect by chance across this whole database?" It is not a p-value, but the two are linked: P = 1 − e<sup>−E</sup>, so for small E (below about 0.01) the two are almost the same number. See <a href="multiple-testing.html" target="_blank" rel="noopener">The multiple-testing problem</a> for the general principle.</p>
                 </div>
 
                 <span class="module-tag">Module 3 of 4</span>
@@ -249,7 +249,7 @@ E = K · m · n · e^(-λS)</pre>
 
                 <div class="warn">
                     <h4>⚠️ Low-complexity regions produce false hits, and BLAST masks them</h4>
-                    <p>Stretches like <code class="inline">AAAAAAAA</code> or proline-rich runs are "low-complexity": they match many unrelated sequences by chance and generate spurious high-scoring hits. BLAST masks these by default (<strong>DUST</strong> for nucleotides, <strong>SEG</strong> for proteins), replacing them so they cannot seed alignments. Usually correct, but if your real signal lives in a low-complexity region, masking can hide it, so know the masking is happening.</p>
+                    <p>Stretches like <code class="inline">AAAAAAAA</code> or proline-rich runs are "low-complexity": they match many unrelated sequences by chance and generate spurious high-scoring hits. BLAST has filters for them: <strong>DUST</strong> for nucleotides (on by default in blastn) and <strong>SEG</strong> for proteins (on by default in blastx and tblastn, but <em>off</em> by default in blastp, which instead adjusts scores for unusual amino-acid composition). By default the masked stretch is only blocked from starting (seeding) an alignment; an alignment can still extend through it. Usually correct, but if your real signal lives in a low-complexity region, masking can hide it, so know the masking is happening.</p>
                 </div>
 
                 <span class="module-tag">Module 4 of 4</span>
@@ -259,7 +259,7 @@ E = K · m · n · e^(-λS)</pre>
                     <thead><tr><th>Method</th><th>Idea</th><th>When to reach for it</th></tr></thead>
                     <tbody>
                         <tr><td><strong>PSI-BLAST</strong></td><td>Run BLAST, build a position-specific scoring matrix (profile) from the hits, search again, and iterate. Each round pulls in more distant relatives.</td><td>More sensitive than blastp for distant homologs, still in the BLAST family (Altschul 1997).</td></tr>
-                        <tr><td><strong>Profile HMMs / HMMER</strong></td><td>Model a family as a hidden Markov model with per-position match, insert, and delete probabilities. The gold standard for sensitive sequence search (Pfam is built on this).</td><td>When you need maximum sequence-based sensitivity, or to search domain databases (Eddy 2011).</td></tr>
+                        <tr><td><strong>Profile HMMs / HMMER</strong></td><td>Model a family as a hidden Markov model with per-position match, insert, and delete probabilities. One of the most sensitive standard sequence-search methods (the Pfam domain database, now hosted at InterPro, is built on it).</td><td>When you need maximum sequence-based sensitivity, or to search domain databases (Eddy 2011).</td></tr>
                         <tr><td><strong>Structure search (Foldseek)</strong></td><td>Structure is conserved far longer than sequence. Foldseek encodes 3D shape as a "structural alphabet" and searches it at BLAST-like speed, now practical thanks to AlphaFold's structures.</td><td>When sequence similarity is gone but you have (or can predict) a structure (van Kempen 2024).</td></tr>
                     </tbody>
                 </table>
@@ -271,7 +271,7 @@ E = K · m · n · e^(-λS)</pre>
 
                 <div class="pro">
                     <h4>🛠️ Hands-on (guided): see the sensitivity climb</h4>
-                    <p>Take a protein with well-known distant relatives, for example human lysozyme C (<a href="https://www.uniprot.org/uniprotkb/P61626/entry" target="_blank" rel="noopener">UniProt P61626</a>). Run a normal <code class="inline">blastp</code> against <code class="inline">nr</code> and note how far down the hit list the identity drops toward the twilight zone. Then run the same query with <strong>PSI-BLAST</strong> for two or three iterations. <strong>What you should see:</strong> each iteration recovers additional, more distant homologs that the first pass ranked poorly or missed, because the profile now encodes the whole family, not one sequence. That is remote-homology detection in action.</p>
+                    <p>Take a protein with well-known distant relatives, for example human lysozyme C (<a href="https://www.uniprot.org/uniprotkb/P61626/entry" target="_blank" rel="noopener">UniProt P61626</a>). Run a normal <code class="inline">blastp</code> against ClusteredNR (the default) or <code class="inline">nr</code> and note how far down the hit list the identity drops toward the twilight zone. Then run the same query with <strong>PSI-BLAST</strong> for two or three iterations (raise "Max target sequences" to 1000 or more under Algorithm parameters, so close relatives do not fill the list). <strong>What you should see:</strong> later iterations usually recover additional, more distant homologs that the first pass ranked poorly or missed, because the profile now encodes the whole family, not one sequence. That is remote-homology detection in action.</p>
                 </div>
 
                 <div class="assessment">
@@ -314,23 +314,24 @@ E = K · m · n · e^(-λS)</pre>
                 <div class="quiz">
                     <div class="quiz-q-src">Two proteins share only ~18% sequence identity but have nearly identical 3D folds and the same active-site geometry. What is the best way to detect this relationship, and why?</div>
                     <button data-opt>blastn, because nucleotide search is most sensitive at low identity</button>
-                    <button data-opt data-correct>Structure-based search (e.g., Foldseek), because structure is conserved far longer than sequence; at ~18% identity the pair is in the twilight zone where sequence methods struggle but structural similarity is still clear</button>
+                    <button data-opt data-correct>Structure-based search (e.g., Foldseek), because structure is conserved far longer than sequence; at ~18% identity the pair is below even the twilight zone, where sequence methods usually fail but structural similarity is still clear</button>
                     <button data-opt>Nothing can detect it; below 20% identity no relationship is knowable</button>
                     <button data-opt>A flat-gap global alignment, which is optimized for low-identity pairs</button>
-                    <div class="quiz-explain"><strong>Correct.</strong> At ~18% identity the pair sits in the twilight zone where sequence signal is weak, but conserved fold and active-site geometry are strong evidence of homology. Structure-comparison tools like Foldseek (fast, thanks to AlphaFold structures) are built exactly for this case.</div>
+                    <div class="quiz-explain"><strong>Correct.</strong> At ~18% identity the pair sits below the twilight zone, where sequence signal is very weak, but conserved fold and active-site geometry are strong evidence of homology. Structure-comparison tools like Foldseek (fast, thanks to AlphaFold structures) are built exactly for this case.</div>
                 </div>
 
                 <div class="refs">
                     <h4>Sources &amp; further reading</h4>
                     <ol>
-                        <li>Gotoh O. An improved algorithm for matching biological sequences. <em>J Mol Biol</em> 162(3):705–708, 1982. (Affine gap penalties.)</li>
-                        <li>Karlin S, Altschul SF. Methods for assessing the statistical significance of molecular sequence features using general scoring schemes. <em>PNAS</em> 87:2264–2268, 1990. (The E-value theory.)</li>
-                        <li>Altschul SF, et al. Gapped BLAST and PSI-BLAST: a new generation of protein database search programs. <em>Nucleic Acids Research</em> 25(17):3389–3402, 1997. <a href="https://doi.org/10.1093/nar/25.17.3389" target="_blank" rel="noopener">doi:10.1093/nar/25.17.3389</a></li>
-                        <li>Eddy SR. Accelerated profile HMM searches (HMMER3). <em>PLOS Computational Biology</em> 7(10):e1002195, 2011. <a href="https://doi.org/10.1371/journal.pcbi.1002195" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1002195</a></li>
-                        <li>Rost B. Twilight zone of protein sequence alignments. <em>Protein Engineering</em> 12(2):85–94, 1999.</li>
-                        <li>van Kempen M, et al. Fast and accurate protein structure search with Foldseek. <em>Nature Biotechnology</em> 42:243–246, 2024. <a href="https://doi.org/10.1038/s41587-023-01773-0" target="_blank" rel="noopener">doi:10.1038/s41587-023-01773-0</a></li>
+                        <li>Gotoh O. An improved algorithm for matching biological sequences. <em>J Mol Biol</em> 162: 705-708, 1982. (Affine gaps.) <a href="https://doi.org/10.1016/0022-2836(82)90398-9" target="_blank" rel="noopener">doi:10.1016/0022-2836(82)90398-9</a></li>
+                        <li>Karlin S, Altschul SF. Methods for assessing the statistical significance of molecular sequence features by using general scoring schemes. <em>Proc Natl Acad Sci USA</em> 87: 2264-2268, 1990. <a href="https://doi.org/10.1073/pnas.87.6.2264" target="_blank" rel="noopener">doi:10.1073/pnas.87.6.2264</a></li>
+                        <li>Altschul SF, Madden TL, Schäffer AA, et al. Gapped BLAST and PSI-BLAST: a new generation of protein database search programs. <em>Nucleic Acids Res</em> 25: 3389-3402, 1997. <a href="https://doi.org/10.1093/nar/25.17.3389" target="_blank" rel="noopener">doi:10.1093/nar/25.17.3389</a></li>
+                        <li>Eddy SR. Accelerated profile HMM searches. <em>PLoS Comput Biol</em> 7: e1002195, 2011. (HMMER3.) <a href="https://doi.org/10.1371/journal.pcbi.1002195" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1002195</a></li>
+                        <li>Rost B. Twilight zone of protein sequence alignments. <em>Protein Eng</em> 12: 85-94, 1999. <a href="https://doi.org/10.1093/protein/12.2.85" target="_blank" rel="noopener">doi:10.1093/protein/12.2.85</a></li>
+                        <li>van Kempen M, Kim SS, Tumescheit C, et al. Fast and accurate protein structure search with Foldseek. <em>Nat Biotechnol</em> 42: 243-246, 2024. <a href="https://doi.org/10.1038/s41587-023-01773-0" target="_blank" rel="noopener">doi:10.1038/s41587-023-01773-0</a></li>
+                        <li>NCBI. BLAST Command Line Applications User Manual, Appendix C (options and defaults). <a href="https://www.ncbi.nlm.nih.gov/books/NBK279684/" target="_blank" rel="noopener">ncbi.nlm.nih.gov/books</a></li>
                     </ol>
-                    <p class="reviewed">Last reviewed: June 2026.</p>
+                    <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
 
                 <a class="next-lesson" href="minicourses.html" target="_blank" rel="noopener">
