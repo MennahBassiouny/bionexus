@@ -90,6 +90,8 @@
         .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+        .sbx-wrap { margin: 0 0 1.2em; }
+        .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
 </head>
 <body>
@@ -184,12 +186,12 @@
 
             <h2>1. Knowing where you are and moving around</h2>
             <p>The terminal always sits "inside" one folder. Three commands are your eyes and feet.</p>
-            <pre data-sandboxbio>pwd            <span class="c"># print working directory: where am I?</span>
+            <div class="sbx-wrap"><pre data-sandboxbio>pwd            <span class="c"># print working directory: where am I?</span>
 ls             <span class="c"># list what is in this folder</span>
 ls -l          <span class="c"># list with details (size, date)</span>
 cd Downloads   <span class="c"># change directory into Downloads (a brand-new WSL home folder may not have one yet)</span>
 cd ..          <span class="c"># go up one level</span>
-cd ~           <span class="c"># go to your home folder</span></pre>
+cd ~           <span class="c"># go to your home folder</span></pre></div>
             <p>Files live in a tree of folders. A <strong>path</strong> is the address of a file in that tree.</p>
             <figure class="viz">
                 <svg viewBox="0 0 520 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A folder tree: home contains project and Downloads; project contains genes.fasta">
@@ -208,28 +210,28 @@ cd ~           <span class="c"># go to your home folder</span></pre>
             </figure>
 
             <h2>2. Creating and handling files and folders</h2>
-            <pre data-sandboxbio>mkdir project          <span class="c"># make a new folder</span>
+            <div class="sbx-wrap"><pre data-sandboxbio>mkdir project          <span class="c"># make a new folder</span>
 cd project
 touch notes.txt        <span class="c"># create an empty file</span>
 cp notes.txt copy.txt  <span class="c"># copy</span>
 mv copy.txt final.txt  <span class="c"># move OR rename</span>
-rm final.txt           <span class="c"># remove (careful: no recycle bin!)</span></pre>
+rm final.txt           <span class="c"># remove (careful: no recycle bin!)</span></pre></div>
             <div class="why"><h4>rm is forever</h4><p>The command line has no trash can. <code class="inline">rm</code> deletes immediately and permanently. Read the line twice before you run it, especially before <code class="inline">rm -r</code> (which deletes whole folders).</p></div>
 
             <h2>3. Looking inside files</h2>
-            <pre data-sandboxbio>cat file.txt       <span class="c"># dump the whole file to the screen</span>
+            <div class="sbx-wrap"><pre data-sandboxbio>cat file.txt       <span class="c"># dump the whole file to the screen</span>
 head file.txt      <span class="c"># first 10 lines</span>
 head -n 3 file.txt <span class="c"># first 3 lines</span>
 tail file.txt      <span class="c"># last 10 lines</span>
-less file.txt      <span class="c"># scroll a big file (press q to quit)</span></pre>
+less file.txt      <span class="c"># scroll a big file (press q to quit)</span></pre></div>
             <p><code class="inline">head</code> and <code class="inline">less</code> matter hugely in bioinformatics, where a single file can be gigabytes. You never want to <code class="inline">cat</code> a whole genome to your screen.</p>
 
             <h2>4. Searching and counting</h2>
-            <pre data-sandboxbio>grep <span class="s">"TP53"</span> genes.txt   <span class="c"># print lines containing "TP53"</span>
+            <div class="sbx-wrap"><pre data-sandboxbio>grep <span class="s">"TP53"</span> genes.txt   <span class="c"># print lines containing "TP53"</span>
 grep -c <span class="s">"&gt;"</span> seqs.fasta   <span class="c"># COUNT lines containing "&gt;"</span>
 wc -l file.txt           <span class="c"># count lines in a file</span>
 sort names.txt           <span class="c"># sort lines alphabetically</span>
-sort names.txt | uniq    <span class="c"># sort, then remove duplicates</span></pre>
+sort names.txt | uniq    <span class="c"># sort, then remove duplicates</span></pre></div>
             <div class="why"><h4>Why grep is a bioinformatics superpower</h4><p>FASTA files mark each sequence with a header line starting <code class="inline">&gt;</code>. So <code class="inline">grep -c "&gt;"</code> instantly counts how many sequences are in a file of any size. Tiny command, huge time saver.</p></div>
 
             <h2>5. The pipe: the big idea</h2>
@@ -248,12 +250,12 @@ sort names.txt | uniq    <span class="c"># sort, then remove duplicates</span></
                 </svg>
                 <figcaption>Read the file, keep the header lines, count them. Each tool does one job; the pipe chains them into an analysis.</figcaption>
             </figure>
-            <pre data-sandboxbio><span class="c"># "Take the file, keep header lines, then count them"</span>
-cat seqs.fasta | grep <span class="s">"&gt;"</span> | wc -l</pre>
+            <div class="sbx-wrap"><pre data-sandboxbio><span class="c"># "Take the file, keep header lines, then count them"</span>
+cat seqs.fasta | grep <span class="s">"&gt;"</span> | wc -l</pre></div>
 
             <h2>6. Saving output to a file</h2>
-            <pre data-sandboxbio>grep <span class="s">"&gt;"</span> seqs.fasta &gt; headers.txt   <span class="c"># write results to a NEW file</span>
-grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class="c"># ADD to an existing file</span></pre>
+            <div class="sbx-wrap"><pre data-sandboxbio>grep <span class="s">"&gt;"</span> seqs.fasta &gt; headers.txt   <span class="c"># write results to a NEW file</span>
+grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class="c"># ADD to an existing file</span></pre></div>
             <div class="tryit"><strong>Try it:</strong> make a file with <code class="inline">echo "ATGC" &gt; dna.txt</code>, then read it back with <code class="inline">cat dna.txt</code>. You just created and read a file entirely from the keyboard.</div>
 
             <div class="glossary">
@@ -295,23 +297,23 @@ grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class=
 
             <p><strong>Exercise 1: find your feet.</strong> Print the folder you are in, list its contents with details, then move into a folder called <code class="inline">project</code>.</p>
             <details><summary>Show a worked solution</summary>
-<pre data-sandboxbio>pwd
+<div class="sbx-wrap"><pre data-sandboxbio>pwd
 ls -l
-cd project</pre></details>
+cd project</pre></div></details>
 
             <p><strong>Exercise 2: peek, do not dump.</strong> Show only the first 3 lines of <code class="inline">reads.txt</code> without printing the whole file.</p>
             <details><summary>Show a worked solution</summary>
-<pre data-sandboxbio>head -n 3 reads.txt</pre></details>
+<div class="sbx-wrap"><pre data-sandboxbio>head -n 3 reads.txt</pre></div></details>
 
             <p><strong>Exercise 3: count sequences.</strong> Count how many sequences are in <code class="inline">seqs.fasta</code>, where every header line starts with <code class="inline">&gt;</code>. Try it with a pipe too.</p>
             <details><summary>Show a worked solution</summary>
-<pre data-sandboxbio>grep -c "&gt;" seqs.fasta
+<div class="sbx-wrap"><pre data-sandboxbio>grep -c "&gt;" seqs.fasta
 # or, with a pipe:
-cat seqs.fasta | grep "&gt;" | wc -l</pre></details>
+cat seqs.fasta | grep "&gt;" | wc -l</pre></div></details>
 
             <p><strong>Exercise 4: save the result.</strong> Write just the header lines of <code class="inline">seqs.fasta</code> into a new file called <code class="inline">headers.txt</code>.</p>
             <details><summary>Show a worked solution</summary>
-<pre data-sandboxbio>grep "&gt;" seqs.fasta &gt; headers.txt</pre></details>
+<div class="sbx-wrap"><pre data-sandboxbio>grep "&gt;" seqs.fasta &gt; headers.txt</pre></div></details>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
