@@ -121,6 +121,8 @@
         .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+        .sbx-wrap { margin: 0 0 1.2em; }
+        .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
 </head>
 <body>
@@ -241,6 +243,17 @@ r = json.load(open(<span class="s">"fastp.json"</span>))
                     <p>Most real sequencing is paired-end (two files, R1 and R2). fastp handles both at once and keeps the pairs in sync: <code class="inline">fastp -i R1.fastq -I R2.fastq -o R1.trimmed.fastq -O R2.trimmed.fastq -h fastp_pe.html -j fastp_pe.json</code>. The capital <code class="inline">-I</code> and <code class="inline">-O</code> are the second read of each pair.</p>
                 </div>
 
+                <h2>Try it here: trim real reads in your browser</h2>
+                <p>The practice data is <strong>simulated</strong>: a 10,000-base chromosome called <code class="inline">chr1</code> and 1,780 reads of 100 bases, built so the results are small, fast and checkable. Press <strong>Run</strong> on each box; a real Linux terminal opens at the bottom of the page. No install, no account. The Colab boxes above start with <code class="inline">!</code>; in this terminal you type the same commands without it.</p>
+                <div class="sbx-wrap"><pre data-sandboxbio>fastp -i reads.fastq -o reads.trimmed.fastq \
+      --adapter_sequence AGATCGGAAGAGCACACGTCTGAACTCCAGTCA \
+      --cut_right \
+      -h fastp.html -j fastp.json</pre></div>
+                <div class="sbx-wrap"><pre data-sandboxbio>echo "Before: $(( $(wc -l &lt; reads.fastq)/4 )) reads"
+echo "After:  $(( $(wc -l &lt; reads.trimmed.fastq)/4 )) reads"
+grep -A2 '"adapter_cutting"' fastp.json</pre></div>
+                <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">What you should see</h4><p style="font-size:1rem; margin:0;">1,780 reads before and after (none were short enough to drop), and roughly 130 reads with adapter trimmed: the reads whose DNA fragment was shorter than 100 bases ran into the adapter.</p></div>
+
                 <h2>Check your understanding</h2>
                 <div class="quiz">
                 <div class="quiz-q-src">Why must adapter sequence be trimmed before alignment?</div>
@@ -296,6 +309,8 @@ r = json.load(open(<span class="s">"fastp.json"</span>))
 
             </div>
         </div>
+        <p style="text-align:center; font-size:0.85rem; color:var(--text-gray); margin:10px 0 30px;">Practice terminal powered by <a href="https://sandbox.bio" target="_blank" rel="noopener" style="color:var(--primary-blue);">sandbox.bio</a> (runs in your browser; your commands stay on your computer).</p>
+    <script src="https://sandbox.bio/embed.js" data-cwd="bionexus-trim" data-height="380" data-config="sandbox/ngs-trimming.json"></script>
     </main>
 
     <footer>

@@ -1,0 +1,13 @@
+{
+  "files": [
+    {
+      "url": "ngs/reads.fastq",
+      "path": "reads.fastq"
+    }
+  ],
+  "tools": [
+    "fastp"
+  ],
+  "welcome": "BioNexus Hub practice terminal. Practice data is simulated (a 10 kb chromosome called chr1). Ready: reads.fastq",
+  "welcomeCmd": "ls"
+}

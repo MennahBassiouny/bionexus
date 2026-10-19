@@ -1,0 +1,35 @@
+{
+  "files": [
+    {
+      "url": "bash-intermediate/genes.fasta",
+      "path": "genes.fasta"
+    },
+    {
+      "url": "bash-intermediate/a.fasta",
+      "path": "a.fasta"
+    },
+    {
+      "url": "bash-intermediate/b.fasta",
+      "path": "b.fasta"
+    },
+    {
+      "url": "bash-intermediate/c.fasta",
+      "path": "c.fasta"
+    },
+    {
+      "url": "bash-intermediate/regions.bed",
+      "path": "regions.bed"
+    },
+    {
+      "url": "bash-intermediate/reads.fastq",
+      "path": "reads.fastq"
+    },
+    {
+      "url": "bash-intermediate/table.txt",
+      "path": "table.txt"
+    }
+  ],
+  "welcome": "BioNexus Hub practice terminal. Practice files are ready, including count_seqs.sh from section 4.",
+  "welcomeCmd": "ls",
+  "setup": "printf '#!/bin/bash\\n# count sequences in the FASTA file given as the first argument\\ngrep -c \"^>\" \"$1\"\\n' > count_seqs.sh"
+}

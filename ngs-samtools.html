@@ -126,6 +126,8 @@
         .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+        .sbx-wrap { margin: 0 0 1.2em; }
+        .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
 </head>
 <body>
@@ -263,6 +265,19 @@
                     <p>Real pipelines add one more step before variant calling: marking <strong>PCR duplicates</strong> (identical reads created during library prep, which can bias variant calls). Tools like <code class="inline">samtools markdup</code> or Picard's <code class="inline">MarkDuplicates</code> flag them so callers can ignore them (for paired-end data, run <code class="inline">samtools fixmate -m</code> on name-sorted reads first, as the variant-calling lesson shows). The principle is the same survival-kit thinking: clean the BAM before you trust it.</p>
                 </div>
 
+                <h2>Try it here: work with a real BAM in your browser</h2>
+                <p>The practice data is <strong>simulated</strong>: a 10,000-base chromosome called <code class="inline">chr1</code> and 1,780 reads of 100 bases, built so the results are small, fast and checkable. Press <strong>Run</strong> on each box; a real Linux terminal opens at the bottom of the page. No install, no account. <code class="inline">aligned.bam</code> from the alignment lesson is ready. Type the commands without the Colab <code class="inline">!</code>.</p>
+                <div class="sbx-wrap"><pre data-sandboxbio>samtools view -H aligned.bam
+samtools view aligned.bam | head -3</pre></div>
+                <div class="sbx-wrap"><pre data-sandboxbio>samtools sort aligned.bam -o aligned.sorted.bam
+samtools index aligned.sorted.bam
+ls -lh aligned.sorted.bam*</pre></div>
+                <div class="sbx-wrap"><pre data-sandboxbio>samtools flagstat aligned.sorted.bam
+samtools view aligned.sorted.bam chr1:1000-1100 | wc -l</pre></div>
+                <div class="sbx-wrap"><pre data-sandboxbio>samtools depth -a aligned.sorted.bam | awk '{sum+=$3} END {print "mean depth:", sum/NR}'
+samtools coverage aligned.sorted.bam</pre></div>
+                <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">What you should see</h4><p style="font-size:1rem; margin:0;">36 reads overlap chr1:1000-1100; mean depth is about 14.6; and <code class="inline">samtools coverage</code> reports 99.79% of the chromosome covered.</p></div>
+
                 <h2>Check your understanding</h2>
                 <div class="quiz">
                 <div class="quiz-q-src">Why must a BAM be sorted before it can be indexed?</div>
@@ -318,6 +333,8 @@
 
             </div>
         </div>
+        <p style="text-align:center; font-size:0.85rem; color:var(--text-gray); margin:10px 0 30px;">Practice terminal powered by <a href="https://sandbox.bio" target="_blank" rel="noopener" style="color:var(--primary-blue);">sandbox.bio</a> (runs in your browser; your commands stay on your computer).</p>
+    <script src="https://sandbox.bio/embed.js" data-cwd="bionexus-samtools" data-height="380" data-config="sandbox/ngs-samtools.json"></script>
     </main>
 
     <footer>

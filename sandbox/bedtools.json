@@ -1,0 +1,17 @@
+{
+  "files": [
+    {
+      "url": "bedtools/peaks.bed",
+      "path": "peaks.bed"
+    },
+    {
+      "url": "bedtools/genes.bed",
+      "path": "genes.bed"
+    }
+  ],
+  "tools": [
+    "bedtools"
+  ],
+  "welcome": "BioNexus Hub practice terminal. Ready: peaks.bed, genes.bed",
+  "welcomeCmd": "cat peaks.bed genes.bed"
+}

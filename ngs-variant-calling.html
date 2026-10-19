@@ -138,6 +138,8 @@
         .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+        .sbx-wrap { margin: 0 0 1.2em; }
+        .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
 </head>
 <body>
@@ -329,6 +331,20 @@
                     <p style="font-size:1rem; color:var(--text-gray); margin:0;">Look at <code class="inline">flagstat</code>: the mapping rate is high but <strong>not 100%</strong>, because real reads include contamination, low-quality ends, and repeats that map ambiguously. <code class="inline">markdup</code> now flags a real percentage of duplicates. There is <strong>no planted answer key</strong>; you judge each call by its depth (<code class="inline">DP</code>) and quality (<code class="inline">QUAL</code>) instead of checking it against a list. And the calls now reflect real mutations that arose during the experiment (plus any errors your filters still need to catch), including some indels, which is exactly why the <code class="inline">norm</code> step matters. This is the gap between "ran the notebook" and "ran an analysis," and you just crossed it.</p>
                 </div>
 
+                <h2>Try it here: call variants in your browser</h2>
+                <p>The practice data is <strong>simulated</strong>: a 10,000-base chromosome called <code class="inline">chr1</code> and 1,780 reads of 100 bases, built so the results are small, fast and checkable. Press <strong>Run</strong> on each box; a real Linux terminal opens at the bottom of the page. No install, no account. The simulated sample carries <strong>10 planted variants</strong> (8 SNPs, 1 deletion, 1 insertion), so you can check your calls against the truth. Type the commands without the Colab <code class="inline">!</code>.</p>
+                <div class="sbx-wrap"><pre data-sandboxbio>bwa index reference.fasta
+bwa mem reference.fasta sample.fastq | samtools sort -o sample.sorted.bam
+samtools markdup sample.sorted.bam sample.markdup.bam
+samtools index sample.markdup.bam</pre></div>
+                <div class="sbx-wrap"><pre data-sandboxbio>bcftools mpileup -f reference.fasta sample.markdup.bam | bcftools call -mv -Oz -o calls.vcf.gz
+bcftools norm -m -any -f reference.fasta calls.vcf.gz -Oz -o calls.norm.vcf.gz
+bcftools index calls.norm.vcf.gz
+bcftools view -H calls.norm.vcf.gz | cut -f1-5</pre></div>
+                <div class="sbx-wrap"><pre data-sandboxbio>bcftools filter -e 'QUAL&lt;20 || DP&lt;10' calls.norm.vcf.gz -Oz -o calls.filt.vcf.gz
+bcftools view -H calls.filt.vcf.gz | cut -f1-5</pre></div>
+                <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">What you should see</h4><p style="font-size:1rem; margin:0;">All 10 planted variants are called: SNPs at 1203, 2450, 3333, 4120, 5555, 6781, 7802 and 9010, a 3-base deletion and a 3-base insertion at 8400. The deletion was planted at positions 6000-6002 but is reported at 5998 (<code class="inline">GGCT</code> to <code class="inline">G</code>): the same deletion, written in its leftmost form, which is exactly what <code class="inline">bcftools norm</code> is for. After filtering, 9 remain: the real SNP at 5555 is removed because only 9 reads cover it, below the DP&lt;10 cutoff. Filters remove true variants too, which is why thresholds are a judgement call.</p></div>
+
                 <h2>Check your understanding</h2>
                 <div class="quiz">
                 <div class="quiz-q-src">What is the difference between a sequencing error and a variant?</div>
@@ -387,6 +403,8 @@
 
             </div>
         </div>
+        <p style="text-align:center; font-size:0.85rem; color:var(--text-gray); margin:10px 0 30px;">Practice terminal powered by <a href="https://sandbox.bio" target="_blank" rel="noopener" style="color:var(--primary-blue);">sandbox.bio</a> (runs in your browser; your commands stay on your computer).</p>
+    <script src="https://sandbox.bio/embed.js" data-cwd="bionexus-vc" data-height="380" data-config="sandbox/ngs-variant-calling.json"></script>
     </main>
 
     <footer>

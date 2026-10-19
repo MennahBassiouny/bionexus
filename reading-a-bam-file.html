@@ -132,6 +132,8 @@
         .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+        .sbx-wrap { margin: 0 0 1.2em; }
+        .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
 </head>
 <body>
@@ -189,6 +191,8 @@
             <h2>Making a BAM file readable</h2>
             <p>You aligned your reads and got a BAM file. Open it with <code class="inline">samtools view</code> and it looks like a wall of numbers and letters. It is not random: each line is one read, and a handful of columns tell you everything you need. Learn those columns and a BAM stops being scary.</p>
 
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">Practise right here</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">Every command box on this page has a <strong>Run</strong> button that sends it to a real Linux terminal in your browser, with a practice <code class="inline">sample.bam</code> already loaded (simulated single-end reads on a 10,000-base chromosome, so <code class="inline">flagstat</code> shows no paired reads). No install, no account.</p></div>
+
             <h2><span class="step-num">1</span>The columns that matter</h2>
             <p>Every aligned read is one row. These are the fields you will actually read:</p>
             <table class="dtable">
@@ -199,17 +203,17 @@
                 <tr><td><strong>MAPQ</strong></td><td>How confident the aligner is that the read is in the right place</td></tr>
                 <tr><td><strong>CIGAR</strong></td><td>How the read lines up: matches, insertions, deletions, clips</td></tr>
             </table>
-            <pre><span class="c"># peek at a few reads (the header is hidden without -h)</span>
-samtools view sample.bam | head</pre>
+            <div class="sbx-wrap"><pre data-sandboxbio><span class="c"># peek at a few reads (the header is hidden without -h)</span>
+samtools view sample.bam | head</pre></div>
 
             <h2><span class="step-num">2</span>FLAG: a yes/no checklist packed into one number</h2>
             <p>The <strong>FLAG</strong> looks like a meaningless number (like 99 or 147), but it is really a set of yes/no switches added together: is the read paired? did the pair map properly? is it unmapped? is it on the reverse strand? is it a duplicate? You rarely decode it by hand, you ask samtools.</p>
-            <pre><span class="c"># explain what a flag value means in plain English</span>
+            <div class="sbx-wrap"><pre data-sandboxbio><span class="c"># explain what a flag value means in plain English</span>
 samtools flags 99
 <span class="c"># -> PAIRED,PROPER_PAIR,MREVERSE,READ1</span>
 
 <span class="c"># count reads, broken down by flag (mapped, duplicates, etc.)</span>
-samtools flagstat sample.bam</pre>
+samtools flagstat sample.bam</pre></div>
             <div class="jargon" style="background:linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0;">
                 <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">The flags you will meet most</span>The useful handful</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">"Properly paired" means both mates mapped the way the aligner expected, a good sign. "Unmapped" reads did not align. "Duplicate" marks PCR/optical copies (from the markdup step). "Secondary" is an alternative placement for a read that could map to several places. "Supplementary" is different: it is one piece of a <em>split</em> read whose parts align to different places, for example across a structural-variant breakpoint. (BWA-MEM normally reports a read that fits several places as one record with MAPQ 0, not as secondary records.) <code class="inline">flagstat</code> totals all of these for you.</p>
@@ -250,9 +254,9 @@ samtools flagstat sample.bam</pre>
                 </svg>
                 <figcaption>Coverage at a position is the number of reads covering it. More reads in agreement means a more trustworthy call.</figcaption>
             </figure>
-            <pre><span class="c"># per-position depth, and a quick coverage summary per chromosome</span>
+            <div class="sbx-wrap"><pre data-sandboxbio><span class="c"># per-position depth, and a quick coverage summary per chromosome</span>
 samtools depth sample.bam | head
-samtools coverage sample.bam</pre>
+samtools coverage sample.bam</pre></div>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
@@ -306,6 +310,8 @@ samtools coverage sample.bam</pre>
             </a>
 
         </div></div>
+        <p style="text-align:center; font-size:0.85rem; color:var(--text-gray); margin:10px 0 30px;">Practice terminal powered by <a href="https://sandbox.bio" target="_blank" rel="noopener" style="color:var(--primary-blue);">sandbox.bio</a> (runs in your browser; your commands stay on your computer).</p>
+    <script src="https://sandbox.bio/embed.js" data-cwd="bionexus-bam" data-height="380" data-config="sandbox/reading-a-bam.json"></script>
     </main>
 
     <footer>

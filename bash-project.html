@@ -79,6 +79,8 @@
         .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+        .sbx-wrap { margin: 0 0 1.2em; }
+        .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
 </head>
 <body>
@@ -129,6 +131,8 @@
 
             <p>Bioinformaticians spend a surprising amount of time just <em>interrogating files</em> from the command line before any heavy analysis - how big is it, how many records, does it contain what I expect? That's exactly this project. You'll grab a real FASTA file of three human mRNA sequences and answer real questions about it.</p>
 
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">Practise right here</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">From here on, each code box has a <strong>Run</strong> button that sends it to a real Linux terminal in your browser. The practice terminal cannot reach NCBI, so start with the box that creates <code class="inline">genes.fasta</code> by hand, then run the rest in order.</p></div>
+
             <h2><span class="step-num">1</span>Get the data</h2>
             <p>Make a workspace and download three real human gene sequences (insulin, beta-globin, and APP) straight from NCBI:</p>
             <pre>mkdir fasta-project
@@ -139,43 +143,43 @@ head -3 genes.fasta   <span class="c"># check you got sequences, not an error pa
             <p>(If <code class="inline">curl</code> isn't found, try <code class="inline">wget</code> with the same URL and <code class="inline">-O genes.fasta</code>.)</p>
 
             <div class="fallback"><strong>No internet, or NCBI blocked?</strong> Create a short real excerpt by hand instead (the first 42 letters of each gene's coding sequence) - paste this whole block into your terminal and press Enter:
-            <pre><span class="k">cat</span> &gt; genes.fasta &lt;&lt;<span class="s">'EOF'</span>
+            <div class="sbx-wrap"><pre data-sandboxbio><span class="k">cat</span> &gt; genes.fasta &lt;&lt;<span class="s">'EOF'</span>
 &gt;gene1 insulin
 ATGGCCCTGTGGATGCGCCTCCTGCCCCTGCTGGCGCTGCTG
 &gt;gene2 hemoglobin_beta
 ATGGTGCATCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCC
 &gt;gene3 APP
 ATGCTGCCCGGTTTGGCACTGCTCCTGCTGGCCGCCTGGACG
-<span class="s">EOF</span></pre>
+<span class="s">EOF</span></pre></div>
             Every command below works the same on this file.</div>
 
             <h2><span class="step-num">2</span>First look</h2>
-            <pre>head genes.fasta     <span class="c"># peek at the top - don't dump the whole thing</span>
-wc -l genes.fasta    <span class="c"># how many lines total?</span></pre>
+            <div class="sbx-wrap"><pre data-sandboxbio>head genes.fasta     <span class="c"># peek at the top - don't dump the whole thing</span>
+wc -l genes.fasta    <span class="c"># how many lines total?</span></pre></div>
 
             <h2><span class="step-num">3</span>How many sequences?</h2>
             <p>Every FASTA record starts with a <code class="inline">&gt;</code> header line. So counting headers counts sequences:</p>
-            <pre>grep -c <span class="s">"&gt;"</span> genes.fasta</pre>
+            <div class="sbx-wrap"><pre data-sandboxbio>grep -c <span class="s">"&gt;"</span> genes.fasta</pre></div>
             <p>It's one of the most common FASTA sanity checks, and you can now do it instantly. (Pros often write <code class="inline">grep -c "^&gt;"</code>, where <code class="inline">^</code> means "only at the start of a line".)</p>
 
             <h2><span class="step-num">4</span>What are they?</h2>
-            <pre>grep <span class="s">"&gt;"</span> genes.fasta            <span class="c"># list just the header lines</span>
-grep <span class="s">"&gt;"</span> genes.fasta &gt; headers.txt  <span class="c"># save them to a file</span></pre>
+            <div class="sbx-wrap"><pre data-sandboxbio>grep <span class="s">"&gt;"</span> genes.fasta            <span class="c"># list just the header lines</span>
+grep <span class="s">"&gt;"</span> genes.fasta &gt; headers.txt  <span class="c"># save them to a file</span></pre></div>
 
             <h2><span class="step-num">5</span>How long is the sequence, in total?</h2>
             <p>Here's a pipeline: strip out the header lines, remove the line breaks, and count the remaining characters - the total number of bases.</p>
-            <pre>grep -v <span class="s">"&gt;"</span> genes.fasta | tr -d <span class="s">'\n'</span> | wc -c</pre>
+            <div class="sbx-wrap"><pre data-sandboxbio>grep -v <span class="s">"&gt;"</span> genes.fasta | tr -d <span class="s">'\n'</span> | wc -c</pre></div>
             <div class="why"><h4>Reading the pipeline</h4><p><code class="inline">grep -v "&gt;"</code> keeps every line that is <em>not</em> a header (the <code class="inline">-v</code> inverts the match). <code class="inline">tr -d '\n'</code> deletes the newlines so the bases form one continuous string. <code class="inline">wc -c</code> counts the characters. Three tiny tools, one real answer.</p></div>
 
             <h2><span class="step-num">6</span>GC content - from the command line</h2>
             <p>Count the G and C bases, then the total, then compute the percentage:</p>
-            <pre><span class="c"># Count just G and C characters in the sequence</span>
+            <div class="sbx-wrap"><pre data-sandboxbio><span class="c"># Count just G and C characters in the sequence</span>
 grep -v <span class="s">"&gt;"</span> genes.fasta | tr -d <span class="s">'\n'</span> | tr -cd <span class="s">'GC'</span> | wc -c
 
 <span class="c"># Do the whole calculation in one go</span>
 gc=$(grep -v <span class="s">"&gt;"</span> genes.fasta | tr -d <span class="s">'\n'</span> | tr -cd <span class="s">'GC'</span> | wc -c)
 total=$(grep -v <span class="s">"&gt;"</span> genes.fasta | tr -d <span class="s">'\n'</span> | wc -c)
-awk <span class="s">"BEGIN{printf \"GC%% = %.1f\n\", $gc/$total*100}"</span></pre>
+awk <span class="s">"BEGIN{printf \"GC%% = %.1f\n\", $gc/$total*100}"</span></pre></div>
             <p>You just computed a real biological metric on real data with a few command-line tools - no programming language required. That's the power (and the surprise) of Bash for bioinformatics.</p>
 
             <div class="challenge">
@@ -244,6 +248,8 @@ awk <span class="s">"BEGIN{printf \"GC%% = %.1f\n\", $gc/$total*100}"</span></pr
             </a>
 
         </div></div>
+        <p style="text-align:center; font-size:0.85rem; color:var(--text-gray); margin:10px 0 30px;">Practice terminal powered by <a href="https://sandbox.bio" target="_blank" rel="noopener" style="color:var(--primary-blue);">sandbox.bio</a> (runs in your browser; your commands stay on your computer).</p>
+    <script src="https://sandbox.bio/embed.js" data-cwd="bionexus-project" data-height="380" data-config="sandbox/bash-project.json"></script>
     </main>
 
     <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>

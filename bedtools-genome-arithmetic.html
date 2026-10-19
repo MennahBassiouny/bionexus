@@ -81,6 +81,8 @@
         .dtable th, .dtable td { border:1px solid rgba(91,156,248,0.25); padding:10px 14px; text-align:left; vertical-align:top; }
         .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
         .lesson-body .refs { background:#f1f5f9; border:1px solid rgba(91,156,248,0.2); border-radius:10px; padding:20px 24px; margin:30px 0; }
+        .sbx-wrap { margin: 0 0 1.2em; }
+        .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
 </head>
 <body>
@@ -177,24 +179,32 @@ chr2    50     90</pre>
                 <figcaption>Track A overlaps track B in two places; intersect returns just those shared green stretches.</figcaption>
             </figure>
 
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">Practise right here</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">The command boxes in sections 3 and 4 have a <strong>Run</strong> button that sends them to a real Linux terminal in your browser, with <code class="inline">peaks.bed</code> and <code class="inline">genes.bed</code> already loaded. No install, no account.</p></div>
+
             <h2><span class="step-num">3</span>Worked example: intersect with -wa -wb</h2>
             <p>Say you have ChIP-seq peaks and a set of gene intervals, and you want to know which peaks fall inside which genes, keeping the full record of both. That is one command:</p>
-            <pre><span class="c"># report each peak (A) alongside the gene (B) it overlaps</span>
+            <div class="sbx-wrap"><pre data-sandboxbio><span class="c"># report each peak (A) alongside the gene (B) it overlaps</span>
 bedtools intersect -a peaks.bed -b genes.bed -wa -wb
 
 <span class="c"># only the peaks that overlap NO gene at all</span>
-bedtools intersect -a peaks.bed -b genes.bed -v</pre>
+bedtools intersect -a peaks.bed -b genes.bed -v</pre></div>
             <p>The first command prints the full peak followed by the full gene on each line where they overlap. The second flips the question and lists the peaks with no gene overlap.</p>
 
             <h2><span class="step-num">4</span>Worked example: sort then merge</h2>
             <p>Many subcommands, including <code class="inline">merge</code>, require the input to be sorted by chromosome and then by start position. The standard sort is <code class="inline">sort -k1,1 -k2,2n</code>: sort by column 1 as text, then by column 2 numerically.</p>
-            <pre><span class="c"># sort first (chrom as text, start numerically), then merge overlaps</span>
+            <div class="sbx-wrap"><pre data-sandboxbio><span class="c"># sort first (chrom as text, start numerically), then merge overlaps</span>
 sort -k1,1 -k2,2n peaks.bed &gt; peaks.sorted.bed
 bedtools merge -i peaks.sorted.bed
 
 <span class="c"># or pipe it in one go</span>
-sort -k1,1 -k2,2n peaks.bed | bedtools merge -i -</pre>
+sort -k1,1 -k2,2n peaks.bed | bedtools merge -i -</pre></div>
             <div class="why"><h4>Why sorting matters</h4><p>merge walks through intervals in order and fuses each one with the next if they overlap or touch. If the file is not sorted, neighbouring intervals are not actually next to each other in the file, so the merge would be wrong. Modern bedtools stops with an error instead (older versions could quietly give wrong output). <code class="inline">closest</code> also needs sorted input. Sort first, every time.</p></div>
+
+            <h2>Try it here: one more experiment</h2>
+            <p><code class="inline">peaks.bed</code> holds the three peaks shown above and <code class="inline">genes.bed</code> three genes (geneA chr1:150-300, geneB chr1:420-600, geneC chr2:200-400). Run the boxes above first, then add a peak that overlaps one you have, and merge again:</p>
+            <div class="sbx-wrap"><pre data-sandboxbio>printf 'chr1\t180\t260\n' &gt;&gt; peaks.bed
+sort -k1,1 -k2,2n peaks.bed | bedtools merge -i -</pre></div>
+            <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">What you should see</h4><p style="font-size:1rem; margin:0;">The first intersect gives two lines (each chr1 peak next to its gene); <code class="inline">-v</code> gives the chr2 peak; the first merge changes nothing because no peaks overlap. After adding chr1:180-260, merge fuses it with chr1:100-200 into one interval, chr1:100-260.</p></div>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
@@ -247,6 +257,8 @@ sort -k1,1 -k2,2n peaks.bed | bedtools merge -i -</pre>
             </a>
 
         </div></div>
+        <p style="text-align:center; font-size:0.85rem; color:var(--text-gray); margin:10px 0 30px;">Practice terminal powered by <a href="https://sandbox.bio" target="_blank" rel="noopener" style="color:var(--primary-blue);">sandbox.bio</a> (runs in your browser; your commands stay on your computer).</p>
+    <script src="https://sandbox.bio/embed.js" data-cwd="bionexus-bedtools" data-height="380" data-config="sandbox/bedtools.json"></script>
     </main>
 
     <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>

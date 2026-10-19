@@ -1,0 +1,19 @@
+{
+  "files": [
+    {
+      "url": "ngs/reference.fasta",
+      "path": "reference.fasta"
+    },
+    {
+      "url": "ngs/reads.fastq",
+      "path": "sample.fastq"
+    }
+  ],
+  "tools": [
+    "bwa",
+    "samtools",
+    "bcftools"
+  ],
+  "welcome": "BioNexus Hub practice terminal. Practice data is simulated (a 10 kb chromosome called chr1). Ready: reference.fasta, sample.fastq",
+  "welcomeCmd": "ls"
+}

@@ -81,6 +81,8 @@
         .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+        .sbx-wrap { margin: 0 0 1.2em; }
+        .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
 </head>
 <body>
@@ -135,17 +137,19 @@
 
             <div class="tryit">No memorizing needed. Type each command at your own terminal, change something, run it again. That is the whole method. Keep this page open as a reference whenever you need it.</div>
 
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">Practise right here</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">Most code boxes on this page have a <strong>Run</strong> button that sends them to a real Linux terminal in your browser. Practice files are loaded: <code class="inline">genes.fasta</code>, <code class="inline">a.fasta</code>, <code class="inline">b.fasta</code>, <code class="inline">c.fasta</code>, <code class="inline">regions.bed</code>, <code class="inline">reads.fastq</code>, <code class="inline">table.txt</code>, and the <code class="inline">count_seqs.sh</code> script from section 4. The boxes that delete files or download from the internet have no Run button on purpose.</p></div>
+
             <h2>1. Variables and quoting</h2>
             <p>A variable is just a name for a value. Set it with <code class="inline">=</code> (no spaces), and read it back with <code class="inline">$</code>.</p>
-            <pre>name=<span class="s">"genes.fasta"</span>
+            <div class="sbx-wrap"><pre data-sandboxbio>name=<span class="s">"genes.fasta"</span>
 <span class="k">echo</span> <span class="s">"$name"</span>              <span class="c"># prints: genes.fasta</span>
-<span class="k">echo</span> <span class="s">"I am in $PWD"</span>        <span class="c"># $PWD is the current folder</span></pre>
+<span class="k">echo</span> <span class="s">"I am in $PWD"</span>        <span class="c"># $PWD is the current folder</span></pre></div>
             <div class="why"><h4>Always quote your variables</h4><p>Write <code class="inline">"$name"</code>, not <code class="inline">$name</code>. The quotes keep filenames with spaces in one piece. Forgetting them is one of the most common beginner bugs in shell scripts.</p></div>
 
             <h2>2. Capture a command's output</h2>
             <p><strong>Command substitution</strong> with <code class="inline">$( )</code> runs a command and hands you its result to store or print.</p>
-            <pre>count=$(<span class="k">grep</span> -c <span class="s">"&gt;"</span> genes.fasta)
-<span class="k">echo</span> <span class="s">"The file has $count sequences"</span></pre>
+            <div class="sbx-wrap"><pre data-sandboxbio>count=$(<span class="k">grep</span> -c <span class="s">"&gt;"</span> genes.fasta)
+<span class="k">echo</span> <span class="s">"The file has $count sequences"</span></pre></div>
 
             <h2>3. Loops: the same job on many files</h2>
             <figure class="viz">
@@ -164,17 +168,17 @@
                 <figcaption>A for loop applies one command to every file in turn, however many there are.</figcaption>
             </figure>
             <p>This is where the terminal starts to save real time. A <code class="inline">for</code> loop repeats a command for every item you give it.</p>
-            <pre><span class="k">for</span> f <span class="k">in</span> *.fasta; <span class="k">do</span>
+            <div class="sbx-wrap"><pre data-sandboxbio><span class="k">for</span> f <span class="k">in</span> *.fasta; <span class="k">do</span>
     <span class="k">echo</span> <span class="s">"$f has $(grep -c '&gt;' "$f") sequences"</span>
-<span class="k">done</span></pre>
+<span class="k">done</span></pre></div>
             <div class="why"><h4>Read it as a sentence</h4><p>"For each file <code class="inline">f</code> ending in .fasta, do this, then move to the next." One instruction, applied to every matching file, however many there are.</p></div>
 
             <h2>4. Making decisions: if and test</h2>
-            <pre><span class="k">if</span> [ -f genes.fasta ]; <span class="k">then</span>
+            <div class="sbx-wrap"><pre data-sandboxbio><span class="k">if</span> [ -f genes.fasta ]; <span class="k">then</span>
     <span class="k">echo</span> <span class="s">"the file is here"</span>
 <span class="k">else</span>
     <span class="k">echo</span> <span class="s">"missing"</span>
-<span class="k">fi</span></pre>
+<span class="k">fi</span></pre></div>
             <div class="why"><h4>Handy tests</h4><p><code class="inline">[ -f file ]</code> is true if a file exists, <code class="inline">[ -d folder ]</code> for a directory, and <code class="inline">[ -z "$x" ]</code> if a string is empty. Mind the spaces inside the brackets: they are required.</p></div>
 
             <h2>5. Writing a script you can run</h2>
@@ -203,20 +207,20 @@
 <span class="c"># count sequences in the FASTA file given as the first argument</span>
 <span class="k">grep</span> -c <span class="s">"^&gt;"</span> <span class="s">"$1"</span>   <span class="c"># ^ means "at the start of the line"</span></pre>
             <p>Then make it executable and run it:</p>
-            <pre><span class="k">chmod</span> +x count_seqs.sh
-./count_seqs.sh genes.fasta</pre>
+            <div class="sbx-wrap"><pre data-sandboxbio><span class="k">chmod</span> +x count_seqs.sh
+./count_seqs.sh genes.fasta</pre></div>
             <div class="why"><h4>What "permissions" mean</h4><p><code class="inline">chmod +x</code> marks a file as runnable. Those number codes you see (like <code class="inline">chmod 755</code>) are just read = 4, write = 2, execute = 1 added up for the owner, group, and everyone else. <code class="inline">755</code> means the owner can do everything and others can read and run.</p></div>
 
             <h2>6. sed and awk: editing text and columns</h2>
             <p>Two classic tools that handle most text wrangling. <strong>sed</strong> does find-and-replace; <strong>awk</strong> works with columns, which is perfect for table formats like BED, VCF, and GTF.</p>
-            <pre><span class="c"># sed: strip the leading "&gt;" from FASTA headers</span>
+            <div class="sbx-wrap"><pre data-sandboxbio><span class="c"># sed: strip the leading "&gt;" from FASTA headers</span>
 <span class="k">grep</span> <span class="s">"&gt;"</span> genes.fasta | <span class="k">sed</span> <span class="s">'s/&gt;//'</span>
 
 <span class="c"># awk: print columns 1 and 3 of a table (e.g. a BED file)</span>
 <span class="k">awk</span> <span class="s">'{print $1, $3}'</span> regions.bed
 
 <span class="c"># awk: keep only rows where column 3 is above 1000</span>
-<span class="k">awk</span> <span class="s">'$3 &gt; 1000'</span> regions.bed</pre>
+<span class="k">awk</span> <span class="s">'$3 &gt; 1000'</span> regions.bed</pre></div>
             <div class="why"><h4>Why awk is everywhere in bioinformatics</h4><p>So many formats are just columns of tab-separated data. <code class="inline">awk</code> lets you pick columns, filter rows, and do quick maths on them without opening anything. A little awk replaces a lot of manual work.</p></div>
 
             <h2>7. Finding files: find and xargs <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
@@ -235,18 +239,18 @@
 
             <p><strong>Exercise 1: loop over files.</strong> Print the name of every <code class="inline">.fasta</code> file in the current folder.</p>
             <details><summary>Show a worked solution</summary>
-<pre><span class="k">for</span> f <span class="k">in</span> *.fasta; <span class="k">do</span>
+<div class="sbx-wrap"><pre data-sandboxbio><span class="k">for</span> f <span class="k">in</span> *.fasta; <span class="k">do</span>
     <span class="k">echo</span> <span class="s">"$f"</span>
-<span class="k">done</span></pre></details>
+<span class="k">done</span></pre></div></details>
 
             <p><strong>Exercise 2: count reads in a FASTQ.</strong> Store the line count of <code class="inline">reads.fastq</code> in a variable, then print the number of reads (lines divided by 4).</p>
             <details><summary>Show a worked solution</summary>
-<pre>n=$(<span class="k">wc</span> -l &lt; reads.fastq)
-<span class="k">echo</span> $(( n / <span class="o">4</span> ))</pre></details>
+<div class="sbx-wrap"><pre data-sandboxbio>n=$(<span class="k">wc</span> -l &lt; reads.fastq)
+<span class="k">echo</span> $(( n / <span class="o">4</span> ))</pre></div></details>
 
             <p><strong>Exercise 3: pick a column.</strong> Use <code class="inline">awk</code> to print just the second column of a table called <code class="inline">table.txt</code>.</p>
             <details><summary>Show a worked solution</summary>
-<pre><span class="k">awk</span> <span class="s">'{print $2}'</span> table.txt</pre></details>
+<div class="sbx-wrap"><pre data-sandboxbio><span class="k">awk</span> <span class="s">'{print $2}'</span> table.txt</pre></div></details>
 
             <div class="why" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px 20px; margin:22px 0;">
                 <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;">Check yourself</h4>
@@ -304,6 +308,8 @@
             <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:18px;">Level 3 (Advanced): script functions, safe error handling, parallel jobs, and working on a remote server is coming next.</p>
 
         </div></div>
+        <p style="text-align:center; font-size:0.85rem; color:var(--text-gray); margin:10px 0 30px;">Practice terminal powered by <a href="https://sandbox.bio" target="_blank" rel="noopener" style="color:var(--primary-blue);">sandbox.bio</a> (runs in your browser; your commands stay on your computer).</p>
+    <script src="https://sandbox.bio/embed.js" data-cwd="bionexus-bash2" data-height="380" data-config="sandbox/bash-intermediate.json"></script>
     </main>
 
     <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
