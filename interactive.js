@@ -83,6 +83,10 @@
     return pyodidePromise;
   }
 
+  // Python's printed output is shared by every cell on the page, so runs go
+  // one at a time: each cell waits for the previous one to finish.
+  var pyQueue = Promise.resolve();
+
   function buildPyCell(cell) {
     var src = cell.querySelector('script[type="application/x-python"]');
     var code = src ? src.textContent.replace(/^\n/, '').replace(/\s+$/, '') : '';
@@ -127,7 +131,7 @@
       run.textContent = 'Loading…';
       out.className = 'pycell-out show';
       out.innerHTML = '<span class="muted">Starting Python (first run downloads it, ~5s)…</span>';
-      getPyodide().then(function (py) {
+      var job = pyQueue.then(function () { return getPyodide(); }).then(function (py) {
         run.textContent = 'Running…';
         var buf = '';
         py.setStdout({ batched: function (m) { buf += m + '\n'; } });
@@ -143,6 +147,7 @@
         run.disabled = false;
         run.textContent = original;
       });
+      pyQueue = job;
     });
   }
 
