@@ -279,7 +279,7 @@
             <section>
                 <div class="section-intro">
                     <h2>The full roadmap</h2>
-                    <p>Seven tracks, sequenced so each one builds on the last. Start anywhere that fits you and follow the line.</p>
+                    <p>Eight tracks, sequenced so each one builds on the last. Start anywhere that fits you and follow the line.</p>
                 </div>
 
                 <div class="legend">
@@ -449,6 +449,23 @@
                         </div>
                     </div>
 
+                    <!-- Track 7 -->
+                    <div class="track" id="track-7">
+                        <div class="track-node">7</div>
+                        <div class="track-card">
+                            <div class="track-head">
+                                <h3>Pharmacogenomics <span class="badge amber">Intermediate</span> <span class="badge flag">For pharmacists &amp; clinicians</span></h3>
+                                <p>Why the same dose works differently in different people, and how to turn a genetic result into a guideline-based prescribing decision.</p>
+                            </div>
+                            <ul class="lessons">
+                                <li><span><a href="pgx-why-dose-differs.html" target="_blank" rel="noopener">Why the same dose works differently</a> <span class="pill live">Live</span></span><span class="meta">💊🌐 · 35 min</span></li>
+                                <li><span><a href="pgx-star-alleles.html" target="_blank" rel="noopener">Star alleles, diplotypes and phenotypes</a> <span class="pill live">Live</span></span><span class="meta">🐍🌐 · 45 min</span></li>
+                                <li><span><a href="pgx-vcf-to-recommendation.html" target="_blank" rel="noopener">Hands-on: from a VCF to a recommendation</a> <span class="pill live">Live</span></span><span class="meta">🐍🌐 · 1 hr</span></li>
+                            </ul>
+                            <div class="deliverable"><div><strong>You'll build:</strong> a mini pipeline that reads a patient VCF and produces a CPIC-based summary for clopidogrel and fluoropyrimidines.</div></div>
+                        </div>
+                    </div>
+
                 </div>
             </section>
 
@@ -479,6 +496,9 @@
         const LESSONS = [
             {t:"Cheat sheets (quick references)", g:"Reference", u:"cheatsheets.html", k:"cheat sheet command line samtools file formats fastq sam bam vcf conda git deseq2 stats reference quick"},
             {t:"Graduate from Colab to a professional setup", g:"Foundations", u:"graduate-to-pro-setup.html", k:"vscode rstudio pycharm local install editor ide professional setup colab graduate environment stage"},
+            {t:"Why the same dose works differently", g:"Track 7 · Pharmacogenomics", u:"pgx-why-dose-differs.html", k:"pharmacogenomics pharmacogenetics pgx clopidogrel cyp2c19 codeine cyp2d6 dpyd 5-fu capecitabine fluorouracil cpic fda pharmacist"},
+            {t:"Star alleles, diplotypes and phenotypes", g:"Track 7 · Pharmacogenomics", u:"pgx-star-alleles.html", k:"star allele diplotype phenotype poor metabolizer intermediate ultrarapid activity score cyp2d6 cyp2c19 pharmvar dpyd"},
+            {t:"Hands-on: from a VCF to a recommendation", g:"Track 7 · Pharmacogenomics", u:"pgx-vcf-to-recommendation.html", k:"pharmacogenomics vcf pharmcat cpic recommendation genotype dpyd activity score cyp2c19 strand no-call"},
             {t:"Find the bug: six broken analyses", g:"Practice", u:"find-the-bug.html", k:"bug debugging silent error gc lowercase soft-masked fastq count quality off-by-one vcf bed factor level baseline deseq2 na na.rm multiple testing padj pvalue"},
             {t:"Mini-course: Thinking Like a Researcher", g:"Mini-course", u:"researcher-skills.html", k:"research skills read paper three pass methods section dataset confounding batch question analysis plan positive control methods paragraph biostars reproducibility"},
             {t:"Mini-course: Sequence Alignment & BLAST (Level 1)", g:"Mini-course", u:"blast-alignment.html", k:"blast alignment homology e-value pairwise needleman wunsch smith waterman msa clustal omega muscle sequence similarity substitution matrix blosum"},
