@@ -281,7 +281,8 @@ def cyp2c19(calls):
     if no_function >= 2:
         return "*2/*2 (or *2/*3, *3/*3)", "Poor metabolizer"
     if no_function == 1:
-        return ("*2/*17" if increased else "*1/*2"), "Intermediate metabolizer"
+        nf = "*3" if calls["rs4986893"] else "*2"
+        return (f"{nf}/*17" if increased else f"*1/{nf}"), "Intermediate metabolizer"
     if increased == 2:
         return "*17/*17", "Ultrarapid metabolizer"
     if increased == 1:
@@ -311,7 +312,8 @@ def dpyd_score(calls):
     for rsid, value in dpyd_values.items():
         copies += [value] * calls[rsid]   # add one entry per variant copy found
     two_lowest = sorted(copies)[:2]       # CPIC: sum of the two lowest values
-    return sum(two_lowest)
+    total = sum(two_lowest)
+    return int(total) if total == int(total) else total   # show 1, not 1.0
 
 score = dpyd_score(calls)
 print("DPYD activity score:", score if score is not None else "not determined (missing position)")
