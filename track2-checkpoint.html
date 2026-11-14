@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="BioNexus Hub">
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+    <link rel="canonical" href="https://bionexushub.com/track2-checkpoint.html">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Track 2 checkpoint: ten new scenario questions that test whether you can use NGS ideas together, from FASTQ quality to trusting a variant call. Free, in your browser.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Track 2 Checkpoint: NGS | BioNexus Hub">
+    <meta property="og:description" content="Track 2 checkpoint: ten new scenario questions that test whether you can use NGS ideas together, from FASTQ quality to trusting a variant call. Free, in your browser.">
+    <meta property="og:url" content="https://bionexushub.com/track2-checkpoint.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Track 2 Checkpoint: NGS | BioNexus Hub">
+    <meta name="twitter:description" content="Ten scenario questions that check you can use NGS ideas together.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Track 2 Checkpoint: NGS - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.purple { background: rgba(168,85,247,0.12); border-color: transparent; color: #7c3aed; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .module-tag { display: inline-block; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: var(--primary-purple); background: rgba(168,85,247,0.1); padding: 4px 12px; border-radius: 20px; margin-top: 8px; }
+
+        .objectives { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-purple); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .objectives h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-purple); margin-bottom: 10px; }
+        .objectives ul { margin: 0 0 0 20px; }
+        .objectives li { font-size: 1rem; color: var(--text-gray); margin-bottom: 5px; }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .pro { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .pro h4 { color: #047857; font-size: 0.95rem; margin-bottom: 6px; }
+        .pro p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .ctable { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.95rem; }
+        .ctable th, .ctable td { border: 1px solid rgba(91,156,248,0.2); padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ctable th { background: rgba(91,156,248,0.1); color: var(--deep-navy); font-weight: 600; }
+        .ctable td { color: var(--text-gray); }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .p { color: #f472b6; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .assessment { background: linear-gradient(135deg, rgba(91,156,248,0.1), rgba(168,85,247,0.1)); border: 1px solid rgba(168,85,247,0.3); border-radius: 12px; padding: 24px 28px; margin: 36px 0 8px; }
+        .assessment h2 { margin-top: 0; }
+        .assessment .passmark { font-size: 0.95rem; color: var(--text-gray); margin: 0; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+        .rs-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; margin: 0 0 22px; }
+        .rs-table th { text-align: left; background: #f1f5f9; padding: 8px 10px; }
+        .rs-table td { padding: 8px 10px; border-top: 1px solid #e2e8f0; vertical-align: top; }
+        .table-wrap { overflow-x: auto; }
+        .viz svg { width: 100%; height: auto; }
+        figure figcaption { font-size: 0.9rem; color: var(--text-gray); text-align: center; margin-top: 8px; }
+        .tryit { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 14px 18px; margin: 18px 0; font-size: 1rem; }
+        .plan-card { background: white; border: 1px solid rgba(91,156,248,0.25); border-left: 4px solid var(--primary-purple); border-radius: 10px; padding: 16px 22px; margin: 16px 0 22px; }
+        .plan-card p { margin-bottom: 6px; font-size: 1rem; }
+        .plan-card p:last-child { margin-bottom: 0; }
+        details p { margin-top: 10px; }
+    </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="faq.html">Help</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-2">← Roadmap</a> &nbsp;/&nbsp; Track 2: Genomics &amp; NGS &nbsp;/&nbsp; <strong>Checkpoint</strong></div>
+                <h1>Track 2 Checkpoint: Can You Trust Your Variants?</h1>
+                <p class="promise">Ten new questions you have not seen in the lessons. Each one mixes ideas from more than one lesson, from raw reads to a final variant call. Take it at the end of Track 2 to find out what you already own and what to review.</p>
+                <div class="tags">
+                    <span class="tag purple">Track checkpoint</span>
+                    <span class="tag">~20 min</span>
+                    <span class="tag green">In your browser, no code</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main id="main">
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="objectives">
+                    <h4 aria-level="2">What this checks</h4>
+                    <ul>
+                        <li>You know the order of an NGS pipeline and why each step comes where it does.</li>
+                        <li>You can read QC and alignment signals (adapters, soft-clipping, MAPQ, duplicates) and act on them.</li>
+                        <li>You can judge whether a variant call is believable, using depth, allele fraction and mapping quality.</li>
+                        <li>You can avoid classic silent errors: genome builds, 0- vs 1-based coordinates, and one-size-fits-all filters.</li>
+                    </ul>
+                </div>
+                <div class="prereq">
+                    <h4 aria-level="3">Before you start</h4>
+                    <ul>
+                        <li>Finish the Track 2 lessons on the <a href="learn.html#track-2">roadmap</a>. Two questions also use the Track 1 lessons on <a href="genome-builds.html">genome builds</a> and <a href="genomic-coordinates.html">genomic coordinates</a>.</li>
+                        <li>No notes on the first try. The point is to find out what you can recall, which is also one of the best ways to make it stick.</li>
+                    </ul>
+                </div>
+
+                <h2>How this checkpoint works</h2>
+                <p>Answer all ten questions. When you finish, the page shows your score. <strong>7 of 10 counts as a pass; aim for 8 or more before moving on.</strong> Every explanation links to the lesson to review.</p>
+                <p>This is a self-check, not an exam. The answers live in the page, so it only works if you answer honestly before reading the explanation. If you score below 7, review the linked lessons, wait a day or two, then reload and try again. Coming back after a break helps you remember more than re-reading straight away.</p>
+
+                <div class="assessment">
+                    <h2>The ten questions</h2>
+                    <p class="passmark">Scenario questions. Pick the best answer; some wrong answers are tempting on purpose.</p>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-q-src">Put these steps of a DNA variant-calling pipeline in the right order.</div>
+                    <button data-opt>Align &rarr; QC and trim &rarr; call variants &rarr; sort and index &rarr; mark duplicates</button>
+                    <button data-opt>QC and trim &rarr; sort and index &rarr; align &rarr; mark duplicates &rarr; call variants</button>
+                    <button data-opt data-correct>QC and trim &rarr; align &rarr; sort and index &rarr; mark duplicates &rarr; call variants</button>
+                    <button data-opt>Call variants &rarr; align &rarr; QC and trim &rarr; mark duplicates &rarr; sort and index</button>
+                    <div class="quiz-explain">You clean the reads first, then place them on the reference. Sorting and indexing make the BAM fast to search, duplicates are flagged so they do not count twice, and only then do you call variants. Review: <a href="ngs-how-it-works.html">How NGS works</a> and <a href="ngs-samtools.html">samtools survival kit</a> (marking duplicates).</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">FastQC on your 2&times;150 bp reads shows adapter content rising toward the 3' end of the reads. What most likely happened, and what do you do?</div>
+                    <button data-opt data-correct>Many DNA fragments were shorter than 150 bp, so the sequencer read past the fragment into the adapter. Trim the adapters before aligning</button>
+                    <button data-opt>The sequencer failed; throw the run away</button>
+                    <button data-opt>The reads are contaminated with another species; align them to a different genome</button>
+                    <button data-opt>Nothing; aligners ignore adapter sequence automatically, so the reads are fine as they are</button>
+                    <div class="quiz-explain">When the DNA insert is shorter than the read length, the end of the read runs into the adapter. That foreign sequence does not match the genome, so it should be trimmed, for example with fastp (Chen et al. 2018). Review: <a href="ngs-trimming.html">Trimming and filtering reads</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You aligned RNA-seq reads with BWA-MEM (a DNA aligner). Many reads near exon boundaries are soft-clipped or map poorly. Why?</div>
+                    <button data-opt>The reference genome is the wrong species</button>
+                    <button data-opt>Too many reads were trimmed</button>
+                    <button data-opt>The BAM was not sorted</button>
+                    <button data-opt data-correct>RNA-seq reads can span an intron, and BWA-MEM is not splice-aware. Use a splice-aware aligner such as STAR or HISAT2</button>
+                    <div class="quiz-explain">A read from spliced mRNA can join two exons that sit far apart in the genome. A DNA aligner cannot jump over the intron, so it clips the read. Splice-aware aligners such as STAR handle this (Dobin et al. 2013). Review: <a href="ngs-alignment.html">Read alignment</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A variant is supported by 30 reads, but every one of them has MAPQ 0, and the region is a known repeat. How much do you trust it?</div>
+                    <button data-opt>Fully; 30 reads is plenty of support</button>
+                    <button data-opt data-correct>Very little: MAPQ 0 means the aligner could not tell where these reads truly belong, so they may come from a copy of the repeat elsewhere</button>
+                    <button data-opt>Fully, but only if the variant is a SNP rather than an indel</button>
+                    <button data-opt>It depends only on the QUAL value, not on MAPQ</button>
+                    <div class="quiz-explain">MAPQ measures how sure the aligner is about where a read came from. In repeats, reads from similar copies can pile up in the wrong place and create fake variants. Many callers ignore or down-weight low-MAPQ reads for this reason. Review: <a href="reading-a-bam-file.html">Reading a BAM file</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">In a germline (inherited) sample from a diploid human, which allele fraction best fits a real heterozygous variant?</div>
+                    <button data-opt>About 3 of 40 reads (7%) show the variant</button>
+                    <button data-opt>Exactly 40 of 40 reads (100%) show the variant</button>
+                    <button data-opt data-correct>About 19 of 40 reads (roughly 50%) show the variant</button>
+                    <button data-opt>About 1 of 40 reads shows the variant</button>
+                    <div class="quiz-explain">A diploid cell has two copies of each chromosome, so a heterozygous variant should appear in roughly half the reads, with some random spread. A few percent is more typical of sequencing errors, contamination, or (in tumours) a subclone. 100% fits a homozygous variant. Review: <a href="ngs-variant-calling.html">Variant calling</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Your sample shows 60% duplicate reads after marking duplicates. The library was made from very little DNA. What is the best reading of this?</div>
+                    <button data-opt data-correct>Library complexity is low: many reads are PCR copies of the same molecules, so the real number of independent observations is much smaller than the read count</button>
+                    <button data-opt>Duplicates are always a sign of contamination</button>
+                    <button data-opt>This is ideal; more duplicates mean more confident variant calls</button>
+                    <button data-opt>Duplicates only matter for RNA-seq, so you can ignore them here</button>
+                    <div class="quiz-explain">PCR copies of one DNA molecule are not independent evidence. If they are not marked, one early PCR error copied many times can look like a well-supported variant. Library complexity means how many different DNA molecules your library contains. With very little input DNA there are fewer molecules, so PCR copies the same ones again and again. Review: <a href="ngs-samtools.html">samtools survival kit</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Your reads were aligned to GRCh38, but you look up your variant positions in a database that uses GRCh37 (hg19). Many positions do not match. Why?</div>
+                    <button data-opt>The database is wrong</button>
+                    <button data-opt data-correct>GRCh37 and GRCh38 use different coordinates for the same DNA, so positions must come from the same build or be converted (lifted over)</button>
+                    <button data-opt>Variants change position every time you re-run the pipeline</button>
+                    <button data-opt>You need to re-sort the BAM file</button>
+                    <div class="quiz-explain">Each genome build is a different version of the reference, and the same gene can sit at a different position in each. Always record the build, and only compare positions within one build. Review: <a href="genome-builds.html">Genome builds</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A BED file contains the line <code>chr1&nbsp;&nbsp;999&nbsp;&nbsp;1000</code>. Which base does it describe, in the 1-based numbering used by VCF and by samtools regions?</div>
+                    <button data-opt>Base 999</button>
+                    <button data-opt>Bases 999 and 1000</button>
+                    <button data-opt>Base 998</button>
+                    <button data-opt data-correct>Base 1000</button>
+                    <div class="quiz-explain">BED is 0-based and half-open: start 999, end 1000 covers one base, which is base 1000 when you count from 1. This off-by-one difference is a classic silent bug when moving between BED and VCF. Review: <a href="genomic-coordinates.html">Genomic coordinates</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Your targeted panel reports a mean depth of 30x. Can you conclude every target region is well covered?</div>
+                    <button data-opt data-correct>No: a mean can hide gaps. Some regions may be at 0x while others are very deep. Check the share of target bases covered at a useful depth (for example, at least 10x)</button>
+                    <button data-opt>Yes; 30x is above the usual threshold, so every region is covered</button>
+                    <button data-opt>Yes, as long as the duplicate rate is low</button>
+                    <button data-opt>No, because depth cannot be measured on a targeted panel</button>
+                    <div class="quiz-explain">Coverage is rarely even. Breadth of coverage, the fraction of target bases reaching a minimum depth, tells you where you can and cannot call variants. <code>samtools depth -a</code> reports every position, including 0x ones, and <code>samtools coverage</code> summarises a chromosome or region (Danecek et al. 2021). Review: <a href="reading-a-bam-file.html">Reading a BAM file</a> and <a href="ngs-samtools.html">samtools survival kit</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Your whole genome was sequenced at about 15x. You filter calls with <code>QUAL&lt;50 || DP&lt;30</code>. Almost no variants survive. What went wrong?</div>
+                    <button data-opt>The variant caller failed and must be re-run</button>
+                    <button data-opt>15x is too low to sequence a genome at all</button>
+                    <button data-opt data-correct>The depth filter (DP&lt;30) is far above the typical depth of your data, so it removes nearly every site, real or not. Filters must fit your data's depth</button>
+                    <button data-opt>Nothing; it proves the sample has almost no variants</button>
+                    <div class="quiz-explain">Thresholds are not universal. At 15x most sites have a depth near 15, so requiring 30 removes almost everything. Look at the depth distribution first, then choose cut-offs that remove the weak low-depth tail (and, often, unusually high-depth sites that can signal repeats). Review: <a href="ngs-variant-calling.html">Variant calling</a>.</div>
+                </div>
+
+                <div class="refs">
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Chen S, Zhou Y, Chen Y, Gu J. fastp: an ultra-fast all-in-one FASTQ preprocessor. <em>Bioinformatics</em> 34(17): i884-i890, 2018. <a href="https://doi.org/10.1093/bioinformatics/bty560" target="_blank" rel="noopener">doi:10.1093/bioinformatics/bty560</a></li>
+                        <li>Dobin A, Davis CA, Schlesinger F, et al. STAR: ultrafast universal RNA-seq aligner. <em>Bioinformatics</em> 29(1): 15-21, 2013. <a href="https://doi.org/10.1093/bioinformatics/bts635" target="_blank" rel="noopener">doi:10.1093/bioinformatics/bts635</a></li>
+                        <li>Danecek P, Bonfield JK, Liddle J, et al. Twelve years of SAMtools and BCFtools. <em>GigaScience</em> 10(2): giab008, 2021. <a href="https://doi.org/10.1093/gigascience/giab008" target="_blank" rel="noopener">doi:10.1093/gigascience/giab008</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: November 2026.</p>
+                </div>
+
+                <a class="next-lesson" href="rna-seq-big-picture.html">
+                    <span>Passed? Keep going</span>
+                    <h3>Track 3: Transcriptomics (RNA-seq) &rarr;</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
