@@ -167,7 +167,7 @@
     <div class="lesson-header">
         <div class="container">
             <div class="lesson-body">
-                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; <strong>Checkpoint</strong></div>
+                <div class="breadcrumb"><a href="learn.html#track-3">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; <strong>Checkpoint</strong></div>
                 <h1>Track 3 Checkpoint: Can You Put RNA-seq Together?</h1>
                 <p class="promise">Ten new questions you have not seen in the lessons. Each one mixes ideas from more than one lesson, the way real analyses do. Take it before the capstone to find out what you already own and what to review.</p>
                 <div class="tags">
@@ -195,7 +195,7 @@
                 <div class="prereq">
                     <h4 aria-level="3">Before you start</h4>
                     <ul>
-                        <li>Finish the Track 3 lessons on the <a href="learn.html#track-3" target="_blank" rel="noopener">roadmap</a>, or at least the big picture, experimental design, DESeq2 and enrichment lessons.</li>
+                        <li>Finish the Track 3 lessons on the <a href="learn.html#track-3">roadmap</a>, or at least the big picture, experimental design, DESeq2 and enrichment lessons.</li>
                         <li>No notes on the first try. The point is to find out what you can recall, which is also one of the best ways to make it stick.</li>
                     </ul>
                 </div>
@@ -215,7 +215,7 @@
                     <button data-opt data-correct>The raw (or estimated) counts per gene, such as featureCounts output or salmon results imported with tximport</button>
                     <button data-opt>The FPKM values instead, because they also correct for gene length</button>
                     <button data-opt>A log2 transform of the TPM values so the data look more normal</button>
-                    <div class="quiz-explain">DESeq2 models raw counts with a negative binomial distribution and does its own normalization. TPM and FPKM throw away the count scale that its statistics depend on, and log values are not counts at all. Review: <a href="rna-seq-normalization.html" target="_blank" rel="noopener">RNA-seq normalization</a>.</div>
+                    <div class="quiz-explain">DESeq2 models raw counts with a negative binomial distribution and does its own normalization. TPM and FPKM throw away the count scale that its statistics depend on, and log values are not counts at all. Review: <a href="rna-seq-normalization.html">RNA-seq normalization</a>.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">Your budget allows either 2 replicates per group sequenced at 60 million reads each, or 5 replicates per group at 25 million reads each. For finding differentially expressed genes, which is usually the better choice?</div>
@@ -223,7 +223,7 @@
                     <button data-opt>Either; total reads are about the same, so power is the same</button>
                     <button data-opt>Neither; you need at least 10 replicates for any RNA-seq study</button>
                     <button data-opt data-correct>5 replicates at 25 million reads, because biological replicates usually add more power than extra depth</button>
-                    <div class="quiz-explain">Variation between biological samples is usually the main limit on power. Once depth is reasonable, adding replicates helps more than adding reads (Liu et al. 2014). Very deep sequencing still matters for some goals, such as rare transcripts or isoforms. Review: <a href="rna-seq-experimental-design.html" target="_blank" rel="noopener">Experimental design for RNA-seq</a>.</div>
+                    <div class="quiz-explain">Variation between biological samples is usually the main limit on power. Once depth is reasonable, adding replicates helps more than adding reads (Liu et al. 2014). Very deep sequencing still matters for some goals, such as rare transcripts or isoforms. Review: <a href="rna-seq-experimental-design.html">Experimental design for RNA-seq</a>.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">You can only prepare 3 libraries per day, and you have 3 control and 3 treated samples. Which plan is best?</div>
@@ -231,7 +231,7 @@
                     <button data-opt>Day 1: all 3 controls. Day 2: all 3 treated. Then use the design ~ day + condition</button>
                     <button data-opt>Day 1: all 3 controls. Day 2: all 3 treated. Then remove the day effect with ComBat before DESeq2</button>
                     <button data-opt>Prepare them in any order; DESeq2 normalization removes day-to-day differences</button>
-                    <div class="quiz-explain">Each day must contain both conditions, otherwise day and treatment are confounded and no model or correction tool can separate them. With both conditions in each batch, adding day to the design lets DESeq2 account for it. Normalization only corrects for differences in sequencing depth and library composition, not batch effects (Leek et al. 2010). Review: <a href="rna-seq-batch-effects.html" target="_blank" rel="noopener">Correcting batch effects</a>.</div>
+                    <div class="quiz-explain">Each day must contain both conditions, otherwise day and treatment are confounded and no model or correction tool can separate them. With both conditions in each batch, adding day to the design lets DESeq2 account for it. Normalization only corrects for differences in sequencing depth and library composition, not batch effects (Leek et al. 2010). Review: <a href="rna-seq-batch-effects.html">Correcting batch effects</a>.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">Before running DESeq2, a PCA of your vst-transformed counts shows treated and control samples separating clearly along PC1. A colleague says: "Great, so most genes will be differentially expressed." What is wrong with this?</div>
@@ -239,7 +239,7 @@
                     <button data-opt>PCA can only be run after DESeq2, so the plot is not valid</button>
                     <button data-opt data-correct>PCA summarizes the overall pattern, often driven by a minority of high-variance genes. It does not test any single gene; that needs the per-gene test with replicates</button>
                     <button data-opt>PC1 always reflects sequencing depth, never biology</button>
-                    <div class="quiz-explain">PCA is a quality-control and overview tool. A clean split is reassuring but says nothing about how many individual genes pass a statistical test. Review: <a href="rna-seq-sample-qc-pca.html" target="_blank" rel="noopener">Sample QC and PCA</a>.</div>
+                    <div class="quiz-explain">PCA is a quality-control and overview tool. A clean split is reassuring but says nothing about how many individual genes pass a statistical test. Review: <a href="rna-seq-sample-qc-pca.html">Sample QC and PCA</a>.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">Your factor levels are control (the reference) and treated. Gene A has log2FoldChange = -2 and padj = 0.001. What does this mean?</div>
@@ -247,7 +247,7 @@
                     <button data-opt data-correct>Gene A is about 4 times lower in treated samples than in controls, and it passes a strict false-discovery-rate cutoff</button>
                     <button data-opt>Gene A is 2 units lower in treated samples, but the change is not significant</button>
                     <button data-opt>Gene A is 4 times higher in controls, but only in some samples</button>
-                    <div class="quiz-explain">A log2 fold change of -2 means 2 to the power of -2, which is one quarter: expression in treated is about 4 times lower than in the reference group. The sign depends on which level is the reference, so always check it. Review: <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">DESeq2 lesson</a>.</div>
+                    <div class="quiz-explain">A log2 fold change of -2 means 2 to the power of -2, which is one quarter: expression in treated is about 4 times lower than in the reference group. The sign depends on which level is the reference, so always check it. Review: <a href="rna-seq-deseq2.html">DESeq2 lesson</a>.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">On your volcano plot, gene B has log2FoldChange = 5, padj = 0.4 and a baseMean of 3 (very few reads). How should you treat it?</div>
@@ -255,7 +255,7 @@
                     <button data-opt>As significant, because a fold change above 2 is always meaningful</button>
                     <button data-opt>As evidence that DESeq2 failed and must be re-run</button>
                     <button data-opt data-correct>As unreliable: with so few reads the fold change is very noisy and not significant. Shrunken fold changes (lfcShrink) would pull it toward zero</button>
-                    <div class="quiz-explain">Fold changes from genes with few counts swing wildly by chance. That is why DESeq2 offers shrinkage, and why you look at baseMean and the shrunken fold change (lfcShrink), not just the raw fold change, before trusting a large change (Love et al. 2014). Review: <a href="rna-seq-volcano-ma.html" target="_blank" rel="noopener">Volcano and MA plots</a>.</div>
+                    <div class="quiz-explain">Fold changes from genes with few counts swing wildly by chance. That is why DESeq2 offers shrinkage, and why you look at baseMean and the shrunken fold change (lfcShrink), not just the raw fold change, before trusting a large change (Love et al. 2014). Review: <a href="rna-seq-volcano-ma.html">Volcano and MA plots</a>.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">You test 20,000 genes and call every gene with a raw p-value below 0.05 significant, giving 1,500 genes. Even if the treatment did nothing at all, roughly how many genes would you expect to pass?</div>
@@ -263,7 +263,7 @@
                     <button data-opt>About 50, because only 0.05% of genes are false</button>
                     <button data-opt>Zero, because p &lt; 0.05 means the result is 95% certain</button>
                     <button data-opt>About 1,500, so the result proves nothing either way</button>
-                    <div class="quiz-explain">A raw p-value cutoff of 0.05 lets about 5% of true-null tests through. With 20,000 tests that is about 1,000 false hits. This is why DESeq2 reports padj, which controls the false discovery rate (Benjamini and Hochberg 1995). Review: <a href="multiple-testing.html" target="_blank" rel="noopener">Multiple testing</a>.</div>
+                    <div class="quiz-explain">A raw p-value cutoff of 0.05 lets about 5% of true-null tests through. With 20,000 tests that is about 1,000 false hits. This is why DESeq2 reports padj, which controls the false discovery rate (Benjamini and Hochberg 1995). Review: <a href="multiple-testing.html">Multiple testing</a>.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">You pick the 50 genes with the smallest padj, draw a heatmap, and show that clustering perfectly separates treated from control samples. You present this as independent validation. Why is that weak?</div>
@@ -271,7 +271,7 @@
                     <button data-opt data-correct>It is circular: the genes were chosen because they differ between the groups, so the separation is almost guaranteed by the selection</button>
                     <button data-opt>Clustering only works on raw counts</button>
                     <button data-opt>The heatmap should have used FPKM values</button>
-                    <div class="quiz-explain">Using the same data to select genes and then to show they separate the groups is called double dipping (Kriegeskorte et al. 2009). The heatmap is a useful picture of the result, not extra evidence for it. Validation needs new data or an independent method. Review: <a href="rna-seq-heatmaps.html" target="_blank" rel="noopener">Heatmaps and clustering</a>.</div>
+                    <div class="quiz-explain">Using the same data to select genes and then to show they separate the groups is called double dipping (Kriegeskorte et al. 2009). The heatmap is a useful picture of the result, not extra evidence for it. Validation needs new data or an independent method. Review: <a href="rna-seq-heatmaps.html">Heatmaps and clustering</a>.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">Your 200 significant liver genes are enriched for "lipid metabolism". You used all 20,000 human protein-coding genes as the background, but only 11,000 genes were expressed enough to be tested. What is the problem?</div>
@@ -279,7 +279,7 @@
                     <button data-opt>You should have used only the 200 significant genes as the background</button>
                     <button data-opt data-correct>The background should be the genes you actually tested. Including genes that could never be detected in liver inflates enrichment for liver functions</button>
                     <button data-opt>Enrichment analysis cannot be used on liver tissue</button>
-                    <div class="quiz-explain">Genes expressed in liver are already rich in liver functions. If the background includes thousands of genes that were never testable, almost any liver gene list will look enriched for liver biology. Review: <a href="rna-seq-enrichment.html" target="_blank" rel="noopener">Functional enrichment</a>.</div>
+                    <div class="quiz-explain">Genes expressed in liver are already rich in liver functions. If the background includes thousands of genes that were never testable, almost any liver gene list will look enriched for liver biology. Review: <a href="rna-seq-enrichment.html">Functional enrichment</a>.</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">Bulk RNA-seq of a tumour shows gene X is 2 times higher after treatment. Which explanation can bulk data alone NOT rule out?</div>
@@ -287,7 +287,7 @@
                     <button data-opt>That the change is due to sequencing depth, even after normalization</button>
                     <button data-opt>That gene X is a protein-coding gene</button>
                     <button data-opt data-correct>That the cells did not change gene X at all; instead, more of the cells that already express X are present after treatment</button>
-                    <div class="quiz-explain">Bulk RNA-seq averages over every cell in the sample. A rise can come from each cell making more RNA or from a change in which cell types are present. Single-cell RNA-seq can help tell these apart. Review: <a href="single-cell-rna-seq-intro.html" target="_blank" rel="noopener">Single-cell RNA-seq intro</a>.</div>
+                    <div class="quiz-explain">Bulk RNA-seq averages over every cell in the sample. A rise can come from each cell making more RNA or from a change in which cell types are present. Single-cell RNA-seq can help tell these apart. Review: <a href="single-cell-rna-seq-intro.html">Single-cell RNA-seq intro</a>.</div>
                 </div>
 
                 <div class="refs">
@@ -302,7 +302,7 @@
                     <p class="reviewed">Last reviewed: November 2026.</p>
                 </div>
 
-                <a class="next-lesson" href="capstone-himes-2014.html" target="_blank" rel="noopener">
+                <a class="next-lesson" href="capstone-himes-2014.html">
                     <span>Passed? Put it into practice</span>
                     <h3>Capstone: reproduce a published RNA-seq result &rarr;</h3>
                 </a>
@@ -313,7 +313,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p>
         </div>
     </footer>
 

@@ -496,8 +496,6 @@
         var a = document.createElement('a');
         a.className = 'step';
         a.href = s[2];
-        a.target = '_blank';
-        a.rel = 'noopener';
         a.textContent = s[1];
         el.appendChild(a);
       }

@@ -162,7 +162,7 @@
     <div class="lesson-header">
         <div class="container">
             <div class="lesson-body">
-                <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Practice &nbsp;/&nbsp; Find the bug</div>
+                <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Practice &nbsp;/&nbsp; Find the bug</div>
                 <h1>Find the Bug: Six Broken Analyses</h1>
                 <p class="promise">The worst bugs in bioinformatics never crash. They quietly hand you a wrong number. Here are six real-world examples to diagnose and fix, from a GC count to a DESeq2 result that points the wrong way.</p>
                 <div class="tags">
@@ -268,7 +268,7 @@ print(f"{chrom}\t{bed_start}\t{bed_end}")
                 <details><summary>Show the bug and the fix</summary>
                     <p><strong>The bug:</strong> VCF positions are <strong>1-based</strong> (the first base is 1), but BED is <strong>0-based, half-open</strong> (the first base is 0, and the end is one past the last base). <code class="inline">chr1 1000 1001</code> in BED is the 1001st base, one base to the right of the variant.</p>
                     <p><strong>The fix:</strong> <code class="inline">bed_start = pos - 1</code> and <code class="inline">bed_end = pos - 1 + len(ref)</code>, giving <code class="inline">chr1 999 1000</code>. A one-base shift can move a variant out of an exon, or onto the wrong codon.</p>
-                    <p><strong>The habit:</strong> every time you move between file formats, ask "0-based or 1-based?". The <a href="genomic-coordinates.html" target="_blank" rel="noopener">genomic coordinates lesson</a> has the full table.</p>
+                    <p><strong>The habit:</strong> every time you move between file formats, ask "0-based or 1-based?". The <a href="genomic-coordinates.html">genomic coordinates lesson</a> has the full table.</p>
                 </details>
                 </div>
 
@@ -324,12 +324,12 @@ nrow(sig)          <span class="c"># 5488</span></pre>
                 <details><summary>Show the bug and the fix</summary>
                     <p><strong>The bug:</strong> the code uses the raw <code class="inline">pvalue</code> column. With about 16,000 genes tested, a 5% cutoff on raw p-values lets through hundreds of genes by chance alone, and nobody can tell which ones.</p>
                     <p><strong>The fix:</strong> filter on the adjusted column, <code class="inline">subset(res, padj &lt; 0.05)</code>, which controls the false discovery rate: on average, at most about 5% of the reported genes are expected to be false positives. Report 4,077, and say that it is an FDR threshold.</p>
-                    <p><strong>The habit:</strong> whenever you test many things at once, ask "which p-value is this?". See <a href="multiple-testing.html" target="_blank" rel="noopener">the multiple-testing lesson</a>.</p>
+                    <p><strong>The habit:</strong> whenever you test many things at once, ask "which p-value is this?". See <a href="multiple-testing.html">the multiple-testing lesson</a>.</p>
                 </details>
                 </div>
 
                 <h2>What the six bugs have in common</h2>
-                <p>None of them produced an error message. Each one was caught the same way: by <strong>comparing the output with something you already know</strong>. That can be a sequence you can see is GC-rich, a file you know has 3 reads, a gene whose direction is famous, or the fact that a count cannot be "unknown". Building that reflex is what the <a href="researcher-skills.html" target="_blank" rel="noopener">Thinking Like a Researcher</a> mini-course calls a <em>positive control</em>.</p>
+                <p>None of them produced an error message. Each one was caught the same way: by <strong>comparing the output with something you already know</strong>. That can be a sequence you can see is GC-rich, a file you know has 3 reads, a gene whose direction is famous, or the fact that a count cannot be "unknown". Building that reflex is what the <a href="researcher-skills.html">Thinking Like a Researcher</a> mini-course calls a <em>positive control</em>.</p>
 
                 <h2>Check your understanding</h2>
                 <div class="quiz">
@@ -387,7 +387,7 @@ nrow(sig)          <span class="c"># 5488</span></pre>
                 </div>
 
 
-                <a class="next-lesson" href="researcher-skills.html" target="_blank" rel="noopener">
+                <a class="next-lesson" href="researcher-skills.html">
                     <span>Build the checking habit</span>
                     <h3>Mini-course: Thinking Like a Researcher &rarr;</h3>
                 </a>
@@ -398,7 +398,7 @@ nrow(sig)          <span class="c"># 5488</span></pre>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p>
         </div>
     </footer>
 

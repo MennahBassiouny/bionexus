@@ -108,7 +108,7 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (4 of 5)</div>
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (4 of 5)</div>
             <h1>Where the Data Lives</h1>
             <p class="promise">You rarely generate data from scratch - you download it. Meet the handful of public databases that hold the world's biology, and learn to pull from them in code.</p>
             <div class="tags">
@@ -125,8 +125,8 @@
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
                 <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
-                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">A little basic Python from <a href="python-basics.html" target="_blank" rel="noopener">Python Basics</a> helps when you reach the code-fetching part, but is not strictly required.</li>
-                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">A little basic Python from <a href="python-basics.html">Python Basics</a> helps when you reach the code-fetching part, but is not strictly required.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
@@ -190,7 +190,7 @@ handle.close()
 
 <span class="k">print</span>(record.description)
 <span class="k">print</span>(<span class="s">"Length:"</span>, <span class="k">len</span>(record.seq), <span class="s">"bases"</span>)</pre>
-            <p>That's the same pattern from the <a href="python-project.html" target="_blank" rel="noopener">Python project</a> - and it works for any accession. Swap the <code class="inline">id</code> and you can fetch any sequence record, on demand, with a few lines of code.</p>
+            <p>That's the same pattern from the <a href="python-project.html">Python project</a> - and it works for any accession. Swap the <code class="inline">id</code> and you can fetch any sequence record, on demand, with a few lines of code.</p>
 
             <div class="fallback"><strong>Network blocked?</strong> Some school or work networks block NCBI. If the fetch fails, download the FASTA by hand from <code class="inline">ncbi.nlm.nih.gov/nuccore/NM_000518</code> (Send to → File → FASTA) and load it with <code class="inline">SeqIO.read("file.fasta", "fasta")</code>.</div>
 
@@ -250,7 +250,7 @@ results = Entrez.read(search)
                 <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
-            <a class="next-lesson" href="track1-pandas-for-biologists.html" target="_blank" rel="noopener">
+            <a class="next-lesson" href="track1-pandas-for-biologists.html">
                 <span>Last in Track 1 - the payoff</span>
                 <h3>Pandas for biologists + your Track 1 project →</h3>
             </a>
@@ -258,7 +258,7 @@ results = Entrez.read(search)
         </div></div>
     </main>
 
-    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
+    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
     <script src="interactive.js" defer></script>

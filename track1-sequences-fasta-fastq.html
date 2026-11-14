@@ -105,7 +105,7 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (1 of 5)</div>
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (1 of 5)</div>
             <h1>Sequences, FASTA &amp; FASTQ Explained</h1>
             <p class="promise">Two text formats hold most of the world's sequence data. By the end of this lesson you'll be able to read both - and know exactly what every line means.</p>
             <div class="tags">
@@ -122,7 +122,7 @@
 
             <div class="prereq">
                 <h4 aria-level="2">Before you start</h4>
-                <p>You can read a little Python and run code in a notebook. New here? Do <a href="intro-first-python.html" target="_blank" rel="noopener">the Introduction</a> first, or the <a href="python-install.html" target="_blank" rel="noopener">Python setup</a>.</p>
+                <p>You can read a little Python and run code in a notebook. New here? Do <a href="intro-first-python.html">the Introduction</a> first, or the <a href="python-install.html">Python setup</a>.</p>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
                 <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
@@ -138,7 +138,7 @@
 ATGGCCCTGTGGATGCGCCTCCTGCCCCTGCTGGCGCTGCTG
 GCCCTCTGGGGACCTGACCCAGCCGCAGCCTTTGTGAACCAA</pre>
             <p>That's it. A file can hold one record or millions, each starting with its own <code class="inline">&gt;</code> header. FASTA is used for genes, genomes, proteins - any sequence where you don't need quality information.</p>
-            <div class="why"><h4 aria-level="3">The <code class="inline">&gt;</code> is your friend</h4><p>Because every record starts with <code class="inline">&gt;</code>, counting sequences is as easy as counting header lines - exactly the <code class="inline">grep -c "^&gt;"</code> trick (<code class="inline">^</code> means "at the start of a line") from the <a href="bash-project.html" target="_blank" rel="noopener">Bash project</a>. One symbol, huge convenience.</p></div>
+            <div class="why"><h4 aria-level="3">The <code class="inline">&gt;</code> is your friend</h4><p>Because every record starts with <code class="inline">&gt;</code>, counting sequences is as easy as counting header lines - exactly the <code class="inline">grep -c "^&gt;"</code> trick (<code class="inline">^</code> means "at the start of a line") from the <a href="bash-project.html">Bash project</a>. One symbol, huge convenience.</p></div>
 
             <h2>FASTQ - sequences <em>with quality</em></h2>
             <p>Sequencing machines aren't perfect - each base is read with a certain confidence. <strong>FASTQ</strong> captures that. Every record is exactly <strong>four lines</strong>:</p>
@@ -259,7 +259,7 @@ rec = <span class="k">next</span>(SeqIO.parse(<span class="s">"demo.fastq"</span
                 <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
-            <a class="next-lesson" href="track1-file-formats.html" target="_blank" rel="noopener">
+            <a class="next-lesson" href="track1-file-formats.html">
                 <span>Next in Track 1</span>
                 <h3>The file-format alphabet soup: SAM/BAM, VCF, GFF, BED →</h3>
             </a>
@@ -267,7 +267,7 @@ rec = <span class="k">next</span>(SeqIO.parse(<span class="s">"demo.fastq"</span
         </div></div>
     </main>
 
-    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
+    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
     <script src="interactive.js" defer></script>

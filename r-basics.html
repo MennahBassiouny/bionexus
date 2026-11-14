@@ -110,7 +110,7 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (3 of 5): Level 1 Basics</div>
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (3 of 5): Level 1 Basics</div>
             <h1>R: Level 1 (Basics)</h1>
             <p class="promise">For complete beginners with no coding background. We start from what R even is, then build every core idea (data types, vectors, and the data frame) one small step at a time, with pictures.</p>
             <div class="tags">
@@ -126,9 +126,9 @@
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
                 <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
-                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Nothing to install for this page: every example runs in your browser. When you want R on your own computer, see <a href="r-install.html" target="_blank" rel="noopener">Installing R and RStudio</a>.</li>
-                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Using RStudio? Do <a href="r-first-steps.html" target="_blank" rel="noopener">First steps in RStudio</a> first: the panes, saving a script, getting help, and reading errors.</li>
-                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Nothing to install for this page: every example runs in your browser. When you want R on your own computer, see <a href="r-install.html">Installing R and RStudio</a>.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Using RStudio? Do <a href="r-first-steps.html">First steps in RStudio</a> first: the panes, saving a script, getting help, and reading errors.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
@@ -339,7 +339,7 @@ ggplot(genes, aes(x = gene, y = length_kb)) +
 </script></div>
 
             <h2>7. Reading your own data</h2>
-            <p>Real data usually arrives as a CSV file (a plain-text table with commas between the columns). Reading it is one line. To practise, we host a small table for you: <a href="practice-genes.csv" target="_blank" rel="noopener">practice-genes.csv</a> (8 genes; lengths approximate, expression values made up for practice). R can read straight from a web address, so you do not need to download anything.</p>
+            <p>Real data usually arrives as a CSV file (a plain-text table with commas between the columns). Reading it is one line. To practise, we host a small table for you: <a href="practice-genes.csv">practice-genes.csv</a> (8 genes; lengths approximate, expression values made up for practice). R can read straight from a web address, so you do not need to download anything.</p>
             <pre><span class="k">library</span>(tidyverse)
 my_data &lt;- read_csv(<span class="s">"https://bionexushub.com/practice-genes.csv"</span>)
 glimpse(my_data)   <span class="c"># a quick look at the columns and their types</span></pre>
@@ -350,7 +350,7 @@ head(my_data)    # the first 6 rows
 str(my_data)     # the columns and their types (base R's version of glimpse)
 mean(my_data$expression)
 </script></div>
-            <div class="why"><h4 aria-level="3">Your own file</h4><p>To read a file on your computer, put it in your project folder and give just its name: <code class="inline">read_csv("my_file.csv")</code>. <a href="r-first-steps.html" target="_blank" rel="noopener">First steps in RStudio</a> shows how RStudio Projects make that "just the name" trick work.</p></div>
+            <div class="why"><h4 aria-level="3">Your own file</h4><p>To read a file on your computer, put it in your project folder and give just its name: <code class="inline">read_csv("my_file.csv")</code>. <a href="r-first-steps.html">First steps in RStudio</a> shows how RStudio Projects make that "just the name" trick work.</p></div>
 
             <div class="glossary">
                 <h4>Every key word, in plain English</h4>
@@ -456,16 +456,16 @@ mean(genes$length_kb)  # 96.2</pre></details>
                 <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
-            <a class="next-lesson" href="r-project.html" target="_blank" rel="noopener">
+            <a class="next-lesson" href="r-project.html">
                 <span>Next in the R series (step 5 of 5), the payoff</span>
                 <h3>Project: explore a real dataset with R &rarr;</h3>
             </a>
-            <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:18px;">Want more depth first? <a href="r-intermediate.html" target="_blank" rel="noopener" style="color:var(--primary-blue); font-weight:600;">R Level 2 (Intermediate)</a> (step 4, optional) builds straight on this.</p>
+            <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:18px;">Want more depth first? <a href="r-intermediate.html" style="color:var(--primary-blue); font-weight:600;">R Level 2 (Intermediate)</a> (step 4, optional) builds straight on this.</p>
 
         </div></div>
     </main>
 
-    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
+    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
     <script src="interactive.js?v=2" defer></script>

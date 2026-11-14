@@ -101,7 +101,7 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (4 of 5, optional): Level 2 Intermediate</div>
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Set up your toolkit &nbsp;/&nbsp; R series (4 of 5, optional): Level 2 Intermediate</div>
             <h1>R: Level 2 (Intermediate)</h1>
             <p class="promise">The next step up in R: selecting data precisely, the apply family, writing your own functions, reading real data files, and reshaping tables for analysis, all taught gently and at your own pace.</p>
             <div class="tags">
@@ -117,8 +117,8 @@
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
                 <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
-                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Be comfortable with the basics first. See <a href="r-basics.html" target="_blank" rel="noopener">R: Level 1 (Basics)</a>.</li>
-                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Be comfortable with the basics first. See <a href="r-basics.html">R: Level 1 (Basics)</a>.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
@@ -128,7 +128,7 @@
 
             <div class="why">
                 <h4>You are ready for this if...</h4>
-                <p>You have finished <a href="r-basics.html" target="_blank" rel="noopener">R Basics</a> and you are comfortable with vectors, a data frame, and a first ggplot. If that still feels new, there is no rush: go back, play, and come here whenever you like. Nothing here is a race.</p>
+                <p>You have finished <a href="r-basics.html">R Basics</a> and you are comfortable with vectors, a data frame, and a first ggplot. If that still feels new, there is no rush: go back, play, and come here whenever you like. Nothing here is a race.</p>
             </div>
 
             <div class="tryit">No memorizing needed. Press <strong>Run</strong> in each dark R box on this page (no install), or type the code into an RStudio script and run it line by line (Ctrl/Cmd+Enter). Change a value, run again. That is the whole method, and you can use this page as a reference any time.</div>
@@ -197,7 +197,7 @@ zscore(c(2, 4, 6, 8))
             <div class="why"><h4 aria-level="3">Why bother</h4><p>One tested function beats copy-pasting the same formula ten times. It is also the first step toward sharing code and building your own small toolkit.</p></div>
 
             <h2>5. Reading your own data files</h2>
-            <p>Most data arrives as a CSV or a tab-separated table. We host two small practice files for you, a gene-by-sample count table (<a href="practice-counts.csv" target="_blank" rel="noopener">practice-counts.csv</a>) and a sample sheet (<a href="practice-samples.csv" target="_blank" rel="noopener">practice-samples.csv</a>). The numbers are made up for practice, but the shape is exactly what a real RNA-seq experiment gives you. R can read them straight from the web:</p>
+            <p>Most data arrives as a CSV or a tab-separated table. We host two small practice files for you, a gene-by-sample count table (<a href="practice-counts.csv">practice-counts.csv</a>) and a sample sheet (<a href="practice-samples.csv">practice-samples.csv</a>). The numbers are made up for practice, but the shape is exactly what a real RNA-seq experiment gives you. R can read them straight from the web:</p>
             <div class="rcell"><script type="text/x-r">
 counts  <- read.csv("https://bionexushub.com/practice-counts.csv")
 samples <- read.csv("https://bionexushub.com/practice-samples.csv")
@@ -208,7 +208,7 @@ samples    # one row per sample: its condition and batch
             <pre>getwd()                              <span class="c"># where is R looking right now?</span>
 counts &lt;- read.csv(<span class="s">"counts.csv"</span>)     <span class="c"># a CSV inside that folder</span>
 tsv    &lt;- read.delim(<span class="s">"data.tsv"</span>)     <span class="c"># tab-separated: read.delim()</span></pre>
-            <div class="why"><h4 aria-level="3">Skip setwd(), use an RStudio Project</h4><p>Older tutorials start with <code class="inline">setwd("C:/Users/me/...")</code>. That path only exists on one computer, so the script breaks for anyone else (and for you, once you move the folder). Instead, open your work as an <strong>RStudio Project</strong>: R then looks in the project folder automatically. <a href="r-first-steps.html" target="_blank" rel="noopener">First steps in RStudio</a> shows how in two minutes.</p></div>
+            <div class="why"><h4 aria-level="3">Skip setwd(), use an RStudio Project</h4><p>Older tutorials start with <code class="inline">setwd("C:/Users/me/...")</code>. That path only exists on one computer, so the script breaks for anyone else (and for you, once you move the folder). Instead, open your work as an <strong>RStudio Project</strong>: R then looks in the project folder automatically. <a href="r-first-steps.html">First steps in RStudio</a> shows how in two minutes.</p></div>
             <div class="why"><h4>Excel files too</h4><p>For <code class="inline">.xlsx</code> files, install the <strong>readxl</strong> package once and use <code class="inline">readxl::read_excel("file.xlsx")</code>. Same idea, one extra package.</p></div>
 
             <h2>6. tidyverse, going deeper: joins and reshaping</h2>
@@ -262,7 +262,7 @@ head(joined, 8)
   geom_col() +
   facet_wrap(~ gene, scales = <span class="s">"free_y"</span>) +   <span class="c"># one mini-plot per gene, each with its own y-axis</span>
   theme_minimal()</pre>
-            <p class="rtry" style="margin:14px 0 0; font-size:0.95rem; color:var(--text-gray);">Try it: which genes go up in the treated samples? Then delete <code class="inline">, scales = "free_y"</code> and Run again to see why it is there. (These are raw counts, so this is only a first look; the <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">DESeq2 lesson</a> shows how to test it properly.)</p>
+            <p class="rtry" style="margin:14px 0 0; font-size:0.95rem; color:var(--text-gray);">Try it: which genes go up in the treated samples? Then delete <code class="inline">, scales = "free_y"</code> and Run again to see why it is there. (These are raw counts, so this is only a first look; the <a href="rna-seq-deseq2.html">DESeq2 lesson</a> shows how to test it properly.)</p>
             <div class="rcell" data-packages="dplyr,tidyr,ggplot2"><script type="text/x-r">
 library(dplyr); library(tidyr); library(ggplot2)
 counts  <- read.csv("https://bionexushub.com/practice-counts.csv")
@@ -276,13 +276,13 @@ ggplot(joined, aes(sample, count, fill = condition)) +
   facet_wrap(~ gene, scales = "free_y") +
   theme_minimal()
 </script></div>
-            <p>For a deeper, opinionated take on making honest, readable figures, see <a href="plots-that-tell-the-truth.html" target="_blank" rel="noopener">Plots that tell the truth</a>.</p>
+            <p>For a deeper, opinionated take on making honest, readable figures, see <a href="plots-that-tell-the-truth.html">Plots that tell the truth</a>.</p>
 
             <h2>8. Bioconductor: where the biology packages live <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
             <p>Everyday packages come from <strong>CRAN</strong> (<code class="inline">install.packages</code>). Most <em>genomics and RNA-seq</em> packages live in a separate home called <strong>Bioconductor</strong>, installed through one helper. Each Bioconductor release needs a matching R version (Bioconductor 3.23 needs R 4.6), so install the current R first.</p>
             <pre>install.packages(<span class="s">"BiocManager"</span>)      <span class="c"># the gateway, installed once</span>
 BiocManager::install(<span class="s">"DESeq2"</span>)        <span class="c"># then any Bioconductor package</span></pre>
-            <div class="why"><h4 aria-level="3">Good to know</h4><p>DESeq2, edgeR, limma, and most RNA-seq and genomics tools are on Bioconductor, not CRAN. You will meet DESeq2 properly in the <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">RNA-seq differential expression</a> lesson.</p></div>
+            <div class="why"><h4 aria-level="3">Good to know</h4><p>DESeq2, edgeR, limma, and most RNA-seq and genomics tools are on Bioconductor, not CRAN. You will meet DESeq2 properly in the <a href="rna-seq-deseq2.html">RNA-seq differential expression</a> lesson.</p></div>
 
             <h2>Practice exercises</h2>
             <p>Type each into the scratchpad below or into RStudio, and run it. Peek at the solution only after you have tried.</p>
@@ -368,7 +368,7 @@ mean_or_zero(<span class="k">c</span>())             <span class="c"># 0</span><
                 <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
-            <a class="next-lesson" href="r-project.html" target="_blank" rel="noopener">
+            <a class="next-lesson" href="r-project.html">
                 <span>Put these skills to work on a real dataset</span>
                 <h3>Project: explore a real dataset with R &rarr;</h3>
             </a>
@@ -377,7 +377,7 @@ mean_or_zero(<span class="k">c</span>())             <span class="c"># 0</span><
         </div></div>
     </main>
 
-    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
+    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
     <script src="interactive.js?v=2" defer></script>

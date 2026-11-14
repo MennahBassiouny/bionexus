@@ -146,7 +146,7 @@
     <div class="lesson-header">
         <div class="container">
             <div class="lesson-body">
-                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; Differential expression</div>
+                <div class="breadcrumb"><a href="learn.html#track-3">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; Differential expression</div>
                 <h1>From Raw Counts to Differential Expression</h1>
                 <p class="promise">You've run DESeq2 once. Now let's open the box: how to set up the right comparison with a design formula, what DESeq2 actually does to your counts, and how to read every column of the results table with confidence.</p>
                 <div class="tags">
@@ -166,8 +166,8 @@
                 <div class="prereq">
                     <h4 aria-level="2">Before you start</h4>
                     <ul>
-                        <li>You've done the flagship <a href="rna-seq-first-analysis.html" target="_blank" rel="noopener">Your First RNA-seq Analysis</a>, so the five-step workflow is familiar.</li>
-                        <li>You can read a little R. (New to R? Start with the <a href="learn.html#foundations" target="_blank" rel="noopener">R series</a>.)</li>
+                        <li>You've done the flagship <a href="rna-seq-first-analysis.html">Your First RNA-seq Analysis</a>, so the five-step workflow is familiar.</li>
+                        <li>You can read a little R. (New to R? Start with the <a href="learn.html#foundations">R series</a>.)</li>
                         <li>You do not need the heavy statistics. We'll explain the ideas in plain language and point at the math without drowning in it.</li>
                     </ul>
                 </div>
@@ -282,12 +282,12 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                 <div class="levelup">
                     <h4 aria-level="3">🔶 Try this: test the design</h4>
                     <p>Change the design to <code class="inline">~ dex</code> and rerun steps 3 and 4. You should lose roughly a third of your significant genes (about 2,700 instead of about 4,000). Why? Without <code class="inline">cell</code>, the natural differences between the 4 donors are treated as noise, which weakens the evidence for every gene. Then look at <code class="inline">resultsNames(dds)</code> for both designs and spot the difference.</p>
-                    <p><a href="resources.html" target="_blank" rel="noopener">Find dataset links in Resources →</a></p>
+                    <p><a href="resources.html">Find dataset links in Resources →</a></p>
                 </div>
 
                 <div class="why" style="background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:16px 20px; margin:22px 0;">
                     <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;">The statistics behind that padj column</h4>
-                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">Why a raw p-value of 0.05 is not enough when you test thousands of genes at once, and what the adjustment actually does, is the subject of <a href="stats-essentials.html" target="_blank" rel="noopener">Statistics essentials</a> and <a href="multiple-testing.html" target="_blank" rel="noopener">The multiple-testing problem</a>. You do not need them to finish here, but they are the "why" behind trusting padj over the raw p-value.</p>
+                    <p style="font-size:1rem; color:var(--text-gray); margin:0;">Why a raw p-value of 0.05 is not enough when you test thousands of genes at once, and what the adjustment actually does, is the subject of <a href="stats-essentials.html">Statistics essentials</a> and <a href="multiple-testing.html">The multiple-testing problem</a>. You do not need them to finish here, but they are the "why" behind trusting padj over the raw p-value.</p>
                 </div>
                 <h2>Check your understanding</h2>
                 <div class="quiz">
@@ -339,7 +339,7 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                     <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
 
-                <a class="next-lesson" href="rna-seq-sample-qc-pca.html" target="_blank" rel="noopener">
+                <a class="next-lesson" href="rna-seq-sample-qc-pca.html">
                     <span>Next in Track 3</span>
                     <h3>Sample QC and PCA for RNA-seq &rarr;</h3>
                 </a>
@@ -350,7 +350,7 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p>
         </div>
     </footer>
 

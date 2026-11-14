@@ -138,7 +138,7 @@
     <div class="lesson-header">
         <div class="container">
             <div class="lesson-body">
-                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; The big picture</div>
+                <div class="breadcrumb"><a href="learn.html#track-3">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; The big picture</div>
                 <h1>The RNA-seq Big Picture</h1>
                 <p class="promise">Before you touch a single line of code, let's build the mental model: what RNA-seq actually measures, why it is so useful, and the journey from a tube of cells to a list of genes that changed. No code in this lesson, just the map.</p>
                 <div class="tags">
@@ -158,8 +158,8 @@
                 <div class="prereq">
                     <h4 aria-level="2">Before you start</h4>
                     <ul>
-                        <li>Just curiosity. A little biology helps. (Want a refresher? Try <a href="intro-biology-for-coders.html" target="_blank" rel="noopener">The biology a coder needs</a>.)</li>
-                        <li>Any term feels new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> explains everything in plain English.</li>
+                        <li>Just curiosity. A little biology helps. (Want a refresher? Try <a href="intro-biology-for-coders.html">The biology a coder needs</a>.)</li>
+                        <li>Any term feels new? The <a href="glossary.html">Glossary</a> explains everything in plain English.</li>
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
@@ -197,7 +197,7 @@
                 <p>It starts at the bench, not the computer. Researchers collect samples from the groups they want to compare, usually with several <strong>replicates</strong> each (more on why below), and chemically extract the RNA from the cells. This part is biology and lab work; as a bioinformatician you often receive the data after this step is done.</p>
 
                 <h3>2. Sequencing (turning RNA into data)</h3>
-                <p>In the lab, the RNA is broken into small fragments and copied into DNA (called cDNA) to make a "library". The sequencing machine then reads millions of these fragments. Each fragment becomes a short string of letters called a <strong>read</strong>. The raw output is a giant text file of these reads (the <a href="track1-sequences-fasta-fastq.html" target="_blank" rel="noopener">FASTQ format</a>). This is the hand-off point from the lab to the computer.</p>
+                <p>In the lab, the RNA is broken into small fragments and copied into DNA (called cDNA) to make a "library". The sequencing machine then reads millions of these fragments. Each fragment becomes a short string of letters called a <strong>read</strong>. The raw output is a giant text file of these reads (the <a href="track1-sequences-fasta-fastq.html">FASTQ format</a>). This is the hand-off point from the lab to the computer.</p>
 
                 <h3>3. From reads to a count matrix</h3>
                 <p>On the computer, software figures out which gene each read came from (this is <strong>alignment</strong>) and then tallies them up: how many reads landed on gene 1, gene 2, and so on, for every sample. The result is the <strong>count matrix</strong>, a big table of genes by samples. For the same gene, a bigger number (after adjusting for how deeply each sample was sequenced) means it was more active in that sample.</p>
@@ -221,10 +221,10 @@
                 <h2>Where you begin in these lessons</h2>
                 <p>The wet lab and the read-to-count steps are their own deep topics. In this track, we start from the <strong>count matrix</strong>, which is where most real analysis begins, and take it all the way to biology. Here is the path:</p>
                 <ul>
-                    <li><a href="rna-seq-first-analysis.html" target="_blank" rel="noopener">Your First RNA-seq Analysis</a>, the complete project from start to finish.</li>
-                    <li><a href="rna-seq-deseq2.html" target="_blank" rel="noopener">From Raw Counts to Differential Expression</a>, going deeper on DESeq2.</li>
-                    <li><a href="rna-seq-volcano-ma.html" target="_blank" rel="noopener">Reading Volcano and MA Plots</a>, then <a href="rna-seq-heatmaps.html" target="_blank" rel="noopener">Heatmaps and Clustering</a>.</li>
-                    <li><a href="rna-seq-enrichment.html" target="_blank" rel="noopener">Functional Enrichment</a>, turning your gene list into biology.</li>
+                    <li><a href="rna-seq-first-analysis.html">Your First RNA-seq Analysis</a>, the complete project from start to finish.</li>
+                    <li><a href="rna-seq-deseq2.html">From Raw Counts to Differential Expression</a>, going deeper on DESeq2.</li>
+                    <li><a href="rna-seq-volcano-ma.html">Reading Volcano and MA Plots</a>, then <a href="rna-seq-heatmaps.html">Heatmaps and Clustering</a>.</li>
+                    <li><a href="rna-seq-enrichment.html">Functional Enrichment</a>, turning your gene list into biology.</li>
                 </ul>
 
                 <h2>Check your understanding</h2>
@@ -276,7 +276,7 @@
                     <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>
 
-                <a class="next-lesson" href="rna-seq-experimental-design.html" target="_blank" rel="noopener">
+                <a class="next-lesson" href="rna-seq-experimental-design.html">
                     <span>Next in Track 3</span>
                     <h3>Experimental design for RNA-seq &rarr;</h3>
                 </a>
@@ -287,7 +287,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p>
         </div>
     </footer>
 

@@ -145,7 +145,7 @@
     <div class="lesson-header">
         <div class="container">
             <div class="lesson-body">
-                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">&larr; Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; Batch effects</div>
+                <div class="breadcrumb"><a href="learn.html#track-3">&larr; Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; Batch effects</div>
                 <h1>Correcting Batch Effects in RNA-seq</h1>
                 <p class="promise">A batch effect can masquerade as biology. Learn to defend against it by design, model it in DESeq2 when it is unavoidable, and use batch-corrected values for plots only, never as input to the test.</p>
                 <div class="tags">
@@ -163,8 +163,8 @@
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
                 <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
-                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">You understand RNA-seq experimental design; see <a href="rna-seq-experimental-design.html" target="_blank" rel="noopener">Experimental Design for RNA-seq</a>, and some basic R helps (<a href="r-basics.html" target="_blank" rel="noopener">R basics</a>).</li>
-                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">You understand RNA-seq experimental design; see <a href="rna-seq-experimental-design.html">Experimental Design for RNA-seq</a>, and some basic R helps (<a href="r-basics.html">R basics</a>).</li>
+                    <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
@@ -176,7 +176,7 @@
             <p>A <strong>batch effect</strong> is a systematic technical difference between groups of samples: they were processed on different days, run on different lanes, or prepared with different kits or by different people. The problem is that these differences can shift expression in ways that look exactly like real biology. If you do not account for them, a batch effect can either invent differences that are not real or hide ones that are.</p>
 
             <h2><span class="step-num">1</span>The best defense is design</h2>
-            <p>The cheapest fix happens before any sequencing. <strong>Spread your conditions across batches</strong> so that each processing day, lane, or kit contains a mix of treated and control samples. Then a batch difference washes out instead of lining up with your comparison. This is the heart of good <a href="rna-seq-experimental-design.html" target="_blank" rel="noopener">experimental design</a>, and no statistical trick later is as good as getting the layout right up front.</p>
+            <p>The cheapest fix happens before any sequencing. <strong>Spread your conditions across batches</strong> so that each processing day, lane, or kit contains a mix of treated and control samples. Then a batch difference washes out instead of lining up with your comparison. This is the heart of good <a href="rna-seq-experimental-design.html">experimental design</a>, and no statistical trick later is as good as getting the layout right up front.</p>
             <figure class="viz">
                 <svg viewBox="0 0 560 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="PCA before modeling shows samples split by batch; after modeling the condition the split is by treated versus control">
                     <g font-family="'Work Sans',sans-serif" font-size="12">
@@ -299,7 +299,7 @@ plotPCA(vsd, intgroup = "dex")               # now split by condition
                 <p class="reviewed">Last reviewed: October 2026.</p>
             </div>
 
-            <a class="next-lesson" href="rna-seq-volcano-ma.html" target="_blank" rel="noopener">
+            <a class="next-lesson" href="rna-seq-volcano-ma.html">
                 <span>Next in Track 3</span>
                 <h3>Reading volcano &amp; MA plots &rarr;</h3>
             </a>
@@ -309,7 +309,7 @@ plotPCA(vsd, intgroup = "dex")               # now split by condition
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p>
         </div>
     </footer>
 

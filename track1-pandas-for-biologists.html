@@ -113,7 +113,7 @@
 
     <div class="lesson-header">
         <div class="container"><div class="lesson-body">
-            <div class="breadcrumb"><a href="learn.html" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (5 of 5)</div>
+            <div class="breadcrumb"><a href="learn.html">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with biological data (5 of 5)</div>
             <h1>Pandas for Biologists</h1>
             <p class="promise">Most biological data is a table - samples, genes, measurements. Pandas is how you handle tables in Python without tears. Learn it, then use it to finish Track 1.</p>
             <div class="tags">
@@ -130,7 +130,7 @@
 
             <div class="prereq">
                 <h4 aria-level="2">Before you start</h4>
-                <p>You can fetch records from NCBI (<a href="track1-where-data-lives.html" target="_blank" rel="noopener">lesson 4</a>) and run Python. In Colab, run <code class="inline">!pip install biopython pandas</code> first.</p>
+                <p>You can fetch records from NCBI (<a href="track1-where-data-lives.html">lesson 4</a>) and run Python. In Colab, run <code class="inline">!pip install biopython pandas</code> first.</p>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
                 <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
@@ -162,7 +162,7 @@ genes[<span class="s">"length_kb"</span>] = genes[<span class="s">"length"</span
 <span class="c"># 4. SUMMARIZE - overall and per group</span>
 <span class="k">print</span>(genes[<span class="s">"length"</span>].mean())
 genes.groupby(<span class="s">"chrom"</span>)[<span class="s">"length"</span>].mean()   <span class="c"># average length per chromosome</span></pre>
-            <div class="why"><h4 aria-level="3">Why pandas is worth learning once</h4><p>Filter, sort, compute, group, summarize - these five verbs answer most questions you'll ever ask of a data table, whether it's 4 genes or 40,000. Two more you'll use all the time: <code class="inline">df.describe()</code> gives count, mean, min and max for every numeric column in one go, and <code class="inline">pd.merge(table_a, table_b, on="gene")</code> joins two tables that share a column (the <a href="track1-enrichment.html" target="_blank" rel="noopener">next lesson</a> covers merging in detail). Learn them here and they pay off in every later track, including the RNA-seq results table.</p></div>
+            <div class="why"><h4 aria-level="3">Why pandas is worth learning once</h4><p>Filter, sort, compute, group, summarize - these five verbs answer most questions you'll ever ask of a data table, whether it's 4 genes or 40,000. Two more you'll use all the time: <code class="inline">df.describe()</code> gives count, mean, min and max for every numeric column in one go, and <code class="inline">pd.merge(table_a, table_b, on="gene")</code> joins two tables that share a column (the <a href="track1-enrichment.html">next lesson</a> covers merging in detail). Learn them here and they pay off in every later track, including the RNA-seq results table.</p></div>
 
             <h2>Reading real files</h2>
             <p>Real data usually arrives as a CSV. One line loads it:</p>
@@ -288,7 +288,7 @@ plt.ylabel(<span class="s">"GC %"</span>); plt.tight_layout(); plt.show()</pre>
                 <p class="reviewed">pandas itself: McKinney W. Data structures for statistical computing in Python. Proceedings of the 9th Python in Science Conference, 56-61, 2010. <a href="https://doi.org/10.25080/Majora-92bf1922-00a" target="_blank" rel="noopener">doi:10.25080/Majora-92bf1922-00a</a>.<br>Last reviewed: October 2026.</p>
             </div>
 
-            <a class="next-lesson" href="learn.html" target="_blank" rel="noopener">
+            <a class="next-lesson" href="learn.html">
                 <span>You've completed the data-literacy track</span>
                 <h3>Back to the roadmap - pick your next track →</h3>
             </a>
@@ -296,7 +296,7 @@ plt.ylabel(<span class="s">"GC %"</span>); plt.tight_layout(); plt.show()</pre>
         </div></div>
     </main>
 
-    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
+    <footer><div class="container"><p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p></div></footer>
     <script>function toggleMenu(){document.getElementById('nav-menu').classList.toggle('active');}</script>
     <script src="reactions.js" defer></script>
     <script src="interactive.js" defer></script>
