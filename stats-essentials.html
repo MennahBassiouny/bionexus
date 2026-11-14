@@ -245,6 +245,35 @@ print(f"extreme would occur about {p_value*100:.2f}% of the time.")
                     <p>"Statistically significant" only means "unlikely under the null." It does not mean large, important, or real-world relevant. A drug that lowers a biomarker by 0.3% with p &lt; 0.0001 is statistically significant and clinically useless. Always ask both "is it detectable?" and "is it big enough to care about?"</p>
                 </div>
 
+                <h2>Confidence intervals: how sure is the estimate?</h2>
+                <p>An effect size is an estimate from one sample, so it comes with uncertainty. A <strong>95% confidence interval (CI)</strong> shows that uncertainty as a range: the values of the true effect that fit your data reasonably well (Krzywinski and Altman 2013). Narrow means the estimate is precise; wide means it is not.</p>
+                <figure style="margin:24px 0; text-align:center;">
+                    <svg viewBox="0 0 680 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three confidence intervals for a log2 fold change. Gene A: narrow and clearly above zero. Gene B: above zero but very wide. Gene C: crosses zero." style="width:100%; max-width:640px; height:auto;">
+                        <g font-family="'Work Sans',sans-serif" font-size="13">
+                            <line x1="300" y1="30" x2="300" y2="200" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5 4"/>
+                            <text x="300" y="22" text-anchor="middle" fill="#64748b" font-size="12">0 = no change</text>
+                            <line x1="120" y1="200" x2="640" y2="200" stroke="#0f172a" stroke-width="1.5"/>
+                            <text x="200" y="220" text-anchor="middle" fill="#64748b" font-size="12">-1</text><text x="300" y="220" text-anchor="middle" fill="#64748b" font-size="12">0</text><text x="400" y="220" text-anchor="middle" fill="#64748b" font-size="12">1</text><text x="500" y="220" text-anchor="middle" fill="#64748b" font-size="12">2</text><text x="600" y="220" text-anchor="middle" fill="#64748b" font-size="12">3</text>
+                            <text x="380" y="242" text-anchor="middle" fill="#0f172a" font-size="12">log2 fold change</text>
+                            <text x="20" y="64" fill="#0f172a" font-weight="600">Gene A</text>
+                            <line x1="470" y1="60" x2="530" y2="60" stroke="#10b981" stroke-width="4" stroke-linecap="round"/><circle cx="500" cy="60" r="7" fill="#10b981"/>
+                            <text x="540" y="64" fill="#475569" font-size="12">precise, clearly up</text>
+                            <text x="20" y="114" fill="#0f172a" font-weight="600">Gene B</text>
+                            <line x1="310" y1="110" x2="550" y2="110" stroke="#5b9cf8" stroke-width="4" stroke-linecap="round"/><circle cx="430" cy="110" r="7" fill="#5b9cf8"/>
+                            <text x="560" y="114" fill="#475569" font-size="12">up, size unclear</text>
+                            <text x="20" y="164" fill="#0f172a" font-weight="600">Gene C</text>
+                            <line x1="220" y1="160" x2="440" y2="160" stroke="#a855f7" stroke-width="4" stroke-linecap="round"/><circle cx="330" cy="160" r="7" fill="#a855f7"/>
+                            <text x="450" y="164" fill="#475569" font-size="12">could be no change</text>
+                        </g>
+                    </svg>
+                    <figcaption style="font-size:0.9rem; color:var(--text-gray); margin-top:10px;">Dot = the estimate, bar = its 95% CI. Read the width as well as the position.</figcaption>
+                </figure>
+                <p>Read a CI in two steps. First, <strong>does it include zero</strong> (no change)? Gene C's does, so the data cannot rule out "no effect". Second, <strong>how wide is it</strong>? Genes A and B both point up, but B's range runs from a tiny increase to a large one, so its size is poorly pinned down. This is why a CI tells you more than a p-value alone.</p>
+                <div class="jargon">
+                    <h4 aria-level="3"><span>Decode the jargon</span>What "95%" really means</h4>
+                    <p>If you repeated the whole study many times and built a 95% CI each time, about 95% of those intervals would contain the true value. It does not mean "95% of genes fall in this range", and it is not a range for future measurements.</p>
+                </div>
+
                 <h2>Sample size, power, and why small studies mislead</h2>
                 <p><strong>Statistical power</strong> is the probability that your study will detect a real effect if one exists. It rises with sample size and with effect size, and falls when the data are noisy. Underpowered studies (too few samples, common in biology where samples are expensive) have two nasty properties: they miss real effects (false negatives), and the "significant" hits they do report tend to have <strong>inflated effect sizes</strong>, and are sometimes even in the wrong direction, the "winner's curse." This is a major driver of the reproducibility crisis. Three biological replicates is a starting point for RNA-seq, not a guarantee of adequate power.</p>
 
@@ -307,6 +336,7 @@ print(f"extreme would occur about {p_value*100:.2f}% of the time.")
                         <li>Halsey LG, Curran-Everett D, Vowler SL, Drummond GB. The fickle P value generates irreproducible results. <em>Nat Methods</em> 12: 179-185, 2015. <a href="https://doi.org/10.1038/nmeth.3288" target="_blank" rel="noopener">doi:10.1038/nmeth.3288</a></li>
                         <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biol</em> 15: 550, 2014. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
                         <li>Button KS, Ioannidis JPA, Mokrysz C, Nosek BA, Flint J, Robinson ESJ, Munafò MR. Power failure: why small sample size undermines the reliability of neuroscience. <em>Nat Rev Neurosci</em> 14: 365-376, 2013. <a href="https://doi.org/10.1038/nrn3475" target="_blank" rel="noopener">doi:10.1038/nrn3475</a></li>
+                        <li>Krzywinski M, Altman N. Error bars. <em>Nat Methods</em> 10: 921-922, 2013. <a href="https://doi.org/10.1038/nmeth.2659" target="_blank" rel="noopener">doi:10.1038/nmeth.2659</a></li>
                     </ol>
                     <p class="reviewed">Last reviewed: October 2026.</p>
                 </div>

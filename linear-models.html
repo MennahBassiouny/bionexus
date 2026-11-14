@@ -259,6 +259,29 @@ fit <span class="p">&lt;-</span> <span class="p">lm</span>(expression <span clas
             <p>Linear models trust three things, and it is worth a glance before believing the numbers. First, that the relationship is <strong>roughly linear</strong> (a straight line is a fair summary, not a curve). Second, that the <strong>residuals</strong> are reasonably symmetric, similar in spread across the range, and not strongly patterned. Third, that each data point is <strong>independent</strong>: technical replicates of the same sample are not separate data points. A quick <code class="inline">plot(fit)</code> in R shows residual plots that flag obvious problems. If the relationship curves, you may need to transform a variable or use a different model.</p>
             <div class="warn"><h4 aria-level="3">Common trap</h4><p>The intercept is only meaningful if <code class="inline">x = 0</code> is a real, sensible value. For a dose that never reaches zero, the intercept is just a mathematical anchor for the line, not a quantity to interpret on its own.</p></div>
 
+            <h3>Do not predict beyond your data</h3>
+            <p>A fitted line describes the range you actually measured. Using it far outside that range is called <strong>extrapolation</strong>, and it quietly assumes the straight line keeps going. Biology rarely cooperates: responses level off, cells die at high doses, and if a line slopes down, it will eventually predict impossible values, such as expression below zero.</p>
+            <figure class="viz">
+                <svg viewBox="0 0 680 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Data points from dose 0 to 10 follow a straight line. Beyond dose 10 the line is extended as a dashed guess, while the real response could level off.">
+                    <g font-family="'Work Sans',sans-serif" font-size="12">
+                        <rect x="390" y="30" width="250" height="200" fill="#f1f5f9"/>
+                        <text x="515" y="218" text-anchor="middle" fill="#64748b">no data here</text>
+                        <line x1="70" y1="230" x2="640" y2="230" stroke="#0f172a" stroke-width="1.5"/>
+                        <line x1="70" y1="30" x2="70" y2="230" stroke="#0f172a" stroke-width="1.5"/>
+                        <text x="230" y="252" text-anchor="middle" fill="#0f172a">dose 0 to 10 (measured)</text>
+                        <text x="515" y="252" text-anchor="middle" fill="#0f172a">dose 10 to 20</text>
+                        <text x="30" y="130" text-anchor="middle" fill="#0f172a" transform="rotate(-90 30 130)">response</text>
+                        <line x1="80" y1="220" x2="380" y2="90" stroke="#a855f7" stroke-width="3"/>
+                        <line x1="380" y1="90" x2="518" y2="30" stroke="#a855f7" stroke-width="3" stroke-dasharray="7 6"/>
+                        <path d="M380 90 Q460 62 630 58" fill="none" stroke="#10b981" stroke-width="3"/>
+                        <text x="440" y="22" fill="#6b21a8" font-weight="600">line extended (a guess)</text>
+                        <text x="470" y="82" fill="#047857" font-weight="600">what might really happen</text>
+                        <circle cx="80" cy="224" r="5" fill="#5b9cf8"/><circle cx="110" cy="201" r="5" fill="#5b9cf8"/><circle cx="140" cy="199" r="5" fill="#5b9cf8"/><circle cx="170" cy="178" r="5" fill="#5b9cf8"/><circle cx="200" cy="170" r="5" fill="#5b9cf8"/><circle cx="230" cy="150" r="5" fill="#5b9cf8"/><circle cx="260" cy="148" r="5" fill="#5b9cf8"/><circle cx="290" cy="127" r="5" fill="#5b9cf8"/><circle cx="320" cy="119" r="5" fill="#5b9cf8"/><circle cx="350" cy="99" r="5" fill="#5b9cf8"/><circle cx="380" cy="91" r="5" fill="#5b9cf8"/>
+                    </g>
+                </svg>
+                <figcaption>Inside the measured range the line is supported by data; outside it, it is only an assumption.</figcaption>
+            </figure>
+
             <h2>Check your understanding</h2>
             <div class="quiz">
                 <div class="quiz-q-src">In the model y = b0 + b1*x, what does the slope b1 represent?</div>

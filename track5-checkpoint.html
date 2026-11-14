@@ -231,7 +231,7 @@
                     <button data-opt>The true log2 fold change is exactly 1.3, the middle of the interval</button>
                     <button data-opt>The result is not significant because the interval is wide</button>
                     <button data-opt data-correct>The data support an increase, but its size is poorly pinned down: anything from a tiny to a large increase is consistent with the data</button>
-                    <div class="quiz-explain">The interval excludes 0, so the data point to an increase, but a range from 0.1 to 2.5 means the size is uncertain. Reporting the interval, not just a p-value, shows this honestly (Wasserstein and Lazar 2016). Strictly, 95% refers to how often such intervals capture the true value over repeated studies. Related lesson: <a href="stats-essentials.html">Stats you can't avoid</a> (effect size versus significance).</div>
+                    <div class="quiz-explain">The interval excludes 0, so the data point to an increase, but a range from 0.1 to 2.5 means the size is uncertain. Reporting the interval, not just a p-value, shows this honestly (Wasserstein and Lazar 2016). Strictly, 95% refers to how often such intervals capture the true value over repeated studies (Krzywinski and Altman 2013). Review: <a href="stats-essentials.html">Stats you can't avoid</a> (confidence intervals).</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">A pilot study with 3 samples per group found a huge effect. You plan the main study's sample size using that effect size. What is the risk?</div>
@@ -255,7 +255,7 @@
                     <button data-opt data-correct>Cells from the same mouse are not independent. The real number of independent units is 3 mice per group, so treating it as 30 inflates significance</button>
                     <button data-opt>They should have used 100 cells per mouse</button>
                     <button data-opt>A t-test cannot be used on cells</button>
-                    <div class="quiz-explain">This is called pseudo-replication. Cells from one animal share that animal's genetics and environment, so they are not independent replicates. Average per mouse, or use a model that accounts for mouse as a grouping factor. Related lesson: <a href="linear-models.html">Linear models</a> (independent data points).</div>
+                    <div class="quiz-explain">This is called pseudo-replication. Cells from one animal share that animal's genetics and environment, so they are not independent replicates. Average per mouse, or use a model that accounts for mouse as a grouping factor (Lazic 2010). Review: <a href="power-and-sample-size.html">Power and sample size</a> (pseudo-replication).</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">You fit a straight line of response against drug dose for doses from 0 to 10 mg. The fit is excellent. Can you use it to predict the response at 100 mg?</div>
@@ -263,7 +263,7 @@
                     <button data-opt>Yes, if R-squared is above 0.9</button>
                     <button data-opt>Only if you use a log scale</button>
                     <button data-opt data-correct>No. The line is supported only within the range you measured; outside it, the relationship may curve, level off or become toxic</button>
-                    <div class="quiz-explain">Regression describes the data you have. Predicting far outside the measured range (extrapolation) assumes the same straight line continues, which biology rarely guarantees (see Altman and Krzywinski 2015 on what a regression line describes). Related lesson: <a href="linear-models.html">Linear models</a>.</div>
+                    <div class="quiz-explain">Regression describes the data you have. Predicting far outside the measured range (extrapolation) assumes the same straight line continues, which biology rarely guarantees (see Altman and Krzywinski 2015 on what a regression line describes). Review: <a href="linear-models.html">Linear models</a> (do not predict beyond your data).</div>
                 </div>
                 <div class="quiz">
                     <div class="quiz-q-src">Two variables have a Pearson correlation of 0.8. When you finally plot them, the cloud is flat except for one extreme point far to the upper right. What should you conclude?</div>
@@ -301,6 +301,8 @@
                         <li>Krzywinski M, Altman N. Multiple linear regression. <em>Nat Methods</em> 12: 1103-1104, 2015. <a href="https://doi.org/10.1038/nmeth.3665" target="_blank" rel="noopener">doi:10.1038/nmeth.3665</a></li>
                         <li>Benjamini Y, Hochberg Y. Controlling the false discovery rate: a practical and powerful approach to multiple testing. <em>J R Stat Soc B</em> 57: 289-300, 1995. <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02031.x" target="_blank" rel="noopener">doi:10.1111/j.2517-6161.1995.tb02031.x</a></li>
                         <li>Anscombe FJ. Graphs in statistical analysis. <em>The American Statistician</em> 27: 17-21, 1973. <a href="https://doi.org/10.1080/00031305.1973.10478966" target="_blank" rel="noopener">doi:10.1080/00031305.1973.10478966</a></li>
+                        <li>Krzywinski M, Altman N. Error bars. <em>Nat Methods</em> 10: 921-922, 2013. <a href="https://doi.org/10.1038/nmeth.2659" target="_blank" rel="noopener">doi:10.1038/nmeth.2659</a></li>
+                        <li>Lazic SE. The problem of pseudoreplication in neuroscientific studies: is it affecting your analysis? <em>BMC Neurosci</em> 11: 5, 2010. <a href="https://doi.org/10.1186/1471-2202-11-5" target="_blank" rel="noopener">doi:10.1186/1471-2202-11-5</a></li>
                     </ol>
                     <p class="reviewed">Last reviewed: November 2026.</p>
                 </div>
