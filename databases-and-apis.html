@@ -82,8 +82,10 @@
         .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
         .lesson-body .refs { background:#f1f5f9; border:1px solid rgba(91,156,248,0.2); border-radius:10px; padding:20px 24px; margin:30px 0; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -114,18 +116,18 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">You have seen where biological data is stored in <a href="track1-where-data-lives.html" target="_blank" rel="noopener">Where the data lives</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: name the major databases (NCBI, Ensembl, UniProt) and what each holds, recognise the common gene ID types (symbol, Ensembl ENSG, Entrez/NCBI gene ID, RefSeq NM_), explain why ID mapping matters, and fetch records politely with an API while respecting etiquette.</p>
             </div>
 
@@ -137,7 +139,7 @@
                 <tr><td><strong>Ensembl</strong></td><td>Genes, transcripts, annotation, comparative genomics</td><td>BioMart and a REST API</td></tr>
                 <tr><td><strong>UniProt</strong></td><td>Protein sequences and functional annotation</td><td>REST API and a mapping tool</td></tr>
             </table>
-            <div class="why"><h4>RefSeq vs GenBank</h4><p>GenBank is the archive of sequences as researchers submitted them; RefSeq is NCBI's non-redundant reference set, mostly curated (curated mRNAs start with <code class="inline">NM_</code>; computer-predicted ones start with <code class="inline">XM_</code>). When you want a single canonical record per gene, you usually want RefSeq.</p></div>
+            <div class="why"><h4 aria-level="3">RefSeq vs GenBank</h4><p>GenBank is the archive of sequences as researchers submitted them; RefSeq is NCBI's non-redundant reference set, mostly curated (curated mRNAs start with <code class="inline">NM_</code>; computer-predicted ones start with <code class="inline">XM_</code>). When you want a single canonical record per gene, you usually want RefSeq.</p></div>
 
             <h2><span class="step-num">1</span>ID types and why mapping matters</h2>
             <p>The same gene is named differently in different systems, and tools only join data when the IDs match exactly. A gene symbol is human-friendly but ambiguous and changes over time; the stable database IDs are what you should key your analysis on.</p>
@@ -198,7 +200,7 @@ handle = Entrez.efetch(
 record = SeqIO.read(handle, <span class="h">"genbank"</span>)
 handle.close()
 <span class="h">print</span>(record.id, len(record.seq))</pre>
-            <div class="why"><h4>Why set Entrez.email</h4><p>If a query misbehaves, NCBI uses the email to contact you before blocking your traffic. Leaving it unset is both impolite and a fast way to get rate-limited.</p></div>
+            <div class="why"><h4 aria-level="3">Why set Entrez.email</h4><p>If a query misbehaves, NCBI uses the email to contact you before blocking your traffic. Leaving it unset is both impolite and a fast way to get rate-limited.</p></div>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
@@ -238,7 +240,7 @@ handle.close()
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Sayers EW, Bolton EE, Fine AM, et al. Database resources of the National Center for Biotechnology Information in 2026. <em>Nucleic Acids Research</em> 54: D20-D27, 2026. <a href="https://doi.org/10.1093/nar/gkaf1060" target="_blank" rel="noopener">doi:10.1093/nar/gkaf1060</a></li>
                     <li>Yates AD, Austine-Orimoloye O, Azov AG, et al. Ensembl 2026. <em>Nucleic Acids Research</em> 54: D1053-D1060, 2026. <a href="https://doi.org/10.1093/nar/gkaf1239" target="_blank" rel="noopener">doi:10.1093/nar/gkaf1239</a></li>

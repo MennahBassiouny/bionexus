@@ -109,8 +109,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -148,12 +150,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>No technical prerequisite. This is an orientation lesson; useful at any stage of your learning.</li>
                         <li>Pairs well with <a href="portfolio.html" target="_blank" rel="noopener">Building a portfolio</a> (what to show) and the <a href="transition-playbook.html" target="_blank" rel="noopener">transition playbook</a> (how to make the move).</li>
@@ -161,7 +163,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: tell apart the day-to-day work in academia, biotech, pharma, and clinical settings, recognise what each path tends to hire for and its trade-offs, and match those against your own strengths and goals.</p>
             </div>
 
@@ -200,7 +202,7 @@
                 </table>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Core facility</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Core facility</h4>
                     <p>A shared bioinformatics service team inside a university or institute that runs analyses for many research groups. Core roles are a common, often degree-flexible entry point: you get exposed to a huge variety of projects and data types, which is excellent for learning breadth quickly.</p>
                 </div>
 
@@ -219,7 +221,7 @@
                 <p>Your prior field is not a gap to apologize for; it is a targeting advantage. A pharmacist or clinician moving into bioinformatics is unusually valuable in <em>pharma</em> and <em>clinical</em> settings, where understanding the biology, the drug, or the patient context is half the job. A lab scientist who learned to code is exactly who biotech wants for translational work. Pick the setting where your background is a real advantage, and apply there first.</p>
 
                 <div class="warn">
-                    <h4>⚠️ Titles and requirements vary by country and company</h4>
+                    <h4 aria-level="3">⚠️ Titles and requirements vary by country and company</h4>
                     <p>Degree expectations, certification rules (especially for clinical roles), and even what "bioinformatician" means differ across regions and employers. Treat the table above as a map of the terrain, not a rulebook, and always read the specific job description. Many people enter through a Master's, a core facility, or a strong self-built portfolio rather than a PhD.</p>
                 </div>
 
@@ -268,7 +270,7 @@
                     <div class="quiz-explain"><strong>Right.</strong> Every setting needs someone who can translate an analysis into a result a biologist or clinician can act on. Programming and pipelines are expected baseline skills; clear communication is what frequently separates candidates and makes your work useful to the team.</div>
                 </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Loman N, Watson M. So you want to be a computational biologist? <em>Nature Biotechnology</em> 31, 996-998, 2013. <a href="https://doi.org/10.1038/nbt.2740" target="_blank" rel="noopener">doi:10.1038/nbt.2740</a></li>
                         <li>Way GP, et al. A field guide to cultivating computational biology. <em>PLOS Biology</em> 19(10): e3001419, 2021. <a href="https://doi.org/10.1371/journal.pbio.3001419" target="_blank" rel="noopener">doi:10.1371/journal.pbio.3001419</a></li>

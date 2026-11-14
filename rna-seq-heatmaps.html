@@ -118,8 +118,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -157,19 +159,19 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've done <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">From Raw Counts to Differential Expression</a>, so you have a <code class="inline">dds</code> object and a results table.</li>
                         <li>A little R, and a free Google account to run the Colab notebook.</li>
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: build a heatmap of expression in R, understand how clustering groups genes and samples, and choose scaling and gene selection so the figure shows real structure rather than noise.</p>
             </div>
 
@@ -178,7 +180,7 @@
                 <p>The fix is a <strong>variance-stabilizing transformation</strong>. It corrects for sequencing depth and makes a gene's spread roughly independent of its average level, so noisy low-count genes and a few very high-count genes stop dominating distances and clustering. (Later, z-scoring each gene puts every gene on the same footing for the colours.) DESeq2 gives you one in a single line.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Variance-stabilizing transformation (vst)</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Variance-stabilizing transformation (vst)</h4>
                     <p>A transformation that flattens the relationship between a gene's average count and its variability, so highly expressed genes stop dominating. The result is values you can safely cluster, plot, and compare across samples. DESeq2's <code class="inline">vst()</code> is fast and works well for real datasets (it needs at least 1,000 genes); <code class="inline">varianceStabilizingTransformation()</code> does the same job on any size, and <code class="inline">rlog()</code> is a gentler alternative when you have few samples.</p>
                 </div>
 
@@ -251,7 +253,7 @@ pheatmap(mat,
                 <p>Read it as blocks of colour. A clean result shows two opposing blocks: a set of genes high (red) in the untreated samples and low (blue) after treatment, and another set doing the reverse. The gene names on the right include steroid-response genes such as DUSP1, KLF15 and PER1. The samples will usually group by condition here. That is expected, because we picked genes that differ between the conditions, so it is <strong>not</strong> independent proof that the hits are real. For an unbiased check, use the sample-distance heatmap above and a PCA, which use all genes.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Z-score scaling</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Z-score scaling</h4>
                     <p>For each gene, we subtract its mean and divide by its standard deviation across samples. This rescales every gene to the same footing so the heatmap shows <em>relative</em> change (up or down versus that gene's own average) instead of which genes are simply loud. Without it, a few high-expression genes would wash out the pattern you care about.</p>
                 </div>
 
@@ -299,7 +301,7 @@ pheatmap(mat,
                 <div class="quiz-explain">Clustering groups genes with similar expression patterns together and samples that look alike together, so blocks of co-regulated genes and related samples become visible as clear patches of colour.</div>
             </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15: 550, 2014. (variance-stabilizing transformation, sample distances) <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
                         <li>Conesa A, Madrigal P, Tarazona S, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17: 13, 2016. <a href="https://doi.org/10.1186/s13059-016-0881-8" target="_blank" rel="noopener">doi:10.1186/s13059-016-0881-8</a></li>

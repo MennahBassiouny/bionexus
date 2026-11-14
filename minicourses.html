@@ -83,8 +83,10 @@
             .page-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -113,14 +115,14 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
 
             <div class="mc-grid">
 
                 <div class="mc-card live">
                     <div class="mc-meta">Sequence analysis · Level 1 · ✅ Graded · ~2 hr</div>
-                    <h3>Sequence Alignment &amp; BLAST <span class="pill live">Live</span></h3>
+                    <h3 aria-level="2">Sequence Alignment &amp; BLAST <span class="pill live">Live</span></h3>
                     <p>The most fundamental operation in bioinformatics. Homology, global and local pairwise alignment (Needleman-Wunsch and Smith-Waterman), substitution matrices, running and correctly reading BLAST, and multiple sequence alignment, with a working in-browser alignment demo and a graded final assessment.</p>
                     <a class="mc-btn" href="blast-alignment.html" target="_blank" rel="noopener">Start Level 1 →</a>
                 </div>

@@ -118,8 +118,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -157,12 +159,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>Helpful to have met effect sizes and p-values (<a href="stats-essentials.html" target="_blank" rel="noopener">Stats you can't avoid</a>) and the <a href="multiple-testing.html" target="_blank" rel="noopener">multiple-testing</a> lesson, because good plots visualize exactly those quantities.</li>
                         <li>No coding required to follow, but a runnable Python cell drives the key demonstration home.</li>
@@ -170,7 +172,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: spot how a figure can mislead through a truncated axis, a hidden distribution, deceptive color, or the wrong chart type, and build genomics plots that present the data honestly.</p>
             </div>
 
@@ -181,7 +183,7 @@
                 <p>The most common chart crime. A bar chart whose y-axis starts at, say, 98 instead of 0 can turn a 2% difference into a bar that looks several times taller than its neighbor. For <strong>bar charts, the y-axis must start at zero</strong>, because the bar's <em>length</em> is the visual encoding of the value and a truncated baseline lies about that length. (Line charts of a trend can sometimes justify a non-zero baseline, but you must label it clearly.)</p>
 
                 <div class="warn">
-                    <h4>⚠️ Spot it instantly</h4>
+                    <h4 aria-level="3">⚠️ Spot it instantly</h4>
                     <p>Whenever you see a bar chart with a dramatic difference, check the y-axis origin first. If it does not start at zero, the drama may be entirely manufactured by the axis. The same trick in reverse, an over-tall axis, can hide a real difference you would rather downplay.</p>
                 </div>
 
@@ -230,7 +232,7 @@ print("Lesson: never trust a mean without seeing the distribution.")
                 </ul>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Perceptually uniform colormap</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Perceptually uniform colormap</h4>
                     <p>A color scale where equal differences in the data correspond to equal perceived differences in color. Viridis and its relatives are designed this way; the old rainbow/jet map is not, which is why it distorts heatmaps and is now widely discouraged.</p>
                 </div>
 
@@ -261,7 +263,7 @@ print("Lesson: never trust a mean without seeing the distribution.")
                 </ol>
 
                 <div class="levelup">
-                    <h4>🛠️ Your deliverable: critique-and-fix a misleading figure</h4>
+                    <h4 aria-level="3">🛠️ Your deliverable: critique-and-fix a misleading figure</h4>
                     <p>This is the Track 5 portfolio piece. Find a misleading chart, in a news article, a company slide, a preprint, or make one yourself, and write a short before/after.</p>
                     <p><strong>1. Diagnose.</strong> Name every problem: truncated axis, hidden distribution, bad colormap, dual axes, chartjunk, wrong chart type.</p>
                     <p><strong>2. Fix.</strong> Redraw it honestly (Python with matplotlib/seaborn, or R with ggplot2). Start bar axes at zero, show the data points, switch to viridis, add a proper caption with n and the test.</p>
@@ -310,7 +312,7 @@ print("Lesson: never trust a mean without seeing the distribution.")
                     <div class="quiz-explain"><strong>Right.</strong> With independent scales on each axis you can slide two series into apparent lockstep, implying a correlation the data may not support. It is a classic trick of deceptive figures, which is why dual y-axes are discouraged for comparing series.</div>
                 </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Anscombe FJ. Graphs in statistical analysis. <em>The American Statistician</em> 27: 17-21, 1973. <a href="https://doi.org/10.1080/00031305.1973.10478966" target="_blank" rel="noopener">doi:10.1080/00031305.1973.10478966</a></li>
                         <li>Tufte ER. <em>The Visual Display of Quantitative Information</em>, 2nd ed. Graphics Press, 2001. (Data-ink ratio, chartjunk.)</li>

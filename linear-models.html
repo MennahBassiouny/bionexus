@@ -120,8 +120,10 @@
         .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
         .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -158,18 +160,18 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">You know p-values and basic distributions (see <a href="stats-essentials.html" target="_blank" rel="noopener">Stats you cannot avoid</a>), and you can run basic R (see <a href="r-basics.html" target="_blank" rel="noopener">R basics</a>).</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: read a simple regression as a slope and intercept, interpret a coefficient in a multiple regression, recognize that the t-test and ANOVA are special cases of a linear model, and fit and read <code class="inline">lm()</code> in R.</p>
             </div>
 
@@ -228,7 +230,7 @@
                 <tr><td>Pearson correlation</td><td>one numeric predictor (both variables standardized)</td><td>the strength of the linear relationship</td></tr>
             </table>
             <p>When you compare two groups with a classic (equal-variance) t-test, you are fitting <code class="inline">y = b0 + b1&times;group</code> where group is 0 for one group and 1 for the other. The intercept <code class="inline">b0</code> is the first group's mean, and the slope <code class="inline">b1</code> is exactly how much the second group differs. ANOVA is the same idea with a categorical predictor that has more than two levels. Learn the linear model once and these tests stop being separate things to memorize.</p>
-            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">Why this matters in bioinformatics</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">The workhorse RNA-seq tools are all built on linear models: DESeq2 and edgeR use <strong>generalized linear models</strong> (linear models extended to count data), and limma fits ordinary linear models to log-transformed expression values. The "design formula" you write for them, such as <code class="inline">~ condition + batch</code>, is exactly the predictor list of a linear model. Understanding lm() is the foundation for understanding those tools.</p></div>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;" aria-level="3">Why this matters in bioinformatics</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">The workhorse RNA-seq tools are all built on linear models: DESeq2 and edgeR use <strong>generalized linear models</strong> (linear models extended to count data), and limma fits ordinary linear models to log-transformed expression values. The "design formula" you write for them, such as <code class="inline">~ condition + batch</code>, is exactly the predictor list of a linear model. Understanding lm() is the foundation for understanding those tools.</p></div>
 
             <h2><span class="step-num">4</span>Worked example: fitting lm() in R</h2>
             <p>Suppose you measured a gene's expression at several drug doses and want to know how strongly expression tracks dose. In R you fit the model and read its summary:</p>
@@ -255,7 +257,7 @@ fit <span class="p">&lt;-</span> <span class="p">lm</span>(expression <span clas
 
             <h2><span class="step-num">5</span>A quick word on assumptions</h2>
             <p>Linear models trust three things, and it is worth a glance before believing the numbers. First, that the relationship is <strong>roughly linear</strong> (a straight line is a fair summary, not a curve). Second, that the <strong>residuals</strong> are reasonably symmetric, similar in spread across the range, and not strongly patterned. Third, that each data point is <strong>independent</strong>: technical replicates of the same sample are not separate data points. A quick <code class="inline">plot(fit)</code> in R shows residual plots that flag obvious problems. If the relationship curves, you may need to transform a variable or use a different model.</p>
-            <div class="warn"><h4>Common trap</h4><p>The intercept is only meaningful if <code class="inline">x = 0</code> is a real, sensible value. For a dose that never reaches zero, the intercept is just a mathematical anchor for the line, not a quantity to interpret on its own.</p></div>
+            <div class="warn"><h4 aria-level="3">Common trap</h4><p>The intercept is only meaningful if <code class="inline">x = 0</code> is a real, sensible value. For a dose that never reaches zero, the intercept is just a mathematical anchor for the line, not a quantity to interpret on its own.</p></div>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
@@ -295,7 +297,7 @@ fit <span class="p">&lt;-</span> <span class="p">lm</span>(expression <span clas
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Altman N, Krzywinski M. Simple linear regression. <em>Nat Methods</em> 12: 999-1000, 2015. <a href="https://doi.org/10.1038/nmeth.3627" target="_blank" rel="noopener">doi:10.1038/nmeth.3627</a></li>
                     <li>Krzywinski M, Altman N. Multiple linear regression. <em>Nat Methods</em> 12: 1103-1104, 2015. <a href="https://doi.org/10.1038/nmeth.3665" target="_blank" rel="noopener">doi:10.1038/nmeth.3665</a></li>

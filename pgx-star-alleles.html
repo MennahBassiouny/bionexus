@@ -134,8 +134,10 @@
         .pgx-table td { padding: 8px 10px; border-top: 1px solid #e2e8f0; vertical-align: top; }
         .disclaimer { background: #fff7ed; border: 1px solid rgba(245,158,11,0.4); border-radius: 10px; padding: 12px 18px; margin: 0 0 24px; font-size: 0.95rem; color: #7c2d12; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -173,20 +175,20 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="disclaimer"><strong>Educational content, not medical advice.</strong> Allele activity values and phenotype rules are updated over time; always use the current CPIC tables on <a href="https://www.clinpgx.org" target="_blank" rel="noopener">ClinPGx</a> for real results.</div>
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>Do <a href="pgx-why-dose-differs.html" target="_blank" rel="noopener">Why the same dose works differently</a> first.</li>
                         <li>One small Python box runs in your browser; you only need to edit a list.</li>
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain what a star allele and a diplotype are; read a CYP2C19 diplotype as a phenotype; calculate a CYP2D6 activity score and turn it into a phenotype; and explain why CYP2D6 and DPYD are harder to handle than CYP2C19.</p>
             </div>
 
@@ -216,7 +218,7 @@
                     <tr><td><code class="inline">*3</code></td><td>rs4986893 (c.636G&gt;A)</td><td>Creates an early stop codon</td><td>No function</td></tr>
                     <tr><td><code class="inline">*17</code></td><td>rs12248560 (c.-806C&gt;T)</td><td>In the promoter; increases how much enzyme is made</td><td>Increased function</td></tr>
                 </table></div>
-                <div class="warn"><h4>"Synonymous" is not the same as "harmless"</h4><p>Variant annotation tools label <code class="inline">*2</code>'s key variant as <em>synonymous</em> (it does not change the amino acid at its own position), yet it is a no-function allele because it breaks splicing. A pipeline that throws away synonymous variants would throw away the most important CYP2C19 variant.</p></div>
+                <div class="warn"><h4 aria-level="3">"Synonymous" is not the same as "harmless"</h4><p>Variant annotation tools label <code class="inline">*2</code>'s key variant as <em>synonymous</em> (it does not change the amino acid at its own position), yet it is a no-function allele because it breaks splicing. A pipeline that throws away synonymous variants would throw away the most important CYP2C19 variant.</p></div>
 
                 <h2>From diplotype to phenotype: CYP2C19</h2>
                 <p>The phenotype comes from the function of the two alleles together. These are the CPIC (2022) rules for the common CYP2C19 diplotypes:</p>
@@ -341,7 +343,7 @@ for d in ["*1/*1", "*1/*4", "*4/*10", "*4/*4", "*1/*1x2"]:
                 </div>
 
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Caudle KE, Dunnenberger HM, Freimuth RR, et al. Standardizing terms for clinical pharmacogenetic test results: consensus terms from the Clinical Pharmacogenetics Implementation Consortium (CPIC). <em>Genet Med</em> 19: 215-223, 2017. <a href="https://doi.org/10.1038/gim.2016.87" target="_blank" rel="noopener">doi:10.1038/gim.2016.87</a></li>
                         <li>Lee CR, Luzum JA, Sangkuhl K, et al. Clinical Pharmacogenetics Implementation Consortium guideline for CYP2C19 genotype and clopidogrel therapy: 2022 update. <em>Clin Pharmacol Ther</em> 112: 959-967, 2022. <a href="https://doi.org/10.1002/cpt.2526" target="_blank" rel="noopener">doi:10.1002/cpt.2526</a></li>

@@ -87,8 +87,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -119,17 +121,17 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Have Python installed first. If not, work through <a href="python-install.html" target="_blank" rel="noopener">Installing Python</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: use variables and core data types; make decisions with if, elif, and else; work with lists and dictionaries; write loops and your own functions; and read a file.</p>
             </div>
 
@@ -180,7 +182,7 @@ print("Hello, bioinformatics!")   # this line prints a message
             </figure>
             <pre>dna = <span class="s">"ATGC"</span>        <span class="c"># put the text "ATGC" into a box called dna</span>
 <span class="k">print</span>(dna)            <span class="c"># show what is in the box  ->  ATGC</span></pre>
-            <div class="why"><h4>Naming rules, kept simple</h4><p>A name can use letters, numbers, and underscores, but cannot start with a number, contain spaces, or be a Python keyword such as <code class="inline">if</code> or <code class="inline">for</code>. Pick names that describe the data: <code class="inline">dna</code>, <code class="inline">gene_count</code>, <code class="inline">gc_percent</code>. Good names make code read almost like English.</p></div>
+            <div class="why"><h4 aria-level="3">Naming rules, kept simple</h4><p>A name can use letters, numbers, and underscores, but cannot start with a number, contain spaces, or be a Python keyword such as <code class="inline">if</code> or <code class="inline">for</code>. Pick names that describe the data: <code class="inline">dna</code>, <code class="inline">gene_count</code>, <code class="inline">gc_percent</code>. Good names make code read almost like English.</p></div>
 
             <h2>2. The core data types (the heart of the language)</h2>
             <p>Every piece of data in Python has a <strong>type</strong>: what kind of thing it is. There are six you must know. Here they are in plain English. Do not memorize this table; just know it is here to come back to.</p>
@@ -341,7 +343,7 @@ for base in dna:
     tally[base] = tally.get(base, 0) + 1
 print(tally)
 </script></div>
-            <div class="why"><h4>Why loops matter</h4><p>A genome has millions of bases. You will never process them by hand. You write the instruction once, and the loop applies it to everything, whether that is 8 letters or 8 million.</p></div>
+            <div class="why"><h4 aria-level="3">Why loops matter</h4><p>A genome has millions of bases. You will never process them by hand. You write the instruction once, and the loop applies it to everything, whether that is 8 letters or 8 million.</p></div>
 
             <h2>7. Functions: your own reusable recipes</h2>
             <p>A <strong>function</strong> is a named recipe: you define the steps once, then reuse it with different inputs. <code class="inline">def</code> starts the recipe, and <code class="inline">return</code> hands back the answer.</p>
@@ -353,7 +355,7 @@ def gc_content(seq):
 print(gc_content("ATGCGC"))   # 66.7
 print(gc_content("AAATTT"))   # 0.0
 </script></div>
-            <div class="why"><h4>This is the shape of real code</h4><p>Reading data into variables, deciding with <code class="inline">if</code>, repeating with a loop, and wrapping reusable steps in a function: that is the core of Python, and of almost every bioinformatics script you will ever read.</p></div>
+            <div class="why"><h4 aria-level="3">This is the shape of real code</h4><p>Reading data into variables, deciding with <code class="inline">if</code>, repeating with a loop, and wrapping reusable steps in a function: that is the core of Python, and of almost every bioinformatics script you will ever read.</p></div>
 
             <h2>8. Reading a file (a first look)</h2>
             <p>Real data lives in files. The pattern for reading one, line by line, is short. You will use proper tools (like Biopython) for real sequence files later, but this is the shape of it.</p>
@@ -363,7 +365,7 @@ print(gc_content("AAATTT"))   # 0.0
         <span class="k">print</span>(line)</pre>
 
             <div class="glossary">
-                <h4>Every key word, in plain English</h4>
+                <h4 aria-level="3">Every key word, in plain English</h4>
                 <dl>
                     <dt>variable</dt><dd>a named box that holds a piece of data.</dd>
                     <dt>string (str)</dt><dd>text, written in quotes.</dd>
@@ -439,7 +441,7 @@ print(round(gc, 1))   # 75.0</pre></details>
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Python Software Foundation. The Python Tutorial, chapters 3 to 5. <a href="https://docs.python.org/3/tutorial/index.html" target="_blank" rel="noopener">docs.python.org</a></li>
                     <li>Carey MA, Papin JA. Ten simple rules for biologists learning to program. <em>PLoS Comput Biol</em> 14: e1005871, 2018. <a href="https://doi.org/10.1371/journal.pcbi.1005871" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1005871</a></li>

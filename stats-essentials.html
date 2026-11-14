@@ -113,8 +113,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -152,12 +154,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>Comfortable with basic arithmetic and the idea of an average. No prior statistics needed.</li>
                         <li>You have seen a results table from an analysis (a volcano plot, a DESeq2 output, a GWAS Manhattan plot) or will soon. This lesson explains the numbers in those tables.</li>
@@ -166,7 +168,7 @@
                 </div>
 
                 <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                    <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                    <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                     <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: say what a p-value is and is not, read an effect size, and tell statistical significance apart from biological importance.</p>
                 </div>
                 <h2>Why a biologist has to care about statistics</h2>
@@ -181,7 +183,7 @@
                 </ul>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Standard deviation</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Standard deviation</h4>
                     <p>A measure of spread: roughly, the typical distance of individual values from the mean. Small standard deviation means the data cluster tightly; large means they are spread out. Noise lives here, and statistical tests are essentially comparing the size of an effect against the size of this spread.</p>
                 </div>
 
@@ -195,7 +197,7 @@
                 <p>A small p-value (say 0.001) means: if there were truly no effect, data at least this extreme would happen only about 1 time in 1000. That is surprising enough that most fields agree to "reject the null." The conventional, and entirely arbitrary, threshold is <strong>0.05</strong>, a convention from Ronald Fisher in the 1920s, not a law of nature.</p>
 
                 <div class="warn">
-                    <h4>⚠️ What a p-value is NOT (the misreadings that ruin papers)</h4>
+                    <h4 aria-level="3">⚠️ What a p-value is NOT (the misreadings that ruin papers)</h4>
                     <p>It is <strong>not</strong> the probability that the null hypothesis is true. It is <strong>not</strong> the probability your result happened "by chance." It is <strong>not</strong> a measure of how big or important the effect is. And p = 0.04 versus p = 0.06 is not a meaningful difference in evidence, despite one being "significant" and the other not. The American Statistical Association issued a formal statement in 2016 precisely because these misinterpretations are so widespread and so damaging.</p>
                 </div>
 
@@ -239,7 +241,7 @@ print(f"extreme would occur about {p_value*100:.2f}% of the time.")
                 <p>This is why a volcano plot has <em>two</em> axes: effect size (log<sub>2</sub> fold change) on x and statistical significance (−log<sub>10</sub> p) on y. The genes you care about are large on both: a real, big change that is also unlikely to be noise. A gene with a tiny fold change but a microscopic p-value is statistically significant and biologically boring.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Statistical vs. practical (biological) significance</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Statistical vs. practical (biological) significance</h4>
                     <p>"Statistically significant" only means "unlikely under the null." It does not mean large, important, or real-world relevant. A drug that lowers a biomarker by 0.3% with p &lt; 0.0001 is statistically significant and clinically useless. Always ask both "is it detectable?" and "is it big enough to care about?"</p>
                 </div>
 
@@ -296,7 +298,7 @@ print(f"extreme would occur about {p_value*100:.2f}% of the time.")
                     <div class="quiz-explain"><strong>Right.</strong> Low statistical power both misses true effects and exaggerates the surviving "significant" ones in magnitude or direction. This winner's-curse effect is a key driver of irreproducible results, so small-sample hits deserve extra skepticism and replication.</div>
                 </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Wasserstein RL, Lazar NA. The ASA statement on p-values: context, process, and purpose. <em>The American Statistician</em> 70(2): 129-133, 2016. <a href="https://doi.org/10.1080/00031305.2016.1154108" target="_blank" rel="noopener">doi:10.1080/00031305.2016.1154108</a></li>
                         <li>Amrhein V, Greenland S, McShane B. Scientists rise up against statistical significance. <em>Nature</em> 567: 305-307, 2019. <a href="https://doi.org/10.1038/d41586-019-00857-9" target="_blank" rel="noopener">doi:10.1038/d41586-019-00857-9</a></li>

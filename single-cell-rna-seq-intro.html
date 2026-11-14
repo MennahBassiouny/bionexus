@@ -117,8 +117,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -155,18 +157,18 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">You know what bulk RNA-seq measures, for example from <a href="rna-seq-big-picture.html" target="_blank" rel="noopener">The RNA-seq Big Picture</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: contrast bulk and single-cell RNA-seq, explain what cell barcodes and UMIs do, describe why the cells-by-genes matrix is sparse, and name the high-level steps of a standard single-cell pipeline and its main tools.</p>
             </div>
 
@@ -201,7 +203,7 @@
             <h2><span class="step-num">1</span>How droplet platforms tag each cell</h2>
             <p>The most common technology is droplet-based, with <strong>10x Genomics</strong> as the dominant example. Each cell is captured in a tiny droplet alongside a bead carrying two kinds of short DNA tags. A <strong>cell barcode</strong> is shared by everything from one droplet, so afterward you can tell which reads came from which cell. A <strong>UMI</strong> (unique molecular identifier) tags each individual RNA molecule before amplification, so when PCR makes many copies you can collapse them back to one and remove duplicates. Barcodes answer which cell; UMIs answer how many real molecules.</p>
             <div class="jargon" style="background:linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0;">
-                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">Barcode vs UMI</span>Two different jobs</h4>
+                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;" aria-level="3"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">Barcode vs UMI</span>Two different jobs</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">A <strong>cell barcode</strong> identifies which cell a read belongs to. A <strong>UMI</strong> identifies which original molecule a read came from, so PCR duplicates can be removed and each molecule is counted once. Together they turn raw reads into an honest count per gene per cell.</p>
             </div>
 
@@ -225,7 +227,7 @@
                 </tbody>
             </table>
             <p>The two dominant toolkits are <strong>Seurat</strong> in R and <strong>Scanpy</strong> in Python. They cover this same pipeline with slightly different commands; learning one makes the other easy to read.</p>
-            <div class="why"><h4>One-line summary</h4><p>Single-cell RNA-seq measures each cell instead of an average. Droplet platforms use cell barcodes to mark which cell and UMIs to remove PCR duplicates, producing a sparse cells-by-genes matrix. The pipeline runs QC, normalize, pick variable genes, PCA, cluster, UMAP, then label by markers, in Seurat or Scanpy.</p></div>
+            <div class="why"><h4 aria-level="3">One-line summary</h4><p>Single-cell RNA-seq measures each cell instead of an average. Droplet platforms use cell barcodes to mark which cell and UMIs to remove PCR duplicates, producing a sparse cells-by-genes matrix. The pipeline runs QC, normalize, pick variable genes, PCA, cluster, UMAP, then label by markers, in Seurat or Scanpy.</p></div>
 
             <h2>A worked example: the Scanpy step list</h2>
             <p>This is a high-level sketch of the Scanpy commands that match the pipeline above. It is here to make the structure concrete, not to run as is; a real analysis needs your own data and tuned parameters.</p>
@@ -303,7 +305,7 @@ sc.tl.rank_genes_groups(adata, "leiden", method="wilcoxon")
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Zheng GX, Terry JM, Belgrader P, et al. Massively parallel digital transcriptional profiling of single cells. <em>Nature Communications</em> 8: 14049, 2017. (droplet barcodes and UMIs) <a href="https://doi.org/10.1038/ncomms14049" target="_blank" rel="noopener">doi:10.1038/ncomms14049</a></li>
                     <li>Wolf FA, Angerer P, Theis FJ. SCANPY: large-scale single-cell gene expression data analysis. <em>Genome Biology</em> 19: 15, 2018. <a href="https://doi.org/10.1186/s13059-017-1382-0" target="_blank" rel="noopener">doi:10.1186/s13059-017-1382-0</a></li>

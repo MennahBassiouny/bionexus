@@ -115,8 +115,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -154,12 +156,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've done <a href="rna-structure.html" target="_blank" rel="noopener">RNA structure</a> and <a href="clip-seq.html" target="_blank" rel="noopener">CLIP-seq</a>. They set up why modifications and protein binding interact.</li>
                         <li>No coding here. The next lesson covers how m6A is actually measured (m6A-seq / MeRIP).</li>
@@ -167,7 +169,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain what epitranscriptomics adds on top of the RNA sequence, locate m6A by its DRACH motif, describe the writer, eraser, and reader system that controls it, and place m6A within the wider landscape of RNA modifications.</p>
             </div>
 
@@ -176,7 +178,7 @@
                 <p>The star of the field is <strong>m6A (N6-methyladenosine)</strong>: a methyl group added to the nitrogen-6 position of adenosine. It is the most abundant <em>internal</em> modification of eukaryotic messenger RNA, and it is <strong>chemically reversible</strong>: enzymes exist that can remove it. How often mRNA m6A is actually removed in cells is still debated; most is added while the RNA is being made and stays on.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Epitranscriptome</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Epitranscriptome</h4>
                     <p>The complete set of chemical modifications on a cell's RNA. "Epi-" means "on top of": the modifications add a regulatory layer above the underlying RNA sequence, analogous to how the epigenome layers marks on top of the DNA sequence.</p>
                 </div>
 
@@ -192,7 +194,7 @@
                 <div class="roles">
                     <div class="role">
                         <span class="ico">✍️</span>
-                        <h4>Writers</h4>
+                        <h4 aria-level="3">Writers</h4>
                         <div class="who">METTL3-METTL14, WTAP, ...</div>
                         <p>Add the methyl group. The core is the METTL3-METTL14 complex: METTL3 is the catalytic subunit, METTL14 is a structural partner that helps bind RNA. WTAP and others recruit and localize the complex.</p>
                     </div>
@@ -274,7 +276,7 @@
                     <div class="quiz-explain"><strong>Right.</strong> DRACH (where D is A, G or U, R is a purine, and H is A, C or U) is the consensus around methylated adenosines. m6A is selective, not random, which is why motif recovery is a useful sanity check in m6A mapping.</div>
                 </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Dominissini D, Moshitch-Moshkovitz S, Schwartz S, et al. Topology of the human and mouse m6A RNA methylomes revealed by m6A-seq. <em>Nature</em> 485: 201-206, 2012. <a href="https://doi.org/10.1038/nature11112" target="_blank" rel="noopener">doi:10.1038/nature11112</a></li>
                         <li>Meyer KD, Saletore Y, Zumbo P, Elemento O, Mason CE, Jaffrey SR. Comprehensive analysis of mRNA methylation reveals enrichment in 3' UTRs and near stop codons. <em>Cell</em> 149: 1635-1646, 2012. <a href="https://doi.org/10.1016/j.cell.2012.05.003" target="_blank" rel="noopener">doi:10.1016/j.cell.2012.05.003</a></li>

@@ -125,8 +125,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -164,14 +166,14 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="ngsstrip" data-here="fastqc"></div>
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've read <a href="ngs-how-it-works.html" target="_blank" rel="noopener">How NGS Works</a>, so reads and quality scores are familiar.</li>
                         <li>You're comfortable running a few command-line lines. New to that? See <a href="bash-basics.html" target="_blank" rel="noopener">Command-line basics</a>.</li>
@@ -179,7 +181,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: install and run FastQC on a set of reads, interpret the main modules of the FastQC report (per-base quality, adapter content, and more), and decide what a red or warning module actually means for your data.</p>
             </div>
 
@@ -223,7 +225,7 @@
                 </div>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Phred quality score</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Phred quality score</h4>
                     <p>A number that says how confident the machine is in a base. A Phred score of 20 means a 1-in-100 chance the base is wrong; 30 means 1-in-1000; 40 means 1-in-10,000. Higher is better. In the per-base quality plot, green is good (above ~28), amber is so-so, and red is poor. This is the same score encoded as symbols (Phred+33: a symbol's ASCII code minus 33 gives the score) on the quality line of a <a href="track1-sequences-fasta-fastq.html" target="_blank" rel="noopener">FASTQ record</a>.</p>
                 </div>
 
@@ -236,7 +238,7 @@
                 <p>FastQC diagnoses; it does not fix. The two most common issues, low-quality ends and adapter contamination, are both solved by <strong>trimming</strong>, which is exactly the next lesson. After trimming, you run FastQC again and watch the red turn green. That before-and-after loop is the everyday rhythm of read QC.</p>
 
                 <div class="levelup">
-                    <h4>🔶 Level up: MultiQC</h4>
+                    <h4 aria-level="3">🔶 Level up: MultiQC</h4>
                     <p>Real projects have dozens or hundreds of FASTQ files. <code class="inline">MultiQC</code> scans a folder of FastQC reports and combines them into one interactive summary, so you can spot the odd-one-out sample at a glance. Install it with <code class="inline">pip install multiqc</code> and run <code class="inline">multiqc .</code> in a folder of reports.</p>
                 </div>
 
@@ -279,7 +281,7 @@
             </div>
 
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Cock PJ, Fields CJ, Goto N, Heuer ML, Rice PM. The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants. <em>Nucleic Acids Research</em> 38: 1767-1771, 2010. (FASTQ and Phred+33) <a href="https://doi.org/10.1093/nar/gkp1137" target="_blank" rel="noopener">doi:10.1093/nar/gkp1137</a></li>
                         <li>Ewels P, Magnusson M, Lundin S, K&auml;ller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. <em>Bioinformatics</em> 32: 3047-3048, 2016. <a href="https://doi.org/10.1093/bioinformatics/btw354" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btw354</a></li>

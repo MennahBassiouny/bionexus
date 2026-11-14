@@ -95,8 +95,10 @@
         @media (max-width:768px){ .dtable{display:block; overflow-x:auto; font-size:0.9rem;} .dtable th,.dtable td{padding:8px 9px;} .dtable code{word-break:break-word;} }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -127,10 +129,10 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Ideally, R and RStudio are installed (<a href="r-install.html" target="_blank" rel="noopener">Installing R and RStudio</a>). Not yet? Read on anyway: the error section runs in your browser.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">No coding experience needed.</li>
@@ -138,7 +140,7 @@
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: name RStudio's four panes and what each is for; write, run and save code in a script; set up an RStudio Project so R always finds your files; look up help for any function; tell installing a package apart from loading it; and read and fix the six error messages beginners meet most.</p>
             </div>
 
@@ -207,7 +209,7 @@
                 <tr><td><code>Ctrl+S</code></td><td><code>Cmd+S</code></td><td>Save the script</td></tr>
                 <tr><td><code>Esc</code> (in the Console)</td><td><code>Esc</code></td><td>Cancel a stuck line (see the <code>+</code> prompt below)</td></tr>
             </table>
-            <div class="why"><h4>The two prompts: &gt; and +</h4><p>In the Console, <code class="inline">&gt;</code> means "R is ready". A <code class="inline">+</code> means "R is waiting for you to finish": you opened a bracket or a quote and never closed it. Either type the missing piece and press Enter, or press <strong>Esc</strong> to cancel and start that line again.</p></div>
+            <div class="why"><h4 aria-level="3">The two prompts: &gt; and +</h4><p>In the Console, <code class="inline">&gt;</code> means "R is ready". A <code class="inline">+</code> means "R is waiting for you to finish": you opened a bracket or a quote and never closed it. Either type the missing piece and press Enter, or press <strong>Esc</strong> to cancel and start that line again.</p></div>
 
             <h2>3. RStudio Projects: so R always finds your files</h2>
             <p>Every R session has a <strong>working directory</strong>: the folder R looks in when you give just a file name. If your file is somewhere else, R says it cannot find it. An <strong>RStudio Project</strong> fixes this for good: it ties a folder to your work, and whenever you open the project, that folder becomes the working directory automatically.</p>
@@ -266,7 +268,7 @@ my_data &lt;- read.csv(<span class="s">"data/my_file.csv"</span>)   <span class=
             </figure>
             <pre>install.packages(<span class="s">"palmerpenguins"</span>)   <span class="c"># ONCE, in the Console (note the quotes)</span>
 <span class="k">library</span>(palmerpenguins)              <span class="c"># EVERY session, at the top of your script</span></pre>
-            <div class="why"><h4>Keep install.packages() out of your script</h4><p>Put <code class="inline">library()</code> lines at the top of the script, but run <code class="inline">install.packages()</code> in the Console. Otherwise the package re-downloads every time you run the script.</p></div>
+            <div class="why"><h4 aria-level="3">Keep install.packages() out of your script</h4><p>Put <code class="inline">library()</code> lines at the top of the script, but run <code class="inline">install.packages()</code> in the Console. Otherwise the package re-downloads every time you run the script.</p></div>
 
             <h2>5. Getting help</h2>
             <p>Nobody remembers every function. Professionals look things up all day. R has a help page for every function, and RStudio shows it in the Help tab.</p>
@@ -338,7 +340,7 @@ mean(gene_lengths)                         # 3. lowercase g, to match the name
 # [1] 96.2</pre></details>
 
             <div class="glossary">
-                <h4>Every key word, in plain English</h4>
+                <h4 aria-level="3">Every key word, in plain English</h4>
                 <dl>
                     <dt>pane</dt><dd>one of the four areas of the RStudio window.</dd>
                     <dt>Console</dt><dd>where R runs code and prints answers; nothing typed there is saved.</dd>
@@ -390,7 +392,7 @@ mean(gene_lengths)                         # 3. lowercase g, to match the name
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Wickham H, Cetinkaya-Rundel M, Grolemund G. <em>R for Data Science</em>, 2nd ed. (2023), chapter 6 "Workflow: scripts and projects". <a href="https://r4ds.hadley.nz/workflow-scripts.html" target="_blank" rel="noopener">r4ds.hadley.nz</a></li>
                     <li>Posit. "Using RStudio Projects" (support article). <a href="https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects" target="_blank" rel="noopener">support.posit.co</a></li>

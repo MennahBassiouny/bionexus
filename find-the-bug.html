@@ -134,8 +134,10 @@
         .bug-tag { display: inline-block; margin-top: 16px; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: #b45309; background: rgba(245,158,11,0.12); padding: 4px 12px; border-radius: 20px; }
         pre.output { background: #0b1220; color: #cbd5e1; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -173,19 +175,19 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>Each bug comes from a different part of the roadmap. You will get the most from one after you have done its lesson, but you can try any of them now.</li>
                         <li>The Python and R boxes run in your browser. Read the code, predict what is wrong, then fix it and press Run.</li>
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end you will be able to: spot six of the most common silent errors in bioinformatics analyses; explain why each one gives a wrong answer without any error message; and use simple checks (looking at the data, a known result, or a count) to catch them in your own work.</p>
             </div>
 
@@ -372,7 +374,7 @@ nrow(sig)          <span class="c"># 5488</span></pre>
                 </div>
 
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Cock PJ, Fields CJ, Goto N, Heuer ML, Rice PM. The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants. <em>Nucleic Acids Res</em> 38: 1767-1771, 2010. <a href="https://doi.org/10.1093/nar/gkp1137" target="_blank" rel="noopener">doi:10.1093/nar/gkp1137</a></li>
                         <li>Quinlan AR, Hall IM. BEDTools: a flexible suite of utilities for comparing genomic features. <em>Bioinformatics</em> 26: 841-842, 2010. <a href="https://doi.org/10.1093/bioinformatics/btq033" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btq033</a></li>

@@ -78,8 +78,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -110,17 +112,17 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Be comfortable with the basics first. See <a href="python-basics.html" target="_blank" rel="noopener">Python: Level 1 (Basics)</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: write list comprehensions; use enumerate and zip for cleaner loops; handle errors without crashing; and split your code into scripts and modules.</p>
             </div>
 
@@ -166,7 +168,7 @@ gc = {s: round((s.count("G") + s.count("C")) / len(s) * 100, 1) for s in seqs}
 print(lengths)
 print(gc)
 </script></div>
-            <div class="why"><h4>When NOT to use one</h4><p>Comprehensions are lovely for simple "make a new list from an old one" tasks. If the logic needs several steps or a few <code class="inline">if</code> branches, a normal loop is clearer. Clear beats clever every time.</p></div>
+            <div class="why"><h4 aria-level="3">When NOT to use one</h4><p>Comprehensions are lovely for simple "make a new list from an old one" tasks. If the logic needs several steps or a few <code class="inline">if</code> branches, a normal loop is clearer. Clear beats clever every time.</p></div>
 
             <h2>2. enumerate and zip: cleaner loops</h2>
             <p>Two small built-ins remove a lot of clumsy code. <code class="inline">enumerate</code> gives you a counter while you loop; <code class="inline">zip</code> walks two lists together.</p>
@@ -237,7 +239,7 @@ def safe_gc(seq):
 print(safe_gc("GGCC"))   # 100.0
 print(safe_gc(""))       # None instead of a crash
 </script></div>
-            <div class="why"><h4>Catch only what you expect</h4><p>Name the specific error (here, <code class="inline">ZeroDivisionError</code>) rather than catching everything. A blanket <code class="inline">except</code> can hide real bugs by swallowing errors you actually wanted to see.</p></div>
+            <div class="why"><h4 aria-level="3">Catch only what you expect</h4><p>Name the specific error (here, <code class="inline">ZeroDivisionError</code>) rather than catching everything. A blanket <code class="inline">except</code> can hide real bugs by swallowing errors you actually wanted to see.</p></div>
 
             <h2>5. Functions that go a little further</h2>
             <p>You can give a function <strong>default values</strong> so callers can skip arguments, and you can <strong>return more than one value</strong> at once.</p>
@@ -263,7 +265,7 @@ print(seq_stats("ATGGGC", gc_only=True))   # just 66.7
 <span class="c"># file: analyze.py  (uses the helper)</span>
 <span class="k">from</span> seqtools <span class="k">import</span> gc_content
 <span class="k">print</span>(gc_content(<span class="s">"ATGGGC"</span>))</pre>
-            <div class="why"><h4>Why bother</h4><p>One giant file is hard to read and reuse. Small modules let you write a function once and use it in every analysis, which is exactly how real bioinformatics code is organised. When you are ready to work this way, the <a href="graduate-to-pro-setup.html" target="_blank" rel="noopener">graduate-to-a-pro-setup</a> lesson shows you how.</p></div>
+            <div class="why"><h4 aria-level="3">Why bother</h4><p>One giant file is hard to read and reuse. Small modules let you write a function once and use it in every analysis, which is exactly how real bioinformatics code is organised. When you are ready to work this way, the <a href="graduate-to-pro-setup.html" target="_blank" rel="noopener">graduate-to-a-pro-setup</a> lesson shows you how.</p></div>
 
             <h2>7. Pattern matching with regular expressions <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
             <p>A <strong>regular expression</strong> ("regex") is a mini-language for finding patterns in text, perfect for pulling IDs or coordinates out of messy headers. The <code class="inline">re</code> module is built in, so this runs as-is.</p>
@@ -386,7 +388,7 @@ print(first_base(""))       # empty</pre></details>
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Python Software Foundation. The Python Tutorial, chapter 8: Errors and exceptions. <a href="https://docs.python.org/3/tutorial/errors.html" target="_blank" rel="noopener">docs.python.org</a></li>
                     <li>Python Software Foundation. The Python Tutorial, chapter 6: Modules, and section 5.1.3: List comprehensions. <a href="https://docs.python.org/3/tutorial/datastructures.html#list-comprehensions" target="_blank" rel="noopener">docs.python.org</a></li>

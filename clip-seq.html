@@ -118,8 +118,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -157,12 +159,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've done <a href="rna-structure.html" target="_blank" rel="noopener">RNA structure</a>, and you're comfortable with the NGS workflow (alignment, peaks) from <a href="learn.html#track-2" target="_blank" rel="noopener">Track 2</a>.</li>
                         <li>This is a methods-and-analysis lesson. Knowing how ChIP-seq works helps, since CLIP is its RNA cousin.</li>
@@ -170,7 +172,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain what question CLIP-seq answers about RNA-protein binding, describe why UV crosslinking is the central trick, distinguish HITS-CLIP, PAR-CLIP, iCLIP, and eCLIP, and follow the path from reads to called binding sites.</p>
             </div>
 
@@ -208,7 +210,7 @@
                 <p>The trend across these is toward <strong>single-nucleotide resolution</strong> and <strong>proper controls</strong>. PAR-CLIP's T→C transitions and iCLIP/eCLIP's truncation sites both locate the contact far more precisely than a broad read pile-up.</p>
 
                 <div class="warn">
-                    <h4>⚠️ Controls and pitfalls decide whether you can trust a peak</h4>
+                    <h4 aria-level="3">⚠️ Controls and pitfalls decide whether you can trust a peak</h4>
                     <p>CLIP is powerful but prone to artefacts. Watch for: <strong>antibody specificity</strong> (a bad antibody pulls down the wrong protein), contamination by hyper-abundant RNAs (rRNA, snRNAs), a <strong>uridine crosslinking bias</strong> that makes U-rich regions over-represented, and PCR duplicates (which is why libraries use <strong>UMIs</strong> to deduplicate). The single most important safeguard is a <strong>control</strong>: eCLIP's size-matched input lets you ask "is this peak really enriched over background?" Always demand reproducibility across replicates too.</p>
                 </div>
 
@@ -223,7 +225,7 @@
                 <p>The end products are a BED file of high-confidence binding sites, an enriched sequence motif (the protein's preferred sequence or structure), and the set of transcripts it regulates, which you can then cross with expression data.</p>
 
                 <div class="levelup">
-                    <h4>🔶 Level up: real data and tools</h4>
+                    <h4 aria-level="3">🔶 Level up: real data and tools</h4>
                     <p>The <a href="https://www.encodeproject.org/" target="_blank" rel="noopener">ENCODE project</a> released eCLIP data for about 150 human RBPs in two cell lines, all public. Common peak callers include <strong>CLIPper</strong> (eCLIP), <strong>PureCLIP</strong>, <strong>PARpipe/PARalyzer</strong> (PAR-CLIP), and <strong>Piranha</strong>. A great exercise once you finish this track: download one RBP's eCLIP data and reproduce its known binding motif.</p>
                 </div>
 
@@ -271,7 +273,7 @@
                     <div class="quiz-explain"><strong>Exactly.</strong> Abundant and structured RNAs show up even without specific binding. The size-matched input captures that background, and peaks are called as enrichment of the IP over the input rather than from raw IP coverage alone.</div>
                 </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Licatalosi DD, Mele A, Fak JJ, et al. HITS-CLIP yields genome-wide insights into brain alternative RNA processing. <em>Nature</em> 456: 464-469, 2008. <a href="https://doi.org/10.1038/nature07488" target="_blank" rel="noopener">doi:10.1038/nature07488</a></li>
                         <li>Hafner M, Landthaler M, Burger L, et al. Transcriptome-wide identification of RNA-binding protein and microRNA target sites by PAR-CLIP. <em>Cell</em> 141: 129-141, 2010. <a href="https://doi.org/10.1016/j.cell.2010.03.009" target="_blank" rel="noopener">doi:10.1016/j.cell.2010.03.009</a></li>

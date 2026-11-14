@@ -113,8 +113,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -152,12 +154,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>A little command-line comfort helps. New to it? Do the <a href="bash-basics.html" target="_blank" rel="noopener">Command-line basics</a> lesson first.</li>
                         <li>You'll make a free <a href="https://github.com/" target="_blank" rel="noopener">GitHub account</a> in this lesson.</li>
@@ -165,7 +167,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: run the everyday Git loop (init, add, commit) to snapshot your work, write clear commit messages, create a repository on GitHub, and push your code online so collaborators and employers can see it.</p>
             </div>
 
@@ -174,7 +176,7 @@
                 <p><strong>Version control</strong> fixes this. It keeps a complete, labelled history of your project, so you can see exactly what changed and when, go back to any earlier version, and never lose work. For science specifically it does something even more important: it makes your analysis <strong>reproducible</strong>. Anyone (including you, six months later) can see precisely which version of the code produced a result.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Version control</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Version control</h4>
                     <p><strong>Version control</strong> is a system that records changes to files over time so you can recall any earlier version. Instead of saving copies by hand, you take labelled "snapshots" as you go. The tool that does this for code, almost universally, is <strong>Git</strong>.</p>
                 </div>
 
@@ -187,7 +189,7 @@
                 <p>An analogy: Git is like the "track changes" and save-history feature built into your computer. GitHub is like Google Drive, the cloud you sync those files to so others can see them. You can use Git without GitHub, but together they're how modern science and software get done.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Repository (repo)</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Repository (repo)</h4>
                     <p>A <strong>repository</strong>, or <strong>repo</strong>, is just a project folder that Git is tracking. It holds your files plus the entire history of changes. A repo can live only on your computer, or be pushed up to GitHub so it has an online home too.</p>
                 </div>
 
@@ -206,7 +208,7 @@
                 <p>That's the loop. <code class="inline">add</code> chooses what goes in the snapshot, <code class="inline">commit</code> saves it with a short message describing the change, and <code class="inline">push</code> sends it to GitHub. Do this whenever you finish a meaningful chunk of work.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Commit</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Commit</h4>
                     <p>A <strong>commit</strong> is one saved snapshot of your project at a moment in time, with a short message saying what changed. Your project's history is just a chain of commits. Good commit messages ("Fix sample-order bug in metadata") are a gift to your future self.</p>
                 </div>
 
@@ -221,7 +223,7 @@
                 <p>After that first setup, your daily life is just the add / commit / push loop from step 2.</p>
 
                 <div class="warn">
-                    <h4>⚠️ Never commit large data or secrets</h4>
+                    <h4 aria-level="3">⚠️ Never commit large data or secrets</h4>
                     <p>Git is for code and small text files, not multi-gigabyte FASTQ files or private passwords and API keys. Keep big data out (store it elsewhere and fetch by accession) and list sensitive files in a <code class="inline">.gitignore</code> file so Git skips them. .gitignore only works on files Git is not tracking yet, and anything once committed stays in the history. A leaked key on a public repo is a real and common mistake: if it happens, revoke the key immediately.</p>
                 </div>
 
@@ -229,7 +231,7 @@
                 <p>Here's the part that's easy to miss: <strong>a GitHub profile is a scientist's portfolio.</strong> When you apply for a bioinformatics role, a public repo with a clean RNA-seq analysis and a clear README says more than any line on a CV. It proves you can do the work, write readable code, and document it. Every project you finished in the earlier tracks belongs on your GitHub. We'll build that portfolio deliberately in a later lesson.</p>
 
                 <div class="levelup">
-                    <h4>🔶 Level up: branches and pull requests</h4>
+                    <h4 aria-level="3">🔶 Level up: branches and pull requests</h4>
                     <p>Once the basic loop is second nature, the next ideas are <strong>branches</strong> (a safe parallel copy to try changes without touching your working version) and <strong>pull requests</strong> (proposing those changes back, the way teams review each other's work). You don't need them on day one, but they're how collaboration happens. GitHub's own <a href="https://docs.github.com/en/get-started/using-github/hello-world" target="_blank" rel="noopener">Hello World guide</a> walks through them gently.</p>
                 </div>
 
@@ -271,7 +273,7 @@
                     <div class="quiz-explain"><strong>Right.</strong> A branch lets you experiment in a parallel copy without disturbing your main work, and a pull request is how those changes are proposed and reviewed before merging. This is the standard collaboration workflow.</div>
                 </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Blischak JD, Davenport ER, Wilson G. A quick introduction to version control with Git and GitHub. <em>PLoS Comput Biol</em> 12: e1004668, 2016. <a href="https://doi.org/10.1371/journal.pcbi.1004668" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1004668</a></li>
                         <li>Perez-Riverol Y, Gatto L, Wang R, et al. Ten simple rules for taking advantage of Git and GitHub. <em>PLoS Comput Biol</em> 12: e1004947, 2016. <a href="https://doi.org/10.1371/journal.pcbi.1004947" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1004947</a></li>

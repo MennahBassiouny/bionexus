@@ -81,8 +81,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -114,24 +116,24 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">No prior coding needed. Just a computer and a web browser.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: set up a Linux-style shell on your operating system; open the terminal; and confirm it is working.</p>
             </div>
 
             <h2>Why the command line at all?</h2>
             <p>It looks intimidating - a blank screen waiting for typed commands - but here's the truth: most bioinformatics tools (aligners, variant callers, quality-control programs) have <em>no buttons</em>. They run from the command line, full stop. Learning <strong>Bash</strong> (the most common shell) isn't optional flair; it's the doorway to the entire toolkit. The good news: you only need a couple dozen commands to be genuinely productive.</p>
 
-            <div class="why"><h4>Decode the jargon: shell, terminal, Bash</h4><p>The <strong>terminal</strong> is the window. The <strong>shell</strong> is the program inside it that reads your commands. <strong>Bash</strong> is a specific, very common shell. People use the words loosely, but that's the relationship: terminal (window) → shell (interpreter) → Bash (one kind of shell).</p></div>
+            <div class="why"><h4 aria-level="3">Decode the jargon: shell, terminal, Bash</h4><p>The <strong>terminal</strong> is the window. The <strong>shell</strong> is the program inside it that reads your commands. <strong>Bash</strong> is a specific, very common shell. People use the words loosely, but that's the relationship: terminal (window) → shell (interpreter) → Bash (one kind of shell).</p></div>
 
             <div class="os-block">
                 <h3>🍎 <span>macOS</span> <span class="os-badge">Already installed</span></h3>
@@ -168,7 +170,7 @@ whoami                       <span class="c"># your username</span></pre>
             <p>If each command responds, your terminal is ready. 🎉</p>
 
             <div class="checkpoint">
-                <h4>✅ You're ready when…</h4>
+                <h4 aria-level="3">✅ You're ready when…</h4>
                 <p><code class="inline">echo "Hello"</code> prints <code class="inline">Hello</code>, and <code class="inline">pwd</code> shows a folder path. That's all you need for the basics lesson.</p>
             </div>
 
@@ -214,7 +216,7 @@ whoami                       <span class="c"># your username</span></pre>
                 </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Perkel JM. Five reasons why researchers should learn to love the command line. <em>Nature</em> 590: 173-174, 2021. <a href="https://doi.org/10.1038/d41586-021-00263-0" target="_blank" rel="noopener">doi:10.1038/d41586-021-00263-0</a></li>
                 </ol>

@@ -81,8 +81,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -114,17 +116,17 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">No prior coding needed. Just a computer and a web browser.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: install R from CRAN; install the RStudio Desktop workspace; confirm both are working; and install your first packages.</p>
             </div>
 
@@ -136,7 +138,7 @@
             <h2>Two pieces, and why</h2>
             <p>You install <strong>two</strong> things. <strong>R</strong> is the actual language and engine. <strong>RStudio</strong> is the workspace you'll spend your time in - it gives you a code editor, your plots, your data, and your console all in one window. R is the car; RStudio is the comfortable dashboard. Install R first, then RStudio.</p>
 
-            <div class="why"><h4>Why R for bioinformatics?</h4><p>R was built by statisticians, and the gold-standard tools for RNA-seq, differential expression, and genomics - DESeq2, edgeR, limma, and the whole Bioconductor project - live in R. R is the standard home for expression analysis, so learning it opens all of those tools to you.</p></div>
+            <div class="why"><h4 aria-level="3">Why R for bioinformatics?</h4><p>R was built by statisticians, and the gold-standard tools for RNA-seq, differential expression, and genomics - DESeq2, edgeR, limma, and the whole Bioconductor project - live in R. R is the standard home for expression analysis, so learning it opens all of those tools to you.</p></div>
 
             <h2>Step 1 - Install R (from CRAN)</h2>
             <p>R is distributed by <strong>CRAN</strong> (the Comprehensive R Archive Network) at <code class="inline">cran.r-project.org</code>. Pick your OS:</p>
@@ -187,7 +189,7 @@ sudo apt install r-base</pre>
 <span class="k">install.packages</span>(<span class="s">"palmerpenguins"</span>)</pre>
             <p>This downloads from CRAN and can take a few minutes the first time - that's normal. If R asks to use a <strong>personal library</strong>, say yes. If it asks whether to <strong>install from sources</strong> packages that need compilation, say <strong>no</strong> (compiling needs extra tools, such as Rtools on Windows).</p>
 
-            <div class="why"><h4>Decode the jargon: Bioconductor</h4><p>CRAN is R's general package store. <strong>Bioconductor</strong> is a second store dedicated to biology - it's where DESeq2 and friends live. You install from it a little differently: first <code class="inline">install.packages("BiocManager")</code> once, then <code class="inline">BiocManager::install("DESeq2")</code>. You don't need it yet, but now the name won't surprise you when it shows up in Track 3.</p></div>
+            <div class="why"><h4 aria-level="3">Decode the jargon: Bioconductor</h4><p>CRAN is R's general package store. <strong>Bioconductor</strong> is a second store dedicated to biology - it's where DESeq2 and friends live. You install from it a little differently: first <code class="inline">install.packages("BiocManager")</code> once, then <code class="inline">BiocManager::install("DESeq2")</code>. You don't need it yet, but now the name won't surprise you when it shows up in Track 3.</p></div>
 
             <div class="checkpoint">
                 <h4>✅ You're ready when…</h4>
@@ -237,7 +239,7 @@ sudo apt install r-base</pre>
                 </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>CRAN. R for macOS (arm64 and Intel builds, system requirements). <a href="https://mac.r-project.org/bin/macosx/" target="_blank" rel="noopener">mac.r-project.org</a></li>
                     <li>Posit. RStudio User Guide: Download RStudio. <a href="https://docs.posit.co/ide/user/download.html" target="_blank" rel="noopener">docs.posit.co</a></li>

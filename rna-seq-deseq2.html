@@ -118,8 +118,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -157,12 +159,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've done the flagship <a href="rna-seq-first-analysis.html" target="_blank" rel="noopener">Your First RNA-seq Analysis</a>, so the five-step workflow is familiar.</li>
                         <li>You can read a little R. (New to R? Start with the <a href="learn.html#foundations" target="_blank" rel="noopener">R series</a>.)</li>
@@ -170,7 +172,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: load a count matrix and sample table into DESeq2 in R, run the standard differential-expression workflow with a design formula (such as ~ condition, or ~ cell + dex for a paired design), and interpret the results table including log2 fold change and adjusted p-values.</p>
             </div>
 
@@ -194,7 +196,7 @@
                 <p>This says: "test the effect of <code class="inline">dex</code> while holding <code class="inline">cell</code> (the donor) constant." The same idea works for a processing batch, for example <code class="inline">~ batch + condition</code>. (The order of the terms does not change the estimates. By convention the variable you care about goes last, because <code class="inline">results()</code> reports the last variable by default.) A simple rule worth memorizing: <strong>the variable you actually want to test goes last</strong>, and anything you want to control for (batch, sex, age) goes before it.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Batch effect</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Batch effect</h4>
                     <p>A "batch" is simply a group of samples that were handled together: prepared on the same day, by the same person, or on the same machine. When different batches pick up small technical differences that have nothing to do with the biology, that is a <strong>batch effect</strong>. Left alone it can masquerade as a real result, so adding <code class="inline">batch</code> to the design tells DESeq2 to subtract those technical differences out before testing your real question.</p>
                 </div>
 
@@ -210,7 +212,7 @@
                 <p><strong>Move 3: Model and test.</strong> DESeq2 fits a negative binomial model (the right shape for count data) and, for each gene, runs a statistical test asking whether the difference between groups is bigger than the noise. Out comes a <code class="inline">log2FoldChange</code>, a <code class="inline">pvalue</code>, and an adjusted p-value.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Dispersion</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Dispersion</h4>
                     <p>A number that captures how much a gene's counts bounce around between replicates of the same group, beyond what you'd expect by chance. High dispersion means a noisy gene, so a larger difference is needed before DESeq2 will call it significant. Sharing dispersion information across genes is one of DESeq2's superpowers.</p>
                 </div>
 
@@ -278,7 +280,7 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                 <pre>write.csv(as.data.frame(res), <span class="s">"deseq2_results.csv"</span>)</pre>
 
                 <div class="levelup">
-                    <h4>🔶 Try this: test the design</h4>
+                    <h4 aria-level="3">🔶 Try this: test the design</h4>
                     <p>Change the design to <code class="inline">~ dex</code> and rerun steps 3 and 4. You should lose roughly a third of your significant genes (about 2,700 instead of about 4,000). Why? Without <code class="inline">cell</code>, the natural differences between the 4 donors are treated as noise, which weakens the evidence for every gene. Then look at <code class="inline">resultsNames(dds)</code> for both designs and spot the difference.</p>
                     <p><a href="resources.html" target="_blank" rel="noopener">Find dataset links in Resources →</a></p>
                 </div>
@@ -326,7 +328,7 @@ head(res_shrunk[order(res_shrunk$padj), ], 10)</pre>
                     <div class="quiz-explain">DESeq2 models count noise directly and estimates its own size factors to normalize for depth. Feeding it pre-normalized values like TPM breaks the assumptions its negative-binomial model relies on.</div>
                 </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15: 550, 2014. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
                         <li>Anders S, Huber W. Differential expression analysis for sequence count data. <em>Genome Biology</em> 11: R106, 2010. (DESeq; median-of-ratios size factors) <a href="https://doi.org/10.1186/gb-2010-11-10-r106" target="_blank" rel="noopener">doi:10.1186/gb-2010-11-10-r106</a></li>

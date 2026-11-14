@@ -93,8 +93,10 @@
         .sbx-wrap { margin: 0 0 1.2em; }
         .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -125,17 +127,17 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Have a working terminal first. If not, work through <a href="bash-install.html" target="_blank" rel="noopener">Setting Up a Terminal</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: know where you are and move around the filesystem; create and handle files and folders; look inside and search files; and combine commands with the pipe.</p>
             </div>
 
@@ -182,7 +184,7 @@
             </figure>
             <p>Anything after a <code class="inline">#</code> is a comment; commands are <strong>case sensitive</strong>, so type them in lowercase (<code class="inline">ls</code>, not <code class="inline">LS</code>). On a Mac, run <code class="inline">setopt interactivecomments</code> once so lines with <code class="inline">#</code> comments work.</p>
 
-            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">Practise right here</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">Every code box on this page has a <strong>Run</strong> button that sends it to a real Linux terminal running in your browser. Nothing to install, no account. Practice files are already loaded: <code class="inline">seqs.fasta</code>, <code class="inline">genes.txt</code>, <code class="inline">names.txt</code>, <code class="inline">reads.txt</code> and <code class="inline">file.txt</code>. You can also type your own commands in the terminal. (Press <code class="inline">q</code> to leave <code class="inline">less</code>.)</p></div>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;" aria-level="3">Practise right here</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">Every code box on this page has a <strong>Run</strong> button that sends it to a real Linux terminal running in your browser. Nothing to install, no account. Practice files are already loaded: <code class="inline">seqs.fasta</code>, <code class="inline">genes.txt</code>, <code class="inline">names.txt</code>, <code class="inline">reads.txt</code> and <code class="inline">file.txt</code>. You can also type your own commands in the terminal. (Press <code class="inline">q</code> to leave <code class="inline">less</code>.)</p></div>
 
             <h2>1. Knowing where you are and moving around</h2>
             <p>The terminal always sits "inside" one folder. Three commands are your eyes and feet.</p>
@@ -216,7 +218,7 @@ touch notes.txt        <span class="c"># create an empty file</span>
 cp notes.txt copy.txt  <span class="c"># copy</span>
 mv copy.txt final.txt  <span class="c"># move OR rename</span>
 rm final.txt           <span class="c"># remove (careful: no recycle bin!)</span></pre></div>
-            <div class="why"><h4>rm is forever</h4><p>The command line has no trash can. <code class="inline">rm</code> deletes immediately and permanently. Read the line twice before you run it, especially before <code class="inline">rm -r</code> (which deletes whole folders).</p></div>
+            <div class="why"><h4 aria-level="3">rm is forever</h4><p>The command line has no trash can. <code class="inline">rm</code> deletes immediately and permanently. Read the line twice before you run it, especially before <code class="inline">rm -r</code> (which deletes whole folders).</p></div>
 
             <h2>3. Looking inside files</h2>
             <div class="sbx-wrap"><pre data-sandboxbio>cat file.txt       <span class="c"># dump the whole file to the screen</span>
@@ -232,7 +234,7 @@ grep -c <span class="s">"&gt;"</span> seqs.fasta   <span class="c"># COUNT lines
 wc -l file.txt           <span class="c"># count lines in a file</span>
 sort names.txt           <span class="c"># sort lines alphabetically</span>
 sort names.txt | uniq    <span class="c"># sort, then remove duplicates</span></pre></div>
-            <div class="why"><h4>Why grep is a bioinformatics superpower</h4><p>FASTA files mark each sequence with a header line starting <code class="inline">&gt;</code>. So <code class="inline">grep -c "&gt;"</code> instantly counts how many sequences are in a file of any size. Tiny command, huge time saver.</p></div>
+            <div class="why"><h4 aria-level="3">Why grep is a bioinformatics superpower</h4><p>FASTA files mark each sequence with a header line starting <code class="inline">&gt;</code>. So <code class="inline">grep -c "&gt;"</code> instantly counts how many sequences are in a file of any size. Tiny command, huge time saver.</p></div>
 
             <h2>5. The pipe: the big idea</h2>
             <p>This is the concept that makes the command line powerful. The <strong>pipe</strong> <code class="inline">|</code> takes the output of one command and feeds it straight into the next, so small tools combine into something bigger.</p>
@@ -259,7 +261,7 @@ grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class=
             <div class="tryit"><strong>Try it:</strong> make a file with <code class="inline">echo "ATGC" &gt; dna.txt</code>, then read it back with <code class="inline">cat dna.txt</code>. You just created and read a file entirely from the keyboard.</div>
 
             <div class="glossary">
-                <h4>Every key word, in plain English</h4>
+                <h4 aria-level="3">Every key word, in plain English</h4>
                 <dl>
                     <dt>command line / terminal / shell</dt><dd>the place where you type text commands.</dd>
                     <dt>command</dt><dd>the word that says what to do (<code class="inline">ls</code>, <code class="inline">cd</code>, <code class="inline">grep</code>).</dd>
@@ -289,7 +291,7 @@ grep <span class="s">"&gt;"</span> seqs.fasta &gt;&gt; headers.txt  <span class=
             </table></div>
 
             <div class="why" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px 20px; margin:22px 0;">
-                <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;">Check yourself</h4>
+                <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;" aria-level="3">Check yourself</h4>
                 <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">Run each one in the practice terminal (or your own) and compare.</p>
                 <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">grep -c "&gt;" seqs.fasta</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">4 (the practice file has four sequences)</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">echo "ATGC" &gt; dna.txt &amp;&amp; cat dna.txt</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">ATGC</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">wc -l &lt; reads.txt</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">8 (two reads, four lines each)</td></tr></table></div>
             <h2>Practice exercises</h2>
@@ -353,7 +355,7 @@ cat seqs.fasta | grep "&gt;" | wc -l</pre></div></details>
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Cock PJ, Fields CJ, Goto N, Heuer ML, Rice PM. The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants. <em>Nucleic Acids Research</em> 38: 1767-1771, 2010. (why FASTQ has four lines per read) <a href="https://doi.org/10.1093/nar/gkp1137" target="_blank" rel="noopener">doi:10.1093/nar/gkp1137</a></li>
                 </ol>

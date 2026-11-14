@@ -113,8 +113,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -152,12 +154,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You know what RNA is and the central dogma. New? See <a href="intro-biology-for-coders.html" target="_blank" rel="noopener">the biology a coder needs</a>.</li>
                         <li>This is the first lesson of the advanced RNA track. No coding required here, but later lessons assume comfort with the command line and RNA-seq.</li>
@@ -165,7 +167,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: describe how single-stranded RNA folds into secondary and tertiary structure, explain why structure is a functional regulatory layer rather than decoration, outline how tools predict structure from sequence, and recognize how experiments measure structure in living cells.</p>
             </div>
 
@@ -174,7 +176,7 @@
                 <p>Stack the secondary structure into three dimensions and you get the <strong>tertiary structure</strong>, the actual folded shape, sometimes locked together by long-range contacts called pseudoknots. The classic mental image is the cloverleaf of a tRNA folding into an L shape, but every mRNA has structure too, especially in its untranslated regions (UTRs).</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Secondary structure</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Secondary structure</h4>
                     <p>The set of base pairs an RNA forms with itself: which nucleotide pairs with which. It is usually drawn in 2D (stems and loops) and is the level most computational tools predict. The full 3D fold is the tertiary structure.</p>
                 </div>
 
@@ -198,7 +200,7 @@ GGGAAACCC
 (((...)))</pre>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Minimum free energy (MFE)</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Minimum free energy (MFE)</h4>
                     <p>The single predicted structure with the lowest folding free energy, taken as the most thermodynamically stable, and therefore the most probable, fold. Reported in kcal/mol: more negative means more stable.</p>
                 </div>
 
@@ -262,7 +264,7 @@ GGGAAACCC
                     <div class="quiz-explain"><strong>Right.</strong> RNA tolerates the non-Watson-Crick G-U wobble pair, which is common and reasonably stable inside helices. Folding algorithms include it, so real stems often contain G-U pairs alongside A-U and G-C pairs.</div>
                 </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Zuker M, Stiegler P. Optimal computer folding of large RNA sequences using thermodynamics and auxiliary information. <em>Nucleic Acids Res</em> 9: 133-148, 1981. <a href="https://doi.org/10.1093/nar/9.1.133" target="_blank" rel="noopener">doi:10.1093/nar/9.1.133</a></li>
                         <li>Lorenz R, Bernhart SH, Höner zu Siederdissen C, et al. ViennaRNA Package 2.0. <em>Algorithms Mol Biol</em> 6: 26, 2011. <a href="https://doi.org/10.1186/1748-7188-6-26" target="_blank" rel="noopener">doi:10.1186/1748-7188-6-26</a></li>

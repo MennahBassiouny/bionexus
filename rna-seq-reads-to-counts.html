@@ -123,8 +123,10 @@
         .lesson-body .refs li { font-size:0.9rem; color:var(--text-gray); margin-bottom:7px; line-height:1.5; }
         .lesson-body .refs .reviewed { font-size:0.82rem; color:var(--text-gray); margin-top:12px; font-style:italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -161,18 +163,18 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">You understand where RNA-seq fits, for example from <a href="rna-seq-big-picture.html" target="_blank" rel="noopener">The RNA-seq Big Picture</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain what a "count" is and where the count matrix that DESeq2 needs actually comes from, describe the two standard routes (align-then-count, and direct quantification), and say why raw counts, not TPM, go into differential-expression analysis.</p>
             </div>
 
@@ -205,7 +207,7 @@
                 <figcaption>Each read is assigned to the gene it overlaps, and the tallies become one column (one sample) of the count matrix.</figcaption>
             </figure>
             <div class="jargon">
-                <h4><span>Decode the jargon</span>Annotation (GTF/GFF)</h4>
+                <h4 aria-level="3"><span>Decode the jargon</span>Annotation (GTF/GFF)</h4>
                 <p>An <strong>annotation</strong> file (usually a <code class="inline">.gtf</code> or <code class="inline">.gff</code>) is the map that lists every gene and exon and where it sits on the genome. Counting needs it to know which gene a read belongs to. You download it from Ensembl or GENCODE for your species, the same place you get the reference genome.</p>
             </div>
 
@@ -262,7 +264,7 @@ salmon quant -i salmon_index -l A -r sample1.fastq.gz -o sample1_quant
 
             <h2><span class="step-num">4</span>Why raw counts, not TPM, go into DESeq2</h2>
             <p>You will also see expression reported as <strong>TPM</strong>, <strong>CPM</strong>, or <strong>FPKM</strong>. These are <em>normalized</em> values, useful for rough, exploratory comparisons and plots (see the <a href="rna-seq-normalization.html" target="_blank" rel="noopener">normalization lesson</a> for their limits). but differential-expression tools like DESeq2 want the <strong>raw integer counts</strong>, because the statistical model needs to know the actual number of reads (the count size carries the uncertainty). DESeq2 does its own normalization internally. So: raw counts in, and let the tool normalize. (One exception in form, not in spirit: salmon gives <em>estimated</em> counts that are not whole numbers. Load those with <code class="inline">tximport</code> and <code class="inline">DESeqDataSetFromTximport()</code>, which handles them correctly.)</p>
-            <div class="why"><h4>The one-line rule</h4><p>Give DESeq2 <strong>raw counts</strong>. Use TPM/CPM only for visualization and quick comparisons, never as the input to differential testing.</p></div>
+            <div class="why"><h4 aria-level="3">The one-line rule</h4><p>Give DESeq2 <strong>raw counts</strong>. Use TPM/CPM only for visualization and quick comparisons, never as the input to differential testing.</p></div>
 
             <h2>Check your understanding</h2>
             <div class="quiz" data-question="Which route skips full genome alignment and matches reads straight against the transcriptome?">
@@ -297,7 +299,7 @@ salmon quant -i salmon_index -l A -r sample1.fastq.gz -o sample1_quant
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Liao Y, Smyth GK, Shi W. featureCounts: an efficient general purpose program for assigning sequence reads to genomic features. <em>Bioinformatics</em> 30: 923-930, 2014. <a href="https://doi.org/10.1093/bioinformatics/btt656" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btt656</a></li>
                     <li>Patro R, Duggal G, Love MI, Irizarry RA, Kingsford C. Salmon provides fast and bias-aware quantification of transcript expression. <em>Nature Methods</em> 14: 417-419, 2017. <a href="https://doi.org/10.1038/nmeth.4197" target="_blank" rel="noopener">doi:10.1038/nmeth.4197</a></li>

@@ -78,8 +78,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -110,17 +112,17 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Be comfortable with the basics first. See <a href="r-basics.html" target="_blank" rel="noopener">R: Level 1 (Basics)</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: select data precisely; use the apply family; write your own functions; read real data files; and reshape tables with the tidyverse.</p>
             </div>
 
@@ -140,7 +142,7 @@ expr["EGFR"]        # by name
 expr[expr > 10]       # by condition: keep values above 10
 names(expr[expr > 10])   # which genes are those?
 </script></div>
-            <div class="why"><h4>This is how filtering works under the hood</h4><p><code class="inline">expr &gt; 10</code> makes a TRUE/FALSE vector, and R keeps the positions marked TRUE. The tidyverse <code class="inline">filter()</code> you met is a friendlier wrapper around exactly this idea.</p></div>
+            <div class="why"><h4 aria-level="3">This is how filtering works under the hood</h4><p><code class="inline">expr &gt; 10</code> makes a TRUE/FALSE vector, and R keeps the positions marked TRUE. The tidyverse <code class="inline">filter()</code> you met is a friendlier wrapper around exactly this idea.</p></div>
 
             <h2>2. Matrices and lists: the other building blocks</h2>
             <p>A <strong>matrix</strong> is a grid of one type (think an expression matrix). A <strong>list</strong> can hold a mix of things (a number here, a vector there), which is how most R results are returned.</p>
@@ -152,7 +154,7 @@ res <- list(gene = "TP53", scores = c(2.1, 3.4))
 res$gene             # pull a named piece
 res[["scores"]][2]    # second score: 3.4
 </script></div>
-            <div class="why"><h4>Vector vs list, in one line</h4><p>A vector holds many values of the <em>same</em> type; a list holds <em>any</em> mix of objects. A data frame is really just a list of equal-length vectors, which is why <code class="inline">$</code> works on lists and data frames (but not on plain vectors).</p></div>
+            <div class="why"><h4 aria-level="3">Vector vs list, in one line</h4><p>A vector holds many values of the <em>same</em> type; a list holds <em>any</em> mix of objects. A data frame is really just a list of equal-length vectors, which is why <code class="inline">$</code> works on lists and data frames (but not on plain vectors).</p></div>
 
             <h2>3. Do something to every row, column, or item</h2>
             <figure class="viz">
@@ -192,7 +194,7 @@ zscore <- function(x) {
 
 zscore(c(2, 4, 6, 8))
 </script></div>
-            <div class="why"><h4>Why bother</h4><p>One tested function beats copy-pasting the same formula ten times. It is also the first step toward sharing code and building your own small toolkit.</p></div>
+            <div class="why"><h4 aria-level="3">Why bother</h4><p>One tested function beats copy-pasting the same formula ten times. It is also the first step toward sharing code and building your own small toolkit.</p></div>
 
             <h2>5. Reading your own data files</h2>
             <p>Most data arrives as a CSV or a tab-separated table. We host two small practice files for you, a gene-by-sample count table (<a href="practice-counts.csv" target="_blank" rel="noopener">practice-counts.csv</a>) and a sample sheet (<a href="practice-samples.csv" target="_blank" rel="noopener">practice-samples.csv</a>). The numbers are made up for practice, but the shape is exactly what a real RNA-seq experiment gives you. R can read them straight from the web:</p>
@@ -206,7 +208,7 @@ samples    # one row per sample: its condition and batch
             <pre>getwd()                              <span class="c"># where is R looking right now?</span>
 counts &lt;- read.csv(<span class="s">"counts.csv"</span>)     <span class="c"># a CSV inside that folder</span>
 tsv    &lt;- read.delim(<span class="s">"data.tsv"</span>)     <span class="c"># tab-separated: read.delim()</span></pre>
-            <div class="why"><h4>Skip setwd(), use an RStudio Project</h4><p>Older tutorials start with <code class="inline">setwd("C:/Users/me/...")</code>. That path only exists on one computer, so the script breaks for anyone else (and for you, once you move the folder). Instead, open your work as an <strong>RStudio Project</strong>: R then looks in the project folder automatically. <a href="r-first-steps.html" target="_blank" rel="noopener">First steps in RStudio</a> shows how in two minutes.</p></div>
+            <div class="why"><h4 aria-level="3">Skip setwd(), use an RStudio Project</h4><p>Older tutorials start with <code class="inline">setwd("C:/Users/me/...")</code>. That path only exists on one computer, so the script breaks for anyone else (and for you, once you move the folder). Instead, open your work as an <strong>RStudio Project</strong>: R then looks in the project folder automatically. <a href="r-first-steps.html" target="_blank" rel="noopener">First steps in RStudio</a> shows how in two minutes.</p></div>
             <div class="why"><h4>Excel files too</h4><p>For <code class="inline">.xlsx</code> files, install the <strong>readxl</strong> package once and use <code class="inline">readxl::read_excel("file.xlsx")</code>. Same idea, one extra package.</p></div>
 
             <h2>6. tidyverse, going deeper: joins and reshaping</h2>
@@ -252,7 +254,7 @@ long <- pivot_longer(counts, cols = -gene,
 joined <- left_join(long, samples, by = "sample")
 head(joined, 8)
 </script></div>
-            <div class="why"><h4>Why "long" data matters</h4><p>ggplot wants one row per observation. Reshaping a wide expression matrix into long form with <code class="inline">pivot_longer</code> is the step that unlocks faceted, grouped plots.</p></div>
+            <div class="why"><h4 aria-level="3">Why "long" data matters</h4><p>ggplot wants one row per observation. Reshaping a wide expression matrix into long form with <code class="inline">pivot_longer</code> is the step that unlocks faceted, grouped plots.</p></div>
 
             <h2>7. Cleaner plots: facets and themes <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
             <p>Once your data is long and joined, a small plot per group is one line away with <code class="inline">facet_wrap</code>, and you can colour by the sample information you just joined.</p>
@@ -280,7 +282,7 @@ ggplot(joined, aes(sample, count, fill = condition)) +
             <p>Everyday packages come from <strong>CRAN</strong> (<code class="inline">install.packages</code>). Most <em>genomics and RNA-seq</em> packages live in a separate home called <strong>Bioconductor</strong>, installed through one helper. Each Bioconductor release needs a matching R version (Bioconductor 3.23 needs R 4.6), so install the current R first.</p>
             <pre>install.packages(<span class="s">"BiocManager"</span>)      <span class="c"># the gateway, installed once</span>
 BiocManager::install(<span class="s">"DESeq2"</span>)        <span class="c"># then any Bioconductor package</span></pre>
-            <div class="why"><h4>Good to know</h4><p>DESeq2, edgeR, limma, and most RNA-seq and genomics tools are on Bioconductor, not CRAN. You will meet DESeq2 properly in the <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">RNA-seq differential expression</a> lesson.</p></div>
+            <div class="why"><h4 aria-level="3">Good to know</h4><p>DESeq2, edgeR, limma, and most RNA-seq and genomics tools are on Bioconductor, not CRAN. You will meet DESeq2 properly in the <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">RNA-seq differential expression</a> lesson.</p></div>
 
             <h2>Practice exercises</h2>
             <p>Type each into the scratchpad below or into RStudio, and run it. Peek at the solution only after you have tried.</p>
@@ -315,7 +317,7 @@ mean_or_zero(<span class="k">c</span>(<span class="o">2</span>, <span class="o">
 mean_or_zero(<span class="k">c</span>())             <span class="c"># 0</span></pre></details>
 
             <div class="why" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px 20px; margin:22px 0;">
-                <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;">Check yourself</h4>
+                <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;" aria-level="3">Check yourself</h4>
                 <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">Run each one in the scratchpad above (or in RStudio) and compare.</p>
                 <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">sapply(c("ATG","GG","ATATAT"), nchar)</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">3 2 6 (each labelled with its word)</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">apply(m, 1, sum)</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">12 9   (m from section 3)</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">mean_or_zero(c(2,4,6))<br><span style="font-family:'Work Sans',sans-serif; font-size:0.85em; color:var(--text-gray);">(after writing it in Exercise 3)</span></td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">4</td></tr></table></div>
             <h2>Check your understanding</h2>
@@ -356,7 +358,7 @@ mean_or_zero(<span class="k">c</span>())             <span class="c"># 0</span><
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Wickham H, Cetinkaya-Rundel M, Grolemund G. <em>R for Data Science</em>, 2nd ed. (2023), chapter 27 "A field guide to base R". <a href="https://r4ds.hadley.nz/base-R.html" target="_blank" rel="noopener">r4ds.hadley.nz</a></li>
                     <li>Wickham H, Cetinkaya-Rundel M, Grolemund G. <em>R for Data Science</em>, 2nd ed. (2023), chapter 5 "Data tidying". <a href="https://r4ds.hadley.nz/data-tidy.html" target="_blank" rel="noopener">r4ds.hadley.nz</a></li>

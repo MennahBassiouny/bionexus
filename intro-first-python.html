@@ -83,8 +83,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -116,17 +118,17 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Skim <a href="intro-computing-for-biologists.html" target="_blank" rel="noopener">The Computing a Biologist Needs</a> first. You need no setup: Python runs free in your browser or in Google Colab, including right on this page.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: store and display a DNA sequence in Python, measure its length, count each base, and compute its GC content with just ten lines of code.</p>
             </div>
 
@@ -173,7 +175,7 @@ T: 5</div>
 <span class="k">print</span>(<span class="s">"AT content:"</span>, <span class="k">round</span>(<span class="o">100</span> - gc, <span class="o">1</span>), <span class="s">"%"</span>)</pre>
             <div class="result">GC content: 50.0 %
 AT content: 50.0 %</div>
-            <div class="why"><h4>You just did real bioinformatics</h4><p>GC content is a genuine measure scientists use - GC-rich DNA generally needs more heat to separate its two strands, and GC content helps characterize genes and genomes. You computed it yourself, from scratch, in your first coding session. That's the entire field in miniature: take biological data, write a few lines, get a real answer.</p></div>
+            <div class="why"><h4 aria-level="3">You just did real bioinformatics</h4><p>GC content is a genuine measure scientists use - GC-rich DNA generally needs more heat to separate its two strands, and GC content helps characterize genes and genomes. You computed it yourself, from scratch, in your first coding session. That's the entire field in miniature: take biological data, write a few lines, get a real answer.</p></div>
 
 
             <h2>Make it yours - run it right here</h2>
@@ -227,7 +229,7 @@ print("AT content:", round(100 - gc, 1), "%")
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Ekmekci B, McAnany CE, Mura C. An introduction to programming for bioscientists: a Python-based primer. <em>PLoS Comput Biol</em> 12: e1004867, 2016. <a href="https://doi.org/10.1371/journal.pcbi.1004867" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1004867</a></li>
                     <li>Yakovchuk P, Protozanova E, Frank-Kamenetskii MD. Base-stacking and base-pairing contributions into thermal stability of the DNA double helix. <em>Nucleic Acids Res</em> 34: 564-574, 2006. <a href="https://doi.org/10.1093/nar/gkj454" target="_blank" rel="noopener">doi:10.1093/nar/gkj454</a></li>

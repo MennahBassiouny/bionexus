@@ -113,8 +113,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -152,12 +154,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You are comfortable running commands in a terminal. New to the shell? See the Foundations <a href="bash-basics.html" target="_blank" rel="noopener">Bash basics</a> lesson.</li>
                         <li>Helpful but not required: you have tried to install a bioinformatics tool and hit an error. That frustration is exactly what this lesson removes.</li>
@@ -165,7 +167,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain why dependency conflicts break bioinformatics setups, create and activate an isolated conda environment per project, install tools from bioconda, and capture an environment.yml file so your setup is reproducible and shareable.</p>
             </div>
 
@@ -184,7 +186,7 @@
                 <p><strong>Conda</strong> is the tool that creates these environments and installs packages into them. It is two things at once: a <em>package manager</em> (it fetches and installs software, resolving the web of dependencies for you) and an <em>environment manager</em> (it keeps those installs isolated).</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Environment</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Environment</h4>
                     <p>An isolated software workspace with its own interpreter and package versions. Activating an environment temporarily puts its tools first on your system path, so <code class="inline">python</code> or <code class="inline">samtools</code> means <em>that environment's</em> copy. Deactivate and you are back to normal. Think of it as a clean, labeled lab bench per project.</p>
                 </div>
 
@@ -213,7 +215,7 @@ conda config <span class="p">--set</span> channel_priority strict</pre>
                 <p>Install conda itself with <strong>Miniforge</strong>, which uses conda-forge by default. Anaconda's own <code class="inline">defaults</code> channel has license terms: it is free for individuals, universities and companies with 200 or fewer employees, but larger organizations need a paid plan. Bioconda no longer recommends adding <code class="inline">defaults</code>.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Channel</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Channel</h4>
                     <p>A repository conda installs packages from. <code class="inline">bioconda</code> is the bioinformatics channel; <code class="inline">conda-forge</code> is the broad community channel. "strict channel priority" tells conda to prefer higher-priority channels consistently, which avoids a class of subtle, hard-to-debug version conflicts.</p>
                 </div>
 
@@ -257,7 +259,7 @@ conda env create <span class="p">-f</span> environment.yml</pre>
                 <p>This one file is the difference between "trust me, it works" and a result a reviewer can actually rerun. Controlling the compute environment this way is one of the recognized <em>five pillars of computational reproducibility</em> (Ziemann et al., 2023), alongside version control, literate programming, data sharing, and documentation. When a journal or employer asks "is this reproducible?", a committed <code class="inline">environment.yml</code> is a large part of the answer.</p>
 
                 <div class="warn">
-                    <h4>⚠️ Use --from-history, and know the platform caveat</h4>
+                    <h4 aria-level="3">⚠️ Use --from-history, and know the platform caveat</h4>
                     <p>A plain <code class="inline">conda env export</code> writes every low-level dependency and pins them to your operating system's specific builds, which often will not recreate on a different OS. <code class="inline">--from-history</code> records only the packages you actually asked for, which is far more portable. But it keeps only the versions you typed and skips pip installs, so open the file and add versions (check them with <code class="inline">conda list</code>). For an exact, locked record, use a lockfile tool such as conda-lock or pixi. For bit-for-bit reproducibility across machines, the next step up is a container (Docker), where conda environments are commonly used as the base. See Nüst et al. (2020) on writing reproducible Dockerfiles.</p>
                 </div>
 
@@ -315,7 +317,7 @@ conda env create <span class="p">-f</span> environment.yml</pre>
                     <div class="quiz-explain"><strong>Right.</strong> Strict channel priority tells conda to resolve packages from higher-priority channels first instead of mixing builds across channels, which prevents the kind of inconsistent dependency mixes that cause silent breakage. It is part of the recommended bioconda plus conda-forge setup.</div>
                 </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Grüning B, et al. Bioconda: sustainable and comprehensive software distribution for the life sciences. <em>Nature Methods</em> 15, 475-476, 2018. <a href="https://doi.org/10.1038/s41592-018-0046-7" target="_blank" rel="noopener">doi:10.1038/s41592-018-0046-7</a></li>
                         <li>Ziemann M, Poulain P, Bora A. The five pillars of computational reproducibility: bioinformatics and beyond. <em>Briefings in Bioinformatics</em> 24(6), bbad375, 2023. <a href="https://doi.org/10.1093/bib/bbad375" target="_blank" rel="noopener">doi:10.1093/bib/bbad375</a></li>

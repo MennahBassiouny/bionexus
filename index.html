@@ -669,8 +669,10 @@
             }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <!-- Header Navigation -->
     <header>
         <div class="nav-container">
@@ -694,7 +696,7 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="main">
         <div class="container">
             <div class="hero-content">
                 <h1>Your Journey into Bioinformatics Starts Here</h1>
@@ -822,7 +824,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h4>BioNexus Hub</h4>
+                    <h4 aria-level="3">BioNexus Hub</h4>
                     <p style="color: rgba(255, 255, 255, 0.7); line-height: 1.7;">
                         Making bioinformatics learning simple, practical, and accessible to everyone.
                     </p>

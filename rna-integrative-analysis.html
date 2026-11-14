@@ -118,8 +118,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -157,12 +159,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've completed the rest of Track 4: <a href="rna-structure.html" target="_blank" rel="noopener">structure</a>, <a href="clip-seq.html" target="_blank" rel="noopener">CLIP-seq</a>, <a href="epitranscriptomics-m6a.html" target="_blank" rel="noopener">m6A biology</a>, and <a href="m6a-seq-analysis.html" target="_blank" rel="noopener">m6A-seq analysis</a>.</li>
                         <li>Comfort with RNA-seq / differential expression from <a href="learn.html#track-3" target="_blank" rel="noopener">Track 3</a>.</li>
@@ -170,7 +172,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain why each RNA method answers a different question, layer structure, binding, and modification evidence into a mechanism, and apply the reasoning rules that keep an integrative conclusion honest.</p>
             </div>
 
@@ -195,7 +197,7 @@
                 <p>Now you have a mechanism: <strong>m6A → bound by YTHDF2 → faster decay</strong>. No single dataset says this. The convergence of an orthogonal modification map, a perturbation, a binding map, and a half-life change is what makes it credible. This is the YTHDF2 decay pathway first described by Wang et al. (2014); later work suggests YTHDF1 and YTHDF3 share this role, which is a good reminder to keep testing your mechanism.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Direct vs indirect target</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Direct vs indirect target</h4>
                     <p>A <strong>direct target</strong> is a transcript the protein or mark acts on physically. An <strong>indirect</strong> change is a downstream knock-on effect. After knocking down a writer, hundreds of genes may change in expression, but only the ones that are <em>also</em> methylated and <em>also</em> bound by the relevant reader are credible direct targets. Intersecting datasets is how you separate the two.</p>
                 </div>
 
@@ -209,7 +211,7 @@
                 </ul>
 
                 <div class="warn">
-                    <h4>⚠️ The trap: a long differential-expression list is not a mechanism</h4>
+                    <h4 aria-level="3">⚠️ The trap: a long differential-expression list is not a mechanism</h4>
                     <p>After perturbing an RNA regulator, you will get a big list of changed genes. Most are downstream and indirect. Presenting that whole list as "targets" overstates the result. The defensible claim is the small set supported by binding <em>and</em> modification <em>and</em> the expected direction of change after perturbation. Less, but proven, beats more but unsupported.</p>
                 </div>
 
@@ -269,7 +271,7 @@
                     <div class="quiz-explain">Each layer has its own resolution: MeRIP about 100 nt, CLIP near single-base, RNA-seq per gene. Line them up at a level they all share and treat a single overlap as a lead, not proof.</div>
                 </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Wang X, Lu Z, Gomez A, et al. N6-methyladenosine-dependent regulation of messenger RNA stability. <em>Nature</em> 505: 117-120, 2014. <a href="https://doi.org/10.1038/nature12730" target="_blank" rel="noopener">doi:10.1038/nature12730</a></li>
                         <li>Wang X, Zhao BS, Roundtree IA, et al. N6-methyladenosine modulates messenger RNA translation efficiency. <em>Cell</em> 161: 1388-1399, 2015. <a href="https://doi.org/10.1016/j.cell.2015.05.014" target="_blank" rel="noopener">doi:10.1016/j.cell.2015.05.014</a></li>

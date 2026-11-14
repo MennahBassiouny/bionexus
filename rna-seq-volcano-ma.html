@@ -118,8 +118,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -157,19 +159,19 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've done <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">From Raw Counts to Differential Expression</a>, so you have a DESeq2 results table.</li>
                         <li>A little R, and a free Google account to run the Colab notebook.</li>
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: read a volcano plot and an MA plot, connect each axis to log2 fold change and statistical significance, and use these plots in R to spot the genes that change most between conditions.</p>
             </div>
 
@@ -219,7 +221,7 @@ res_shrunk &lt;- lfcShrink(dds, coef = <span class="s">"dex_trt_vs_untrt"</span>
                 <p>How to read it: each dot is a gene. The horizontal axis is the average expression level (low on the left, high on the right). The vertical axis is the log2 fold change. Dots far from the centre line changed a lot; DESeq2 colours the significant ones (we set <code class="inline">alpha = 0.05</code> so it uses the same padj cutoff as the volcano plot; its default is 0.1). A healthy MA plot, like the one airway gives you, is a fat cloud hugging the zero line, fanning out a little on the low-expression left side (where there's naturally more noise). If the whole cloud is tilted or curved away from zero, something may be off with normalization. More dots above than below (or the reverse) can simply be real biology.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Why "MA"?</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Why "MA"?</h4>
                     <p>The name comes from the early microarray days. <strong>M</strong> is the log ratio (the fold change, the vertical axis) and <strong>A</strong> is the average log intensity (the expression level, the horizontal axis). The name stuck even though we use it for sequencing now.</p>
                 </div>
 
@@ -257,7 +259,7 @@ text(top$log2FoldChange, -log10(top$padj), labels = top$symbol, pos = 3, cex = 0
                 <p>The dashed lines are your thresholds: above the horizontal line means <code class="inline">padj &lt; 0.05</code>, and outside the vertical lines means at least a two-fold change. In airway you should see about 1,000 purple genes (significant and at least two-fold), with steroid-response genes like DUSP1 among the labelled ones at the top. The coloured dots in the upper corners are the genes you'd carry forward into the next step, functional enrichment.</p>
 
                 <div class="levelup">
-                    <h4>🔶 Level up: publication-ready volcanoes</h4>
+                    <h4 aria-level="3">🔶 Level up: publication-ready volcanoes</h4>
                     <p>For a polished figure with automatic gene labels and styling, the <code class="inline">EnhancedVolcano</code> Bioconductor package is the community favourite: <code class="inline">BiocManager::install("EnhancedVolcano")</code>, then one call draws a paper-ready plot. The base-R version above is perfect for understanding what's going on under the hood first.</p>
                 </div>
 
@@ -300,7 +302,7 @@ text(top$log2FoldChange, -log10(top$padj), labels = top$symbol, pos = 3, cex = 0
                 <div class="quiz-explain">The MA plot puts mean expression (A) on the x-axis and log2 fold change (M) on the y-axis. That lets you see whether fold changes behave sensibly across low- and high-expression genes.</div>
             </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biology</em> 15: 550, 2014. (MA plots and fold-change shrinkage) <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
                         <li>Zhu A, Ibrahim JG, Love MI. Heavy-tailed prior distributions for sequence count data: removing the noise and preserving large differences. <em>Bioinformatics</em> 35: 2084-2092, 2019. (apeglm shrinkage) <a href="https://doi.org/10.1093/bioinformatics/bty895" target="_blank" rel="noopener">doi:10.1093/bioinformatics/bty895</a></li>

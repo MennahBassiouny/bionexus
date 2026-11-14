@@ -130,8 +130,10 @@
         details pre { margin-top: 12px; }
         details p { margin-top: 10px; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -169,12 +171,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've done <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">From raw counts to differential expression</a> and <a href="rna-seq-volcano-ma.html" target="_blank" rel="noopener">Volcano and MA plots</a>. This project uses the same tools on your own.</li>
                         <li>You can read and edit a little R. (New to R? Start with the <a href="learn.html#foundations" target="_blank" rel="noopener">R series</a>.)</li>
@@ -182,7 +184,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this project you will be able to: turn a paper's claim into a concrete, checkable target; re-analyse the paper's public data on your own; compare your results with the published table gene by gene; explain the differences you find instead of hiding them; and write it all up as a short reproduction report for your portfolio.</p>
             </div>
 
@@ -381,7 +383,7 @@ counts[rownames(genes)[genes$symbol == <span class="s">"RGCC"</span>], ]</pre>
                 </details>
 
                 <div class="why" style="background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:16px 20px; margin:22px 0;">
-                    <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;">Make it a portfolio piece</h4>
+                    <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;" aria-level="3">Make it a portfolio piece</h4>
                     <p style="font-size:1rem; color:var(--text-gray); margin:0;">Put your notebook, your volcano plot and your report in a public GitHub repository. In the README, show your comparison table, state the one gene that did not reproduce and why, and include your methods paragraph. A reviewer learns more about you from an honest "16 of 17 reproduced, and here is why the 17th did not" than from any certificate. See <a href="portfolio.html" target="_blank" rel="noopener">Building a portfolio</a> for how to present it.</p>
                 </div>
 
@@ -428,7 +430,7 @@ counts[rownames(genes)[genes$symbol == <span class="s">"RGCC"</span>], ]</pre>
                 </div>
 
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Himes BE, Jiang X, Wagner P, et al. RNA-Seq transcriptome profiling identifies CRISPLD2 as a glucocorticoid responsive gene that modulates cytokine function in airway smooth muscle cells. <em>PLoS One</em> 9: e99625, 2014. <a href="https://doi.org/10.1371/journal.pone.0099625" target="_blank" rel="noopener">doi:10.1371/journal.pone.0099625</a></li>
                         <li>NCBI GEO. Series GSE52778 (the raw data for this study). <a href="https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE52778" target="_blank" rel="noopener">ncbi.nlm.nih.gov/geo</a></li>

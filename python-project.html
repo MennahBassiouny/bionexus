@@ -84,8 +84,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -117,17 +119,17 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Finish the earlier Python lessons first, ideally <a href="python-intermediate.html" target="_blank" rel="noopener">Python: Level 2 (Intermediate)</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: fetch a real gene from NCBI; calculate base composition and GC content; translate a gene into its protein; and produce a chart in Python.</p>
             </div>
 
@@ -174,7 +176,7 @@ seq = <span class="k">str</span>(record.seq)
     <span class="k">return</span> <span class="k">round</span>((s.count(<span class="s">"G"</span>) + s.count(<span class="s">"C"</span>)) / <span class="k">len</span>(s) * <span class="o">100</span>, <span class="o">1</span>)
 
 <span class="k">print</span>(<span class="s">"GC content:"</span>, gc_content(seq), <span class="s">"%"</span>)</pre>
-            <div class="why"><h4>Why GC content is interesting</h4><p>A G-C pair is held by three hydrogen bonds and an A-T pair by two, and GC-rich DNA is generally more stable. GC content varies a lot between genes and between genomes. Comparing GC content across genes and organisms is a real, everyday bioinformatics task.</p></div>
+            <div class="why"><h4 aria-level="3">Why GC content is interesting</h4><p>A G-C pair is held by three hydrogen bonds and an A-T pair by two, and GC-rich DNA is generally more stable. GC content varies a lot between genes and between genomes. Comparing GC content across genes and organisms is a real, everyday bioinformatics task.</p></div>
 
             <h2><span class="step-num">4</span>From gene to protein</h2>
             <p>The whole point of insulin's gene is the protein it builds. But an mRNA record starts with a stretch that is <strong>not</strong> translated (the 5' untranslated region), so first find the start codon, <code class="inline">ATG</code>, then let Biopython translate from there:</p>
@@ -189,7 +191,7 @@ protein = Seq(cds).translate(to_stop=<span class="k">True</span>)
 <span class="k">print</span>(<span class="s">"Protein length:"</span>, <span class="k">len</span>(protein), <span class="s">"amino acids"</span>)
 <span class="k">print</span>(<span class="s">"First 20:"</span>, protein[:<span class="o">20</span>])</pre>
             <p>You should see <strong>110 amino acids</strong> starting <code class="inline">MALWMRLLPLL...</code>. That is <strong>preproinsulin</strong>, the protein the ribosome actually makes; the cell then trims it into the 51-amino-acid insulin hormone. You just decoded a gene.</p>
-            <div class="why"><h4>Why not translate the whole record?</h4><p>If you translate from base 1, Biopython reads the untranslated region in the wrong frame and gives you nonsense. For insulin the first ATG is the real start, but that is not true for every gene. The reliable way is to use the coding region (CDS) that NCBI annotates in the GenBank record.</p></div>
+            <div class="why"><h4 aria-level="3">Why not translate the whole record?</h4><p>If you translate from base 1, Biopython reads the untranslated region in the wrong frame and gives you nonsense. For insulin the first ATG is the real start, but that is not true for every gene. The reliable way is to use the coding region (CDS) that NCBI annotates in the GenBank record.</p></div>
 
             <h2><span class="step-num">5</span>Visualize it</h2>
             <pre><span class="k">import</span> matplotlib.pyplot <span class="k">as</span> plt
@@ -258,7 +260,7 @@ plt.show()</pre>
                 </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Cock PJA, Antao T, Chang JT, et al. Biopython: freely available Python tools for computational molecular biology and bioinformatics. <em>Bioinformatics</em> 25: 1422-1423, 2009. <a href="https://doi.org/10.1093/bioinformatics/btp163" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp163</a></li>
                     <li>Biopython Tutorial and Cookbook, chapter "Accessing NCBI's Entrez databases". <a href="https://biopython.org/docs/latest/Tutorial/chapter_entrez.html" target="_blank" rel="noopener">biopython.org</a></li>

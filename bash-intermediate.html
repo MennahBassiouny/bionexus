@@ -84,8 +84,10 @@
         .sbx-wrap { margin: 0 0 1.2em; }
         .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -116,17 +118,17 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Be comfortable with the basics first. See <a href="bash-basics.html" target="_blank" rel="noopener">Command Line: Level 1 (Basics)</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: use variables and quoting; capture command output; write loops and conditionals; save and run your own scripts; and edit text with sed and awk.</p>
             </div>
 
@@ -144,7 +146,7 @@
             <div class="sbx-wrap"><pre data-sandboxbio>name=<span class="s">"genes.fasta"</span>
 <span class="k">echo</span> <span class="s">"$name"</span>              <span class="c"># prints: genes.fasta</span>
 <span class="k">echo</span> <span class="s">"I am in $PWD"</span>        <span class="c"># $PWD is the current folder</span></pre></div>
-            <div class="why"><h4>Always quote your variables</h4><p>Write <code class="inline">"$name"</code>, not <code class="inline">$name</code>. The quotes keep filenames with spaces in one piece. Forgetting them is one of the most common beginner bugs in shell scripts.</p></div>
+            <div class="why"><h4 aria-level="3">Always quote your variables</h4><p>Write <code class="inline">"$name"</code>, not <code class="inline">$name</code>. The quotes keep filenames with spaces in one piece. Forgetting them is one of the most common beginner bugs in shell scripts.</p></div>
 
             <h2>2. Capture a command's output</h2>
             <p><strong>Command substitution</strong> with <code class="inline">$( )</code> runs a command and hands you its result to store or print.</p>
@@ -171,7 +173,7 @@
             <div class="sbx-wrap"><pre data-sandboxbio><span class="k">for</span> f <span class="k">in</span> *.fasta; <span class="k">do</span>
     <span class="k">echo</span> <span class="s">"$f has $(grep -c '&gt;' "$f") sequences"</span>
 <span class="k">done</span></pre></div>
-            <div class="why"><h4>Read it as a sentence</h4><p>"For each file <code class="inline">f</code> ending in .fasta, do this, then move to the next." One instruction, applied to every matching file, however many there are.</p></div>
+            <div class="why"><h4 aria-level="3">Read it as a sentence</h4><p>"For each file <code class="inline">f</code> ending in .fasta, do this, then move to the next." One instruction, applied to every matching file, however many there are.</p></div>
 
             <h2>4. Making decisions: if and test</h2>
             <div class="sbx-wrap"><pre data-sandboxbio><span class="k">if</span> [ -f genes.fasta ]; <span class="k">then</span>
@@ -179,7 +181,7 @@
 <span class="k">else</span>
     <span class="k">echo</span> <span class="s">"missing"</span>
 <span class="k">fi</span></pre></div>
-            <div class="why"><h4>Handy tests</h4><p><code class="inline">[ -f file ]</code> is true if a file exists, <code class="inline">[ -d folder ]</code> for a directory, and <code class="inline">[ -z "$x" ]</code> if a string is empty. Mind the spaces inside the brackets: they are required.</p></div>
+            <div class="why"><h4 aria-level="3">Handy tests</h4><p><code class="inline">[ -f file ]</code> is true if a file exists, <code class="inline">[ -d folder ]</code> for a directory, and <code class="inline">[ -z "$x" ]</code> if a string is empty. Mind the spaces inside the brackets: they are required.</p></div>
 
             <h2>5. Writing a script you can run</h2>
             <figure class="viz">
@@ -209,7 +211,7 @@
             <p>Then make it executable and run it:</p>
             <div class="sbx-wrap"><pre data-sandboxbio><span class="k">chmod</span> +x count_seqs.sh
 ./count_seqs.sh genes.fasta</pre></div>
-            <div class="why"><h4>What "permissions" mean</h4><p><code class="inline">chmod +x</code> marks a file as runnable. Those number codes you see (like <code class="inline">chmod 755</code>) are just read = 4, write = 2, execute = 1 added up for the owner, group, and everyone else. <code class="inline">755</code> means the owner can do everything and others can read and run.</p></div>
+            <div class="why"><h4 aria-level="3">What "permissions" mean</h4><p><code class="inline">chmod +x</code> marks a file as runnable. Those number codes you see (like <code class="inline">chmod 755</code>) are just read = 4, write = 2, execute = 1 added up for the owner, group, and everyone else. <code class="inline">755</code> means the owner can do everything and others can read and run.</p></div>
 
             <h2>6. sed and awk: editing text and columns</h2>
             <p>Two classic tools that handle most text wrangling. <strong>sed</strong> does find-and-replace; <strong>awk</strong> works with columns, which is perfect for table formats like BED, VCF, and GTF.</p>
@@ -221,18 +223,18 @@
 
 <span class="c"># awk: keep only rows where column 3 is above 1000</span>
 <span class="k">awk</span> <span class="s">'$3 &gt; 1000'</span> regions.bed</pre></div>
-            <div class="why"><h4>Why awk is everywhere in bioinformatics</h4><p>So many formats are just columns of tab-separated data. <code class="inline">awk</code> lets you pick columns, filter rows, and do quick maths on them without opening anything. A little awk replaces a lot of manual work.</p></div>
+            <div class="why"><h4 aria-level="3">Why awk is everywhere in bioinformatics</h4><p>So many formats are just columns of tab-separated data. <code class="inline">awk</code> lets you pick columns, filter rows, and do quick maths on them without opening anything. A little awk replaces a lot of manual work.</p></div>
 
             <h2>7. Finding files: find and xargs <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
             <pre><span class="k">find</span> . -name <span class="s">"*.fastq"</span>          <span class="c"># every FASTQ in this folder and below</span>
 <span class="k">find</span> . -name <span class="s">"*.sam"</span> | <span class="k">xargs</span> <span class="k">rm</span>   <span class="c"># feed the results to another command (careful: rm!)</span></pre>
-            <div class="why"><h4>Look before you delete</h4><p>Deleting with <code class="inline">find</code> removes every match with no undo. Run the <code class="inline">find</code> on its own first to see exactly what it lists, then delete with <code class="inline">find . -name "*.sam" -delete</code> (safer than piping to <code class="inline">xargs rm</code>, which breaks on filenames with spaces).</p></div>
+            <div class="why"><h4 aria-level="3">Look before you delete</h4><p>Deleting with <code class="inline">find</code> removes every match with no undo. Run the <code class="inline">find</code> on its own first to see exactly what it lists, then delete with <code class="inline">find . -name "*.sam" -delete</code> (safer than piping to <code class="inline">xargs rm</code>, which breaks on filenames with spaces).</p></div>
 
             <h2>8. Getting data and unpacking it <span style="font-size:0.8rem; font-weight:600; color:#b45309; background:rgba(245,158,11,0.12); padding:3px 10px; border-radius:12px; vertical-align:middle;">optional on first pass</span></h2>
             <pre><span class="k">wget</span> https://example.org/data.tar.gz   <span class="c"># download a file (or: curl -O ...)</span>
 <span class="k">tar</span> -xzf data.tar.gz                    <span class="c"># unpack a .tar.gz archive</span>
 <span class="k">gunzip</span> reads.fastq.gz                  <span class="c"># unzip a single .gz file</span></pre>
-            <div class="why"><h4>When something runs too long</h4><p>Check what is running with <code class="inline">top</code> (press <code class="inline">q</code> to quit) or <code class="inline">ps</code>, and stop a stuck command with <code class="inline">Ctrl-C</code>. Big sequencing files can take a while; that is normal.</p></div>
+            <div class="why"><h4 aria-level="3">When something runs too long</h4><p>Check what is running with <code class="inline">top</code> (press <code class="inline">q</code> to quit) or <code class="inline">ps</code>, and stop a stuck command with <code class="inline">Ctrl-C</code>. Big sequencing files can take a while; that is normal.</p></div>
 
             <h2>Practice exercises</h2>
             <p>Try each at your own terminal before opening the solution.</p>
@@ -253,7 +255,7 @@
 <div class="sbx-wrap"><pre data-sandboxbio><span class="k">awk</span> <span class="s">'{print $2}'</span> table.txt</pre></div></details>
 
             <div class="why" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-radius:10px; padding:16px 20px; margin:22px 0;">
-                <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;">Check yourself</h4>
+                <h4 style="color:#047857; font-size:0.95rem; margin-bottom:8px;" aria-level="3">Check yourself</h4>
                 <p style="font-size:0.98rem; color:var(--text-gray); margin:0 0 10px;">The terminal does not run in this page, so here is what correct output looks like. Type each one and compare.</p>
                 <table style="width:100%; border-collapse:collapse; font-size:0.95rem;"><tr><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You type</th><th style="text-align:left; padding:6px 10px; border-bottom:1px solid rgba(16,185,129,0.25);">You should see</th></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">count=$(grep -c "&gt;" genes.fasta); echo $count</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the sequence count</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">echo $(( $(wc -l &lt; reads.fastq) / 4 ))</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the number of reads</td></tr><tr><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; font-family:'JetBrains Mono',monospace; font-size:0.85em;">awk '{print $2}' table.txt</td><td style="padding:6px 10px; border-bottom:1px solid #eef2f7; color:var(--text-gray);">the second column</td></tr></table></div>
             <h2>Check your understanding</h2>
@@ -294,7 +296,7 @@
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Wilson G, Bryan J, Cranston K, et al. Good enough practices in scientific computing. <em>PLoS Computational Biology</em> 13: e1005510, 2017. (why script and automate) <a href="https://doi.org/10.1371/journal.pcbi.1005510" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1005510</a></li>
                 </ol>

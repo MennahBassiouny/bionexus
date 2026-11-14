@@ -86,8 +86,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -119,24 +121,24 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">No prior coding needed. Just a computer and a web browser.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: install VS Code; open a project folder; use the built-in terminal; add the Python extension; and run your first file.</p>
             </div>
 
             <h2>Where this fits</h2>
             <p>You can do everything on this site without a local editor - Google Colab runs in your browser, and RStudio comes with R. But many people prefer a proper desktop <strong>editor</strong> for writing scripts, organizing project files, and running a terminal all in one place. <strong>VS Code</strong> is one popular, free choice. This page is entirely optional - pick the workspace that suits you.</p>
 
-            <div class="why"><h4>Honest framing: it's one option among several</h4><p>There's no single "correct" editor. Plenty of bioinformaticians happily use Colab, Jupyter, RStudio, or VS Code - or several depending on the task. We're showing VS Code because it's free, cross-platform, and works well for Python and the command line. If you're happy in Colab or RStudio, you can skip this and lose nothing.</p></div>
+            <div class="why"><h4 aria-level="3">Honest framing: it's one option among several</h4><p>There's no single "correct" editor. Plenty of bioinformaticians happily use Colab, Jupyter, RStudio, or VS Code - or several depending on the task. We're showing VS Code because it's free, cross-platform, and works well for Python and the command line. If you're happy in Colab or RStudio, you can skip this and lose nothing.</p></div>
 
             <h2>Pick your workspace (a neutral comparison)</h2>
             <div class="compare"><table>
@@ -179,7 +181,7 @@
 
             <h2>Step 3 - Open the built-in terminal</h2>
             <p>One of VS Code's best features: a terminal lives right inside it. Open it with <strong>Terminal → New Terminal</strong> (or <code class="inline">Ctrl</code>+<code class="inline">`</code>, the backtick key). This is the same command line from the <a href="bash-basics.html" target="_blank" rel="noopener">Bash lessons</a> - now docked next to your code.</p>
-            <div class="why"><h4>Why one window matters</h4><p>Editor, files, and terminal in a single place means you can write a script, run it, and read the output without switching apps. That tight loop is exactly why many people like VS Code for everyday work.</p></div>
+            <div class="why"><h4 aria-level="3">Why one window matters</h4><p>Editor, files, and terminal in a single place means you can write a script, run it, and read the output without switching apps. That tight loop is exactly why many people like VS Code for everyday work.</p></div>
 
             <h2>Step 4 - Add the Python extension</h2>
             <p>VS Code becomes Python-aware once you add one free extension:</p>
@@ -189,7 +191,7 @@
                 <li>It also installs its helpers (Pylance, the Python Debugger and Python Environments). For notebooks you need one more extension, <strong>Jupyter</strong> (also by Microsoft); VS Code offers it the first time you open a <code class="inline">.ipynb</code> file.</li>
             </ol>
             <p>If your <code class="inline">bionexus</code> virtual environment is inside the folder you opened, VS Code detects it. If it lives somewhere else, choose "Enter interpreter path…" and point to <code class="inline">bionexus/bin/python</code> (Windows: <code class="inline">bionexus\Scripts\python.exe</code>). Pick it via the environment selector at the bottom of the window or the command palette (<code class="inline">Ctrl/Cmd</code>+<code class="inline">Shift</code>+<code class="inline">P</code> → "Python: Select Interpreter").</p>
-            <div class="why"><h4>Working in R instead?</h4><p>There's also an <strong>R extension</strong> for VS Code if you'd like to use it for R - though for R specifically, many people find <a href="r-install.html" target="_blank" rel="noopener">RStudio</a> more comfortable out of the box. Use whichever you prefer.</p></div>
+            <div class="why"><h4 aria-level="3">Working in R instead?</h4><p>There's also an <strong>R extension</strong> for VS Code if you'd like to use it for R - though for R specifically, many people find <a href="r-install.html" target="_blank" rel="noopener">RStudio</a> more comfortable out of the box. Use whichever you prefer.</p></div>
 
             <h2>Step 5 - Run your first file</h2>
             <ol>
@@ -206,7 +208,7 @@
             <p>Prefer the notebook style from the lessons? With the Python and Jupyter extensions installed, VS Code opens <code class="inline">.ipynb</code> notebook files directly - same cells-and-output experience as Colab and Jupyter, just on your desktop. Create a file ending in <code class="inline">.ipynb</code> and start adding cells.</p>
 
             <div class="checkpoint">
-                <h4>✅ You're set up when…</h4>
+                <h4 aria-level="3">✅ You're set up when…</h4>
                 <p>VS Code opens your project folder, the integrated terminal works, the Microsoft Python extension is installed, and running <code class="inline">hello.py</code> prints output in the terminal.</p>
             </div>
 
@@ -254,7 +256,7 @@
                 </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Microsoft. Getting started with Python in VS Code. <a href="https://code.visualstudio.com/docs/python/python-tutorial" target="_blank" rel="noopener">code.visualstudio.com</a></li>
                     <li>Microsoft. Python environments in VS Code. <a href="https://code.visualstudio.com/docs/python/environments" target="_blank" rel="noopener">code.visualstudio.com</a></li>

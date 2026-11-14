@@ -119,8 +119,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -158,12 +160,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've done <a href="epitranscriptomics-m6a.html" target="_blank" rel="noopener">Epitranscriptomics 101</a> (what m6A is) and the <a href="learn.html#track-2" target="_blank" rel="noopener">NGS workflow</a> (alignment, peak calling).</li>
                         <li>This is the analysis backbone of the Track 4 deliverable. It pairs naturally with RNA-seq from <a href="learn.html#track-3" target="_blank" rel="noopener">Track 3</a>.</li>
@@ -171,7 +173,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: describe how MeRIP-seq pulls down methylated RNA, walk through the peak-calling analysis workflow, explain the resolution problem and how the field improved on it, and read an m6A result critically.</p>
             </div>
 
@@ -180,7 +182,7 @@
                 <p>But a pulldown alone is not enough, because a highly expressed gene contributes more fragments to <em>everything</em>, methylated or not. So every MeRIP experiment is run as a <strong>pair</strong>: the antibody pulldown (<strong>IP</strong>) and a matched <strong>input</strong> sample (the same fragmented RNA, not immunoprecipitated, which is essentially a standard RNA-seq library). m6A sites are regions <strong>enriched in the IP relative to the input</strong>.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>IP vs input</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>IP vs input</h4>
                     <p><strong>IP</strong> is the anti-m6A immunoprecipitation: fragments containing m6A. <strong>Input</strong> is the matched total RNA without pulldown, which captures how much of each transcript was there to begin with. Comparing IP to input lets you measure <em>methylation</em>, not just <em>abundance</em>.</p>
                 </div>
 
@@ -201,7 +203,7 @@
              gff = "annotation.gtf", genome = "hg38")</pre>
 
                 <div class="warn">
-                    <h4>⚠️ The mistake that ruins m6A studies: confusing methylation with expression</h4>
+                    <h4 aria-level="3">⚠️ The mistake that ruins m6A studies: confusing methylation with expression</h4>
                     <p>If a gene's expression doubles between two conditions, its IP reads roughly double too, even with <em>no change in methylation</em>. A peak that looks "stronger" in raw IP counts may simply reflect more transcript. You must normalize the IP signal against the matched input (the IP/input ratio), and differential-methylation tools must control for expression changes. Reporting an "m6A increase" that is really an expression increase is a classic, avoidable error.</p>
                 </div>
 
@@ -216,7 +218,7 @@
                 <p>Each trades off cost, sensitivity, and complexity. MeRIP remains the most common entry point, but a credible modern study often pairs it with a single-nucleotide method to nail down exact sites.</p>
 
                 <div class="levelup">
-                    <h4>🔶 Level up: practice on real data (the Track 4 deliverable)</h4>
+                    <h4 aria-level="3">🔶 Level up: practice on real data (the Track 4 deliverable)</h4>
                     <p>Public m6A datasets live in <a href="https://www.ncbi.nlm.nih.gov/geo/" target="_blank" rel="noopener">GEO</a> (search "MeRIP-seq" or "m6A-seq"). A strong capstone for this track: take one MeRIP dataset, call peaks with exomePeak2, confirm the DRACH motif and stop-codon enrichment as QC, and write up which transcripts are methylated. That is a portfolio-grade epitranscriptomics analysis.</p>
                 </div>
 
@@ -264,7 +266,7 @@
                     <div class="quiz-explain">GLORI chemically converts unmethylated A (read as G) while m6A stays A, so no antibody is needed; miCLIP is single-base but still antibody-based.</div>
                 </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Dominissini D, Moshitch-Moshkovitz S, Schwartz S, et al. Topology of the human and mouse m6A RNA methylomes revealed by m6A-seq. <em>Nature</em> 485: 201-206, 2012. <a href="https://doi.org/10.1038/nature11112" target="_blank" rel="noopener">doi:10.1038/nature11112</a></li>
                         <li>Meng J, Lu Z, Liu H, et al. A protocol for RNA methylation differential analysis with MeRIP-Seq data and exomePeak R/Bioconductor package. <em>Methods</em> 69: 274-281, 2014. <a href="https://doi.org/10.1016/j.ymeth.2014.06.008" target="_blank" rel="noopener">doi:10.1016/j.ymeth.2014.06.008</a></li>

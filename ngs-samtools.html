@@ -129,8 +129,10 @@
         .sbx-wrap { margin: 0 0 1.2em; }
         .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -168,14 +170,14 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="ngsstrip" data-here="samtools"></div>
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've done <a href="ngs-alignment.html" target="_blank" rel="noopener">Read Alignment with BWA-MEM</a>, so you have a BAM file to work on.</li>
                         <li>Comfortable running a few command-line lines. A free Google account to run the notebook.</li>
@@ -183,7 +185,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: use the core samtools commands to look inside a BAM, sort reads into genome order, index the sorted BAM, summarize and pull a region, and check how deep the coverage is at a position.</p>
             </div>
 
@@ -191,7 +193,7 @@
                 <p>When BWA finishes, the reads in your BAM file are in the order they came off the sequencer, which is essentially random. To analyze a genome you need to ask questions like "show me every read covering position 1,500 on chr1." Answering that on an unsorted file means scanning the whole thing every time. The fix is two quick steps: <strong>sort</strong> the reads into genome order, then build an <strong>index</strong> so any region can be found instantly. Almost every genomics tool expects a sorted, indexed BAM, so this is the universal next step after alignment.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>samtools</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>samtools</h4>
                     <p><strong>samtools</strong> is the standard toolkit for working with SAM, BAM, and CRAM alignment files. It does conversions (SAM to BAM), sorting, indexing, filtering, statistics, and more. You call it as <code class="inline">samtools &lt;subcommand&gt;</code>, like <code class="inline">samtools sort</code> or <code class="inline">samtools view</code>.</p>
                 </div>
 
@@ -223,7 +225,7 @@
                 <pre><span class="p">!</span>samtools sort aligned.bam -o aligned.sorted.bam</pre>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Coordinate-sorted</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Coordinate-sorted</h4>
                     <p>A <strong>coordinate-sorted</strong> BAM has its reads ordered by chromosome and then by position along that chromosome. It's the order that lets tools (and the index) jump straight to any region instead of reading the whole file. When a tool complains it "expects a sorted BAM," this is what it means.</p>
                 </div>
 
@@ -240,7 +242,7 @@
                 <p>That region query is the payoff of indexing. On a real, multi-gigabyte BAM it typically returns in well under a second instead of minutes.</p>
 
                 <div class="warn">
-                    <h4>⚠️ Sort before you index</h4>
+                    <h4 aria-level="3">⚠️ Sort before you index</h4>
                     <p>Indexing only works on a coordinate-sorted BAM. If you try to index the raw output of the aligner, samtools will refuse. The reliable habit is always the same order: align, sort, index.</p>
                 </div>
 
@@ -253,7 +255,7 @@
 <span class="p">!</span>samtools coverage aligned.sorted.bam</pre>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Coverage / depth</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Coverage / depth</h4>
                     <p><strong>Coverage</strong> (often written like "30x") is the average number of reads stacked over each base, averaged over <em>all</em> positions, including any with no reads (that is why the command above uses <code class="inline">-a</code>; without it, empty positions are skipped and the average looks better than it is). Higher coverage means more evidence at every position, so you can call variants with more confidence. Too little coverage and you can't tell a real variant from a sequencing error.</p>
                 </div>
 
@@ -261,7 +263,7 @@
                 <p>A sorted, indexed BAM with known coverage is exactly what a variant caller wants. In the next and final Track 2 lesson, you'll feed this file to a variant caller and produce a <strong>VCF</strong>, the list of every place your sample differs from the reference. That's the capstone that ties the whole workflow together.</p>
 
                 <div class="levelup">
-                    <h4>🔶 Level up: mark duplicates</h4>
+                    <h4 aria-level="3">🔶 Level up: mark duplicates</h4>
                     <p>Real pipelines add one more step before variant calling: marking <strong>PCR duplicates</strong> (identical reads created during library prep, which can bias variant calls). Tools like <code class="inline">samtools markdup</code> or Picard's <code class="inline">MarkDuplicates</code> flag them so callers can ignore them (for paired-end data, run <code class="inline">samtools fixmate -m</code> on name-sorted reads first, as the variant-calling lesson shows). The principle is the same survival-kit thinking: clean the BAM before you trust it.</p>
                 </div>
 
@@ -276,7 +278,7 @@ ls -lh aligned.sorted.bam*</pre></div>
 samtools view aligned.sorted.bam chr1:1000-1100 | wc -l</pre></div>
                 <div class="sbx-wrap"><pre data-sandboxbio>samtools depth -a aligned.sorted.bam | awk '{sum+=$3} END {print "mean depth:", sum/NR}'
 samtools coverage aligned.sorted.bam</pre></div>
-                <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">What you should see</h4><p style="font-size:1rem; margin:0;">36 reads overlap chr1:1000-1100; mean depth is about 14.6; and <code class="inline">samtools coverage</code> reports 99.79% of the chromosome covered.</p></div>
+                <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;" aria-level="3">What you should see</h4><p style="font-size:1rem; margin:0;">36 reads overlap chr1:1000-1100; mean depth is about 14.6; and <code class="inline">samtools coverage</code> reports 99.79% of the chromosome covered.</p></div>
 
                 <h2>Check your understanding</h2>
                 <div class="quiz">
@@ -317,7 +319,7 @@ samtools coverage aligned.sorted.bam</pre></div>
             </div>
 
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Li H, Handsaker B, Wysoker A, et al. The Sequence Alignment/Map format and SAMtools. <em>Bioinformatics</em> 25: 2078-2079, 2009. <a href="https://doi.org/10.1093/bioinformatics/btp352" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp352</a></li>
                         <li>Danecek P, Bonfield JK, Liddle J, et al. Twelve years of SAMtools and BCFtools. <em>GigaScience</em> 10: giab008, 2021. <a href="https://doi.org/10.1093/gigascience/giab008" target="_blank" rel="noopener">doi:10.1093/gigascience/giab008</a></li>

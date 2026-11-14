@@ -129,8 +129,10 @@
         .sbx-wrap { margin: 0 0 1.2em; }
         .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -168,14 +170,14 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="ngsstrip" data-here="alignment"></div>
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've done <a href="ngs-trimming.html" target="_blank" rel="noopener">Trimming and Filtering Reads</a>, so you have clean FASTQ reads to align.</li>
                         <li>Comfortable running a few command-line lines. A free Google account to run the notebook.</li>
@@ -183,7 +185,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain what read alignment does and why a reference index is needed, build an index and align reads with a tool like BWA-MEM, read the basic fields of the resulting SAM file, and run a quick sanity check on how many reads mapped.</p>
             </div>
 
@@ -192,7 +194,7 @@
                 <p>Think of the reference as the picture on a jigsaw box and your reads as the loose pieces. Alignment is the act of laying each piece onto the spot it fits. Once every read has a coordinate, you can stack them up, see how many reads cover each position, and spot the places where your sample differs from the reference. Those differences are variants, and finding them is what the rest of this track builds toward.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Reference genome</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Reference genome</h4>
                     <p>A <strong>reference genome</strong> is a finished, agreed-upon sequence for a species (for humans, the GRCh38 assembly) that the community uses as a common coordinate system. It is not a "perfect" or "correct" genome, just a shared map so everyone's positions mean the same thing. You align your reads <em>against</em> it to describe where they sit and how they differ.</p>
                 </div>
 
@@ -219,7 +221,7 @@
                 <pre><span class="p">!</span>bwa index reference.fasta</pre>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Index</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Index</h4>
                     <p>An <strong>index</strong> is a pre-built lookup structure. Searching the raw genome letter by letter for every read would be hopelessly slow, so the aligner first reorganizes the reference into a form it can query in an instant. Indexing takes a little time up front and is reused for every read afterward.</p>
                 </div>
 
@@ -244,7 +246,7 @@
                 </table>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>BAM vs SAM</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>BAM vs SAM</h4>
                     <p><strong>SAM</strong> is the human-readable text version. <strong>BAM</strong> is the exact same information compressed into a binary file, much smaller and faster for programs to read. In real projects you keep BAM on disk and only convert to SAM when you want to peek inside. Tools read BAM directly.</p>
                 </div>
 
@@ -259,7 +261,7 @@
                 <p>For a clean sample against the right reference, you expect a high mapping rate (often well above 90%). A low rate is a red flag: wrong reference, leftover adapters, or contaminated reads.</p>
 
                 <div class="warn">
-                    <h4>⚠️ Align to the right reference</h4>
+                    <h4 aria-level="3">⚠️ Align to the right reference</h4>
                     <p>Reads only map well to the genome they actually came from. Aligning human reads to a mouse genome, or using the wrong build, produces a low mapping rate and garbage downstream. Always match your reference to your organism (and note which build you used, so your work is reproducible).</p>
                 </div>
 
@@ -267,7 +269,7 @@
                 <p>You now have a BAM file: every read, with a coordinate. But it's in the order the reads came off the machine, which is not useful yet. The next lesson is the <strong>samtools survival kit</strong>, where you sort and index the BAM so tools can jump to any region instantly, the step that turns a raw alignment into something you can actually analyze.</p>
 
                 <div class="levelup">
-                    <h4>🔶 Level up: read groups and paired-end</h4>
+                    <h4 aria-level="3">🔶 Level up: read groups and paired-end</h4>
                     <p>Real pipelines align paired-end reads (two files) and tag each BAM with a <strong>read group</strong> (<code class="inline">-R</code>) that records the sample and sequencing run. Variant callers like GATK require read groups. The full command grows to something like <code class="inline">bwa mem -R '@RG\tID:run1\tSM:sample1' ref.fasta R1.fastq R2.fastq</code>, but the core idea is exactly what you just did.</p>
                 </div>
 
@@ -276,7 +278,7 @@
                 <div class="sbx-wrap"><pre data-sandboxbio>bwa index reference.fasta</pre></div>
                 <div class="sbx-wrap"><pre data-sandboxbio>bwa mem reference.fasta reads.trimmed.fastq | samtools view -b -o aligned.bam</pre></div>
                 <div class="sbx-wrap"><pre data-sandboxbio>samtools flagstat aligned.bam</pre></div>
-                <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">What you should see</h4><p style="font-size:1rem; margin:0;">1,780 reads in total and 1,780 mapped (100%). Real data is never this perfect; simulated reads come from the same reference, so they all find a home.</p></div>
+                <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;" aria-level="3">What you should see</h4><p style="font-size:1rem; margin:0;">1,780 reads in total and 1,780 mapped (100%). Real data is never this perfect; simulated reads come from the same reference, so they all find a home.</p></div>
 
                 <h2>Check your understanding</h2>
                 <div class="quiz">
@@ -317,7 +319,7 @@
             </div>
 
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Li H, Durbin R. Fast and accurate short read alignment with Burrows-Wheeler transform. <em>Bioinformatics</em> 25: 1754-1760, 2009. <a href="https://doi.org/10.1093/bioinformatics/btp324" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp324</a></li>
                         <li>Li H, Handsaker B, Wysoker A, et al. The Sequence Alignment/Map format and SAMtools. <em>Bioinformatics</em> 25: 2078-2079, 2009. (the SAM format) <a href="https://doi.org/10.1093/bioinformatics/btp352" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp352</a></li>

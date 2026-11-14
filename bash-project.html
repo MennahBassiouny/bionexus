@@ -82,8 +82,10 @@
         .sbx-wrap { margin: 0 0 1.2em; }
         .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -115,17 +117,17 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Finish the earlier command line lessons first, ideally <a href="bash-intermediate.html" target="_blank" rel="noopener">Command Line: Level 2 (Intermediate)</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: download a real FASTA file; count and inspect its sequences; measure the total sequence length; and compute GC content, all from the command line.</p>
             </div>
 
@@ -169,7 +171,7 @@ grep <span class="s">"&gt;"</span> genes.fasta &gt; headers.txt  <span class="c"
             <h2><span class="step-num">5</span>How long is the sequence, in total?</h2>
             <p>Here's a pipeline: strip out the header lines, remove the line breaks, and count the remaining characters - the total number of bases.</p>
             <div class="sbx-wrap"><pre data-sandboxbio>grep -v <span class="s">"&gt;"</span> genes.fasta | tr -d <span class="s">'\n'</span> | wc -c</pre></div>
-            <div class="why"><h4>Reading the pipeline</h4><p><code class="inline">grep -v "&gt;"</code> keeps every line that is <em>not</em> a header (the <code class="inline">-v</code> inverts the match). <code class="inline">tr -d '\n'</code> deletes the newlines so the bases form one continuous string. <code class="inline">wc -c</code> counts the characters. Three tiny tools, one real answer.</p></div>
+            <div class="why"><h4 aria-level="3">Reading the pipeline</h4><p><code class="inline">grep -v "&gt;"</code> keeps every line that is <em>not</em> a header (the <code class="inline">-v</code> inverts the match). <code class="inline">tr -d '\n'</code> deletes the newlines so the bases form one continuous string. <code class="inline">wc -c</code> counts the characters. Three tiny tools, one real answer.</p></div>
 
             <h2><span class="step-num">6</span>GC content - from the command line</h2>
             <p>Count the G and C bases, then the total, then compute the percentage:</p>
@@ -235,7 +237,7 @@ awk <span class="s">"BEGIN{printf \"GC%% = %.1f\n\", $gc/$total*100}"</span></pr
                 </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Pearson WR, Lipman DJ. Improved tools for biological sequence comparison. <em>PNAS</em> 85: 2444-2448, 1988. (where the FASTA format comes from) <a href="https://doi.org/10.1073/pnas.85.8.2444" target="_blank" rel="noopener">doi:10.1073/pnas.85.8.2444</a></li>
                 </ol>

@@ -128,8 +128,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -167,12 +169,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="objectives">
-                    <h4>What you'll be able to do</h4>
+                    <h4 aria-level="2">What you'll be able to do</h4>
                     <ul>
                         <li>Explain homology and distinguish global from local alignment.</li>
                         <li>Describe how pairwise alignment is computed (scoring, gaps, substitution matrices).</li>
@@ -182,7 +184,7 @@
                     </ul>
                 </div>
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="3">Before you start</h4>
                     <ul>
                         <li>You know what DNA and protein sequences are, and what FASTA is. New? See <a href="track1-sequences-fasta-fastq.html" target="_blank" rel="noopener">Sequences, FASTA &amp; FASTQ</a>.</li>
                         <li>Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
@@ -208,7 +210,7 @@
                 <p style="background:rgba(91,156,248,0.07); border-left:3px solid var(--primary-blue); padding:12px 16px; border-radius:8px; font-size:0.98rem;">📘 <strong>New to this?</strong> This module shows what happens under the hood. You can skim it on a first pass and still use BLAST well; the most practical, job-ready skills are in Modules 3 and 4.</p>
                 <p>An alignment is scored: you reward matches, penalise mismatches, and penalise <strong>gaps</strong> (insertions or deletions). The "best" alignment is the one with the highest total score. The breakthrough that made this tractable was <strong>dynamic programming</strong>: instead of trying every possible alignment (astronomically many), you build the optimal alignment from optimal sub-alignments in a scoring matrix.</p>
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Dynamic programming</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Dynamic programming</h4>
                     <p>A problem-solving trick: instead of re-checking every possibility from scratch, you solve tiny sub-problems once, store the answers, and reuse them. For alignment it means filling a grid cell by cell, so the best alignment of two long sequences is assembled from the best alignments of their shorter pieces. You never have to code this yourself, the tools do it; this is just so the word is not a mystery.</p>
                 </div>
                 <ul>
@@ -301,7 +303,7 @@ print(a2)
                 <p>Because the exact solution is computationally explosive for many sequences, MSA tools use <em>progressive</em> and <em>iterative</em> heuristics. The standard, free tools are <strong>Clustal Omega</strong>, <strong>MAFFT</strong> and <strong>MUSCLE</strong>; all run with no install through the <a href="https://www.ebi.ac.uk/jdispatcher/msa" target="_blank" rel="noopener">EMBL-EBI web services</a>.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Conserved column</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Conserved column</h4>
                     <p>A position in an MSA where most or all sequences share the same (or chemically similar) residue. Strong conservation across distantly related sequences is a strong hint that the position matters for function, because evolution did not let it drift. Reading conservation is a core skill MSAs unlock.</p>
                 </div>
 
@@ -352,7 +354,7 @@ print(a2)
                 </div>
 
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Needleman SB, Wunsch CD. A general method applicable to the search for similarities in the amino acid sequence of two proteins. <em>J Mol Biol</em> 48: 443-453, 1970. (Global alignment.) <a href="https://doi.org/10.1016/0022-2836(70)90057-4" target="_blank" rel="noopener">doi:10.1016/0022-2836(70)90057-4</a></li>
                         <li>Smith TF, Waterman MS. Identification of common molecular subsequences. <em>J Mol Biol</em> 147: 195-197, 1981. (Local alignment.) <a href="https://doi.org/10.1016/0022-2836(81)90087-5" target="_blank" rel="noopener">doi:10.1016/0022-2836(81)90087-5</a></li>

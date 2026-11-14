@@ -117,8 +117,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -155,18 +157,18 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">You can run a basic DESeq2 analysis; see <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">From Raw Counts to Differential Expression</a>, and some basic R helps (<a href="r-basics.html" target="_blank" rel="noopener">R basics</a>).</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain why you transform counts before PCA, read a PCA plot to spot batch effects and outliers, describe what PC1 and PC2 represent, and use a sample-to-sample distance heatmap as a second check.</p>
             </div>
 
@@ -176,7 +178,7 @@
             <h2><span class="step-num">1</span>Transform the counts first</h2>
             <p>Raw counts are unsuitable for PCA because their variance grows with the mean: highly expressed genes show big swings just because they are big, and they would dominate the plot. DESeq2 fixes this with a <strong>variance stabilizing transform</strong> (<code class="inline">vst</code>), or <code class="inline">rlog</code> for small datasets. After the transform, a gene's spread no longer depends so strongly on how highly it is expressed, so PCA reflects genuine differences between samples rather than just the loudest genes.</p>
             <div class="jargon" style="background:linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0;">
-                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">vst vs rlog</span>Which transform</h4>
+                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;" aria-level="3"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">vst vs rlog</span>Which transform</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">Both stabilize variance. <strong>vst</strong> is fast and the usual choice; <strong>rlog</strong> can behave better on very small or very uneven datasets but is slower. Either way, the transform is for QC and visualization only, the differential test still runs on raw counts.</p>
             </div>
 
@@ -218,7 +220,7 @@
                     <tr><td>A sample sits firmly in the wrong group</td><td>Possible swapped label, or a real biological difference</td><td>Trace the sample back to the metadata; check sex-marker genes or genotype</td></tr>
                 </tbody>
             </table>
-            <div class="why"><h4>One-line summary</h4><p>Transform counts with vst (or rlog), run PCA, and hope samples cluster by condition. Clustering by batch means a batch effect; a lone far point means an outlier; a sample in the wrong group means a possible swapped label. Confirm with a distance heatmap.</p></div>
+            <div class="why"><h4 aria-level="3">One-line summary</h4><p>Transform counts with vst (or rlog), run PCA, and hope samples cluster by condition. Clustering by batch means a batch effect; a lone far point means an outlier; a sample in the wrong group means a possible swapped label. Confirm with a distance heatmap.</p></div>
 
             <h2>A worked example</h2>
             <p>In DESeq2 the whole check is a few lines. You build the dataset, transform with <code class="inline">vst</code>, then call <code class="inline">plotPCA</code>, coloring points by the treatment column (<code class="inline">dex</code> in the airway dataset).</p>
@@ -292,7 +294,7 @@ pheatmap::pheatmap(mat,
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Love MI, Anders S, Kim V, Huber W. RNA-Seq workflow: gene-level exploratory analysis and differential expression. <em>F1000Research</em> 4: 1070, 2015. (vst, plotPCA and sample-distance heatmaps) <a href="https://doi.org/10.12688/f1000research.7035.1" target="_blank" rel="noopener">doi:10.12688/f1000research.7035.1</a></li>
                     <li>Conesa A, Madrigal P, Tarazona S, et al. A survey of best practices for RNA-seq data analysis. <em>Genome Biology</em> 17: 13, 2016. <a href="https://doi.org/10.1186/s13059-016-0881-8" target="_blank" rel="noopener">doi:10.1186/s13059-016-0881-8</a></li>

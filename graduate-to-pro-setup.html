@@ -116,8 +116,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -154,12 +156,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You have done some lessons in Colab and feel a bit comfortable running code. That is the whole prerequisite.</li>
                         <li>Brand new and not sure what Colab even is? Stay in the browser for now and see the <a href="faq.html" target="_blank" rel="noopener">Help &amp; FAQ</a>. Come back when you are ready.</li>
@@ -172,7 +174,7 @@
                 <div class="stages">
                     <div class="stagecard">
                         <div class="n">Stage 1 · you start here</div>
-                        <h4>Learn in the browser</h4>
+                        <h4 aria-level="3">Learn in the browser</h4>
                         <p>Google Colab and in-page code. Zero install. The goal is confidence and momentum, not tooling.</p>
                     </div>
                     <div class="stagecard">
@@ -211,7 +213,7 @@
                 <p>You do not need all of these. Pick the one for the language you are using most. A common, well-rounded combo for bioinformatics is <strong>VS Code + RStudio + conda + Git</strong>.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Editor / IDE</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Editor / IDE</h4>
                     <p>An editor (or IDE, "integrated development environment") is the program where you write and run code: VS Code, RStudio, PyCharm. It is just a nicer, more powerful place to do what you did in Colab, with files, a terminal, Git, and debugging in one window. Colab is essentially a browser-based notebook editor; these are the desktop, professional versions.</p>
                 </div>
 
@@ -236,7 +238,7 @@
                 </ol>
 
                 <div class="next-steps">
-                    <h4>🧭 Your graduation checklist</h4>
+                    <h4 aria-level="3">🧭 Your graduation checklist</h4>
                     <ul>
                         <li>Install your editor: <a href="vscode-setup.html" target="_blank" rel="noopener">VS Code</a> (Python) and/or <a href="r-install.html" target="_blank" rel="noopener">RStudio</a> (R).</li>
                         <li>Install the language: <a href="python-install.html" target="_blank" rel="noopener">Python</a> / <a href="r-install.html" target="_blank" rel="noopener">R</a>.</li>
@@ -287,7 +289,7 @@
                 </div>
 
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Internal: <a href="conda-environments.html" target="_blank" rel="noopener">Conda environments</a>, <a href="git-github.html" target="_blank" rel="noopener">Git &amp; GitHub for scientists</a>, <a href="vscode-setup.html" target="_blank" rel="noopener">VS Code setup</a>.</li>
                         <li>Ziemann M, Poulain P, Bora A. The five pillars of computational reproducibility: bioinformatics and beyond. <em>Briefings in Bioinformatics</em> 24(6), bbad375, 2023. (Why local environment control and version control matter.) <a href="https://doi.org/10.1093/bib/bbad375" target="_blank" rel="noopener">doi:10.1093/bib/bbad375</a></li>

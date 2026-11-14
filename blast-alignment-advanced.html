@@ -131,8 +131,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -170,12 +172,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="objectives">
-                    <h4>What you'll be able to do</h4>
+                    <h4 aria-level="2">What you'll be able to do</h4>
                     <ul>
                         <li>Explain affine gap penalties and why they model real indels better than a flat penalty.</li>
                         <li>Describe what an E-value is built from (Karlin-Altschul) and how query length and database size move it.</li>
@@ -184,7 +186,7 @@
                     </ul>
                 </div>
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="3">Before you start</h4>
                     <ul>
                         <li>Finish <a href="blast-alignment.html" target="_blank" rel="noopener">Level 1: Sequence Alignment &amp; BLAST</a> first. This builds directly on it.</li>
                         <li>Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
@@ -196,7 +198,7 @@
                 <p>In Level 1 the demo charged a flat penalty per gap position. That is biologically unrealistic. A single insertion or deletion of five bases is <em>one</em> mutational event; five separate one-base gaps are <em>five</em> events, and far less likely. A flat (linear) penalty scores them the same. The fix is an <strong>affine gap penalty</strong>: a larger one-time cost to <em>open</em> a gap, plus a small cost to <em>extend</em> it. This makes one long gap much cheaper than many short ones, which matches how indels actually happen. Gotoh (1982) showed how to compute this efficiently.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Gap-open vs gap-extend</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Gap-open vs gap-extend</h4>
                     <p>Two separate penalties. <strong>Gap-open</strong> is paid once when a gap starts (e.g., −10); <strong>gap-extend</strong> is paid for each additional position in that same gap (e.g., −1). Total cost of a gap of length L is: open + (L × extend) (this is BLAST's convention; some tools count the first gap position inside the open cost). This is why aligners cluster indels into single runs rather than scattering them.</p>
                 </div>
 
@@ -235,7 +237,7 @@ E = K · m · n · e^(-λS)</pre>
                 </ul>
 
                 <div class="xlink">
-                    <h4>🔗 Connection: a BLAST search is a multiple-testing problem</h4>
+                    <h4 aria-level="3">🔗 Connection: a BLAST search is a multiple-testing problem</h4>
                     <p>When you BLAST one query against millions of database sequences, you are making millions of comparisons, exactly the situation from the statistics track. The E-value already builds the database size (n) into the calculation, so it <em>is</em> the multiple-testing correction for a single search: it answers "how many hits this good would I expect by chance across this whole database?" It is not a p-value, but the two are linked: P = 1 − e<sup>−E</sup>, so for small E (below about 0.01) the two are almost the same number. See <a href="multiple-testing.html" target="_blank" rel="noopener">The multiple-testing problem</a> for the general principle.</p>
                 </div>
 
@@ -248,7 +250,7 @@ E = K · m · n · e^(-λS)</pre>
                 </ul>
 
                 <div class="warn">
-                    <h4>⚠️ Low-complexity regions produce false hits, and BLAST masks them</h4>
+                    <h4 aria-level="3">⚠️ Low-complexity regions produce false hits, and BLAST masks them</h4>
                     <p>Stretches like <code class="inline">AAAAAAAA</code> or proline-rich runs are "low-complexity": they match many unrelated sequences by chance and generate spurious high-scoring hits. BLAST has filters for them: <strong>DUST</strong> for nucleotides (on by default in blastn) and <strong>SEG</strong> for proteins (on by default in blastx and tblastn, but <em>off</em> by default in blastp, which instead adjusts scores for unusual amino-acid composition). By default the masked stretch is only blocked from starting (seeding) an alignment; an alignment can still extend through it. Usually correct, but if your real signal lives in a low-complexity region, masking can hide it, so know the masking is happening.</p>
                 </div>
 
@@ -265,7 +267,7 @@ E = K · m · n · e^(-λS)</pre>
                 </table>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Profile (position-specific scoring)</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Profile (position-specific scoring)</h4>
                     <p>Instead of one query sequence, a profile records, for every column of an alignment, how conserved each residue is. A position that is always tryptophan scores a strong reward for tryptophan and heavy penalties otherwise; a variable loop position is lenient. This per-position weighting is why profile methods detect relatives that a single-sequence search misses.</p>
                 </div>
 
@@ -321,7 +323,7 @@ E = K · m · n · e^(-λS)</pre>
                 </div>
 
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Gotoh O. An improved algorithm for matching biological sequences. <em>J Mol Biol</em> 162: 705-708, 1982. (Affine gaps.) <a href="https://doi.org/10.1016/0022-2836(82)90398-9" target="_blank" rel="noopener">doi:10.1016/0022-2836(82)90398-9</a></li>
                         <li>Karlin S, Altschul SF. Methods for assessing the statistical significance of molecular sequence features by using general scoring schemes. <em>Proc Natl Acad Sci USA</em> 87: 2264-2268, 1990. <a href="https://doi.org/10.1073/pnas.87.6.2264" target="_blank" rel="noopener">doi:10.1073/pnas.87.6.2264</a></li>

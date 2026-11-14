@@ -84,8 +84,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -117,15 +119,15 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div class="prereq">
-                <h4>Before you start</h4>
+                <h4 aria-level="2">Before you start</h4>
                 <p>You've met FASTA/FASTQ in <a href="track1-sequences-fasta-fastq.html" target="_blank" rel="noopener">lesson 1</a> and can run Python. In Colab, start each notebook with <code class="inline">!pip install biopython</code>.</p>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: create a Biopython <code class="inline">Seq</code> object and use its biology-aware methods, read sequence files with <code class="inline">SeqIO.parse</code>, filter records to keep only the ones you want, and write your results back out to a file.</p>
             </div>
 
@@ -143,7 +145,7 @@
 <span class="k">print</span>(dna.reverse_complement()) <span class="c"># the other strand, read 5'→3'</span>
 <span class="k">print</span>(dna.transcribe())        <span class="c"># DNA → RNA (T becomes U)</span>
 <span class="k">print</span>(dna.translate())          <span class="c"># codons → amino acids, read from the first letter (it does not look for a start codon)</span></pre>
-            <div class="why"><h4>Decode the jargon: reverse complement</h4><p>DNA is double-stranded. If one strand reads <code class="inline">ATGC</code>, the partner strand reads <code class="inline">GCAT</code> (complement each base, then reverse the order). You need the <strong>reverse complement</strong> constantly - for example, when a gene sits on the opposite strand. Biopython does it in one call.</p></div>
+            <div class="why"><h4 aria-level="3">Decode the jargon: reverse complement</h4><p>DNA is double-stranded. If one strand reads <code class="inline">ATGC</code>, the partner strand reads <code class="inline">GCAT</code> (complement each base, then reverse the order). You need the <strong>reverse complement</strong> constantly - for example, when a gene sits on the opposite strand. Biopython does it in one call.</p></div>
 
             <h2>SeqIO: reading files (the pattern that scales)</h2>
             <p>Two methods cover almost everything. <code class="inline">SeqIO.read()</code> for a file with <em>one</em> record; <code class="inline">SeqIO.parse()</code> for a file with <em>many</em>.</p>
@@ -219,7 +221,7 @@
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Cock PJ, Antao T, Chang JT, et al. Biopython: freely available Python tools for computational molecular biology and bioinformatics. <em>Bioinformatics</em> 25: 1422-1423, 2009. <a href="https://doi.org/10.1093/bioinformatics/btp163" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp163</a></li>
                     <li>Sayers EW, Bolton EE, Fine AM, et al. Database resources of the National Center for Biotechnology Information in 2026. <em>Nucleic Acids Research</em> 54: D20-D27, 2026. <a href="https://doi.org/10.1093/nar/gkaf1060" target="_blank" rel="noopener">doi:10.1093/nar/gkaf1060</a></li>

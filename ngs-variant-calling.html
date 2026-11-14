@@ -141,8 +141,10 @@
         .sbx-wrap { margin: 0 0 1.2em; }
         .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -180,14 +182,14 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="ngsstrip" data-here="variant"></div>
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've worked through <a href="ngs-alignment.html" target="_blank" rel="noopener">Read Alignment</a> and the <a href="ngs-samtools.html" target="_blank" rel="noopener">samtools survival kit</a>. This lesson stitches them together.</li>
                         <li>A free Google account to run the notebook. No installs on your machine.</li>
@@ -196,7 +198,7 @@
                 </div>
 
                 <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                    <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                    <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                     <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: take raw sequencing reads through alignment to a list of variants (a VCF), mark duplicates, and judge a called variant by its depth and quality.</p>
                 </div>
                 <h2>What "calling a variant" means</h2>
@@ -204,7 +206,7 @@
                 <p>The skill is knowing the difference between a real variant and a sequencing error. One read disagreeing with the reference is probably noise. Twenty reads all agreeing on the same change is a variant. A variant caller does exactly this reasoning, position by position, across the whole genome.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>SNP and indel</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>SNP and indel</h4>
                     <p>A <strong>SNP</strong> (single-nucleotide polymorphism) is a one-letter difference, like an A where the reference has a G. An <strong>indel</strong> is a small <em>in</em>sertion or <em>del</em>etion of bases. Together they're the most common kinds of variants, and the ones you'll call in this lesson.</p>
                 </div>
 
@@ -243,7 +245,7 @@
 <span class="p">!</span>bwa mem reference.fasta sample.fastq <span class="p">|</span> samtools sort -o sample.sorted.bam
 <span class="p">!</span>samtools markdup sample.sorted.bam sample.markdup.bam   <span class="c"># flag PCR/optical duplicates</span>
 <span class="p">!</span>samtools index sample.markdup.bam</pre>
-                <div class="why" style="background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:14px 20px; margin:16px 0;"><h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;">Why mark duplicates?</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">PCR and optical duplicates are copies of the same original fragment. Left in, they inflate the apparent support for a position and cause false variant calls, so real pipelines flag them before calling. On <em>paired-end</em> data you run <code class="inline">samtools fixmate -m</code> (on a name-sorted BAM) before the coordinate sort so <code class="inline">markdup</code> has the mate information it needs.</p></div>
+                <div class="why" style="background:linear-gradient(135deg,rgba(168,85,247,0.06),rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:14px 20px; margin:16px 0;"><h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;" aria-level="3">Why mark duplicates?</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">PCR and optical duplicates are copies of the same original fragment. Left in, they inflate the apparent support for a position and cause false variant calls, so real pipelines flag them before calling. On <em>paired-end</em> data you run <code class="inline">samtools fixmate -m</code> (on a name-sorted BAM) before the coordinate sort so <code class="inline">markdup</code> has the mate information it needs.</p></div>
 
                 <h2><span class="step-num">3</span>Call variants with bcftools</h2>
                 <p>Calling is two steps piped together. <code class="inline">bcftools mpileup</code> walks the genome and, at every position, gathers the pile of read bases sitting there. <code class="inline">bcftools call</code> then judges each pile and decides whether it's a variant.</p>
@@ -255,7 +257,7 @@
                 <p>The flags read as: <code class="inline">-m</code> use the modern multiallelic caller, <code class="inline">-v</code> output only variant sites (skip positions that match the reference), and <code class="inline">-Oz</code> write a compressed VCF.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Pileup</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Pileup</h4>
                     <p>A <strong>pileup</strong> is the column of read bases stacked over a single genome position, like reading straight down through all the reads that cover that spot. The caller looks at each column and asks: do the reads agree with the reference, or do enough of them disagree to call a variant?</p>
                 </div>
 
@@ -274,7 +276,7 @@
                 <p>Compare the <code class="inline">POS</code> and <code class="inline">ALT</code> columns to the variants the notebook planted. If they match, you've just validated your own pipeline end to end.</p>
 
                 <div class="warn">
-                    <h4>⚠️ Not every call is real</h4>
+                    <h4 aria-level="3">⚠️ Not every call is real</h4>
                     <p>Variant callers make mistakes, especially at low coverage or in repetitive regions. Real projects <strong>filter</strong> the VCF by quality and depth (for example, dropping calls with QUAL below a threshold or very low DP) before trusting it. Raw calls are a starting point, not a final answer.</p>
                     <pre>bcftools filter -e <span class="s">'QUAL&lt;20 || DP&lt;10'</span> calls.norm.vcf.gz -Oz -o calls.filt.vcf.gz</pre>
                 </div>
@@ -327,7 +329,7 @@
 <span class="p">!</span>bcftools stats ecoli.norm.vcf.gz <span class="p">|</span> grep <span class="s">"number of records:"</span></pre>
 
                 <div class="why" style="background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.35); border-radius:10px; padding:16px 20px; margin:18px 0;">
-                    <h4 style="color:#b45309; font-size:0.95rem; margin-bottom:8px;">What real data breaks (that the toy run hid)</h4>
+                    <h4 style="color:#b45309; font-size:0.95rem; margin-bottom:8px;" aria-level="3">What real data breaks (that the toy run hid)</h4>
                     <p style="font-size:1rem; color:var(--text-gray); margin:0;">Look at <code class="inline">flagstat</code>: the mapping rate is high but <strong>not 100%</strong>, because real reads include contamination, low-quality ends, and repeats that map ambiguously. <code class="inline">markdup</code> now flags a real percentage of duplicates. There is <strong>no planted answer key</strong>; you judge each call by its depth (<code class="inline">DP</code>) and quality (<code class="inline">QUAL</code>) instead of checking it against a list. And the calls now reflect real mutations that arose during the experiment (plus any errors your filters still need to catch), including some indels, which is exactly why the <code class="inline">norm</code> step matters. This is the gap between "ran the notebook" and "ran an analysis," and you just crossed it.</p>
                 </div>
 
@@ -343,7 +345,7 @@ bcftools index calls.norm.vcf.gz
 bcftools view -H calls.norm.vcf.gz | cut -f1-5</pre></div>
                 <div class="sbx-wrap"><pre data-sandboxbio>bcftools filter -e 'QUAL&lt;20 || DP&lt;10' calls.norm.vcf.gz -Oz -o calls.filt.vcf.gz
 bcftools view -H calls.filt.vcf.gz | cut -f1-5</pre></div>
-                <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">What you should see</h4><p style="font-size:1rem; margin:0;">All 10 planted variants are called: SNPs at 1203, 2450, 3333, 4120, 5555, 6781, 7802 and 9010, a 3-base deletion and a 3-base insertion at 8400. The deletion was planted at positions 6000-6002 but is reported at 5998 (<code class="inline">GGCT</code> to <code class="inline">G</code>): the same deletion, written in its leftmost form, which is exactly what <code class="inline">bcftools norm</code> is for. After filtering, 9 remain: the real SNP at 5555 is removed because only 9 reads cover it, below the DP&lt;10 cutoff. Filters remove true variants too, which is why thresholds are a judgement call.</p></div>
+                <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;" aria-level="3">What you should see</h4><p style="font-size:1rem; margin:0;">All 10 planted variants are called: SNPs at 1203, 2450, 3333, 4120, 5555, 6781, 7802 and 9010, a 3-base deletion and a 3-base insertion at 8400. The deletion was planted at positions 6000-6002 but is reported at 5998 (<code class="inline">GGCT</code> to <code class="inline">G</code>): the same deletion, written in its leftmost form, which is exactly what <code class="inline">bcftools norm</code> is for. After filtering, 9 remain: the real SNP at 5555 is removed because only 9 reads cover it, below the DP&lt;10 cutoff. Filters remove true variants too, which is why thresholds are a judgement call.</p></div>
 
                 <h2>Check your understanding</h2>
                 <div class="quiz">
@@ -384,7 +386,7 @@ bcftools view -H calls.filt.vcf.gz | cut -f1-5</pre></div>
             </div>
 
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Danecek P, Bonfield JK, Liddle J, et al. Twelve years of SAMtools and BCFtools. <em>GigaScience</em> 10: giab008, 2021. (mpileup, call, norm, filter) <a href="https://doi.org/10.1093/gigascience/giab008" target="_blank" rel="noopener">doi:10.1093/gigascience/giab008</a></li>
                         <li>Li H. A statistical framework for SNP calling, mutation discovery, association mapping and population genetical parameter estimation from sequencing data. <em>Bioinformatics</em> 27: 2987-2993, 2011. (the bcftools calling model) <a href="https://doi.org/10.1093/bioinformatics/btr509" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btr509</a></li>

@@ -139,8 +139,10 @@
         .plan-card p:last-child { margin-bottom: 0; }
         details p { margin-top: 10px; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -178,12 +180,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="objectives">
-                    <h4>What you'll be able to do</h4>
+                    <h4 aria-level="2">What you'll be able to do</h4>
                     <ul>
                         <li>Read a research paper in three passes, and know when to stop.</li>
                         <li>Pull the experimental design out of a methods section and judge whether a public dataset can answer your question.</li>
@@ -192,7 +194,7 @@
                     </ul>
                 </div>
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="3">Before you start</h4>
                     <ul>
                         <li>No coding needed for most of it. Module 4 has one small in-browser Python box.</li>
                         <li>It helps to have seen an RNA-seq analysis, for example <a href="rna-seq-first-analysis.html" target="_blank" rel="noopener">Your first RNA-seq analysis</a>. The worked examples use the same real study (Himes et al. 2014) as the <a href="capstone-himes-2014.html" target="_blank" rel="noopener">Track 3 capstone</a>.</li>
@@ -236,7 +238,7 @@
                 </table></div>
                 <p>After the first pass, Keshav suggests checking the <strong>five Cs</strong>: <strong>Category</strong> (what kind of paper: a new method, a new dataset, a biological finding, a review?), <strong>Context</strong> (which earlier work it builds on), <strong>Correctness</strong> (do the assumptions look valid?), <strong>Contributions</strong> (what is actually new?) and <strong>Clarity</strong> (is it well written?). Many papers stop there, and that is fine: you will read far more papers at pass 1 than at pass 3.</p>
                 <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;">
-                    <h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">Figures first</h4>
+                    <h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;" aria-level="3">Figures first</h4>
                     <p style="font-size:1rem; color:var(--text-gray); margin:0;">In biology the evidence lives in the figures. A useful habit in pass 2: for each figure, write one sentence saying what it shows and one saying what claim it supports. If you cannot link a claim in the abstract to a figure, that claim deserves suspicion.</p>
                 </div>
                 <div class="tryit"><strong>Try it (10 minutes):</strong> do a first pass on <a href="https://doi.org/10.1371/journal.pone.0099625" target="_blank" rel="noopener">Himes et al. 2014</a> (free to read). Write down the five Cs. Then compare with ours below.</div>
@@ -410,7 +412,7 @@ else:
                 </div>
 
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Keshav S. How to read a paper. <em>ACM SIGCOMM Comput Commun Rev</em> 37(3): 83-84, 2007. <a href="https://doi.org/10.1145/1273445.1273458" target="_blank" rel="noopener">doi:10.1145/1273445.1273458</a></li>
                         <li>Carey MA, Steiner KL, Petri WA Jr. Ten simple rules for reading a scientific paper. <em>PLoS Comput Biol</em> 16: e1008032, 2020. <a href="https://doi.org/10.1371/journal.pcbi.1008032" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1008032</a></li>

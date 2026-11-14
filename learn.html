@@ -136,8 +136,10 @@
             .lessons li { flex-direction: column; align-items: flex-start; gap: 4px; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -166,7 +168,7 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
 
             <div style="background:linear-gradient(135deg, rgba(16,185,129,0.08), rgba(91,156,248,0.08)); border:1px solid rgba(16,185,129,0.3); border-radius:14px; padding:26px 28px; margin-bottom:40px;">

@@ -81,8 +81,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -114,17 +116,17 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">No prior coding needed. Just a computer and a web browser.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: install Python on Windows, Mac, or Linux; verify the install from a terminal; create a clean virtual environment; and know where you will write your code.</p>
             </div>
 
@@ -138,7 +140,7 @@
             <p>We'll install Python using the <strong>official installer from python.org</strong> - the simplest, most universal way to get Python onto your machine. It comes with <strong>pip</strong> (for installing packages) and <strong>venv</strong> (for creating isolated "environments" so one project never breaks another). That's everything you need to start, and most beginner tutorials assume exactly this standard setup.</p>
 
             <div class="why">
-                <h4>Decode the jargon: environment</h4>
+                <h4 aria-level="3">Decode the jargon: environment</h4>
                 <p>An "environment" is a self-contained box holding its own set of packages, built on top of the Python you created it with. Project A can use one box, Project B another, and they never collide. It's the single best habit for avoiding the dreaded "it worked yesterday" problem.</p>
             </div>
 
@@ -201,7 +203,7 @@ pip install jupyter pandas numpy matplotlib biopython</pre>
             <p>Keeping the environment inside your work folder means editors such as VS Code find it automatically when you open that folder. When the environment is active, you'll see <code class="inline">(bionexus)</code> at the start of your prompt - that's how you know which box you're working in. Type <code class="inline">deactivate</code> to leave it.</p>
 
             <div class="why">
-                <h4>What about conda / Miniconda?</h4>
+                <h4 aria-level="3">What about conda / Miniconda?</h4>
                 <p>Conda (installed via <strong>Miniconda</strong>) is a popular alternative in bioinformatics because it can install non-Python command-line tools - like <code class="inline">samtools</code> or <code class="inline">bwa</code> - right alongside your Python packages. You don't need it to begin: <code class="inline">pip</code> and <code class="inline">venv</code> cover everything in this Python series. We'll bring in conda later, once you reach tools that require it.</p>
             </div>
 
@@ -278,7 +280,7 @@ pip install jupyter pandas numpy matplotlib biopython</pre>
                 </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Python Software Foundation. Using Python on Windows. <a href="https://docs.python.org/3/using/windows.html" target="_blank" rel="noopener">docs.python.org</a></li>
                     <li>Python Software Foundation. venv: creation of virtual environments. <a href="https://docs.python.org/3/library/venv.html" target="_blank" rel="noopener">docs.python.org</a></li>

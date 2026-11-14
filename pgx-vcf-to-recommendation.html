@@ -134,8 +134,10 @@
         .pgx-table td { padding: 8px 10px; border-top: 1px solid #e2e8f0; vertical-align: top; }
         .disclaimer { background: #fff7ed; border: 1px solid rgba(245,158,11,0.4); border-radius: 10px; padding: 12px 18px; margin: 0 0 24px; font-size: 0.95rem; color: #7c2d12; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -173,13 +175,13 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="disclaimer"><strong>Educational content, not medical advice.</strong> The patients here are invented, and the code is a teaching simplification. Real reports must come from a validated clinical test, analysed with dedicated software and checked against the current CPIC guideline.</div>
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>Do <a href="pgx-star-alleles.html" target="_blank" rel="noopener">Star alleles, diplotypes and phenotypes</a> first.</li>
                         <li>You should know what a VCF file is. If not, see <a href="track1-file-formats.html" target="_blank" rel="noopener">File formats</a>.</li>
@@ -187,7 +189,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: read genotypes for pharmacogenomic positions from a VCF; turn CYP2C19 genotypes into a diplotype and phenotype; calculate a DPYD activity score; produce a guideline-based summary; and explain the traps (missing positions, DNA strand, phasing) that real tools such as PharmCAT are built to handle.</p>
             </div>
 
@@ -266,7 +268,7 @@ for line in patient_vcf.strip().split("\n"):
 for rsid, n in calls.items():
     print(rsid, "-> copies of the variant:", n)
 </script></div>
-                <div class="warn"><h4>The strand trap: DPYD reads backwards</h4><p>CYP2C19 sits on the forward strand of chromosome 10, so its VCF letters match its gene names: rs4244285 is G&gt;A in both. DPYD sits on the <strong>reverse</strong> strand of chromosome 1, so the VCF shows the opposite (complementary) letters. The variant called c.1905+1G&gt;A in DPYD reports appears in a VCF as <strong>C&gt;T</strong> at chr1:97,450,058. Matching DPYD variants by letters instead of by position or rsID is a classic, dangerous error.</p></div>
+                <div class="warn"><h4 aria-level="3">The strand trap: DPYD reads backwards</h4><p>CYP2C19 sits on the forward strand of chromosome 10, so its VCF letters match its gene names: rs4244285 is G&gt;A in both. DPYD sits on the <strong>reverse</strong> strand of chromosome 1, so the VCF shows the opposite (complementary) letters. The variant called c.1905+1G&gt;A in DPYD reports appears in a VCF as <strong>C&gt;T</strong> at chr1:97,450,058. Matching DPYD variants by letters instead of by position or rsID is a classic, dangerous error.</p></div>
 
                 <h2><span class="step-num">2</span>Call the CYP2C19 diplotype and phenotype</h2>
                 <p>We count the no-function variant copies (<code class="inline">*2</code>, <code class="inline">*3</code>) and the increased-function copies (<code class="inline">*17</code>), then apply the CPIC table from the last lesson.</p>
@@ -292,7 +294,7 @@ def cyp2c19(calls):
 diplotype, phenotype = cyp2c19(calls)
 print("CYP2C19:", diplotype, "->", phenotype)
 </script></div>
-                <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">A simplification to notice</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">A standard VCF genotype like <code class="inline">0/1</code> does not say which chromosome copy carries the variant (it is <em>unphased</em>). When a patient carries one <code class="inline">*2</code> variant and one <code class="inline">*17</code> variant, our code assumes they are on different copies (<code class="inline">*2/*17</code>). Real tools handle these ambiguous cases explicitly, and also check dozens of rarer alleles that this mini-version ignores.</p></div>
+                <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;" aria-level="3">A simplification to notice</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">A standard VCF genotype like <code class="inline">0/1</code> does not say which chromosome copy carries the variant (it is <em>unphased</em>). When a patient carries one <code class="inline">*2</code> variant and one <code class="inline">*17</code> variant, our code assumes they are on different copies (<code class="inline">*2/*17</code>). Real tools handle these ambiguous cases explicitly, and also check dozens of rarer alleles that this mini-version ignores.</p></div>
 
                 <h2><span class="step-num">3</span>Calculate the DPYD activity score</h2>
                 <p>Start with two fully working copies (value 1 each), add the value of every variant copy found, and add up the <strong>two lowest</strong> values, as the CPIC guideline describes.</p>
@@ -348,7 +350,7 @@ print("DPYD activity score:", score if score is not None else "not determined")
 print("  Fluoropyrimidines:", fluoropyrimidine(score))
 print("\nCheck the current CPIC guidelines on clinpgx.org before acting on any result.")
 </script></div>
-                <div class="checkpoint"><h4>Checkpoint: patient A</h4><p>CYP2C19 <code class="inline">*1/*2</code>, intermediate metabolizer, so avoid clopidogrel after ACS or PCI. DPYD activity score 1.5 (one copy of c.2846A&gt;T), so reduce the starting fluoropyrimidine dose by 50%.</p></div>
+                <div class="checkpoint"><h4 aria-level="3">Checkpoint: patient A</h4><p>CYP2C19 <code class="inline">*1/*2</code>, intermediate metabolizer, so avoid clopidogrel after ACS or PCI. DPYD activity score 1.5 (one copy of c.2846A&gt;T), so reduce the starting fluoropyrimidine dose by 50%.</p></div>
 
                 <h2>Your turn: three more patients</h2>
                 <p>In the first box, change <code class="inline">PATIENT = "A"</code> to <code class="inline">"B"</code>, <code class="inline">"C"</code> and then <code class="inline">"D"</code>, and re-run all four boxes each time. Predict each result before you run it.</p>
@@ -411,7 +413,7 @@ print("\nCheck the current CPIC guidelines on clinpgx.org before acting on any r
                 </div>
 
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Lee CR, Luzum JA, Sangkuhl K, et al. Clinical Pharmacogenetics Implementation Consortium guideline for CYP2C19 genotype and clopidogrel therapy: 2022 update. <em>Clin Pharmacol Ther</em> 112: 959-967, 2022. <a href="https://doi.org/10.1002/cpt.2526" target="_blank" rel="noopener">doi:10.1002/cpt.2526</a></li>
                         <li>Amstutz U, Henricks LM, Offer SM, et al. Clinical Pharmacogenetics Implementation Consortium (CPIC) guideline for dihydropyrimidine dehydrogenase genotype and fluoropyrimidine dosing: 2017 update. <em>Clin Pharmacol Ther</em> 103: 210-216, 2018. <a href="https://doi.org/10.1002/cpt.911" target="_blank" rel="noopener">doi:10.1002/cpt.911</a></li>

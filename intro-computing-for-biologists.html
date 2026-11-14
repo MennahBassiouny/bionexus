@@ -78,8 +78,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -110,17 +112,17 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">The companion lesson <a href="intro-biology-for-coders.html" target="_blank" rel="noopener">The Biology a Coder Needs</a> pairs well with this one, but is not required.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: recognise the core computing vocabulary a biologist needs, understand where the analysis work actually happens, and make sense of common tools-and-setup words before you touch a keyboard.</p>
             </div>
 
@@ -141,7 +143,7 @@
                 <tr><td>Loop</td><td>"Do this step for every item." Instead of pipetting 96 wells by hand, you write the instruction once and it repeats.</td></tr>
             </table></div>
 
-            <div class="why"><h4>Why loops are the moment it clicks</h4><p>A genome has millions to billions of letters (the human one about 3 billion); an experiment measures thousands of genes. You will never process them by hand. A loop lets you describe an action <em>once</em> and have it applied to everything - the same leap as going from one manual reaction to a 384-well plate. This is where coding starts saving you real time.</p></div>
+            <div class="why"><h4 aria-level="3">Why loops are the moment it clicks</h4><p>A genome has millions to billions of letters (the human one about 3 billion); an experiment measures thousands of genes. You will never process them by hand. A loop lets you describe an action <em>once</em> and have it applied to everything - the same leap as going from one manual reaction to a 384-well plate. This is where coding starts saving you real time.</p></div>
 
             <h2>Where the work happens</h2>
             <div class="gloss"><table>
@@ -160,7 +162,7 @@
                 <tr><td>GitHub</td><td>An online home for code and projects - part backup, part portfolio, part shared lab notebook you can make public or keep private. Where you'll showcase finished work.</td></tr>
             </table></div>
 
-            <div class="why"><h4>The mindset shift that helps most</h4><p>In the wet lab, a failed experiment can cost days and reagents. In code, "failure" is cheap - you run it, get an error, fix one line, run again, in seconds. So experiment freely (just keep a backup copy of your raw data). Breaking things usually costs little and teaches you fast. The red error text isn't judgment; it's just the computer telling you exactly what it needs.</p></div>
+            <div class="why"><h4 aria-level="3">The mindset shift that helps most</h4><p>In the wet lab, a failed experiment can cost days and reagents. In code, "failure" is cheap - you run it, get an error, fix one line, run again, in seconds. So experiment freely (just keep a backup copy of your raw data). Breaking things usually costs little and teaches you fast. The red error text isn't judgment; it's just the computer telling you exactly what it needs.</p></div>
 
             <h2>You're ready for the keyboard</h2>
             <p>Scripts are protocols, functions are reusable assays, loops do a step to everything, the terminal is the bench, and packages are ready-made kits. That's the whole conceptual map. There's only one thing left to do in the Introduction - stop reading about code and write some. Next lesson, you'll run your very first lines of Python, right in your browser.</p>
@@ -203,7 +205,7 @@
                     <div class="quiz-explain">Correct. A package or library is a ready-made toolkit written by others that you install and reuse.</div>
                 </div>
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Wilson G, Aruliah DA, Brown CT, et al. Best practices for scientific computing. <em>PLoS Biol</em> 12: e1001745, 2014. <a href="https://doi.org/10.1371/journal.pbio.1001745" target="_blank" rel="noopener">doi:10.1371/journal.pbio.1001745</a></li>
                     <li>Wilson G, Bryan J, Cranston K, Kitzes J, Nederbragt L, Teal TK. Good enough practices in scientific computing. <em>PLoS Comput Biol</em> 13: e1005510, 2017. <a href="https://doi.org/10.1371/journal.pcbi.1005510" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1005510</a></li>

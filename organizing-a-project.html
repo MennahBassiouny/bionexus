@@ -119,8 +119,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -157,18 +159,18 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Helpful to have done Git first; see <a href="git-github.html" target="_blank" rel="noopener">Git &amp; GitHub for scientists</a> and <a href="conda-environments.html" target="_blank" rel="noopener">Conda environments</a> (which comes next).</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: lay out a bioinformatics project in folders that stay sane as it grows, protect your raw data, and write the README and naming habits that make your work reproducible (by others and by future you).</p>
             </div>
 
@@ -225,7 +227,7 @@ Data: GEO GSE52778 (Himes et al. 2014).
 1. scripts/01_download.sh   - fetch the data
 2. scripts/02_quantify.sh   - reads to counts
 3. scripts/03_deseq2.R      - differential expression -> results/</pre>
-            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">The reproducibility test</h4><p>Could a colleague clone your project folder and, by reading only the README, reproduce your results? If yes, you have done this right. Pair this layout with a pinned environment (see the <a href="conda-environments.html" target="_blank" rel="noopener">conda lesson</a>) and version control (the <a href="git-github.html" target="_blank" rel="noopener">Git lesson</a>), and your work is genuinely reproducible.</p></div>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;" aria-level="3">The reproducibility test</h4><p>Could a colleague clone your project folder and, by reading only the README, reproduce your results? If yes, you have done this right. Pair this layout with a pinned environment (see the <a href="conda-environments.html" target="_blank" rel="noopener">conda lesson</a>) and version control (the <a href="git-github.html" target="_blank" rel="noopener">Git lesson</a>), and your work is genuinely reproducible.</p></div>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
@@ -265,7 +267,7 @@ Data: GEO GSE52778 (Himes et al. 2014).
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Noble WS. A quick guide to organizing computational biology projects. <em>PLoS Comput Biol</em> 5: e1000424, 2009. <a href="https://doi.org/10.1371/journal.pcbi.1000424" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1000424</a></li>
                     <li>Wilson G, Bryan J, Cranston K, Kitzes J, Nederbragt L, Teal TK. Good enough practices in scientific computing. <em>PLoS Comput Biol</em> 13: e1005510, 2017. <a href="https://doi.org/10.1371/journal.pcbi.1005510" target="_blank" rel="noopener">doi:10.1371/journal.pcbi.1005510</a></li>

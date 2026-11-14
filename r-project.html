@@ -78,8 +78,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -111,10 +113,10 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Finish <a href="r-basics.html" target="_blank" rel="noopener">R: Level 1 (Basics)</a>. <a href="r-intermediate.html" target="_blank" rel="noopener">Level 2</a> is optional: everything new here is explained as you go.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">No install needed: every step runs in your browser. In RStudio, you need the <code class="inline">tidyverse</code> and <code class="inline">palmerpenguins</code> packages (see <a href="r-install.html" target="_blank" rel="noopener">Installing R and RStudio</a>, Step 4).</li>
@@ -122,7 +124,7 @@
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: load a real published dataset; clean it; summarise it by group; and produce a polished figure.</p>
             </div>
 
@@ -146,7 +148,7 @@ penguins          # the dataset comes with the package
 glimpse(penguins) # columns, types, and a peek at values
 </script></div>
             <p>Always look before you leap. <code class="inline">glimpse()</code> shows you the columns (species, island, bill length, flipper length, body mass, sex…) and their types. Notice some values are <code class="inline">NA</code> - missing. Real data is always a little messy.</p>
-            <div class="why"><h4>Seeing "Column `bill_length_mm` doesn't exist" or "object 'bill_length_mm' not found"?</h4><p>R 4.5 and newer comes with its own copy of the penguins data, with shorter column names (<code class="inline">bill_len</code>, <code class="inline">bill_dep</code>, <code class="inline">body_mass</code>). If you forget <code class="inline">library(palmerpenguins)</code>, R uses that copy and the column names in this project will not match. Run the <code class="inline">library(palmerpenguins)</code> line, then try again.</p></div>
+            <div class="why"><h4 aria-level="3">Seeing "Column `bill_length_mm` doesn't exist" or "object 'bill_length_mm' not found"?</h4><p>R 4.5 and newer comes with its own copy of the penguins data, with shorter column names (<code class="inline">bill_len</code>, <code class="inline">bill_dep</code>, <code class="inline">body_mass</code>). If you forget <code class="inline">library(palmerpenguins)</code>, R uses that copy and the column names in this project will not match. Run the <code class="inline">library(palmerpenguins)</code> line, then try again.</p></div>
 
             <h2><span class="step-num">2</span>Clean it</h2>
             <div class="rcell"><script type="text/x-r">
@@ -156,7 +158,7 @@ clean <- penguins |>
 nrow(penguins)   # before
 nrow(clean)      # after
 </script></div>
-            <div class="why"><h4>Decode the jargon: NA</h4><p><code class="inline">NA</code> means "not available" - a missing value. Many calculations return NA when any value is missing (on purpose, so you don't get silently wrong answers). Deciding what to do with them is a real and important judgment call in every analysis.</p></div>
+            <div class="why"><h4 aria-level="3">Decode the jargon: NA</h4><p><code class="inline">NA</code> means "not available" - a missing value. Many calculations return NA when any value is missing (on purpose, so you don't get silently wrong answers). Deciding what to do with them is a real and important judgment call in every analysis.</p></div>
 
             <h2><span class="step-num">3</span>Summarise by group</h2>
             <p>This is the question-answering step. How do the species differ?</p>
@@ -247,7 +249,7 @@ ggplot(clean, aes(x = species, y = body_mass_g, fill = species)) +
 
             <p style="text-align:center; color:var(--text-gray); font-size:0.95rem; margin-top:30px;">Skipped Level 2? <a href="r-intermediate.html" target="_blank" rel="noopener" style="color:var(--primary-blue); font-weight:600;">R Level 2 (Intermediate)</a> adds functions, reshaping and joins, which the RNA-seq lessons use.</p>
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Gorman KB, Williams TD, Fraser WR. Ecological sexual dimorphism and environmental variability within a community of Antarctic penguins (genus <em>Pygoscelis</em>). <em>PLoS One</em> 9(3): e90081, 2014. <a href="https://doi.org/10.1371/journal.pone.0090081" target="_blank" rel="noopener">doi:10.1371/journal.pone.0090081</a></li>
                     <li>Horst AM, Hill AP, Gorman KB. Palmer Archipelago Penguins Data in the palmerpenguins R Package: An Alternative to Anderson's Irises. <em>The R Journal</em> 14(1): 244-254, 2022. <a href="https://doi.org/10.32614/RJ-2022-020" target="_blank" rel="noopener">doi:10.32614/RJ-2022-020</a></li>

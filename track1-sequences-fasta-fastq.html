@@ -82,8 +82,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -115,15 +117,15 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div class="prereq">
-                <h4>Before you start</h4>
+                <h4 aria-level="2">Before you start</h4>
                 <p>You can read a little Python and run code in a notebook. New here? Do <a href="intro-first-python.html" target="_blank" rel="noopener">the Introduction</a> first, or the <a href="python-install.html" target="_blank" rel="noopener">Python setup</a>.</p>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: recognise a FASTA record from its <code class="inline">&gt;</code> header line, read the four-line structure of a FASTQ record and what its quality line means, tell the two formats apart at a glance, and open and inspect either format as plain text.</p>
             </div>
 
@@ -136,7 +138,7 @@
 ATGGCCCTGTGGATGCGCCTCCTGCCCCTGCTGGCGCTGCTG
 GCCCTCTGGGGACCTGACCCAGCCGCAGCCTTTGTGAACCAA</pre>
             <p>That's it. A file can hold one record or millions, each starting with its own <code class="inline">&gt;</code> header. FASTA is used for genes, genomes, proteins - any sequence where you don't need quality information.</p>
-            <div class="why"><h4>The <code class="inline">&gt;</code> is your friend</h4><p>Because every record starts with <code class="inline">&gt;</code>, counting sequences is as easy as counting header lines - exactly the <code class="inline">grep -c "^&gt;"</code> trick (<code class="inline">^</code> means "at the start of a line") from the <a href="bash-project.html" target="_blank" rel="noopener">Bash project</a>. One symbol, huge convenience.</p></div>
+            <div class="why"><h4 aria-level="3">The <code class="inline">&gt;</code> is your friend</h4><p>Because every record starts with <code class="inline">&gt;</code>, counting sequences is as easy as counting header lines - exactly the <code class="inline">grep -c "^&gt;"</code> trick (<code class="inline">^</code> means "at the start of a line") from the <a href="bash-project.html" target="_blank" rel="noopener">Bash project</a>. One symbol, huge convenience.</p></div>
 
             <h2>FASTQ - sequences <em>with quality</em></h2>
             <p>Sequencing machines aren't perfect - each base is read with a certain confidence. <strong>FASTQ</strong> captures that. Every record is exactly <strong>four lines</strong>:</p>
@@ -172,7 +174,7 @@ IIIIIIIHHHHHGGGFFF             <span class="c"># 4. one quality score per base</
                 <figcaption style="text-align:center; color:#64748b; font-size:0.9rem; margin-top:8px;">Four lines per record. Lines 2 and 4 are always the same length - one quality score for every base.</figcaption>
             </figure>
 
-            <div class="why"><h4>Decode the jargon: Phred quality scores</h4><p>Each quality character represents a <strong>Phred score</strong> - a number saying how likely the base is wrong. A score of 30 means a 1-in-1,000 chance of error (99.9% confident); 40 means 1-in-10,000. The characters are those numbers turned into printable symbols: in modern files (Phred+33), a character's ASCII code minus 33 gives the score, so <code class="inline">I</code> = 40. (Some very old Illumina files used +64.) You rarely read them by eye - tools like FastQC summarize them for you - but now you know what line 4 <em>is</em>.</p></div>
+            <div class="why"><h4 aria-level="3">Decode the jargon: Phred quality scores</h4><p>Each quality character represents a <strong>Phred score</strong> - a number saying how likely the base is wrong. A score of 30 means a 1-in-1,000 chance of error (99.9% confident); 40 means 1-in-10,000. The characters are those numbers turned into printable symbols: in modern files (Phred+33), a character's ASCII code minus 33 gives the score, so <code class="inline">I</code> = 40. (Some very old Illumina files used +64.) You rarely read them by eye - tools like FastQC summarize them for you - but now you know what line 4 <em>is</em>.</p></div>
 
             <h2>Hands-on: read both formats</h2>
             <p>Let's actually parse them with Biopython (you installed it in the foundations track; in Colab, run <code class="inline">!pip install biopython</code> first).</p>
@@ -248,7 +250,7 @@ rec = <span class="k">next</span>(SeqIO.parse(<span class="s">"demo.fastq"</span
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Cock PJ, Fields CJ, Goto N, Heuer ML, Rice PM. The Sanger FASTQ file format for sequences with quality scores, and the Solexa/Illumina FASTQ variants. <em>Nucleic Acids Research</em> 38: 1767-1771, 2010. <a href="https://doi.org/10.1093/nar/gkp1137" target="_blank" rel="noopener">doi:10.1093/nar/gkp1137</a></li>
                     <li>Ewing B, Green P. Base-calling of automated sequencer traces using phred. II. Error probabilities. <em>Genome Research</em> 8: 186-194, 1998. (the Phred score) <a href="https://doi.org/10.1101/gr.8.3.186" target="_blank" rel="noopener">doi:10.1101/gr.8.3.186</a></li>

@@ -80,8 +80,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -112,17 +114,17 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">A look at <a href="track1-sequences-fasta-fastq.html" target="_blank" rel="noopener">Sequences: FASTA and FASTQ</a> gives helpful context, but is not required.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: tell apart the common bioinformatics file formats including FASTA, FASTQ, SAM, BAM, VCF, BED, and GFF or GTF, and know at a glance what kind of data each one holds.</p>
             </div>
 
@@ -167,7 +169,7 @@
 <span class="c"># QNAME FLAG RNAME POS MAPQ CIGAR RNEXT PNEXT TLEN SEQ QUAL)</span>
 read1   chr7   55019021   ATGCGTACGT...   60</pre>
             <p><strong>BAM</strong> is simply the <em>compressed, binary</em> version of SAM - same information, far smaller and faster for computers to read. You'll almost always store BAM and convert to readable SAM only when you need to look.</p>
-            <div class="why"><h4>Why two versions?</h4><p>A human sequencing run produces hundreds of millions of alignments. As plain-text SAM that's enormous; BAM squeezes it down. Rule of thumb: <strong>SAM = readable, BAM = efficient.</strong> The <code class="inline">samtools</code> program converts between them.</p></div>
+            <div class="why"><h4 aria-level="3">Why two versions?</h4><p>A human sequencing run produces hundreds of millions of alignments. As plain-text SAM that's enormous; BAM squeezes it down. Rule of thumb: <strong>SAM = readable, BAM = efficient.</strong> The <code class="inline">samtools</code> program converts between them.</p></div>
 
             <h2>VCF <span class="badge">How does this genome differ?</span></h2>
             <p>Once reads are aligned, you can ask: where does this individual's DNA differ from the reference? Each difference is a <strong>variant</strong>, and they're stored in a <strong>VCF</strong> (Variant Call Format) file - one row per variant, giving its position and what changed.</p>
@@ -189,7 +191,7 @@ chr7  havana  exon  55019017  55019365  .  +  ...</pre>
             <pre><span class="c"># chrom  start(0-based)  end  name   (no header line in a real BED file)</span>
 chr7   55019016  55211628  EGFR
 chr11  5225463   5227071   HBB</pre>
-            <div class="why"><h4>Decode the jargon: 0-based vs 1-based</h4><p>A famous trap: <strong>BED counts positions from 0</strong>, while VCF and GFF count from 1. So the same base can have two different numbers depending on the format: compare the EGFR start in the GFF (55019017) with the BED (55019016). BED ends are not shifted, because BED intervals are half-open (the end base is not included). It catches everyone once; BAM and Python also count from 0, but among the text files you read by eye, BED is the odd one out.</p></div>
+            <div class="why"><h4 aria-level="3">Decode the jargon: 0-based vs 1-based</h4><p>A famous trap: <strong>BED counts positions from 0</strong>, while VCF and GFF count from 1. So the same base can have two different numbers depending on the format: compare the EGFR start in the GFF (55019017) with the BED (55019016). BED ends are not shifted, because BED intervals are half-open (the end base is not included). It catches everyone once; BAM and Python also count from 0, but among the text files you read by eye, BED is the odd one out.</p></div>
 
             <h2>Your quick reference</h2>
             <div class="cheat"><table>
@@ -242,7 +244,7 @@ chr11  5225463   5227071   HBB</pre>
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Li H, Handsaker B, Wysoker A, et al. The Sequence Alignment/Map format and SAMtools. <em>Bioinformatics</em> 25: 2078-2079, 2009. <a href="https://doi.org/10.1093/bioinformatics/btp352" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp352</a></li>
                     <li>Danecek P, Auton A, Abecasis G, et al. The variant call format and VCFtools. <em>Bioinformatics</em> 27: 2156-2158, 2011. <a href="https://doi.org/10.1093/bioinformatics/btr330" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btr330</a></li>

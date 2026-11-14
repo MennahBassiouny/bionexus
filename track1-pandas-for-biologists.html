@@ -90,8 +90,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -123,15 +125,15 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div class="prereq">
-                <h4>Before you start</h4>
+                <h4 aria-level="2">Before you start</h4>
                 <p>You can fetch records from NCBI (<a href="track1-where-data-lives.html" target="_blank" rel="noopener">lesson 4</a>) and run Python. In Colab, run <code class="inline">!pip install biopython pandas</code> first.</p>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: build and inspect a pandas <code class="inline">DataFrame</code>, select rows and columns and filter your data, read real tabular files into a DataFrame, and summarise a table to answer a question.</p>
             </div>
 
@@ -160,7 +162,7 @@ genes[<span class="s">"length_kb"</span>] = genes[<span class="s">"length"</span
 <span class="c"># 4. SUMMARIZE - overall and per group</span>
 <span class="k">print</span>(genes[<span class="s">"length"</span>].mean())
 genes.groupby(<span class="s">"chrom"</span>)[<span class="s">"length"</span>].mean()   <span class="c"># average length per chromosome</span></pre>
-            <div class="why"><h4>Why pandas is worth learning once</h4><p>Filter, sort, compute, group, summarize - these five verbs answer most questions you'll ever ask of a data table, whether it's 4 genes or 40,000. Two more you'll use all the time: <code class="inline">df.describe()</code> gives count, mean, min and max for every numeric column in one go, and <code class="inline">pd.merge(table_a, table_b, on="gene")</code> joins two tables that share a column (the <a href="track1-enrichment.html" target="_blank" rel="noopener">next lesson</a> covers merging in detail). Learn them here and they pay off in every later track, including the RNA-seq results table.</p></div>
+            <div class="why"><h4 aria-level="3">Why pandas is worth learning once</h4><p>Filter, sort, compute, group, summarize - these five verbs answer most questions you'll ever ask of a data table, whether it's 4 genes or 40,000. Two more you'll use all the time: <code class="inline">df.describe()</code> gives count, mean, min and max for every numeric column in one go, and <code class="inline">pd.merge(table_a, table_b, on="gene")</code> joins two tables that share a column (the <a href="track1-enrichment.html" target="_blank" rel="noopener">next lesson</a> covers merging in detail). Learn them here and they pay off in every later track, including the RNA-seq results table.</p></div>
 
             <h2>Reading real files</h2>
             <p>Real data usually arrives as a CSV. One line loads it:</p>
@@ -278,7 +280,7 @@ plt.ylabel(<span class="s">"GC %"</span>); plt.tight_layout(); plt.show()</pre>
                 </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Ziemann M, Eren Y, El-Osta A. Gene name errors are widespread in the scientific literature. <em>Genome Biology</em> 17: 177, 2016. (why code beats spreadsheets for gene tables) <a href="https://doi.org/10.1186/s13059-016-1044-7" target="_blank" rel="noopener">doi:10.1186/s13059-016-1044-7</a></li>
                     <li>O'Leary NA, Wright MW, Brister JR, et al. Reference sequence (RefSeq) database at NCBI: current status, taxonomic expansion, and functional annotation. <em>Nucleic Acids Research</em> 44: D733-D745, 2016. (the NM_ records in the project) <a href="https://doi.org/10.1093/nar/gkv1189" target="_blank" rel="noopener">doi:10.1093/nar/gkv1189</a></li>

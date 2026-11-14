@@ -117,8 +117,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -155,18 +157,18 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">You have seen the RNA-seq pipeline end to end, for example in <a href="rna-seq-big-picture.html" target="_blank" rel="noopener">The RNA-seq Big Picture</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain why biological replicates matter, recognize a batch effect and a confounded design, and describe how to plan an RNA-seq experiment so the analysis can actually work.</p>
             </div>
 
@@ -176,7 +178,7 @@
             <h2><span class="step-num">1</span>Replicates: why you need at least three</h2>
             <p>A <strong>biological replicate</strong> is a separate, independent sample (a different mouse, a different patient, a different culture). You need several because biology is variable: two untreated samples already differ a little, just by chance. Replicates measure that natural variation, and that is exactly what lets a tool like DESeq2 tell a real treatment effect apart from background noise.</p>
             <div class="jargon" style="background:linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0;">
-                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">Biological vs technical</span>They are not the same</h4>
+                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;" aria-level="3"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">Biological vs technical</span>They are not the same</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">A <strong>biological</strong> replicate is a different individual or sample. A <strong>technical</strong> replicate is the same sample measured twice. Only biological replicates capture the variation that matters for differential expression. Three biological replicates per group is the <strong>bare minimum</strong>. A large benchmark found that 3 replicates catch only about 20 to 40% of truly changed genes, and recommended at least 6 per group (more if you need to catch small changes).</p>
             </div>
 
@@ -205,7 +207,7 @@
 
             <h2><span class="step-num">3</span>More replicates beat more depth</h2>
             <p>People often ask whether to sequence each sample more deeply or to add more samples. For differential expression the answer is usually clear: <strong>more biological replicates</strong> gives you more power to detect real changes than piling extra reads onto a handful of samples. A modest depth across more replicates wins.</p>
-            <div class="why"><h4>A planning checklist</h4><p>Before you sequence: at least 3 biological replicates per group (6 or more if you can); conditions spread across batches, not confounded with them; any unavoidable batch recorded so it can go in the model; and a clear control group. Get these right and the analysis in the rest of this track will simply work.</p></div>
+            <div class="why"><h4 aria-level="3">A planning checklist</h4><p>Before you sequence: at least 3 biological replicates per group (6 or more if you can); conditions spread across batches, not confounded with them; any unavoidable batch recorded so it can go in the model; and a clear control group. Get these right and the analysis in the rest of this track will simply work.</p></div>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
@@ -245,7 +247,7 @@
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Schurch NJ, Schofield P, Gierli&#324;ski M, et al. How many biological replicates are needed in an RNA-seq experiment and which differential expression tool should you use?. <em>RNA</em> 22: 839-851, 2016. (replicate numbers) <a href="https://doi.org/10.1261/rna.053959.115" target="_blank" rel="noopener">doi:10.1261/rna.053959.115</a></li>
                     <li>Liu Y, Zhou J, White KP. RNA-seq differential expression studies: more sequence or more replication?. <em>Bioinformatics</em> 30: 301-304, 2014. (replicates vs depth) <a href="https://doi.org/10.1093/bioinformatics/btt688" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btt688</a></li>

@@ -87,8 +87,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -119,10 +121,10 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Nothing to install for this page: every example runs in your browser. When you want R on your own computer, see <a href="r-install.html" target="_blank" rel="noopener">Installing R and RStudio</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Using RStudio? Do <a href="r-first-steps.html" target="_blank" rel="noopener">First steps in RStudio</a> first: the panes, saving a script, getting help, and reading errors.</li>
@@ -130,7 +132,7 @@
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: assign values with the arrow; use R core data types; build and work with vectors; handle data frames; apply the main tidyverse verbs; and make a first plot with ggplot2.</p>
             </div>
 
@@ -202,7 +204,7 @@ gc <- 41.5        # from section 1
 gc > 50           # is gc greater than 50?  ->  FALSE
 "ATG" == "ATG"   # are these equal?  ->  TRUE
 </script></div>
-            <div class="why"><h4>One arrow or two equals?</h4><p><code class="inline">&lt;-</code> <em>stores</em> a value in a name. <code class="inline">==</code> (two equals signs) <em>asks</em> "are these equal?" and answers TRUE or FALSE. They are different jobs.</p></div>
+            <div class="why"><h4 aria-level="3">One arrow or two equals?</h4><p><code class="inline">&lt;-</code> <em>stores</em> a value in a name. <code class="inline">==</code> (two equals signs) <em>asks</em> "are these equal?" and answers TRUE or FALSE. They are different jobs.</p></div>
 
             <h2>3. Vectors: R's basic building block</h2>
             <p>R rarely deals with one value at a time. A <strong>vector</strong> is an ordered set of values of the same type, built with <code class="inline">c()</code> ("combine"). Almost every R operation works on a whole vector at once.</p>
@@ -229,7 +231,7 @@ mean(expr)      # average of all five  ->  9.88
 expr * 2        # doubles EVERY value at once
 expr[1]         # the FIRST value  ->  12.4
 </script></div>
-            <div class="why"><h4>R counts from 1</h4><p>Unlike many languages, R numbers positions starting at <strong>1</strong>, not 0. So <code class="inline">expr[1]</code> is the first value. If you have seen Python, this is the opposite, and a common thing to trip on.</p></div>
+            <div class="why"><h4 aria-level="3">R counts from 1</h4><p>Unlike many languages, R numbers positions starting at <strong>1</strong>, not 0. So <code class="inline">expr[1]</code> is the first value. If you have seen Python, this is the opposite, and a common thing to trip on.</p></div>
 
             <h2>4. Data frames: the spreadsheet of R</h2>
             <p>A <strong>data frame</strong> is a table: each <strong>column</strong> is a variable, each <strong>row</strong> is one observation. Gene tables, sample sheets, and clinical data all have this shape.</p>
@@ -300,7 +302,7 @@ genes |>
   filter(length_kb > 50) |>     # keep rows where the gene is long
   arrange(desc(length_kb))      # sort, longest first
 </script></div>
-            <div class="why"><h4>The pipe <code class="inline">|&gt;</code></h4><p>The pipe passes the result of one step into the next, so you read top to bottom as a sentence: "take genes, <em>then</em> filter, <em>then</em> sort." It is the backbone of tidyverse code. Older code (and many tutorials) use <code class="inline">%&gt;%</code> instead; for simple steps like these the two do the same thing. <code class="inline">|&gt;</code> needs R 4.1 or newer.</p></div>
+            <div class="why"><h4 aria-level="3">The pipe <code class="inline">|&gt;</code></h4><p>The pipe passes the result of one step into the next, so you read top to bottom as a sentence: "take genes, <em>then</em> filter, <em>then</em> sort." It is the backbone of tidyverse code. Older code (and many tutorials) use <code class="inline">%&gt;%</code> instead; for simple steps like these the two do the same thing. <code class="inline">|&gt;</code> needs R 4.1 or newer.</p></div>
 
             <h2>6. Your first plot with ggplot2</h2>
             <p><strong>ggplot2</strong> builds a graph in layers: start with the <strong>data</strong>, say what goes on each axis (the <strong>aesthetics</strong>, <code class="inline">aes</code>), then add a <strong>geom</strong>, the kind of mark to draw.</p>
@@ -348,7 +350,7 @@ head(my_data)    # the first 6 rows
 str(my_data)     # the columns and their types (base R's version of glimpse)
 mean(my_data$expression)
 </script></div>
-            <div class="why"><h4>Your own file</h4><p>To read a file on your computer, put it in your project folder and give just its name: <code class="inline">read_csv("my_file.csv")</code>. <a href="r-first-steps.html" target="_blank" rel="noopener">First steps in RStudio</a> shows how RStudio Projects make that "just the name" trick work.</p></div>
+            <div class="why"><h4 aria-level="3">Your own file</h4><p>To read a file on your computer, put it in your project folder and give just its name: <code class="inline">read_csv("my_file.csv")</code>. <a href="r-first-steps.html" target="_blank" rel="noopener">First steps in RStudio</a> shows how RStudio Projects make that "just the name" trick work.</p></div>
 
             <div class="glossary">
                 <h4>Every key word, in plain English</h4>
@@ -445,7 +447,7 @@ mean(genes$length_kb)  # 96.2</pre></details>
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Wickham H, Cetinkaya-Rundel M, Grolemund G. <em>R for Data Science</em>, 2nd ed. (2023), chapter 3 "Data transformation". <a href="https://r4ds.hadley.nz/data-transform.html" target="_blank" rel="noopener">r4ds.hadley.nz</a></li>
                     <li>Wickham H, Cetinkaya-Rundel M, Grolemund G. <em>R for Data Science</em>, 2nd ed. (2023), chapter 1 "Data visualization". <a href="https://r4ds.hadley.nz/data-visualize.html" target="_blank" rel="noopener">r4ds.hadley.nz</a></li>

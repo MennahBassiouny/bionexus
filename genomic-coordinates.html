@@ -82,8 +82,10 @@
         .dtable th { background:rgba(91,156,248,0.1); color:var(--deep-navy); font-weight:600; }
         .lesson-body .refs { background:#f1f5f9; border:1px solid rgba(91,156,248,0.2); border-radius:10px; padding:20px 24px; margin:30px 0; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -114,18 +116,18 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">You have met the common file formats in <a href="track1-file-formats.html" target="_blank" rel="noopener">File formats</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain the difference between 0-based and 1-based coordinates, know which file formats use which, convert between them, and avoid the off-by-one bug that silently shifts every feature you work with.</p>
             </div>
 
@@ -177,7 +179,7 @@
                 <tr><td><strong>SAM</strong> (the POS column)</td><td>1-based</td><td>(BAM stores it as 0-based internally, but tools show you 1-based)</td></tr>
             </table>
             <div class="jargon" style="background:linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0;">
-                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">Quick memory hook</span>The B in BED is for "begins at zero"</h4>
+                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;" aria-level="3"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">Quick memory hook</span>The B in BED is for "begins at zero"</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">If you remember only one thing: <strong>BED is 0-based and half-open; almost everything a biologist reads (GFF/GTF, VCF, and positions written in papers) is 1-based.</strong> When you cross between them, expect an off-by-one. Two more traps: region text like <code class="inline">chr1:100-200</code> (used by samtools and genome browsers) is 1-based and includes both ends, and UCSC stores coordinates 0-based but <em>displays</em> them 1-based.</p>
             </div>
 
@@ -188,7 +190,7 @@ bed_start = gtf_start - <span class="o">1</span>
 bed_end   = gtf_end          <span class="c"># the end does not change</span>
 
 <span class="c"># a feature at 1-based positions 2..4  becomes  BED 1..4</span></pre>
-            <div class="why"><h4>Why the end stays the same</h4><p>It looks asymmetric, but it works out: in 0-based half-open, the end is "one past the last base," which happens to equal the 1-based end. A handy bonus is that the length is simply <code class="inline">end - start</code> with no "+1" to remember.</p></div>
+            <div class="why"><h4 aria-level="3">Why the end stays the same</h4><p>It looks asymmetric, but it works out: in 0-based half-open, the end is "one past the last base," which happens to equal the 1-based end. A handy bonus is that the length is simply <code class="inline">end - start</code> with no "+1" to remember.</p></div>
 
             <h2><span class="step-num">4</span>What it looks like when it goes wrong</h2>
             <p>Imagine you have a ChIP-seq peak in a BED file (0-based) and you naively look up that start position in a 1-based genome browser. Each peak's start now appears one base too early (the end is unaffected, so the peak also looks one base longer). For a single base that may not matter, but it can change which codon a variant hits, whether a feature overlaps a gene boundary, or which exon a read lands in. The fix is never "nudge the numbers until it looks right"; it is to know which system each file uses and convert deliberately.</p>
@@ -231,7 +233,7 @@ bed_end   = gtf_end          <span class="c"># the end does not change</span>
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Kent WJ, Sugnet CW, Furey TS, et al. The human genome browser at UCSC. <em>Genome Research</em> 12: 996-1006, 2002. (where BED comes from) <a href="https://doi.org/10.1101/gr.229102" target="_blank" rel="noopener">doi:10.1101/gr.229102</a></li>
                     <li>Quinlan AR, Hall IM. BEDTools: a flexible suite of utilities for comparing genomic features. <em>Bioinformatics</em> 26: 841-842, 2010. <a href="https://doi.org/10.1093/bioinformatics/btq033" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btq033</a></li>

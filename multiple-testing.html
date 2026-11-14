@@ -113,8 +113,10 @@
             .lesson-header h1 { font-size: 2.2rem; }
         }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -152,12 +154,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You know what a p-value is. If "p-value" feels shaky, do <a href="stats-essentials.html" target="_blank" rel="noopener">Stats you can't avoid</a> first.</li>
                         <li>No coding required to follow along, but a runnable Python cell lets you implement the correction yourself.</li>
@@ -165,7 +167,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain why testing thousands of genes inflates false positives, distinguish controlling the FWER from controlling the FDR, apply Bonferroni and Benjamini-Hochberg corrections, and read a p-value histogram as a diagnostic.</p>
             </div>
 
@@ -187,7 +189,7 @@
                 <p>The distinction matters enormously. Controlling FWER is strict: it tries to avoid any false alarm at all, which makes it conservative and prone to missing real effects. Controlling FDR is more permissive and is the right tradeoff for discovery-stage genomics, where you want a gene list that is "mostly true" and will be validated later anyway.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>False discovery rate (FDR)</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>False discovery rate (FDR)</h4>
                     <p>If your significant list is controlled at 5% FDR, you expect, on average, at most about 5% of the genes on that list to be false positives. It is a property of the <em>whole list</em>, not of any one gene. This is exactly what "we report genes at FDR &lt; 0.05" means in a methods section.</p>
                 </div>
 
@@ -207,7 +209,7 @@
                 <p>The "adjusted p-value" (q-value-like number) reported in your results is this procedure expressed per gene, so you can simply filter <code class="inline">padj &lt; 0.05</code> and trust that your list is controlled at 5% FDR.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Adjusted p-value / q-value</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Adjusted p-value / q-value</h4>
                     <p>A p-value that has been rescaled to account for all the other tests. The <code class="inline">padj</code> column in DESeq2 is BH-adjusted. Storey's <strong>q-value</strong> is a closely related quantity: the minimum FDR at which a given test would be called significant. In practice you filter on the adjusted p-value, not the raw one.</p>
                 </div>
 
@@ -253,7 +255,7 @@ print(f"Benjamini-Hochberg FDR -> {bh_hits} significant (the genomics standard)"
                 <p>This one plot catches many analysis bugs, and you will learn to read it in the next lesson on honest visualization.</p>
 
                 <div class="warn">
-                    <h4>⚠️ The cardinal sins of multiple testing</h4>
+                    <h4 aria-level="3">⚠️ The cardinal sins of multiple testing</h4>
                     <p>Reporting <strong>raw</strong> p-values from a genome-wide screen as if they were significant. Running many tests, then correcting only the ones that "looked promising." And the subtlest one: testing many models or subgroups, reporting only the one that worked, and never disclosing how many you tried (this is "p-hacking," and it silently inflates your real false-positive rate far beyond 0.05).</p>
                 </div>
 
@@ -307,7 +309,7 @@ print(f"Benjamini-Hochberg FDR -> {bh_hits} significant (the genomics standard)"
                     <div class="quiz-explain"><strong>Right.</strong> BH finds the largest rank i where p is at or below (i / m) x Q, then declares that gene and all smaller-ranked p-values significant. This controls the false discovery rate while retaining far more power than Bonferroni.</div>
                 </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Benjamini Y, Hochberg Y. Controlling the false discovery rate: a practical and powerful approach to multiple testing. <em>J R Stat Soc B</em> 57: 289-300, 1995. <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02031.x" target="_blank" rel="noopener">doi:10.1111/j.2517-6161.1995.tb02031.x</a></li>
                         <li>Storey JD, Tibshirani R. Statistical significance for genomewide studies. <em>Proc Natl Acad Sci USA</em> 100: 9440-9445, 2003. <a href="https://doi.org/10.1073/pnas.1530509100" target="_blank" rel="noopener">doi:10.1073/pnas.1530509100</a></li>

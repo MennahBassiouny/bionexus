@@ -118,8 +118,10 @@
         .refs a { color: var(--primary-blue); text-decoration: none; }
         .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -157,12 +159,12 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container">
             <div class="lesson-body">
 
                 <div class="prereq">
-                    <h4>Before you start</h4>
+                    <h4 aria-level="2">Before you start</h4>
                     <ul>
                         <li>You've done <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">From Raw Counts to Differential Expression</a>, so you understand a results table and fold changes.</li>
                         <li>A little R, and a free Google account to run the Colab notebook.</li>
@@ -170,7 +172,7 @@
                     </ul>
                 </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: run GO and KEGG over-representation analysis and GSEA in R, explain how each method differs, and turn a list of differentially expressed genes into a readable story about biological function.</p>
             </div>
 
@@ -185,7 +187,7 @@
                 </ul>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>Gene set</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>Gene set</h4>
                     <p>A named group of genes that share something, for example "all genes involved in DNA repair" or "the genes in the insulin signalling pathway". Enrichment is really just testing your data against thousands of these predefined gene sets to see which ones light up.</p>
                 </div>
 
@@ -227,7 +229,7 @@ dotplot(ego, showCategory = 12) + ggtitle(<span class="s">"Over-represented biol
                 <p>The dot plot is the payoff: each row is a biological process, the dot size is how many of your genes fall in it, and the colour is the adjusted p-value. Processes near the top are the ones your changed genes are concentrated in.</p>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>GO and KEGG</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>GO and KEGG</h4>
                     <p><strong>GO (Gene Ontology)</strong> is a standardized dictionary of what genes do, split into biological processes ("BP"), molecular functions, and cellular components. <strong>KEGG</strong> is a database of pathways, the wiring diagrams of interacting genes (for example, "cell cycle" or "insulin signalling"). To test KEGG pathways instead of GO terms use <code class="inline">enrichKEGG(gene = sig_genes, organism = "hsa", universe = names(geneList))</code>; it takes Entrez IDs and an organism code rather than <code class="inline">OrgDb</code> and <code class="inline">ont</code>.</p>
                 </div>
 
@@ -245,7 +247,7 @@ head(gse[, c(<span class="s">"Description"</span>, <span class="s">"NES"</span>,
 gseaplot2(gse, geneSetID = 1, title = gse$Description[1])</pre>
 
                 <div class="jargon">
-                    <h4><span>Decode the jargon</span>NES (Normalized Enrichment Score)</h4>
+                    <h4 aria-level="3"><span>Decode the jargon</span>NES (Normalized Enrichment Score)</h4>
                     <p>GSEA's headline number. A <strong>positive NES</strong> means the gene set is shifted toward the top of your ranking (up in your condition); a <strong>negative NES</strong> means it is shifted toward the bottom (down). The bigger the absolute value, the stronger the coordinated shift. Pair it with <code class="inline">p.adjust</code> below 0.05 to decide what to trust.</p>
                 </div>
 
@@ -280,7 +282,7 @@ ranks &lt;- sort(ranks, decreasing = TRUE)
 <span class="c"># (if your row names are gene symbols instead, use fromType = "SYMBOL")</span></pre>
 
                 <div class="levelup">
-                    <h4>🔶 Level up</h4>
+                    <h4 aria-level="3">🔶 Level up</h4>
                     <p>Try <code class="inline">enrichKEGG</code> and <code class="inline">gseKEGG</code> for pathways, and the <code class="inline">ReactomePA</code> package for Reactome pathways. The <code class="inline">enrichplot</code> package has beautiful visuals (<code class="inline">cnetplot</code>, <code class="inline">emapplot</code>) that show how terms and genes connect. The free online <em>clusterProfiler book</em> by Guangchuang Yu is the definitive guide.</p>
                 </div>
 
@@ -323,7 +325,7 @@ ranks &lt;- sort(ranks, decreasing = TRUE)
                 <div class="quiz-explain">GSEA needs the whole list ordered by a meaningful metric, such as log2 fold change or a signed score. It then checks whether a gene set clusters near the top (up) or bottom (down) of that ranking.</div>
             </div>
                 <div class="refs">
-                    <h4>Sources &amp; further reading</h4>
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
                     <ol>
                         <li>Subramanian A, Tamayo P, Mootha VK, et al. Gene set enrichment analysis: a knowledge-based approach for interpreting genome-wide expression profiles. <em>PNAS</em> 102: 15545-15550, 2005. <a href="https://doi.org/10.1073/pnas.0506580102" target="_blank" rel="noopener">doi:10.1073/pnas.0506580102</a></li>
                         <li>Ashburner M, Ball CA, Blake JA, et al. Gene ontology: tool for the unification of biology. <em>Nature Genetics</em> 25: 25-29, 2000. <a href="https://doi.org/10.1038/75556" target="_blank" rel="noopener">doi:10.1038/75556</a></li>

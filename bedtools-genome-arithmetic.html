@@ -84,8 +84,10 @@
         .sbx-wrap { margin: 0 0 1.2em; }
         .sbx-wrap pre { flex: 1 1 auto; min-width: 0; margin: 0; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container"><img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img"></a>
@@ -116,18 +118,18 @@
         </div></div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">You are comfortable with the common interval formats from <a href="track1-file-formats.html" target="_blank" rel="noopener">File formats</a>, and have basic command-line comfort (see <a href="bash-basics.html" target="_blank" rel="noopener">Bash basics</a>).</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: read a genomic interval as a row of (chrom, start, end), describe what the core bedtools subcommands do (intersect, merge, subtract, closest, complement, genomecov, slop and flank), and write an intersect and a sort-then-merge command correctly.</p>
             </div>
 
@@ -151,7 +153,7 @@ chr2    50     90</pre>
                 <tr><td><strong>genomecov</strong></td><td>Report coverage depth across the genome</td><td><code class="inline">-bg</code>, <code class="inline">-d</code></td></tr>
                 <tr><td><strong>slop / flank</strong></td><td>Extend intervals (slop) or make new flanking regions (flank)</td><td><code class="inline">-b</code>, <code class="inline">-l</code>, <code class="inline">-r</code></td></tr>
             </table>
-            <div class="why"><h4>Why -wa and -wb matter</h4><p>By default <code class="inline">intersect</code> reports only the overlapping piece. <code class="inline">-wa</code> ("write A") gives you the full original A interval, <code class="inline">-wb</code> ("write B") appends the full B interval, and <code class="inline">-v</code> inverts the question to report A intervals that do NOT overlap B at all.</p></div>
+            <div class="why"><h4 aria-level="3">Why -wa and -wb matter</h4><p>By default <code class="inline">intersect</code> reports only the overlapping piece. <code class="inline">-wa</code> ("write A") gives you the full original A interval, <code class="inline">-wb</code> ("write B") appends the full B interval, and <code class="inline">-v</code> inverts the question to report A intervals that do NOT overlap B at all.</p></div>
 
             <h2><span class="step-num">2</span>Picturing intersect</h2>
             <p>Intersect lines up two tracks and reports where they overlap. In the figure below, track A (peaks) and track B (genes) share two overlapping stretches; those shared stretches are what a plain intersect returns.</p>
@@ -179,7 +181,7 @@ chr2    50     90</pre>
                 <figcaption>Track A overlaps track B in two places; intersect returns just those shared green stretches.</figcaption>
             </figure>
 
-            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;">Practise right here</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">The command boxes in sections 3 and 4 have a <strong>Run</strong> button that sends them to a real Linux terminal in your browser, with <code class="inline">peaks.bed</code> and <code class="inline">genes.bed</code> already loaded. No install, no account.</p></div>
+            <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:22px 0;"><h4 style="color:var(--primary-blue); font-size:0.95rem; margin-bottom:6px;" aria-level="3">Practise right here</h4><p style="font-size:1rem; color:var(--text-gray); margin:0;">The command boxes in sections 3 and 4 have a <strong>Run</strong> button that sends them to a real Linux terminal in your browser, with <code class="inline">peaks.bed</code> and <code class="inline">genes.bed</code> already loaded. No install, no account.</p></div>
 
             <h2><span class="step-num">3</span>Worked example: intersect with -wa -wb</h2>
             <p>Say you have ChIP-seq peaks and a set of gene intervals, and you want to know which peaks fall inside which genes, keeping the full record of both. That is one command:</p>
@@ -198,13 +200,13 @@ bedtools merge -i peaks.sorted.bed
 
 <span class="c"># or pipe it in one go</span>
 sort -k1,1 -k2,2n peaks.bed | bedtools merge -i -</pre></div>
-            <div class="why"><h4>Why sorting matters</h4><p>merge walks through intervals in order and fuses each one with the next if they overlap or touch. If the file is not sorted, neighbouring intervals are not actually next to each other in the file, so the merge would be wrong. Modern bedtools stops with an error instead (older versions could quietly give wrong output). <code class="inline">closest</code> also needs sorted input. Sort first, every time.</p></div>
+            <div class="why"><h4 aria-level="3">Why sorting matters</h4><p>merge walks through intervals in order and fuses each one with the next if they overlap or touch. If the file is not sorted, neighbouring intervals are not actually next to each other in the file, so the merge would be wrong. Modern bedtools stops with an error instead (older versions could quietly give wrong output). <code class="inline">closest</code> also needs sorted input. Sort first, every time.</p></div>
 
             <h2>Try it here: one more experiment</h2>
             <p><code class="inline">peaks.bed</code> holds the three peaks shown above and <code class="inline">genes.bed</code> three genes (geneA chr1:150-300, geneB chr1:420-600, geneC chr2:200-400). Run the boxes above first, then add a peak that overlaps one you have, and merge again:</p>
             <div class="sbx-wrap"><pre data-sandboxbio>printf 'chr1\t180\t260\n' &gt;&gt; peaks.bed
 sort -k1,1 -k2,2n peaks.bed | bedtools merge -i -</pre></div>
-            <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;">What you should see</h4><p style="font-size:1rem; margin:0;">The first intersect gives two lines (each chr1 peak next to its gene); <code class="inline">-v</code> gives the chr2 peak; the first merge changes nothing because no peaks overlap. After adding chr1:180-260, merge fuses it with chr1:100-200 into one interval, chr1:100-260.</p></div>
+            <div class="checkpoint" style="background:rgba(16,185,129,0.07); border:1px solid rgba(16,185,129,0.3); border-left:4px solid #10b981; border-radius:10px; padding:14px 20px; margin:16px 0 22px;"><h4 style="color:#047857; font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:6px;" aria-level="3">What you should see</h4><p style="font-size:1rem; margin:0;">The first intersect gives two lines (each chr1 peak next to its gene); <code class="inline">-v</code> gives the chr2 peak; the first merge changes nothing because no peaks overlap. After adding chr1:180-260, merge fuses it with chr1:100-200 into one interval, chr1:100-260.</p></div>
 
             <h2>Check your understanding</h2>
             <div class="quiz">
@@ -244,7 +246,7 @@ sort -k1,1 -k2,2n peaks.bed | bedtools merge -i -</pre></div>
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Quinlan AR, Hall IM. BEDTools: a flexible suite of utilities for comparing genomic features. <em>Bioinformatics</em> 26: 841-842, 2010. <a href="https://doi.org/10.1093/bioinformatics/btq033" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btq033</a></li>
                 </ol>

@@ -124,8 +124,10 @@
         .warnbox p { font-size: 1rem; margin: 0; }
         .step-num { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:#fff; font-size:1rem; font-weight:700; margin-right:12px; vertical-align:middle; }
     </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to content</a>
     <header>
         <div class="nav-container">
             <a href="index.html" class="logo-container">
@@ -162,25 +164,25 @@
         </div>
     </div>
 
-    <main>
+    <main id="main">
         <div class="container"><div class="lesson-body">
 
             <div style="background:#ffffff; border:1px solid rgba(91,156,248,0.2); border-left:4px solid var(--primary-blue); border-radius:10px; padding:22px 26px; margin:0 0 16px;">
-                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;">Before you start</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.8rem; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:10px;" aria-level="2">Before you start</h4>
                 <ul style="margin:0 0 0 20px;">
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">You have a count matrix in mind; see <a href="rna-seq-reads-to-counts.html" target="_blank" rel="noopener">From Reads to a Count Matrix</a>.</li>
                     <li style="font-size:1rem; color:var(--text-gray); margin-bottom:4px;">Any term new? The <a href="glossary.html" target="_blank" rel="noopener">Glossary</a> has it.</li>
                 </ul>
             </div>
             <div class="why" style="background:rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:16px 20px; margin:0 0 26px;">
-                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">Learning objectives</h4>
+                <h4 style="color:var(--primary-blue); font-size:0.85rem; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;" aria-level="3">Learning objectives</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;">By the end of this lesson you will be able to: explain why raw counts cannot be compared directly, say what CPM, FPKM, and TPM each correct for, explain why TPM is a within-sample unit that can mislead when you compare samples, choose the right values for comparing samples, and state the rule that DESeq2 and edgeR must receive raw integer counts, not normalized values.</p>
             </div>
 
             <h2>Why raw counts are not comparable</h2>
             <p>A raw count is simply the number of reads that mapped to a gene. Two things make raw counts unfair to compare. First, <strong>library size</strong> (sequencing depth): if sample A was sequenced twice as deeply as sample B, every gene in A will tend to show roughly twice the counts, even when nothing biological changed. Second, <strong>gene length</strong>: a long gene is a bigger target, so it collects more reads than a short gene at the same true expression level. Because of these two effects, you cannot read a count of 800 in one place and 400 in another and conclude that the first is twice as active.</p>
             <div class="jargon" style="background:linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border:1px solid rgba(168,85,247,0.25); border-radius:10px; padding:18px 22px; margin:22px 0;">
-                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">Two confounders</span>Depth and length</h4>
+                <h4 style="color:var(--primary-purple); font-size:0.95rem; margin-bottom:6px;" aria-level="3"><span style="font-size:0.78rem; text-transform:uppercase; letter-spacing:0.5px; opacity:0.8; margin-right:8px;">Two confounders</span>Depth and length</h4>
                 <p style="font-size:1rem; color:var(--text-gray); margin:0;"><strong>Depth</strong> (library size) makes whole samples scale up or down together. <strong>Gene length</strong> makes long genes look more expressed than short ones within a sample. Each normalization method removes one or both of these.</p>
             </div>
 
@@ -287,13 +289,13 @@ print("TPM says GENE2-5 fell to a quarter in B. They did not change.")
 print("Normalized counts keep GENE2-5 equal and show HBB up 10x.")
 </script></div>
             <div class="warnbox">
-                <h4>Rule of thumb</h4>
+                <h4 aria-level="3">Rule of thumb</h4>
                 <p>Comparing <strong>genes within one sample</strong>? TPM is fine. Comparing <strong>the same gene across samples</strong>? Use DESeq2 or edgeR normalized counts. If you are handed only TPM from a database, compare samples only when they used the same protocol and have a similar RNA mix, and treat the result as a rough guide.</p>
             </div>
 
             <h2><span class="step-num">3</span>The rule that keeps DESeq2 happy</h2>
             <p>This is the part beginners get wrong most often. For <strong>differential expression</strong>, DESeq2 and edgeR do their <strong>own</strong> normalization internally, the median-of-ratios method in DESeq2 and TMM in edgeR, and they must be given <strong>raw integer counts</strong>. Never feed them CPM, FPKM, or TPM. Those values are already scaled and are no longer counts, and the statistical model that DESeq2 uses assumes count data with a specific mean to variance relationship. Hand DESeq2 the raw count matrix and let it normalize for you.</p>
-            <div class="why"><h4>One-line summary</h4><p>CPM corrects depth; FPKM and TPM correct depth and length and describe genes within one sample. To compare samples, use DESeq2 or edgeR normalized counts. For differential expression, give DESeq2 or edgeR raw counts and let them normalize internally.</p></div>
+            <div class="why"><h4 aria-level="3">One-line summary</h4><p>CPM corrects depth; FPKM and TPM correct depth and length and describe genes within one sample. To compare samples, use DESeq2 or edgeR normalized counts. For differential expression, give DESeq2 or edgeR raw counts and let them normalize internally.</p></div>
 
             <h2>A worked example in R</h2>
             <p>CPM is the simplest formula. For gene <em>g</em> in a sample, CPM = (count for <em>g</em> / total mapped reads in that sample) &times; 1,000,000. TPM first divides each count by gene length, then scales so the sample adds up to one million. The example below calculates both by hand, then gives the <em>raw</em> counts to DESeq2 and prints its normalized counts. Look at GENE2 to GENE6: their TPM drops in the treated samples, but their DESeq2 normalized counts stay flat. This code was tested with R 4.3 and DESeq2 1.42.</p>
@@ -373,7 +375,7 @@ round(counts(dds, normalized = TRUE))      # use THESE to compare samples
             </div>
 
             <div class="refs">
-                <h4>Sources &amp; further reading</h4>
+                <h4 aria-level="3">Sources &amp; further reading</h4>
                 <ol>
                     <li>Zhao S, Ye Z, Stanton R. Misuse of RPKM or TPM normalization when comparing across samples and sequencing protocols. <em>RNA</em> 26(8): 903-909, 2020. <a href="https://doi.org/10.1261/rna.074922.120" target="_blank" rel="noopener">doi:10.1261/rna.074922.120</a></li>
                     <li>Zhao Y, Li M-C, Konat&eacute; MM, et al. TPM, FPKM, or normalized counts? A comparative study of quantification measures for the analysis of RNA-seq data from the NCI Patient-Derived Models Repository. <em>Journal of Translational Medicine</em> 19: 269, 2021. <a href="https://doi.org/10.1186/s12967-021-02936-w" target="_blank" rel="noopener">doi:10.1186/s12967-021-02936-w</a></li>
