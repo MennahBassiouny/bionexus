@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="BioNexus Hub">
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+    <link rel="canonical" href="https://bionexushub.com/start-here.html">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Not sure where to begin with bioinformatics? Pick your starting point: from biology, health or pharmacy, from computing, or from scratch. A free, ordered first path for each.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Start Here: Find Your Path into Bioinformatics | BioNexus Hub">
+    <meta property="og:description" content="Not sure where to begin with bioinformatics? Pick your starting point: from biology, health or pharmacy, from computing, or from scratch. A free, ordered first path for each.">
+    <meta property="og:url" content="https://bionexushub.com/start-here.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Start Here: Find Your Path into Bioinformatics | BioNexus Hub">
+    <meta name="twitter:description" content="Three starting points into bioinformatics: from biology, from computing, or from scratch.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Start Here - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .page-header { padding: 64px 0 40px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .page-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 14px; }
+        .page-header p { font-size: 1.2rem; color: var(--text-gray); max-width: 780px; }
+
+        main { flex: 1; padding: 48px 0 80px; }
+        .faq-body { max-width: 820px; margin: 0 auto; }
+
+        .reassure { background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(91,156,248,0.1)); border: 1px solid rgba(16,185,129,0.3); border-radius: 12px; padding: 24px 28px; margin-bottom: 36px; }
+        .reassure h2 { font-family: 'Crimson Pro', serif; font-size: 1.5rem; color: var(--deep-navy); margin: 0 0 8px; }
+        .reassure p { color: var(--text-gray); margin: 0; font-size: 1.05rem; }
+
+        .qgroup h2 { font-family: 'Crimson Pro', serif; font-size: 1.5rem; color: var(--deep-navy); margin: 40px 0 6px; padding-top: 18px; border-top: 1px solid #e7edf5; }
+        .q { font-family: 'Crimson Pro', serif; font-size: 1.7rem; font-weight: 700; color: #9333ea; margin: 32px 0 8px; }
+        .faq-body p { color: var(--text-dark); font-size: 1.06rem; margin-bottom: 14px; }
+        .faq-body ul, .faq-body ol { margin: 0 0 16px 24px; }
+        .faq-body li { margin-bottom: 7px; font-size: 1.04rem; color: var(--text-dark); }
+        .faq-body a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
+        .faq-body strong { color: var(--deep-navy); }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .cta { background: var(--deep-navy); color: white; border-radius: 12px; padding: 28px 30px; margin-top: 44px; text-align: center; }
+        .cta h3 { font-family: 'Crimson Pro', serif; font-size: 1.5rem; margin-bottom: 8px; }
+        .cta p { color: rgba(255,255,255,0.75); margin-bottom: 18px; }
+        .cta a { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; padding: 13px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-block; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .page-header h1 { font-size: 2.2rem; }
+        }
+    </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
+<style>
+        .paths { display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap:18px; margin: 8px 0 36px; }
+        .path-card { display:block; background:white; border:2px solid rgba(91,156,248,0.25); border-radius:14px; padding:22px 22px 20px; text-decoration:none !important; color:var(--text-dark) !important; font-weight:400 !important; transition: all .2s ease; }
+        .path-card:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow:0 10px 26px rgba(91,156,248,0.15); }
+        .path-card h3 { font-family:'Crimson Pro', serif; font-size:1.45rem; color:var(--deep-navy); margin-bottom:6px; }
+        .path-card p { font-size:0.98rem !important; color:var(--text-gray) !important; margin:0 !important; }
+        .path-card .go { display:inline-block; margin-top:10px; font-weight:700; color:var(--primary-blue); }
+        .path { scroll-margin-top: 110px; border-top: 1px solid #e7edf5; padding-top: 26px; margin-top: 40px; }
+        .path h2 { font-family:'Crimson Pro', serif; font-size:2rem; color:var(--deep-navy); margin-bottom:10px; }
+        .have-need { display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin: 14px 0 22px; }
+        .have-need div { border-radius:12px; padding:16px 18px; }
+        .have-need .have { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.3); }
+        .have-need .need { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.35); }
+        .have-need h3 { font-size:1rem; margin-bottom:6px; color:var(--deep-navy); }
+        .have-need p { font-size:1rem !important; margin:0 !important; color:var(--text-gray) !important; }
+        ol.steps { counter-reset: s; list-style:none; margin: 6px 0 18px 0 !important; }
+        ol.steps li { counter-increment: s; position:relative; padding: 12px 14px 12px 56px; background:white; border:1px solid #e7edf5; border-radius:10px; margin-bottom:10px !important; }
+        ol.steps li::before { content: counter(s); position:absolute; left:14px; top:12px; width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg,var(--primary-blue),var(--primary-purple)); color:white; font-weight:700; font-size:0.9rem; display:flex; align-items:center; justify-content:center; }
+        ol.steps .t { color: var(--text-gray); font-size: 0.92rem; }
+        .skip { background: rgba(91,156,248,0.07); border:1px solid rgba(91,156,248,0.3); border-left:4px solid var(--primary-blue); border-radius:10px; padding:14px 18px; margin: 4px 0 14px; }
+        .skip p { margin:0 !important; font-size:1rem !important; }
+        @media (max-width: 640px) { .have-need { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="faq.html">Help</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Start here: find your path</h1>
+            <p>Everyone arrives at bioinformatics from somewhere different. Pick the description that fits you best, and follow a short, ordered path built from lessons already on this site. Every path is free and starts in your browser, with nothing to install.</p>
+        </div>
+    </div>
+
+    <main id="main">
+        <div class="container">
+            <div class="faq-body">
+
+                <div class="paths">
+                    <a class="path-card" href="#biology"><h3>I come from biology, health or pharmacy</h3><p>You know the science. Your path focuses on coding and data.</p><span class="go">Go to this path →</span></a>
+                    <a class="path-card" href="#computing"><h3>I come from computing or data</h3><p>You can code. Your path focuses on biology and the field's traps.</p><span class="go">Go to this path →</span></a>
+                    <a class="path-card" href="#scratch"><h3>I am starting from scratch</h3><p>No science or coding yet? Perfect. This is the gentlest order.</p><span class="go">Go to this path →</span></a>
+                </div>
+
+                <figure style="margin: 10px 0 30px; text-align:center;">
+                    <svg viewBox="0 0 760 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three starting points, biology, computing and from scratch, all lead into the same roadmap, from Track 1 onwards." style="width:100%; max-width:720px; height:auto;">
+                        <g font-family="'Work Sans',sans-serif" font-size="13" text-anchor="middle">
+                            <rect x="20" y="20" width="200" height="56" rx="12" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/><text x="120" y="45" font-weight="700" fill="#047857">From biology / health</text><text x="120" y="64" fill="#475569" font-size="12">add coding and data</text>
+                            <rect x="280" y="20" width="200" height="56" rx="12" fill="#eef4ff" stroke="#5b9cf8" stroke-width="2"/><text x="380" y="45" font-weight="700" fill="#1e40af">From computing</text><text x="380" y="64" fill="#475569" font-size="12">add biology and conventions</text>
+                            <rect x="540" y="20" width="200" height="56" rx="12" fill="#f3e8ff" stroke="#a855f7" stroke-width="2"/><text x="640" y="45" font-weight="700" fill="#6b21a8">From scratch</text><text x="640" y="64" fill="#475569" font-size="12">a little of both, gently</text>
+                            <g stroke="#94a3b8" stroke-width="2" fill="none"><path d="M120 76 V110 H380 V128"/><path d="M380 76 V128"/><path d="M640 76 V110 H380 V128"/></g>
+                            <path d="M374 124 l6 9 l6 -9z" fill="#94a3b8"/>
+                            <rect x="230" y="136" width="300" height="54" rx="12" fill="#0f172a"/><text x="380" y="160" font-weight="700" fill="#ffffff">One shared roadmap</text><text x="380" y="178" fill="#cbd5e1" font-size="12">Track 1 onwards, with a checkpoint after each</text>
+                        </g>
+                    </svg>
+                </figure>
+
+                <section class="path" id="biology">
+                    <h2>From biology, health or pharmacy</h2>
+                    <p>This is the path the founder of BioNexus took, from pharmacy into bioinformatics. You are not starting from zero: you already think like a scientist.</p>
+                    <div class="have-need">
+                        <div class="have"><h3>You already have</h3><p>The biology, a feel for experiments and controls, and often clinical or drug knowledge that many bioinformaticians lack.</p></div>
+                        <div class="need"><h3>What to build</h3><p>Reading and writing simple code, handling data files, and the command line. It feels strange at first and gets easier quickly.</p></div>
+                    </div>
+                    <ol class="steps">
+                    <li><a href="intro-what-is-bioinformatics.html">What bioinformatics actually is</a> <span class="t">· 20 min</span><br>The big picture, and where your background fits.</li>
+                    <li><a href="intro-computing-for-biologists.html">The computing a biologist needs</a> <span class="t">· 30 min</span><br>Variables, scripts, the terminal: the words explained in lab terms.</li>
+                    <li><a href="intro-first-python.html">Your first 10 lines of Python</a> <span class="t">· 45 min</span><br>Run real code in your browser on a DNA sequence.</li>
+                    <li><a href="python-basics.html">Python basics (Level 1)</a> <span class="t">· a few hours, at your pace</span><br>The core of coding, with practice exercises.</li>
+                    <li><a href="bash-basics.html">Command-line basics (Level 1)</a> <span class="t">· a few hours, at your pace</span><br>How almost every bioinformatics tool is run.</li>
+                    <li><a href="track1-sequences-fasta-fastq.html">Sequences, FASTA and FASTQ</a> <span class="t">· 45 min</span><br>Your first real biological data files.</li>
+                    <li><a href="rna-seq-big-picture.html">The RNA-seq big picture</a> <span class="t">· 30 min</span><br>Then the flagship <a href="rna-seq-first-analysis.html">first RNA-seq analysis</a> (2 to 3 hours).</li>
+                    </ol>
+                    <div class="skip"><p><strong>You can skim for now:</strong> <a href="intro-biology-for-coders.html">the biology a coder needs</a>, since you know it. <strong>Pharmacists and clinicians:</strong> Track 7, <a href="pgx-why-dose-differs.html">pharmacogenomics</a>, builds directly on what you know. And read the <a href="transition-playbook.html">transition playbook</a> early; it was written for you.</p></div>
+                    <p class="q" style="font-size:1.35rem;">"Is it too late to learn to code?"</p>
+                    <p>No. Many working bioinformaticians started in the lab or clinic. Your field knowledge is an advantage, because you can tell when a result does not make biological sense.</p>
+                </section>
+
+                <section class="path" id="computing">
+                    <h2>From computing, engineering or data</h2>
+                    <p>You can already write code, so you will move fast through the technical parts. The hard part is different: biology has its own vocabulary, file conventions and statistical traps that general programming does not teach.</p>
+                    <div class="have-need">
+                        <div class="have"><h3>You already have</h3><p>Programming, the command line, version control and comfort with large data.</p></div>
+                        <div class="need"><h3>What to build</h3><p>Enough biology to ask good questions, the field's file formats and their traps, and why experimental design limits what any analysis can show.</p></div>
+                    </div>
+                    <ol class="steps">
+                    <li><a href="intro-what-is-bioinformatics.html">What bioinformatics actually is</a> <span class="t">· 20 min</span><br>What the field does, beyond "code for biology".</li>
+                    <li><a href="intro-biology-for-coders.html">The biology a coder needs</a> <span class="t">· 30 min</span><br>DNA, RNA, proteins and genes, explained with programming analogies.</li>
+                    <li><a href="track1-file-formats.html">The file-format alphabet soup</a> <span class="t">· 40 min</span><br>FASTQ, SAM/BAM, VCF, GFF and BED, and what each is for.</li>
+                    <li><a href="genomic-coordinates.html">Genomic coordinates: 0-based vs 1-based</a> <span class="t">· 25 min</span><br>The classic off-by-one trap between formats.</li>
+                    <li><a href="ngs-how-it-works.html">How NGS works</a> <span class="t">· 20 min</span><br>Where the data comes from, and why it is messy.</li>
+                    <li><a href="rna-seq-experimental-design.html">Experimental design for RNA-seq</a> <span class="t">· 25 min</span><br>Replicates and batches: no code can rescue a broken design.</li>
+                    <li><a href="multiple-testing.html">The multiple-testing problem</a> <span class="t">· 45 min</span><br>Testing 20,000 genes at once changes how you read p-values.</li>
+                    </ol>
+                    <div class="skip"><p><strong>You can skip:</strong> the Foundations install and basics pages for languages you already use. If you only know Python, do <a href="r-basics.html">R basics</a>, because the standard RNA-seq tools (DESeq2 and Bioconductor) are written in R.</p></div>
+                    <p class="q" style="font-size:1.35rem;">"Can I just learn the tools?"</p>
+                    <p>You can run them quickly, but judging whether a result is right needs the biology and the design. That is where most analysis errors hide, and it is what employers look for.</p>
+                </section>
+
+                <section class="path" id="scratch">
+                    <h2>Starting from scratch</h2>
+                    <p>No science degree and no coding? That is completely fine. The Introduction was written with you in mind, and nothing assumes knowledge you have not been given.</p>
+                    <div class="have-need">
+                        <div class="have"><h3>You already have</h3><p>Curiosity, and a web browser. That is all the first lessons need.</p></div>
+                        <div class="need"><h3>What to build</h3><p>A little biology and a little coding, side by side, in small steps.</p></div>
+                    </div>
+                    <ol class="steps">
+                    <li><a href="intro-what-is-bioinformatics.html">What bioinformatics actually is</a> <span class="t">· 20 min</span><br>What the field is, in plain words.</li>
+                    <li><a href="intro-3-month-map.html">The map: what you can do in 3 months</a> <span class="t">· 15 min</span><br>An honest picture of the road ahead.</li>
+                    <li><a href="intro-biology-for-coders.html">The biology you need</a> <span class="t">· 30 min</span><br>DNA, RNA and proteins, with no assumed knowledge.</li>
+                    <li><a href="intro-computing-for-biologists.html">The computing you need</a> <span class="t">· 30 min</span><br>What code, scripts and the terminal actually are.</li>
+                    <li><a href="intro-first-python.html">Your first 10 lines of Python</a> <span class="t">· 45 min</span><br>Real code, in your browser, nothing to install.</li>
+                    <li><a href="intro-checkpoint.html">Introduction checkpoint</a> <span class="t">· 20 min</span><br>Ten friendly questions to check you are ready.</li>
+                    <li><a href="python-basics.html">Python basics (Level 1)</a> <span class="t">· a few hours, at your pace</span><br>Then the <a href="foundations-checkpoint.html">Foundations checkpoint</a> and on to Track 1.</li>
+                    </ol>
+                    <div class="skip"><p><strong>Go at your own pace.</strong> About 20 to 30 minutes a day is enough to make real progress. If anything goes wrong, the <a href="faq.html">Help page</a> covers the most common problems.</p></div>
+                    <p class="q" style="font-size:1.35rem;">"What if I get stuck?"</p>
+                    <p>Getting stuck is part of learning to code, for everyone. Every lesson explains its jargon, the <a href="glossary.html">Glossary</a> has plain-English definitions, and the feedback button on every page reaches a real person.</p>
+                </section>
+
+                <div class="cta">
+                    <h3>Prefer to see everything at once?</h3>
+                    <p>The full roadmap shows every track, lesson and checkpoint in order.</p>
+                    <a href="learn.html">Open the full roadmap →</a>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+</body>
+</html>
