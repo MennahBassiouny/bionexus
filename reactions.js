@@ -26,11 +26,12 @@
     /* ---- floating feedback button (every page) ---- */
     var fb = document.createElement("a");
     fb.href = FORM; fb.target = "_blank"; fb.rel = "noopener"; fb.title = "Send feedback";
+    fb.className = "bnx-fb"; fb.setAttribute("aria-label", "Send feedback");
     fb.textContent = "💬 Feedback";
     fb.setAttribute("style",
-      "position:fixed;right:18px;bottom:18px;z-index:1500;background:linear-gradient(135deg,#5b9cf8,#a855f7);" +
+      "position:fixed;right:18px;bottom:18px;z-index:1500;background:linear-gradient(135deg,#2563eb,#7c3aed);" +
       "color:#fff;padding:11px 18px;border-radius:30px;font-family:'Work Sans',sans-serif;font-weight:600;" +
-      "font-size:0.92rem;text-decoration:none;box-shadow:0 6px 20px rgba(91,156,248,0.45);");
+      "font-size:0.92rem;text-decoration:none;box-shadow:0 6px 20px rgba(37,99,235,0.35);");
     document.body.appendChild(fb);
 
     /* ---- Learn page: show progress, then stop ---- */
@@ -55,7 +56,7 @@
       '<button class="bnx-down" style="cursor:pointer;border:1px solid rgba(239,68,68,0.35);background:rgba(239,68,68,0.06);color:#b91c1c;font-weight:700;font-size:1rem;padding:10px 22px;border-radius:30px;">👎 <span class="bnx-down-c">0</span></button>' +
       '</div>' +
       '<p class="bnx-msg" style="min-height:18px;margin:12px 0 0;font-size:0.88rem;color:#10b981;"></p>' +
-      '<p style="margin:6px 0 0;font-size:0.88rem;"><a href="' + FORM + '" target="_blank" rel="noopener" style="color:#5b9cf8;text-decoration:none;font-weight:600;">Have more to say? Send detailed feedback &rarr;</a></p>';
+      '<p style="margin:6px 0 0;font-size:0.88rem;"><a href="' + FORM + '" target="_blank" rel="noopener" style="color:#2563eb;text-decoration:none;font-weight:600;">Have more to say? Send detailed feedback &rarr;</a></p>';
     footer.parentNode.insertBefore(w, footer);
 
     /* mark-complete button */
@@ -67,7 +68,7 @@
         doneBtn.style.color = "#047857";
       } else {
         doneBtn.textContent = "Mark this lesson complete";
-        doneBtn.style.background = "linear-gradient(135deg,#5b9cf8,#a855f7)";
+        doneBtn.style.background = "linear-gradient(135deg,#2563eb,#7c3aed)";
         doneBtn.style.color = "#fff";
       }
     }
@@ -157,7 +158,7 @@
       '<strong style="color:#0f172a;">Your progress</strong>' +
       '<span style="color:#64748b;font-size:0.9rem;">' + done + ' of ' + total + ' lessons complete</span></div>' +
       '<div style="height:10px;background:#eef2f7;border-radius:6px;overflow:hidden;">' +
-      '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#5b9cf8,#a855f7);"></div></div>' +
+      '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#2563eb,#7c3aed);"></div></div>' +
       (done === 0 ? '<p style="margin:8px 0 0;color:#64748b;font-size:0.82rem;">Tip: tap “Mark this lesson complete” at the bottom of any lesson to track your progress here.</p>' : '');
     anchor.parentNode.insertBefore(box, anchor);
   }

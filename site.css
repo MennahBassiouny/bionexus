@@ -1,0 +1,60 @@
+/* BioNexus Hub shared styles.
+   Loaded on every page AFTER the page's own <style>, so rules here win.
+   Change shared design here, in one place, instead of in every page. */
+
+/* 1. Brand colours: deeper blue and purple so text and buttons meet the
+      WCAG AA contrast standard (4.5:1). Blue #2563eb = 5.2:1 on white,
+      purple #7c3aed = 5.7:1 on white. */
+:root {
+    --primary-blue: #2563eb;
+    --primary-purple: #7c3aed;
+}
+
+/* 2. One link style for text links inside content. */
+main a:not([class]) {
+    color: var(--primary-blue);
+}
+main a:not([class]):hover {
+    color: var(--primary-purple);
+}
+.lesson-body p a:not([class]),
+.lesson-body li a:not([class]),
+.faq-body p a:not([class]),
+.faq-body li a:not([class]),
+.quiz-explain a:not([class]) {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
+}
+
+/* 3. Phone header: keep the menu button at the right edge,
+      with a comfortable 44px tap area. */
+@media (max-width: 768px) {
+    .nav-container { justify-content: flex-start; }
+    .menu-toggle {
+        margin-left: auto;
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
+
+/* 4. Phone feedback button: a small round icon so it does not cover
+      buttons or lesson text. (The button is added by reactions.js.) */
+@media (max-width: 640px) {
+    .bnx-fb {
+        width: 46px !important;
+        height: 46px !important;
+        padding: 0 !important;
+        right: 12px !important;
+        bottom: 12px !important;
+        border-radius: 50% !important;
+        font-size: 0 !important;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+    }
+    .bnx-fb::before {
+        content: "\1F4AC";
+        font-size: 20px;
+    }
+}
