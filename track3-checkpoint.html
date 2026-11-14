@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="BioNexus Hub">
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+    <link rel="canonical" href="https://bionexushub.com/track3-checkpoint.html">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Track 3 checkpoint: ten new scenario questions that test whether you can use RNA-seq ideas together, from experimental design to enrichment. Free, in your browser.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Track 3 Checkpoint: RNA-seq | BioNexus Hub">
+    <meta property="og:description" content="Track 3 checkpoint: ten new scenario questions that test whether you can use RNA-seq ideas together, from experimental design to enrichment. Free, in your browser.">
+    <meta property="og:url" content="https://bionexushub.com/track3-checkpoint.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Track 3 Checkpoint: RNA-seq | BioNexus Hub">
+    <meta name="twitter:description" content="Ten scenario questions that check you can use RNA-seq ideas together.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Track 3 Checkpoint: RNA-seq - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.purple { background: rgba(168,85,247,0.12); border-color: transparent; color: #7c3aed; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .module-tag { display: inline-block; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: var(--primary-purple); background: rgba(168,85,247,0.1); padding: 4px 12px; border-radius: 20px; margin-top: 8px; }
+
+        .objectives { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-purple); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .objectives h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-purple); margin-bottom: 10px; }
+        .objectives ul { margin: 0 0 0 20px; }
+        .objectives li { font-size: 1rem; color: var(--text-gray); margin-bottom: 5px; }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .pro { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .pro h4 { color: #047857; font-size: 0.95rem; margin-bottom: 6px; }
+        .pro p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .ctable { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.95rem; }
+        .ctable th, .ctable td { border: 1px solid rgba(91,156,248,0.2); padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ctable th { background: rgba(91,156,248,0.1); color: var(--deep-navy); font-weight: 600; }
+        .ctable td { color: var(--text-gray); }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .p { color: #f472b6; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .assessment { background: linear-gradient(135deg, rgba(91,156,248,0.1), rgba(168,85,247,0.1)); border: 1px solid rgba(168,85,247,0.3); border-radius: 12px; padding: 24px 28px; margin: 36px 0 8px; }
+        .assessment h2 { margin-top: 0; }
+        .assessment .passmark { font-size: 0.95rem; color: var(--text-gray); margin: 0; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+        .rs-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; margin: 0 0 22px; }
+        .rs-table th { text-align: left; background: #f1f5f9; padding: 8px 10px; }
+        .rs-table td { padding: 8px 10px; border-top: 1px solid #e2e8f0; vertical-align: top; }
+        .table-wrap { overflow-x: auto; }
+        .viz svg { width: 100%; height: auto; }
+        figure figcaption { font-size: 0.9rem; color: var(--text-gray); text-align: center; margin-top: 8px; }
+        .tryit { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 14px 18px; margin: 18px 0; font-size: 1rem; }
+        .plan-card { background: white; border: 1px solid rgba(91,156,248,0.25); border-left: 4px solid var(--primary-purple); border-radius: 10px; padding: 16px 22px; margin: 16px 0 22px; }
+        .plan-card p { margin-bottom: 6px; font-size: 1rem; }
+        .plan-card p:last-child { margin-bottom: 0; }
+        details p { margin-top: 10px; }
+    </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="faq.html">Help</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-3" target="_blank" rel="noopener">← Roadmap</a> &nbsp;/&nbsp; Track 3: Transcriptomics &nbsp;/&nbsp; <strong>Checkpoint</strong></div>
+                <h1>Track 3 Checkpoint: Can You Put RNA-seq Together?</h1>
+                <p class="promise">Ten new questions you have not seen in the lessons. Each one mixes ideas from more than one lesson, the way real analyses do. Take it before the capstone to find out what you already own and what to review.</p>
+                <div class="tags">
+                    <span class="tag purple">Track checkpoint</span>
+                    <span class="tag">~20 min</span>
+                    <span class="tag green">In your browser, no code</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main id="main">
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="objectives">
+                    <h4 aria-level="2">What this checks</h4>
+                    <ul>
+                        <li>You can plan an RNA-seq experiment that can answer its question (replicates, batches).</li>
+                        <li>You know which numbers go into which tool, and why (counts, TPM, vst).</li>
+                        <li>You can read DESeq2 results with judgment, not just thresholds.</li>
+                        <li>You can spot circular or misleading conclusions in heatmaps, enrichment and bulk data.</li>
+                    </ul>
+                </div>
+                <div class="prereq">
+                    <h4 aria-level="3">Before you start</h4>
+                    <ul>
+                        <li>Finish the Track 3 lessons on the <a href="learn.html#track-3" target="_blank" rel="noopener">roadmap</a>, or at least the big picture, experimental design, DESeq2 and enrichment lessons.</li>
+                        <li>No notes on the first try. The point is to find out what you can recall, which is also one of the best ways to make it stick.</li>
+                    </ul>
+                </div>
+
+                <h2>How this checkpoint works</h2>
+                <p>Answer all ten questions. When you finish, the page shows your score. <strong>7 of 10 counts as a pass; aim for 8 or more before starting the capstone.</strong> Every explanation links to the lesson to review.</p>
+                <p>This is a self-check, not an exam. The answers live in the page, so it only works if you answer honestly before reading the explanation. If you score below 7, review the linked lessons, wait a day or two, then reload and try again. Coming back after a break helps you remember more than re-reading straight away.</p>
+
+                <div class="assessment">
+                    <h2>The ten questions</h2>
+                    <p class="passmark">Scenario questions. Pick the best answer; some wrong answers are tempting on purpose.</p>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-q-src">A collaborator sends you a table of TPM values for 3 control and 3 treated samples and asks for a DESeq2 analysis. What do you ask them for first?</div>
+                    <button data-opt>Nothing; TPM is already normalized, so DESeq2 will work better with it</button>
+                    <button data-opt data-correct>The raw (or estimated) counts per gene, such as featureCounts output or salmon results imported with tximport</button>
+                    <button data-opt>The FPKM values instead, because they also correct for gene length</button>
+                    <button data-opt>A log2 transform of the TPM values so the data look more normal</button>
+                    <div class="quiz-explain">DESeq2 models raw counts with a negative binomial distribution and does its own normalization. TPM and FPKM throw away the count scale that its statistics depend on, and log values are not counts at all. Review: <a href="rna-seq-normalization.html" target="_blank" rel="noopener">RNA-seq normalization</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Your budget allows either 2 replicates per group sequenced at 60 million reads each, or 5 replicates per group at 25 million reads each. For finding differentially expressed genes, which is usually the better choice?</div>
+                    <button data-opt>2 replicates at 60 million reads, because depth finds more genes</button>
+                    <button data-opt>Either; total reads are about the same, so power is the same</button>
+                    <button data-opt>Neither; you need at least 10 replicates for any RNA-seq study</button>
+                    <button data-opt data-correct>5 replicates at 25 million reads, because biological replicates usually add more power than extra depth</button>
+                    <div class="quiz-explain">Variation between biological samples is usually the main limit on power. Once depth is reasonable, adding replicates helps more than adding reads (Liu et al. 2014). Very deep sequencing still matters for some goals, such as rare transcripts or isoforms. Review: <a href="rna-seq-experimental-design.html" target="_blank" rel="noopener">Experimental design for RNA-seq</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You can only prepare 3 libraries per day, and you have 3 control and 3 treated samples. Which plan is best?</div>
+                    <button data-opt data-correct>Day 1: 2 controls + 1 treated. Day 2: 1 control + 2 treated. Then use the design ~ day + condition</button>
+                    <button data-opt>Day 1: all 3 controls. Day 2: all 3 treated. Then use the design ~ day + condition</button>
+                    <button data-opt>Day 1: all 3 controls. Day 2: all 3 treated. Then remove the day effect with ComBat before DESeq2</button>
+                    <button data-opt>Prepare them in any order; DESeq2 normalization removes day-to-day differences</button>
+                    <div class="quiz-explain">Each day must contain both conditions, otherwise day and treatment are confounded and no model or correction tool can separate them. With both conditions in each batch, adding day to the design lets DESeq2 account for it. Normalization only corrects for differences in sequencing depth and library composition, not batch effects (Leek et al. 2010). Review: <a href="rna-seq-batch-effects.html" target="_blank" rel="noopener">Correcting batch effects</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Before running DESeq2, a PCA of your vst-transformed counts shows treated and control samples separating clearly along PC1. A colleague says: "Great, so most genes will be differentially expressed." What is wrong with this?</div>
+                    <button data-opt>Nothing; a clear PC1 split means most genes changed</button>
+                    <button data-opt>PCA can only be run after DESeq2, so the plot is not valid</button>
+                    <button data-opt data-correct>PCA summarizes the overall pattern, often driven by a minority of high-variance genes. It does not test any single gene; that needs the per-gene test with replicates</button>
+                    <button data-opt>PC1 always reflects sequencing depth, never biology</button>
+                    <div class="quiz-explain">PCA is a quality-control and overview tool. A clean split is reassuring but says nothing about how many individual genes pass a statistical test. Review: <a href="rna-seq-sample-qc-pca.html" target="_blank" rel="noopener">Sample QC and PCA</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Your factor levels are control (the reference) and treated. Gene A has log2FoldChange = -2 and padj = 0.001. What does this mean?</div>
+                    <button data-opt>Gene A is 2 times higher in treated samples</button>
+                    <button data-opt data-correct>Gene A is about 4 times lower in treated samples than in controls, and it passes a strict false-discovery-rate cutoff</button>
+                    <button data-opt>Gene A is 2 units lower in treated samples, but the change is not significant</button>
+                    <button data-opt>Gene A is 4 times higher in controls, but only in some samples</button>
+                    <div class="quiz-explain">A log2 fold change of -2 means 2 to the power of -2, which is one quarter: expression in treated is about 4 times lower than in the reference group. The sign depends on which level is the reference, so always check it. Review: <a href="rna-seq-deseq2.html" target="_blank" rel="noopener">DESeq2 lesson</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">On your volcano plot, gene B has log2FoldChange = 5, padj = 0.4 and a baseMean of 3 (very few reads). How should you treat it?</div>
+                    <button data-opt>As your top hit, because it has the biggest fold change</button>
+                    <button data-opt>As significant, because a fold change above 2 is always meaningful</button>
+                    <button data-opt>As evidence that DESeq2 failed and must be re-run</button>
+                    <button data-opt data-correct>As unreliable: with so few reads the fold change is very noisy and not significant. Shrunken fold changes (lfcShrink) would pull it toward zero</button>
+                    <div class="quiz-explain">Fold changes from genes with few counts swing wildly by chance. That is why DESeq2 offers shrinkage, and why you look at baseMean and the shrunken fold change (lfcShrink), not just the raw fold change, before trusting a large change (Love et al. 2014). Review: <a href="rna-seq-volcano-ma.html" target="_blank" rel="noopener">Volcano and MA plots</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You test 20,000 genes and call every gene with a raw p-value below 0.05 significant, giving 1,500 genes. Even if the treatment did nothing at all, roughly how many genes would you expect to pass?</div>
+                    <button data-opt data-correct>About 1,000, because 5% of 20,000 tests pass by chance alone</button>
+                    <button data-opt>About 50, because only 0.05% of genes are false</button>
+                    <button data-opt>Zero, because p &lt; 0.05 means the result is 95% certain</button>
+                    <button data-opt>About 1,500, so the result proves nothing either way</button>
+                    <div class="quiz-explain">A raw p-value cutoff of 0.05 lets about 5% of true-null tests through. With 20,000 tests that is about 1,000 false hits. This is why DESeq2 reports padj, which controls the false discovery rate (Benjamini and Hochberg 1995). Review: <a href="multiple-testing.html" target="_blank" rel="noopener">Multiple testing</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You pick the 50 genes with the smallest padj, draw a heatmap, and show that clustering perfectly separates treated from control samples. You present this as independent validation. Why is that weak?</div>
+                    <button data-opt>Heatmaps cannot show more than 20 genes</button>
+                    <button data-opt data-correct>It is circular: the genes were chosen because they differ between the groups, so the separation is almost guaranteed by the selection</button>
+                    <button data-opt>Clustering only works on raw counts</button>
+                    <button data-opt>The heatmap should have used FPKM values</button>
+                    <div class="quiz-explain">Using the same data to select genes and then to show they separate the groups is called double dipping (Kriegeskorte et al. 2009). The heatmap is a useful picture of the result, not extra evidence for it. Validation needs new data or an independent method. Review: <a href="rna-seq-heatmaps.html" target="_blank" rel="noopener">Heatmaps and clustering</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Your 200 significant liver genes are enriched for "lipid metabolism". You used all 20,000 human protein-coding genes as the background, but only 11,000 genes were expressed enough to be tested. What is the problem?</div>
+                    <button data-opt>None; a larger background makes the test more conservative</button>
+                    <button data-opt>You should have used only the 200 significant genes as the background</button>
+                    <button data-opt data-correct>The background should be the genes you actually tested. Including genes that could never be detected in liver inflates enrichment for liver functions</button>
+                    <button data-opt>Enrichment analysis cannot be used on liver tissue</button>
+                    <div class="quiz-explain">Genes expressed in liver are already rich in liver functions. If the background includes thousands of genes that were never testable, almost any liver gene list will look enriched for liver biology. Review: <a href="rna-seq-enrichment.html" target="_blank" rel="noopener">Functional enrichment</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Bulk RNA-seq of a tumour shows gene X is 2 times higher after treatment. Which explanation can bulk data alone NOT rule out?</div>
+                    <button data-opt>That gene X was measured at all</button>
+                    <button data-opt>That the change is due to sequencing depth, even after normalization</button>
+                    <button data-opt>That gene X is a protein-coding gene</button>
+                    <button data-opt data-correct>That the cells did not change gene X at all; instead, more of the cells that already express X are present after treatment</button>
+                    <div class="quiz-explain">Bulk RNA-seq averages over every cell in the sample. A rise can come from each cell making more RNA or from a change in which cell types are present. Single-cell RNA-seq can help tell these apart. Review: <a href="single-cell-rna-seq-intro.html" target="_blank" rel="noopener">Single-cell RNA-seq intro</a>.</div>
+                </div>
+
+                <div class="refs">
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Love MI, Huber W, Anders S. Moderated estimation of fold change and dispersion for RNA-seq data with DESeq2. <em>Genome Biol</em> 15(12): 550, 2014. <a href="https://doi.org/10.1186/s13059-014-0550-8" target="_blank" rel="noopener">doi:10.1186/s13059-014-0550-8</a></li>
+                        <li>Liu Y, Zhou J, White KP. RNA-seq differential expression studies: more sequence or more replication? <em>Bioinformatics</em> 30(3): 301-304, 2014. <a href="https://doi.org/10.1093/bioinformatics/btt688" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btt688</a></li>
+                        <li>Benjamini Y, Hochberg Y. Controlling the false discovery rate: a practical and powerful approach to multiple testing. <em>J R Stat Soc B</em> 57(1): 289-300, 1995. <a href="https://doi.org/10.1111/j.2517-6161.1995.tb02031.x" target="_blank" rel="noopener">doi:10.1111/j.2517-6161.1995.tb02031.x</a></li>
+                        <li>Leek JT, Scharpf RB, Bravo HC, et al. Tackling the widespread and critical impact of batch effects in high-throughput data. <em>Nat Rev Genet</em> 11: 733-739, 2010. <a href="https://doi.org/10.1038/nrg2825" target="_blank" rel="noopener">doi:10.1038/nrg2825</a></li>
+                        <li>Kriegeskorte N, Simmons WK, Bellgowan PSF, Baker CI. Circular analysis in systems neuroscience: the dangers of double dipping. <em>Nat Neurosci</em> 12(5): 535-540, 2009. <a href="https://doi.org/10.1038/nn.2303" target="_blank" rel="noopener">doi:10.1038/nn.2303</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: November 2026.</p>
+                </div>
+
+                <a class="next-lesson" href="capstone-himes-2014.html" target="_blank" rel="noopener">
+                    <span>Passed? Put it into practice</span>
+                    <h3>Capstone: reproduce a published RNA-seq result &rarr;</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" target="_blank" rel="noopener" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
