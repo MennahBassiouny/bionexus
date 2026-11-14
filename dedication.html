@@ -23,28 +23,10 @@
     <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
     <title>In Loving Memory of Medhat Bassiouny - BioNexus Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="base.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        :root {
-            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
-            --light-blue: #7db4ff; --deep-navy: #0f172a;
-            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
-            --green: #10b981; --amber: #f59e0b;
-        }
-        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
-        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
-        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
-        .logo-container { display: flex; align-items: center; text-decoration: none; }
-        .logo-img { height: 50px; width: auto; }
-        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
-        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
-        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
-        nav a:hover { color: var(--primary-blue); }
-        nav a:hover::after { width: 100%; }
+
         .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
-        .cta-nav::after { display: none; }
-        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
 
         .page-header { padding: 64px 0 40px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
         .page-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 14px; }
@@ -64,16 +46,12 @@
         .faq-body li { margin-bottom: 7px; font-size: 1.04rem; color: var(--text-dark); }
         .faq-body a { color: var(--primary-blue); font-weight: 600; text-decoration: none; }
         .faq-body strong { color: var(--deep-navy); }
-        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
 
         .cta { background: var(--deep-navy); color: white; border-radius: 12px; padding: 28px 30px; margin-top: 44px; text-align: center; }
         .cta h3 { font-family: 'Crimson Pro', serif; font-size: 1.5rem; margin-bottom: 8px; }
         .cta p { color: rgba(255,255,255,0.75); margin-bottom: 18px; }
         .cta a { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white; padding: 13px 28px; border-radius: 8px; font-weight: 700; text-decoration: none; display: inline-block; }
 
-        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
-        footer p { color: rgba(255, 255, 255, 0.6); }
-        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
         @media (max-width: 768px) {
             .menu-toggle { display: block; }
             nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
