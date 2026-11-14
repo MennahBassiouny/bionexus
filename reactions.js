@@ -42,6 +42,11 @@
     var footer = document.querySelector("footer");
     if (!lessonBody || !footer) return;
 
+    try {
+      var h1 = document.querySelector("h1");
+      localStorage.setItem("bnx-last", JSON.stringify({ p: page, t: h1 ? h1.textContent.trim() : page }));
+    } catch (e) {}
+
     var w = document.createElement("div");
     w.setAttribute("style",
       "max-width:820px;margin:36px auto 0;padding:24px 26px;border:1px solid rgba(91,156,248,0.25);" +
@@ -161,6 +166,56 @@
       '<div style="height:100%;width:' + pct + '%;background:linear-gradient(90deg,#2563eb,#7c3aed);"></div></div>' +
       (done === 0 ? '<p style="margin:8px 0 0;color:#64748b;font-size:0.82rem;">Tip: tap “Mark this lesson complete” at the bottom of any lesson to track your progress here.</p>' : '');
     anchor.parentNode.insertBefore(box, anchor);
+
+    /* continue where you left off */
+    var last = null;
+    try { last = JSON.parse(localStorage.getItem("bnx-last") || "null"); } catch (e) {}
+    var cont = document.createElement("div");
+    cont.setAttribute("style", "max-width:760px;margin:0 auto 22px;text-align:center;font-family:'Work Sans',sans-serif;");
+    var btn = "display:inline-block;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;padding:12px 24px;border-radius:8px;font-weight:700;text-decoration:none;";
+    if (last && last.p) {
+      var safeT = String(last.t).replace(/[<>&]/g, "");
+      cont.innerHTML = '<a href="' + encodeURI(last.p) + '" style="' + btn + '">Continue where you left off: ' + safeT + ' &rarr;</a>';
+    } else {
+      cont.innerHTML = '<a href="start-here.html" style="' + btn + '">New here? Start with a path for your background &rarr;</a>';
+    }
+    box.parentNode.insertBefore(cont, box.nextSibling);
+
+    /* collapsible tracks: open the track you are working on, or the one in the URL */
+    var tracks = Array.prototype.slice.call(document.querySelectorAll(".track"));
+    var openers = {};
+    var hash = (location.hash || "").slice(1);
+    var activeId = null;
+    if (last && last.p) {
+      tracks.forEach(function (tr) {
+        if (!activeId && tr.querySelector('a[href="' + last.p + '"]')) activeId = tr.id;
+      });
+    }
+    tracks.forEach(function (tr, i) {
+      var card = tr.querySelector(".track-card"); var list = card && card.querySelector("ul.lessons");
+      if (!card || !list) return;
+      var extras = [list].concat(Array.prototype.slice.call(card.querySelectorAll(".deliverable")));
+      var n = list.querySelectorAll("li").length;
+      var id = "bnx-tl-" + i; list.id = id;
+      var tg = document.createElement("button");
+      tg.type = "button";
+      tg.setAttribute("aria-controls", id);
+      tg.setAttribute("style", "margin:10px 0 2px;background:#fff;border:1px solid rgba(37,99,235,0.35);color:#2563eb;border-radius:8px;padding:8px 16px;font:600 0.92rem 'Work Sans',sans-serif;cursor:pointer;min-height:40px;");
+      function setOpen(open) {
+        extras.forEach(function (el) { el.style.display = open ? "" : "none"; });
+        tg.setAttribute("aria-expanded", open ? "true" : "false");
+        tg.textContent = open ? "Hide lessons \u25B4" : "Show " + n + " lessons \u25BE";
+      }
+      tg.addEventListener("click", function () { setOpen(tg.getAttribute("aria-expanded") !== "true"); });
+      card.insertBefore(tg, list);
+      setOpen(tr.id === hash || tr.id === activeId);
+      openers[tr.id] = setOpen;
+    });
+    window.addEventListener("hashchange", function () {
+      var h = (location.hash || "").slice(1);
+      if (openers[h]) openers[h](true);
+    });
+    if (hash) { var t = document.getElementById(hash); if (t) setTimeout(function () { t.scrollIntoView(); }, 50); }
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
