@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="BioNexus Hub">
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+    <link rel="canonical" href="https://bionexushub.com/track1-checkpoint.html">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Track 1 checkpoint: ten new scenario questions on real biological data: quality scores, gene IDs, coordinates, strands, bedtools, downloads and databases. Free, in your browser.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Track 1 Checkpoint: Working with Data | BioNexus Hub">
+    <meta property="og:description" content="Track 1 checkpoint: ten new scenario questions on real biological data: quality scores, gene IDs, coordinates, strands, bedtools, downloads and databases. Free, in your browser.">
+    <meta property="og:url" content="https://bionexushub.com/track1-checkpoint.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Track 1 Checkpoint: Working with Data | BioNexus Hub">
+    <meta name="twitter:description" content="Ten scenario questions that check you can handle real biological data files.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Track 1 Checkpoint: Working with Data - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.purple { background: rgba(168,85,247,0.12); border-color: transparent; color: #7c3aed; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .module-tag { display: inline-block; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: var(--primary-purple); background: rgba(168,85,247,0.1); padding: 4px 12px; border-radius: 20px; margin-top: 8px; }
+
+        .objectives { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-purple); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .objectives h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-purple); margin-bottom: 10px; }
+        .objectives ul { margin: 0 0 0 20px; }
+        .objectives li { font-size: 1rem; color: var(--text-gray); margin-bottom: 5px; }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .pro { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .pro h4 { color: #047857; font-size: 0.95rem; margin-bottom: 6px; }
+        .pro p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .ctable { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.95rem; }
+        .ctable th, .ctable td { border: 1px solid rgba(91,156,248,0.2); padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ctable th { background: rgba(91,156,248,0.1); color: var(--deep-navy); font-weight: 600; }
+        .ctable td { color: var(--text-gray); }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .p { color: #f472b6; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .assessment { background: linear-gradient(135deg, rgba(91,156,248,0.1), rgba(168,85,247,0.1)); border: 1px solid rgba(168,85,247,0.3); border-radius: 12px; padding: 24px 28px; margin: 36px 0 8px; }
+        .assessment h2 { margin-top: 0; }
+        .assessment .passmark { font-size: 0.95rem; color: var(--text-gray); margin: 0; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+        .rs-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; margin: 0 0 22px; }
+        .rs-table th { text-align: left; background: #f1f5f9; padding: 8px 10px; }
+        .rs-table td { padding: 8px 10px; border-top: 1px solid #e2e8f0; vertical-align: top; }
+        .table-wrap { overflow-x: auto; }
+        .viz svg { width: 100%; height: auto; }
+        figure figcaption { font-size: 0.9rem; color: var(--text-gray); text-align: center; margin-top: 8px; }
+        .tryit { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 14px 18px; margin: 18px 0; font-size: 1rem; }
+        .plan-card { background: white; border: 1px solid rgba(91,156,248,0.25); border-left: 4px solid var(--primary-purple); border-radius: 10px; padding: 16px 22px; margin: 16px 0 22px; }
+        .plan-card p { margin-bottom: 6px; font-size: 1rem; }
+        .plan-card p:last-child { margin-bottom: 0; }
+        details p { margin-top: 10px; }
+    </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="faq.html">Help</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-1">← Roadmap</a> &nbsp;/&nbsp; Track 1: Working with data &nbsp;/&nbsp; <strong>Checkpoint</strong></div>
+                <h1>Track 1 Checkpoint: Can You Handle Real Biological Data?</h1>
+                <p class="promise">Ten new questions you have not seen in the lessons. Each one is a situation you will meet with real files: quality scores, gene IDs, coordinates, strands, downloads and databases. Take it at the end of Track 1 to find out what you already own and what to review.</p>
+                <div class="tags">
+                    <span class="tag purple">Track checkpoint</span>
+                    <span class="tag">~20 min</span>
+                    <span class="tag green">In your browser, no code</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main id="main">
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="objectives">
+                    <h4 aria-level="2">What this checks</h4>
+                    <ul>
+                        <li>You can read quality scores and coordinates correctly.</li>
+                        <li>You can join and filter gene tables without silent errors.</li>
+                        <li>You can pull sequences and data from public databases the right way.</li>
+                        <li>You know which tool or file answers which question.</li>
+                    </ul>
+                </div>
+                <div class="prereq">
+                    <h4 aria-level="3">Before you start</h4>
+                    <ul>
+                        <li>Finish the Track 1 lessons on the <a href="learn.html#track-1">roadmap</a>.</li>
+                        <li>No notes on the first try. The point is to find out what you can recall, which is also one of the best ways to make it stick.</li>
+                    </ul>
+                </div>
+
+                <h2>How this checkpoint works</h2>
+                <p>Answer all ten questions. When you finish, the page shows your score. <strong>7 of 10 counts as a pass; aim for 8 or more before moving on.</strong> Every explanation links to the lesson to review.</p>
+                <p>This is a self-check, not an exam. The answers live in the page, so it only works if you answer honestly before reading the explanation. If you score below 7, review the linked lessons, wait a day or two, then reload and try again. Coming back after a break helps you remember more than re-reading straight away.</p>
+
+                <div class="assessment">
+                    <h2>The ten questions</h2>
+                    <p class="passmark">Scenario questions. Pick the best answer; some wrong answers are tempting on purpose.</p>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-q-src">A base in your FASTQ has a Phred quality score of 30. What is the chance that this base call is wrong?</div>
+                    <button data-opt>1 in 30</button>
+                    <button data-opt>1 in 100</button>
+                    <button data-opt data-correct>1 in 1,000</button>
+                    <button data-opt>1 in 30,000</button>
+                    <div class="quiz-explain">Phred scores are logarithmic: Q = -10 &times; log10(error probability). Q10 means 1 in 10, Q20 means 1 in 100, and Q30 means 1 in 1,000 (Ewing and Green 1998). Each 10 points is ten times more accurate. Review: <a href="track1-sequences-fasta-fastq.html">Sequences, FASTA and FASTQ</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A colleague opened your gene list in Excel and saved it. Now the genes SEPT2 and MARCH1 appear as "2-Sep" and "1-Mar". What is the lesson?</div>
+                    <button data-opt data-correct>Excel silently converted gene names into dates. Keep gene tables in code (or import every column as text) so names are never changed</button>
+                    <button data-opt>Those genes were renamed by HGNC, so the new names are correct</button>
+                    <button data-opt>The file was corrupted during download; download it again</button>
+                    <button data-opt>This only happens on Mac, so use Windows instead</button>
+                    <div class="quiz-explain">Spreadsheet auto-conversion of gene names into dates was found in about a fifth of papers with Excel gene lists in supplementary files (Ziemann et al. 2016). Reading and writing tables in code avoids it, and in 2020 HGNC renamed these genes (for example SEPT2 became SEPTIN2 and MARCH1 became MARCHF1) partly for this reason. Review: <a href="track1-pandas-for-biologists.html">Pandas for biologists</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You join two gene tables on Ensembl IDs. One table has <code>ENSG00000141510.17</code> and the other has <code>ENSG00000141510</code>. The join finds almost no matches. What is the fix?</div>
+                    <button data-opt>Use gene symbols instead, because they never change</button>
+                    <button data-opt>The genes are different, so no fix is needed</button>
+                    <button data-opt>Re-download both tables from NCBI</button>
+                    <button data-opt data-correct>Remove the version suffix (the ".17") so both tables use the same stable ID, then join</button>
+                    <div class="quiz-explain">The number after the dot is the version of that gene record. The part before the dot is the stable ID. Two tables made from different Ensembl releases often differ only in the version, so strip it before joining. A new version can mean the gene model was updated, but for gene-level joins, matching on the stable ID is standard. Symbols are worse, because they change and have aliases. Review: <a href="databases-and-apis.html">Biological databases and APIs</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A BED file has the interval <code>chr2&nbsp;&nbsp;1000&nbsp;&nbsp;1500</code>. A GTF has an exon at <code>chr2</code>, start 1001, end 1500. Are they the same stretch of DNA?</div>
+                    <button data-opt>No, the BED interval starts one base earlier</button>
+                    <button data-opt data-correct>Yes: BED is 0-based half-open, so 1000 to 1500 covers 1-based bases 1001 to 1500, exactly the GTF exon</button>
+                    <button data-opt>No, the BED interval is one base longer</button>
+                    <button data-opt>You cannot compare BED and GTF positions at all</button>
+                    <div class="quiz-explain">BED counts from 0 and does not include the end; GTF counts from 1 and includes both ends. Both describe 500 bases here. Add 1 to a BED start to get the 1-based start; the end stays the same. Review: <a href="genomic-coordinates.html">Genomic coordinates</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Your pandas DataFrame <code>genes</code> has columns <code>chrom</code> and <code>length</code>. You want, for each chromosome, how many genes are longer than 10,000 bases. Which line does this?</div>
+                    <button data-opt><code>genes.groupby('chrom')['length'].mean()</code></button>
+                    <button data-opt><code>genes.groupby('chrom')['length'] &gt; 10000</code></button>
+                    <button data-opt data-correct><code>genes[genes['length'] &gt; 10000].groupby('chrom').size()</code></button>
+                    <button data-opt><code>genes.sort_values('length').head(10000)</code></button>
+                    <div class="quiz-explain">Filter first, then group and count. The first option gives average length, the second compares a grouped object (which fails), and the last just takes the 10,000 shortest genes. Chromosomes with no gene over 10,000 bases will not appear in the result. Review: <a href="track1-pandas-for-biologists.html">Pandas for biologists</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A gene is on the minus (-) strand according to the GTF. You cut its region out of the reference FASTA (which is written as the + strand). How do you get the sequence of the gene's own strand, read 5' to 3' (the same direction as its RNA)?</div>
+                    <button data-opt>Use the cut sequence as it is</button>
+                    <button data-opt>Reverse it, but do not complement it</button>
+                    <button data-opt>Complement it, but do not reverse it</button>
+                    <button data-opt data-correct>Take the reverse complement of the cut sequence</button>
+                    <div class="quiz-explain">A reference FASTA stores only the + strand. A minus-strand gene is read from the other strand, in the opposite direction, so you need both steps: reverse and complement. In Biopython that is <code>seq.reverse_complement()</code> (Cock et al. 2009). Review: <a href="track1-biopython-basics.html">Biopython basics</a> and <a href="track1-file-formats.html">File formats</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Your script requests 5,000 records from NCBI one at a time in a fast loop, with no email or API key set. After a while NCBI starts refusing your requests. What should you change?</div>
+                    <button data-opt>Nothing; just run the script again later</button>
+                    <button data-opt data-correct>Set your email (and ideally an API key), stay under NCBI's request-rate limit, and fetch IDs in batches rather than one call per record</button>
+                    <button data-opt>Use a different browser</button>
+                    <button data-opt>Download the whole of GenBank instead</button>
+                    <div class="quiz-explain">NCBI's E-utilities allow 3 requests per second without an API key and 10 per second with one, and ask you to identify yourself (NCBI E-utilities guide). Batching many IDs into one request is faster and polite. Biopython's Entrez module asks for <code>Entrez.email</code> for this reason. Review: <a href="track1-where-data-lives.html">Where the data lives</a> and <a href="databases-and-apis.html">Databases and APIs</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You have ChIP-seq peaks in <code>peaks.bed</code> and genes in <code>genes.bed</code>. You want every gene that has a peak within 5,000 bases of it. Which approach fits?</div>
+                    <button data-opt data-correct><code>bedtools window -a genes.bed -b peaks.bed -w 5000 -u</code></button>
+                    <button data-opt><code>bedtools merge -i genes.bed</code></button>
+                    <button data-opt><code>bedtools complement -i peaks.bed -g genome.txt</code></button>
+                    <button data-opt>Sort both files by gene name and compare them line by line</button>
+                    <div class="quiz-explain"><code>bedtools window</code> finds overlaps after extending each interval by a set distance; <code>-u</code> reports each gene once. merge combines overlapping intervals, and complement finds regions not covered, so neither answers this question (Quinlan and Hall 2010). Review: <a href="bedtools-genome-arithmetic.html">bedtools: genome arithmetic</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A dataset page lists an MD5 checksum next to a 15 GB FASTQ file. After downloading, why compare it to the MD5 of your copy?</div>
+                    <button data-opt>It makes the file smaller</button>
+                    <button data-opt>It converts the file to FASTA</button>
+                    <button data-opt data-correct>It confirms your copy is complete and unchanged; a broken or partial download would give a different checksum</button>
+                    <button data-opt>It tells you the file's Phred encoding</button>
+                    <div class="quiz-explain">A checksum is a fingerprint of the exact bytes. If even one byte differs, the MD5 will almost certainly be different. Large downloads sometimes stop early without an obvious error, and a truncated FASTQ can silently lose reads. Review: <a href="track1-where-data-lives.html">Where the data lives</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A paper says its data is "available on GEO". You want the raw reads to re-run the whole analysis yourself. Where do you look?</div>
+                    <button data-opt>Only the GEO series page, because it always contains the FASTQ files</button>
+                    <button data-opt>UniProt, because it stores all sequences</button>
+                    <button data-opt>The paper's supplementary Excel tables</button>
+                    <button data-opt data-correct>Follow the GEO series to its linked SRA runs (accessions starting SRR); raw reads live in SRA, while GEO usually holds processed tables and sample information</button>
+                    <div class="quiz-explain">GEO describes the experiment and often stores processed results, such as count tables. The raw sequencing reads are stored in SRA and linked from GEO (Barrett et al. 2013). Controlled-access human data are held in dbGaP or EGA instead. Review: <a href="track1-where-data-lives.html">Where the data lives</a>.</div>
+                </div>
+
+                <div class="refs">
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Ewing B, Green P. Base-calling of automated sequencer traces using phred. II. Error probabilities. <em>Genome Research</em> 8: 186-194, 1998. (the Phred score) <a href="https://doi.org/10.1101/gr.8.3.186" target="_blank" rel="noopener">doi:10.1101/gr.8.3.186</a></li>
+                        <li>Ziemann M, Eren Y, El-Osta A. Gene name errors are widespread in the scientific literature. <em>Genome Biology</em> 17: 177, 2016. (why code beats spreadsheets for gene tables) <a href="https://doi.org/10.1186/s13059-016-1044-7" target="_blank" rel="noopener">doi:10.1186/s13059-016-1044-7</a></li>
+                        <li>Cock PJ, Antao T, Chang JT, et al. Biopython: freely available Python tools for computational molecular biology and bioinformatics. <em>Bioinformatics</em> 25: 1422-1423, 2009. <a href="https://doi.org/10.1093/bioinformatics/btp163" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp163</a></li>
+                        <li>Quinlan AR, Hall IM. BEDTools: a flexible suite of utilities for comparing genomic features. <em>Bioinformatics</em> 26: 841-842, 2010. <a href="https://doi.org/10.1093/bioinformatics/btq033" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btq033</a></li>
+                        <li>Barrett T, Wilhite SE, Ledoux P, et al. NCBI GEO: archive for functional genomics data sets--update. <em>Nucleic Acids Research</em> 41: D991-D995, 2013. <a href="https://doi.org/10.1093/nar/gks1193" target="_blank" rel="noopener">doi:10.1093/nar/gks1193</a></li>
+                        <li>Sayers E. A General Introduction to the E-utilities. In: <em>Entrez Programming Utilities Help</em>. National Center for Biotechnology Information (US), 2009, updated 2022. <a href="https://www.ncbi.nlm.nih.gov/books/NBK25497/" target="_blank" rel="noopener">ncbi.nlm.nih.gov/books/NBK25497</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: November 2026.</p>
+                </div>
+
+                <a class="next-lesson" href="ngs-how-it-works.html">
+                    <span>Passed? Keep going</span>
+                    <h3>Track 2: Genomics and NGS &rarr;</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>

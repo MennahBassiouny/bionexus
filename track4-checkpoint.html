@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="BioNexus Hub">
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+    <link rel="canonical" href="https://bionexushub.com/track4-checkpoint.html">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Track 4 checkpoint: ten new reasoning questions that join RNA structure, CLIP-seq and m6A. Free, in your browser.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Track 4 Checkpoint: RNA Biology | BioNexus Hub">
+    <meta property="og:description" content="Track 4 checkpoint: ten new reasoning questions that join RNA structure, CLIP-seq and m6A. Free, in your browser.">
+    <meta property="og:url" content="https://bionexushub.com/track4-checkpoint.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Track 4 Checkpoint: RNA Biology | BioNexus Hub">
+    <meta name="twitter:description" content="Ten reasoning questions joining RNA structure, CLIP-seq and m6A.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Track 4 Checkpoint: RNA Biology - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.purple { background: rgba(168,85,247,0.12); border-color: transparent; color: #7c3aed; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .module-tag { display: inline-block; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: var(--primary-purple); background: rgba(168,85,247,0.1); padding: 4px 12px; border-radius: 20px; margin-top: 8px; }
+
+        .objectives { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-purple); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .objectives h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-purple); margin-bottom: 10px; }
+        .objectives ul { margin: 0 0 0 20px; }
+        .objectives li { font-size: 1rem; color: var(--text-gray); margin-bottom: 5px; }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .pro { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .pro h4 { color: #047857; font-size: 0.95rem; margin-bottom: 6px; }
+        .pro p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .ctable { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.95rem; }
+        .ctable th, .ctable td { border: 1px solid rgba(91,156,248,0.2); padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ctable th { background: rgba(91,156,248,0.1); color: var(--deep-navy); font-weight: 600; }
+        .ctable td { color: var(--text-gray); }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .p { color: #f472b6; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .assessment { background: linear-gradient(135deg, rgba(91,156,248,0.1), rgba(168,85,247,0.1)); border: 1px solid rgba(168,85,247,0.3); border-radius: 12px; padding: 24px 28px; margin: 36px 0 8px; }
+        .assessment h2 { margin-top: 0; }
+        .assessment .passmark { font-size: 0.95rem; color: var(--text-gray); margin: 0; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+        .rs-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; margin: 0 0 22px; }
+        .rs-table th { text-align: left; background: #f1f5f9; padding: 8px 10px; }
+        .rs-table td { padding: 8px 10px; border-top: 1px solid #e2e8f0; vertical-align: top; }
+        .table-wrap { overflow-x: auto; }
+        .viz svg { width: 100%; height: auto; }
+        figure figcaption { font-size: 0.9rem; color: var(--text-gray); text-align: center; margin-top: 8px; }
+        .tryit { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 14px 18px; margin: 18px 0; font-size: 1rem; }
+        .plan-card { background: white; border: 1px solid rgba(91,156,248,0.25); border-left: 4px solid var(--primary-purple); border-radius: 10px; padding: 16px 22px; margin: 16px 0 22px; }
+        .plan-card p { margin-bottom: 6px; font-size: 1rem; }
+        .plan-card p:last-child { margin-bottom: 0; }
+        details p { margin-top: 10px; }
+    </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="faq.html">Help</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-4">← Roadmap</a> &nbsp;/&nbsp; Track 4: RNA biology &amp; epitranscriptomics &nbsp;/&nbsp; <strong>Checkpoint</strong></div>
+                <h1>Track 4 Checkpoint: Can You Reason About RNA?</h1>
+                <p class="promise">Ten new questions you have not seen in the lessons. Each one joins RNA structure, protein binding and modifications, the way real RNA-biology papers do. Take it at the end of Track 4 to find out what you already own and what to review.</p>
+                <div class="tags">
+                    <span class="tag purple">Track checkpoint</span>
+                    <span class="tag">~20 min</span>
+                    <span class="tag green">In your browser, no code</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main id="main">
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="objectives">
+                    <h4 aria-level="2">What this checks</h4>
+                    <ul>
+                        <li>You can connect RNA structure with whether a protein can bind.</li>
+                        <li>You can read CLIP data for real binding rather than abundance.</li>
+                        <li>You can judge whether m6A evidence is convincing.</li>
+                        <li>You can recognise other RNA changes, such as A-to-I editing, in sequencing data.</li>
+                    </ul>
+                </div>
+                <div class="prereq">
+                    <h4 aria-level="3">Before you start</h4>
+                    <ul>
+                        <li>Finish the Track 4 lessons on the <a href="learn.html#track-4">roadmap</a>. This is the advanced track, so expect harder questions.</li>
+                        <li>No notes on the first try. The point is to find out what you can recall, which is also one of the best ways to make it stick.</li>
+                    </ul>
+                </div>
+
+                <h2>How this checkpoint works</h2>
+                <p>Answer all ten questions. When you finish, the page shows your score. <strong>7 of 10 counts as a pass; aim for 8 or more before moving on.</strong> Every explanation links to the lesson to review.</p>
+                <p>This is a self-check, not an exam. The answers live in the page, so it only works if you answer honestly before reading the explanation. If you score below 7, review the linked lessons, wait a day or two, then reload and try again. Coming back after a break helps you remember more than re-reading straight away.</p>
+
+                <div class="assessment">
+                    <h2>The ten questions</h2>
+                    <p class="passmark">Scenario questions. Pick the best answer; some wrong answers are tempting on purpose.</p>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-q-src">A known RNA-binding protein motif sits in a region that in-cell SHAPE data shows as strongly base-paired (low reactivity). CLIP finds almost no binding there. What is the most likely explanation?</div>
+                    <button data-opt data-correct>The motif is real, but many RBPs prefer single-stranded RNA, so a paired motif can be hidden from the protein</button>
+                    <button data-opt>SHAPE data cannot be collected inside cells</button>
+                    <button data-opt>Low SHAPE reactivity means the region is unstructured</button>
+                    <button data-opt>CLIP cannot detect binding inside motifs</button>
+                    <div class="quiz-explain">A sequence motif is necessary but not enough: the RNA must also be accessible. Low SHAPE reactivity means constrained, usually paired, nucleotides. Structure and binding have to be read together (Spitale et al. 2015). Review: <a href="rna-structure.html">RNA structure</a> and <a href="clip-seq.html">CLIP-seq</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">hnRNPC is not a classic m6A reader, yet its binding at some sites rises when a nearby adenosine is methylated. What explains this?</div>
+                    <button data-opt>hnRNPC has a YTH domain that recognises m6A directly</button>
+                    <button data-opt data-correct>m6A destabilises local base pairing, opening the RNA so hnRNPC's single-stranded U-rich motif becomes accessible (an "m6A switch")</button>
+                    <button data-opt>m6A changes the RNA sequence so it matches the hnRNPC motif</button>
+                    <button data-opt>Methylated RNAs are always more highly expressed, so more binding is expected</button>
+                    <div class="quiz-explain">m6A weakens base pairing. In the m6A switch model, this structural change exposes a nearby binding site, so m6A can affect proteins that never touch it directly (Liu et al. 2015). Review: <a href="rna-structure.html">RNA structure</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">In iCLIP or eCLIP data, why do analysts focus on where each read <em>starts</em> rather than on the full read coverage?</div>
+                    <button data-opt>Read starts have higher base quality</button>
+                    <button data-opt>The read start marks the polyA tail</button>
+                    <button data-opt data-correct>Reverse transcription often stops at the crosslinked nucleotide, so the position just before the read start marks the binding site at near-nucleotide resolution</button>
+                    <button data-opt>Read ends are always adapters and must be ignored</button>
+                    <div class="quiz-explain">The short peptide left on the RNA after protease digestion blocks reverse transcription. Truncated cDNAs therefore begin right next to the crosslink site, which is what gives iCLIP its high resolution (K&ouml;nig et al. 2010). In paired-end eCLIP, use the start of read 2. Review: <a href="clip-seq.html">CLIP-seq</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Gene A has 10 times more CLIP reads than gene B, but gene A is also about 10 times more highly expressed. Does the RBP prefer gene A?</div>
+                    <button data-opt>Yes, more reads always means stronger binding</button>
+                    <button data-opt>Yes, because CLIP only captures bound RNA</button>
+                    <button data-opt>No, because CLIP reads cannot be counted per gene</button>
+                    <button data-opt data-correct>Not necessarily. CLIP signal scales with RNA abundance, so compare IP to a matched input (enrichment), not raw read counts</button>
+                    <div class="quiz-explain">Abundant RNAs produce more reads in any library. A size-matched input shows the background each region would give anyway, and enrichment over it is what reflects binding (Van Nostrand et al. 2016). Review: <a href="clip-seq.html">CLIP-seq</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Which result best supports that your MeRIP-seq peaks on mRNAs reflect real m6A rather than antibody artefacts?</div>
+                    <button data-opt data-correct>The peaks largely disappear or weaken after METTL3 is depleted, and they are enriched for the DRACH motif near stop codons</button>
+                    <button data-opt>The IP library has more reads than the input</button>
+                    <button data-opt>The peaks overlap highly expressed genes</button>
+                    <button data-opt>The same antibody gives the same peaks when you repeat it on the same RNA</button>
+                    <div class="quiz-explain">METTL3 (with METTL14) installs most internal m6A in mRNA, so real mRNA peaks should weaken when it is removed. Real m6A peaks also show the expected motif and enrichment near stop codons (Dominissini et al. 2012). Repeating the same antibody only shows the artefact is reproducible. Review: <a href="m6a-seq-analysis.html">Analysing m6A-seq</a> and <a href="epitranscriptomics-m6a.html">Epitranscriptomics 101</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You want the structure of a 300-nucleotide region inside a 6,000-nucleotide mRNA. Which approach is most sensible?</div>
+                    <button data-opt>Fold the full 6,000 nucleotides once and trust the single MFE structure</button>
+                    <button data-opt data-correct>Use local folding or base-pair probabilities, ideally guided by probing data such as SHAPE, and treat the result as a hypothesis</button>
+                    <button data-opt>Assume the region is unstructured because mRNAs are linear</button>
+                    <button data-opt>Use the structure from a different gene with a similar length</button>
+                    <div class="quiz-explain">For mRNAs, local folding predicts structure more accurately than folding the whole molecule at once (Lange et al. 2012), and in cells, proteins and folding during transcription also shape structure. Local folding tools in ViennaRNA and probing constraints give more reliable, testable models (Lorenz et al. 2011). Review: <a href="rna-structure.html">RNA structure</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">In RNA-seq aligned to the genome, one site shows A&rarr;G mismatches in many reads, but DNA sequencing of the same person shows only A at that site. What is the most likely cause?</div>
+                    <button data-opt>A sequencing error that happens to repeat</button>
+                    <button data-opt>m6A, which reverse transcriptase reads as G</button>
+                    <button data-opt data-correct>A-to-I RNA editing: inosine is read as G during reverse transcription</button>
+                    <button data-opt>A genome build mismatch</button>
+                    <div class="quiz-explain">ADAR enzymes convert adenosine to inosine in RNA. Reverse transcriptase pairs inosine with C, so the sequenced base appears as G. Because the DNA is unchanged, the difference is in the RNA itself (Eisenberg and Levanon 2018). On genes on the minus strand it appears as T&rarr;C against the genome. m6A does not normally change the base read. Review: <a href="epitranscriptomics-m6a.html">Epitranscriptomics 101</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">CLIP peaks for a nuclear splicing factor fall mostly in introns, while peaks for a cytoplasmic RBP fall mostly in 3' UTRs. What should you conclude?</div>
+                    <button data-opt>Both experiments failed, because RBPs should bind exons</button>
+                    <button data-opt>The intronic peaks are DNA contamination</button>
+                    <button data-opt>Only the 3' UTR experiment is valid</button>
+                    <button data-opt data-correct>Nothing alarming: each pattern fits where the RBP works. Splicing factors meet pre-mRNA, which still contains introns, in the nucleus</button>
+                    <div class="quiz-explain">Where peaks fall is a useful sanity check. The first HITS-CLIP study found the splicing regulator Nova bound near the alternative exons it controls, largely in introns (Licatalosi et al. 2008). Review: <a href="clip-seq.html">CLIP-seq</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You deplete YTHDF2 alone and see only a small change in the stability of m6A-marked mRNAs. Which explanation fits one current, well-supported model?</div>
+                    <button data-opt data-correct>YTHDF1, YTHDF2 and YTHDF3 may act largely redundantly to promote decay, so the others can compensate</button>
+                    <button data-opt>m6A has no effect on mRNA stability in any cell</button>
+                    <button data-opt>YTHDF2 binds only DNA</button>
+                    <button data-opt>The knockdown must have increased m6A levels everywhere</button>
+                    <div class="quiz-explain">The "unified model" proposes that the three YTHDF paralogs share function and together mediate decay, so removing one gives a modest effect (Zaccara and Jaffrey 2020). This is still debated, which is why you would test the paralogs together. Review: <a href="rna-integrative-analysis.html">Integrative thinking</a> and <a href="epitranscriptomics-m6a.html">Epitranscriptomics 101</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Which eCLIP peak set should you trust most for follow-up?</div>
+                    <button data-opt>Peaks found in only one replicate, because they are the most specific</button>
+                    <button data-opt data-correct>Peaks enriched over the size-matched input and reproducible across biological replicates</button>
+                    <button data-opt>All peaks with more than 10 reads, regardless of input</button>
+                    <button data-opt>The peaks in the most highly expressed genes</button>
+                    <div class="quiz-explain">Enrichment over input removes abundance-driven background, and agreement between replicates guards against chance. ENCODE eCLIP analyses require both (Van Nostrand et al. 2016; 2020). Review: <a href="clip-seq.html">CLIP-seq</a>.</div>
+                </div>
+
+                <div class="refs">
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Spitale RC, Flynn RA, Zhang QC, et al. Structural imprints in vivo decode RNA regulatory mechanisms. <em>Nature</em> 519: 486-490, 2015. <a href="https://doi.org/10.1038/nature14263" target="_blank" rel="noopener">doi:10.1038/nature14263</a></li>
+                        <li>Liu N, Dai Q, Zheng G, et al. N6-methyladenosine-dependent RNA structural switches regulate RNA-protein interactions. <em>Nature</em> 518: 560-564, 2015. <a href="https://doi.org/10.1038/nature14234" target="_blank" rel="noopener">doi:10.1038/nature14234</a></li>
+                        <li>Lorenz R, Bernhart SH, Höner zu Siederdissen C, et al. ViennaRNA Package 2.0. <em>Algorithms Mol Biol</em> 6: 26, 2011. <a href="https://doi.org/10.1186/1748-7188-6-26" target="_blank" rel="noopener">doi:10.1186/1748-7188-6-26</a></li>
+                        <li>Licatalosi DD, Mele A, Fak JJ, et al. HITS-CLIP yields genome-wide insights into brain alternative RNA processing. <em>Nature</em> 456: 464-469, 2008. <a href="https://doi.org/10.1038/nature07488" target="_blank" rel="noopener">doi:10.1038/nature07488</a></li>
+                        <li>König J, Zarnack K, Rot G, et al. iCLIP reveals the function of hnRNP particles in splicing at individual nucleotide resolution. <em>Nat Struct Mol Biol</em> 17: 909-915, 2010. <a href="https://doi.org/10.1038/nsmb.1838" target="_blank" rel="noopener">doi:10.1038/nsmb.1838</a></li>
+                        <li>Van Nostrand EL, Pratt GA, Shishkin AA, et al. Robust transcriptome-wide discovery of RNA-binding protein binding sites with enhanced CLIP (eCLIP). <em>Nat Methods</em> 13: 508-514, 2016. <a href="https://doi.org/10.1038/nmeth.3810" target="_blank" rel="noopener">doi:10.1038/nmeth.3810</a></li>
+                        <li>Van Nostrand EL, Freese P, Pratt GA, et al. A large-scale binding and functional map of human RNA-binding proteins. <em>Nature</em> 583: 711-719, 2020. <a href="https://doi.org/10.1038/s41586-020-2077-3" target="_blank" rel="noopener">doi:10.1038/s41586-020-2077-3</a></li>
+                        <li>Dominissini D, Moshitch-Moshkovitz S, Schwartz S, et al. Topology of the human and mouse m6A RNA methylomes revealed by m6A-seq. <em>Nature</em> 485: 201-206, 2012. <a href="https://doi.org/10.1038/nature11112" target="_blank" rel="noopener">doi:10.1038/nature11112</a></li>
+                        <li>Eisenberg E, Levanon EY. A-to-I RNA editing: immune protector and transcriptome diversifier. <em>Nat Rev Genet</em> 19(8): 473-490, 2018. <a href="https://doi.org/10.1038/s41576-018-0006-1" target="_blank" rel="noopener">doi:10.1038/s41576-018-0006-1</a></li>
+                        <li>Lange SJ, Maticzka D, M&ouml;hl M, et al. Global or local? Predicting secondary structure and accessibility in mRNAs. <em>Nucleic Acids Res</em> 40(12): 5215-5226, 2012. <a href="https://doi.org/10.1093/nar/gks181" target="_blank" rel="noopener">doi:10.1093/nar/gks181</a></li>
+                        <li>Zaccara S, Jaffrey SR. A unified model for the function of YTHDF proteins in regulating m6A-modified mRNA. <em>Cell</em> 181: 1582-1595, 2020. <a href="https://doi.org/10.1016/j.cell.2020.05.012" target="_blank" rel="noopener">doi:10.1016/j.cell.2020.05.012</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: November 2026.</p>
+                </div>
+
+                <a class="next-lesson" href="stats-essentials.html">
+                    <span>Passed? Keep going</span>
+                    <h3>Track 5: Statistics and visualization &rarr;</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>

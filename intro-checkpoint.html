@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="BioNexus Hub">
+    <link rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">
+    <link rel="canonical" href="https://bionexushub.com/intro-checkpoint.html">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate, max-age=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Introduction checkpoint: ten friendly questions on DNA, RNA and protein, bioinformatics questions and first Python. Free, in your browser.">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="BioNexus Hub">
+    <meta property="og:title" content="Introduction Checkpoint | BioNexus Hub">
+    <meta property="og:description" content="Introduction checkpoint: ten friendly questions on DNA, RNA and protein, bioinformatics questions and first Python. Free, in your browser.">
+    <meta property="og:url" content="https://bionexushub.com/intro-checkpoint.html">
+    <meta property="og:image" content="https://bionexushub.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Introduction Checkpoint | BioNexus Hub">
+    <meta name="twitter:description" content="Ten friendly questions to check you are ready for Track 1.">
+    <meta name="twitter:image" content="https://bionexushub.com/og-image.jpg">
+    <title>Introduction Checkpoint - BioNexus Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Work+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary-blue: #5b9cf8; --primary-purple: #a855f7;
+            --light-blue: #7db4ff; --deep-navy: #0f172a;
+            --soft-white: #f8fafc; --text-dark: #1e293b; --text-gray: #64748b;
+            --green: #10b981; --amber: #f59e0b;
+        }
+        body { font-family: 'Work Sans', sans-serif; line-height: 1.7; color: var(--text-dark); background: var(--soft-white); min-height: 100vh; display: flex; flex-direction: column; }
+        .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+        header { position: sticky; top: 0; z-index: 1000; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(91, 156, 248, 0.2); }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+        .logo-container { display: flex; align-items: center; text-decoration: none; }
+        .logo-img { height: 50px; width: auto; }
+        nav ul { display: flex; gap: 32px; list-style: none; align-items: center; }
+        nav a { color: var(--text-dark); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.3s ease; position: relative; }
+        nav a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--primary-blue), var(--primary-purple)); transition: width 0.3s ease; }
+        nav a:hover { color: var(--primary-blue); }
+        nav a:hover::after { width: 100%; }
+        .cta-nav { background: linear-gradient(135deg, var(--primary-blue), var(--primary-purple)); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 600; transition: all 0.3s ease; }
+        .cta-nav::after { display: none; }
+        .cta-nav:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(91, 156, 248, 0.4); }
+
+        .lesson-header { padding: 64px 0 48px; background: linear-gradient(135deg, var(--soft-white) 0%, #e0e7ff 100%); }
+        .breadcrumb { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 18px; }
+        .breadcrumb a { color: var(--primary-blue); text-decoration: none; }
+        .lesson-header h1 { font-family: 'Crimson Pro', serif; font-size: 3rem; font-weight: 700; color: var(--deep-navy); margin-bottom: 16px; line-height: 1.15; max-width: 860px; }
+        .promise { font-size: 1.25rem; color: var(--text-gray); max-width: 760px; margin-bottom: 26px; }
+        .tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: white; border: 1px solid rgba(91,156,248,0.25); color: var(--text-dark); padding: 7px 15px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; }
+        .tag.green { background: rgba(16,185,129,0.12); border-color: transparent; color: #047857; }
+        .tag.purple { background: rgba(168,85,247,0.12); border-color: transparent; color: #7c3aed; }
+
+        main { flex: 1; padding: 56px 0 80px; }
+        .lesson-body { max-width: 820px; margin: 0 auto; }
+        .lesson-body h2 { font-family: 'Crimson Pro', serif; font-size: 2rem; color: var(--deep-navy); margin: 48px 0 16px; }
+        .lesson-body h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin: 32px 0 12px; }
+        .lesson-body p { color: var(--text-dark); font-size: 1.08rem; margin-bottom: 18px; }
+        .lesson-body ul, .lesson-body ol { margin: 0 0 18px 24px; color: var(--text-dark); }
+        .lesson-body li { margin-bottom: 8px; font-size: 1.08rem; }
+        .lesson-body strong { color: var(--deep-navy); }
+
+        .module-tag { display: inline-block; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: var(--primary-purple); background: rgba(168,85,247,0.1); padding: 4px 12px; border-radius: 20px; margin-top: 8px; }
+
+        .objectives { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-purple); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .objectives h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-purple); margin-bottom: 10px; }
+        .objectives ul { margin: 0 0 0 20px; }
+        .objectives li { font-size: 1rem; color: var(--text-gray); margin-bottom: 5px; }
+
+        .prereq { background: white; border: 1px solid rgba(91,156,248,0.2); border-left: 4px solid var(--primary-blue); border-radius: 10px; padding: 22px 26px; margin-bottom: 16px; }
+        .prereq h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--primary-blue); margin-bottom: 10px; }
+        .prereq ul { margin: 0 0 0 20px; }
+        .prereq li { font-size: 1rem; color: var(--text-gray); margin-bottom: 4px; }
+
+        .jargon { background: linear-gradient(135deg, rgba(168,85,247,0.06), rgba(91,156,248,0.06)); border: 1px solid rgba(168,85,247,0.25); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .jargon h4 { color: var(--primary-purple); font-size: 0.95rem; margin-bottom: 6px; }
+        .jargon h4 span { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; margin-right: 8px; }
+        .jargon p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.35); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .warn h4 { color: #b45309; font-size: 0.95rem; margin-bottom: 6px; }
+        .warn p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .pro { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 18px 22px; margin: 22px 0; }
+        .pro h4 { color: #047857; font-size: 0.95rem; margin-bottom: 6px; }
+        .pro p { font-size: 1rem; color: var(--text-gray); margin: 0; }
+
+        .ctable { width: 100%; border-collapse: collapse; margin: 22px 0; font-size: 0.95rem; }
+        .ctable th, .ctable td { border: 1px solid rgba(91,156,248,0.2); padding: 10px 14px; text-align: left; vertical-align: top; }
+        .ctable th { background: rgba(91,156,248,0.1); color: var(--deep-navy); font-weight: 600; }
+        .ctable td { color: var(--text-gray); }
+
+        pre { background: #0f172a; color: #e2e8f0; border-radius: 10px; padding: 20px 22px; overflow-x: auto; margin: 18px 0; font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; line-height: 1.65; }
+        pre .c { color: #64748b; }
+        pre .p { color: #f472b6; }
+        pre .s { color: #86efac; }
+        code.inline { background: rgba(91,156,248,0.12); color: #4c5fd5; padding: 2px 7px; border-radius: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.86em; }
+
+        .assessment { background: linear-gradient(135deg, rgba(91,156,248,0.1), rgba(168,85,247,0.1)); border: 1px solid rgba(168,85,247,0.3); border-radius: 12px; padding: 24px 28px; margin: 36px 0 8px; }
+        .assessment h2 { margin-top: 0; }
+        .assessment .passmark { font-size: 0.95rem; color: var(--text-gray); margin: 0; }
+
+        .refs { background: #f1f5f9; border: 1px solid rgba(91,156,248,0.2); border-radius: 10px; padding: 20px 24px; margin: 30px 0; }
+        .refs h4 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); margin-bottom: 12px; }
+        .refs ol { margin: 0 0 0 20px; }
+        .refs li { font-size: 0.9rem; color: var(--text-gray); margin-bottom: 7px; line-height: 1.5; }
+        .refs a { color: var(--primary-blue); text-decoration: none; }
+        .refs .reviewed { font-size: 0.82rem; color: var(--text-gray); margin-top: 12px; font-style: italic; }
+
+        .next-lesson { display: block; background: white; border: 2px solid rgba(91,156,248,0.25); border-radius: 12px; padding: 24px 28px; margin-top: 40px; text-decoration: none; transition: all 0.3s ease; }
+        .next-lesson:hover { border-color: var(--primary-blue); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(91,156,248,0.15); }
+        .next-lesson span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-gray); }
+        .next-lesson h3 { font-family: 'Crimson Pro', serif; font-size: 1.4rem; color: var(--deep-navy); margin-top: 4px; }
+
+        footer { background: var(--deep-navy); color: white; padding: 40px 0 30px; text-align: center; }
+        footer p { color: rgba(255, 255, 255, 0.6); }
+        .menu-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: var(--text-dark); cursor: pointer; }
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            nav ul { display: none; position: absolute; top: 100%; left: 0; right: 0; background: white; flex-direction: column; padding: 20px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); }
+            nav ul.active { display: flex; }
+            .logo-img { height: 40px; }
+            .lesson-header h1 { font-size: 2.2rem; }
+        }
+        .rs-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; margin: 0 0 22px; }
+        .rs-table th { text-align: left; background: #f1f5f9; padding: 8px 10px; }
+        .rs-table td { padding: 8px 10px; border-top: 1px solid #e2e8f0; vertical-align: top; }
+        .table-wrap { overflow-x: auto; }
+        .viz svg { width: 100%; height: auto; }
+        figure figcaption { font-size: 0.9rem; color: var(--text-gray); text-align: center; margin-top: 8px; }
+        .tryit { background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.3); border-radius: 10px; padding: 14px 18px; margin: 18px 0; font-size: 1rem; }
+        .plan-card { background: white; border: 1px solid rgba(91,156,248,0.25); border-left: 4px solid var(--primary-purple); border-radius: 10px; padding: 16px 22px; margin: 16px 0 22px; }
+        .plan-card p { margin-bottom: 6px; font-size: 1rem; }
+        .plan-card p:last-child { margin-bottom: 0; }
+        details p { margin-top: 10px; }
+    </style>
+<style>.skip-link{position:absolute;left:-9999px;top:0;}.skip-link:focus{left:12px;top:12px;z-index:10000;background:#0f172a;color:#fff;padding:10px 16px;border-radius:8px;font-weight:600;text-decoration:none;}</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+    <header>
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="fulllogo.jpg" alt="BioNexus Hub" class="logo-img">
+            </a>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <nav>
+                <ul id="nav-menu">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="learn.html" style="color: var(--primary-blue);">Learn</a></li>
+                    <li><a href="minicourses.html">Mini-courses</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="glossary.html">Glossary</a></li>
+                    <li><a href="faq.html">Help</a></li>
+                    <li><a href="contact.html" class="cta-nav">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="lesson-header">
+        <div class="container">
+            <div class="lesson-body">
+                <div class="breadcrumb"><a href="learn.html#track-0">← Roadmap</a> &nbsp;/&nbsp; Introduction &nbsp;/&nbsp; <strong>Checkpoint</strong></div>
+                <h1>Introduction Checkpoint: Are You Ready for Track 1?</h1>
+                <p class="promise">Ten friendly questions on the big ideas from the Introduction: how DNA, RNA and protein connect, what bioinformatics questions look like, and your first lines of code. Take it before Track 1 to see what you already understand.</p>
+                <div class="tags">
+                    <span class="tag purple">Track checkpoint</span>
+                    <span class="tag">~20 min</span>
+                    <span class="tag green">In your browser, no code</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <main id="main">
+        <div class="container">
+            <div class="lesson-body">
+
+                <div class="objectives">
+                    <h4 aria-level="2">What this checks</h4>
+                    <ul>
+                        <li>You can explain how DNA, RNA and protein connect.</li>
+                        <li>You can recognise a bioinformatics question.</li>
+                        <li>You can read a few lines of simple Python and fix a common error.</li>
+                        <li>You know why scripts and packages matter.</li>
+                    </ul>
+                </div>
+                <div class="prereq">
+                    <h4 aria-level="3">Before you start</h4>
+                    <ul>
+                        <li>Finish the Introduction lessons on the <a href="learn.html#track-0">roadmap</a>. No coding experience is needed beyond the first Python lesson.</li>
+                        <li>No notes on the first try. The point is to find out what you can recall, which is also one of the best ways to make it stick.</li>
+                    </ul>
+                </div>
+
+                <h2>How this checkpoint works</h2>
+                <p>Answer all ten questions. When you finish, the page shows your score. <strong>7 of 10 counts as a pass; aim for 8 or more before moving on.</strong> Every explanation links to the lesson to review.</p>
+                <p>This is a self-check, not an exam. The answers live in the page, so it only works if you answer honestly before reading the explanation. If you score below 7, review the linked lessons, wait a day or two, then reload and try again. Coming back after a break helps you remember more than re-reading straight away.</p>
+
+                <div class="assessment">
+                    <h2>The ten questions</h2>
+                    <p class="passmark">Scenario questions. Pick the best answer; some wrong answers are tempting on purpose.</p>
+                </div>
+
+                <div class="quiz">
+                    <div class="quiz-q-src">A gene's DNA has a single-letter change. Why might the protein made from that gene change too?</div>
+                    <button data-opt>Proteins are made directly from DNA, skipping RNA</button>
+                    <button data-opt data-correct>Information flows from DNA to RNA to protein, so the RNA copy carries the change into the instructions for building the protein</button>
+                    <button data-opt>Proteins change only when the RNA is damaged, never the DNA</button>
+                    <button data-opt>A DNA change cannot affect a protein</button>
+                    <div class="quiz-explain">This is the central dogma: DNA is copied into RNA, and RNA is read to build protein (Crick 1970). A change in the DNA is copied into the RNA, and it can change which amino acid is used. Some changes do not alter the protein, for example when the new three-letter code still means the same amino acid, or when the change falls outside the protein-coding part of the gene. Review: <a href="intro-biology-for-coders.html">The biology a coder needs</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A gene is copied from DNA into RNA, and the RNA is then used to build a protein. What are these two steps called?</div>
+                    <button data-opt>Replication, then sequencing</button>
+                    <button data-opt>Translation, then transcription</button>
+                    <button data-opt data-correct>Transcription (DNA to RNA), then translation (RNA to protein)</button>
+                    <button data-opt>Expression, then mutation</button>
+                    <div class="quiz-explain">Transcription copies a gene's code into RNA, like loading a function into memory; translation reads the RNA to build the protein, like running it (Crick 1970). Review: <a href="intro-biology-for-coders.html">The biology a coder needs</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Humans have about 20,000 genes that make proteins. Which statement is also true?</div>
+                    <button data-opt>Every gene makes a protein</button>
+                    <button data-opt data-correct>There are also many genes that make only RNA, and some RNAs do jobs themselves</button>
+                    <button data-opt>Genes are found only in the brain</button>
+                    <button data-opt>Each chromosome holds exactly one gene</button>
+                    <div class="quiz-explain">Not every gene ends in a protein. Many genes produce RNAs that work on their own, which is one reason the genome holds far more than protein code (GENCODE). Review: <a href="intro-biology-for-coders.html">The biology a coder needs</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Which of these is a bioinformatics question?</div>
+                    <button data-opt>How do I pipette 10 microlitres accurately?</button>
+                    <button data-opt data-correct>Which genes change their activity between healthy and tumour samples in this RNA-seq dataset?</button>
+                    <button data-opt>How long should I spin a centrifuge?</button>
+                    <button data-opt>Which antibody brand is cheapest?</button>
+                    <div class="quiz-explain">Bioinformatics uses computers to answer biological questions from data. The other options are wet-lab or purchasing questions, though their answers can affect the data you later analyse. Review: <a href="intro-what-is-bioinformatics.html">What bioinformatics actually is</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Why write your analysis as a script instead of doing every step by clicking in a spreadsheet?</div>
+                    <button data-opt>Scripts always run faster on small data</button>
+                    <button data-opt>Spreadsheets cannot open text files</button>
+                    <button data-opt data-correct>A script records every step, so you (or anyone) can rerun it exactly, check it, and apply it to new data</button>
+                    <button data-opt>Scripts never contain mistakes</button>
+                    <div class="quiz-explain">Clicks leave no record, so nobody can repeat or check them. A script is like a written lab protocol: it can be rerun, reviewed and reused (Wilson et al. 2014). Scripts can still have bugs, which is why they are worth checking. Review: <a href="intro-computing-for-biologists.html">The computing a biologist needs</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">What does this Python code print?<br><code>dna = "ATGCGC"</code><br><code>print(dna.count("G") / len(dna))</code></div>
+                    <button data-opt data-correct>0.333...</button>
+                    <button data-opt>0.666...</button>
+                    <button data-opt>2</button>
+                    <button data-opt>6</button>
+                    <div class="quiz-explain">There are 2 G's in 6 letters, so 2 / 6 = 0.333... Note this is the G fraction only. GC content would count G and C together: (2 + 2) / 6 = 0.666... Review: <a href="intro-first-python.html">Your first 10 lines of Python</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Your Python cell shows the red error <code>NameError: name 'dna' is not defined</code>. What is the most likely cause?</div>
+                    <button data-opt>Python cannot handle DNA</button>
+                    <button data-opt data-correct>You used the variable <code>dna</code> before creating it, for example by skipping the cell that defines it</button>
+                    <button data-opt>The sequence has too many letters</button>
+                    <button data-opt>Your internet connection dropped</button>
+                    <div class="quiz-explain">A NameError means Python has never seen that name in this session. Run the cell that defines it first, or check the spelling. In notebooks, running cells out of order is the most common cause. Review: <a href="faq.html">Help and FAQ</a> (my cell turned red).</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">You need to read FASTA files in Python. What is usually the best first approach?</div>
+                    <button data-opt>Write your own FASTA reader from scratch</button>
+                    <button data-opt>Copy the file into Word and read it</button>
+                    <button data-opt>Retype the sequences by hand</button>
+                    <button data-opt data-correct>Use a well-tested package such as Biopython, which already handles the format's details</button>
+                    <div class="quiz-explain">A package is shared, tested code for a common job. Reusing it saves time and avoids edge-case bugs that a quick home-made reader would miss (Cock et al. 2009). Review: <a href="intro-computing-for-biologists.html">The computing a biologist needs</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">A biologist says gene X is "highly expressed" in liver. What would you expect to see in liver RNA-seq data?</div>
+                    <button data-opt data-correct>Many sequencing reads coming from gene X's RNA</button>
+                    <button data-opt>More copies of gene X in the liver's DNA</button>
+                    <button data-opt>Gene X missing from the genome</button>
+                    <button data-opt>A longer gene X in liver than in other tissues</button>
+                    <div class="quiz-explain">Expression means a gene is being copied into RNA. RNA-seq counts reads from each gene's RNA, so a highly expressed gene produces many reads. Nearly every cell has the same DNA; what differs is which genes are expressed. Review: <a href="intro-biology-for-coders.html">The biology a coder needs</a>.</div>
+                </div>
+                <div class="quiz">
+                    <div class="quiz-q-src">Roughly how many DNA letters are in one copy of the human genome?</div>
+                    <button data-opt>About 3 thousand</button>
+                    <button data-opt>About 3 million</button>
+                    <button data-opt data-correct>About 3 billion</button>
+                    <button data-opt>About 3 trillion</button>
+                    <div class="quiz-explain">About 3 billion bases (the complete T2T assembly is about 3.05 billion; Nurk et al. 2022). That scale is why biology needs computers: no one can read it by hand. Review: <a href="intro-biology-for-coders.html">The biology a coder needs</a>.</div>
+                </div>
+
+                <div class="refs">
+                    <h4 aria-level="3">Sources &amp; further reading</h4>
+                    <ol>
+                        <li>Crick F. Central dogma of molecular biology. <em>Nature</em> 227: 561-563, 1970. <a href="https://doi.org/10.1038/227561a0" target="_blank" rel="noopener">doi:10.1038/227561a0</a></li>
+                        <li>Nurk S, Koren S, Rhie A, et al. The complete sequence of a human genome. <em>Science</em> 376: 44-53, 2022. <a href="https://doi.org/10.1126/science.abj6987" target="_blank" rel="noopener">doi:10.1126/science.abj6987</a></li>
+                        <li>GENCODE. Statistics about the current human GENCODE release (gene counts). <a href="https://www.gencodegenes.org/human/stats.html" target="_blank" rel="noopener">gencodegenes.org</a></li>
+                        <li>Wilson G, Aruliah DA, Brown CT, et al. Best practices for scientific computing. <em>PLoS Biol</em> 12: e1001745, 2014. <a href="https://doi.org/10.1371/journal.pbio.1001745" target="_blank" rel="noopener">doi:10.1371/journal.pbio.1001745</a></li>
+                        <li>Cock PJ, Antao T, Chang JT, et al. Biopython: freely available Python tools for computational molecular biology and bioinformatics. <em>Bioinformatics</em> 25: 1422-1423, 2009. <a href="https://doi.org/10.1093/bioinformatics/btp163" target="_blank" rel="noopener">doi:10.1093/bioinformatics/btp163</a></li>
+                    </ol>
+                    <p class="reviewed">Last reviewed: November 2026.</p>
+                </div>
+
+                <a class="next-lesson" href="track1-sequences-fasta-fastq.html">
+                    <span>Passed? Keep going</span>
+                    <h3>Track 1: Sequences, FASTA and FASTQ &rarr;</h3>
+                </a>
+
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 BioNexus Hub. Content licensed under <a href="license.html" style="color:inherit; text-decoration:underline;">CC BY-NC-ND 4.0</a>. <a href="privacy.html" style="color:inherit; text-decoration:underline;">Privacy</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() { document.getElementById('nav-menu').classList.toggle('active'); }
+    </script>
+    <script src="reactions.js" defer></script>
+    <script src="interactive.js" defer></script>
+</body>
+</html>
